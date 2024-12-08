@@ -42,9 +42,9 @@ public class Battle {
 		this.mapRepo = new LocalMapRepo(this.options.getMaps());
 		this.mapRepo.init();
 		this.mapManager = new LocalMapManager(this.plugin, this.mapRepo);
-		this.teamManager = new BattleTeamManager(this.options);
+		this.teamManager = new BattleTeamManager();
 		this.gameManager = new BattleGameManager(this, new BattleMapLoaderSignImpl());
-		this.matchManager = new BattleMatchManager(plugin, this, this.options, this.gameManager, this.mapManager);
+		this.matchManager = new BattleMatchManager(plugin, this, this.gameManager, this.mapManager);
 		this.scoreboardManager = new BattleScoreboardManager(plugin, this, this.teamManager);
 		this.kitManager = new BattleKitManager(plugin);
 		this.projectileManager = new ProjectileManager(plugin);

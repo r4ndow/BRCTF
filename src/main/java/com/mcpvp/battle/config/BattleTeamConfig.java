@@ -3,7 +3,6 @@ package com.mcpvp.battle.config;
 import lombok.NoArgsConstructor;
 import org.bukkit.Location;
 
-import lombok.Builder;
 import lombok.Data;
 
 /**

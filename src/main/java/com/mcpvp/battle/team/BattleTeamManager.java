@@ -2,7 +2,6 @@ package com.mcpvp.battle.team;
 
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.event.PlayerLeaveTeamEvent;
-import com.mcpvp.battle.options.BattleOptions;
 import com.mcpvp.battle.util.Colors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import javax.annotation.Nullable;
 @RequiredArgsConstructor
 public class BattleTeamManager {
 
-	private final BattleOptions options;
 	@Getter
 	private final List<BattleTeam> teams = new ArrayList<>();
 	private BattleTeam red;

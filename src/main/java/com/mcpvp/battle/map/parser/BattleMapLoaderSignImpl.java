@@ -222,6 +222,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         return findBlocks(snapshot, m -> m == Material.SIGN_POST).stream().distinct();
     }
 
+    @SuppressWarnings("deprecation")
     private List<Block> findBlocks(ChunkSnapshot chunk, Predicate<Material> filter) {
         List<Block> result = new ArrayList<>();
 

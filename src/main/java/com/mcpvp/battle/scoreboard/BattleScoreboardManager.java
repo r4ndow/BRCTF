@@ -2,8 +2,6 @@ package com.mcpvp.battle.scoreboard;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.player.BattlePlayer;
-import com.mcpvp.battle.player.BattlePlayerManager;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import lombok.RequiredArgsConstructor;

@@ -6,9 +6,6 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameManager;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.map.manager.MapManager;
-import com.mcpvp.battle.map.repo.LocalMapRepo;
-import com.mcpvp.battle.options.BattleOptions;
-import com.mcpvp.battle.options.BattleOptionsInput;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -19,7 +16,6 @@ public class BattleMatchManager {
 	
 	private final BattlePlugin plugin;
 	private final Battle battle;
-	private final BattleOptions options;
 	private final BattleGameManager gameLoader;
 	private final MapManager mapManager;
 	

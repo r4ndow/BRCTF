@@ -4,7 +4,6 @@ import com.mcpvp.battle.flag.IBattleFlag;
 import com.mcpvp.battle.util.Colors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.bukkit.entity.Player;

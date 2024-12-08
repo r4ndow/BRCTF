@@ -1,7 +1,6 @@
 package com.mcpvp.battle.flag;
 
 import com.mcpvp.battle.team.BattleTeam;
-import com.mcpvp.common.item.ItemUtil;
 import com.mcpvp.common.item.NBTUtil;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;

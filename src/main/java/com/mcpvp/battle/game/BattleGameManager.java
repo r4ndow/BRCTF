@@ -2,7 +2,6 @@ package com.mcpvp.battle.game;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.config.BattleGameConfig;
-import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.flag.IBattleFlag;
 import com.mcpvp.battle.flag.WoolFlag;
 import com.mcpvp.battle.map.BattleMapData;

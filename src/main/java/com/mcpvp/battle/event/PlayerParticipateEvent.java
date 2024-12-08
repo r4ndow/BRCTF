@@ -4,6 +4,8 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.common.event.EasyEvent;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import org.bukkit.entity.Player;
 
 /**
@@ -12,6 +14,7 @@ import org.bukkit.entity.Player;
  * This is essentially the opposite of the {@link PlayerResignEvent}.
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class PlayerParticipateEvent extends EasyEvent {
 	
 	private final Player player;

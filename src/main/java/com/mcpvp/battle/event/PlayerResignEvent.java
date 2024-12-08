@@ -6,6 +6,7 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.common.event.EasyEvent;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Fired when a player is no longer participating in the game. This could be because
@@ -13,6 +14,7 @@ import lombok.Data;
  * of the {@link PlayerParticipateEvent}.
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class PlayerResignEvent extends EasyEvent {
     
 	private final Player player;

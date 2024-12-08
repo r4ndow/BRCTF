@@ -51,7 +51,7 @@ public class KitType<K extends Kit> {
                     "Kit class must have a constructor that receives a Plugin and Player object, but %s did not"
                             .formatted(type));
         }
-        this.wrapper = this.create(plugin, null);
+        this.wrapper = this.create(null);
     }
 
     /**
@@ -62,9 +62,9 @@ public class KitType<K extends Kit> {
      * @param player The player to create the kit for.
      * @return The created Kit instance.
      */
-    public K create(Plugin plugin, @Nullable Player player) {
+    public K create(@Nullable Player player) {
         try {
-            return constructor.newInstance(plugin, player);
+            return constructor.newInstance(this.plugin, player);
         } catch (Exception e) {
             throw new RuntimeException("Unable to create KitType %s for player %s".formatted(this, player), e);
         }

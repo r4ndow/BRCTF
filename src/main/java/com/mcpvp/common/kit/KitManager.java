@@ -1,7 +1,6 @@
 package com.mcpvp.common.kit;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,8 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nullable;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -29,7 +26,6 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class KitManager {
 
-    private final Plugin plugin;
     private Map<Player, KitType<?>> selected = new ConcurrentHashMap<>();
     private Map<Player, Kit> active = new ConcurrentHashMap<>();
     
@@ -76,7 +72,7 @@ public class KitManager {
             active.get(player).shutdown();
         }
 
-        Kit created = selected.create(this.plugin, player);
+        Kit created = selected.create(player);
         active.put(player, created);
         return true;
     }

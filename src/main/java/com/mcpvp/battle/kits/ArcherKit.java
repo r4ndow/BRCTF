@@ -2,7 +2,6 @@ package com.mcpvp.battle.kits;
 
 import java.util.Map;
 
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
@@ -13,16 +12,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
-import com.mcpvp.battle.player.BattlePlayer;
-import com.mcpvp.battle.util.C;
 import com.mcpvp.common.event.EasyCancellableEvent;
-import com.mcpvp.common.event.EasyEvent;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 public class ArcherKit extends BattleKit {
 
@@ -65,6 +60,7 @@ public class ArcherKit extends BattleKit {
     }
 
     @Data
+    @EqualsAndHashCode(callSuper = false)
     @AllArgsConstructor
     public static class ArcherSnipeEvent extends EasyCancellableEvent {
 

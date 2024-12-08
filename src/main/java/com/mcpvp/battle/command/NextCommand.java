@@ -18,8 +18,11 @@ public class NextCommand extends BattleCommand {
 	@Override
 	public boolean onCommand(CommandSender sender, String label, List<String> args) {
 		BattleGameState curr = battle.getGame().getState();
+		if (curr == null) {
+			return false;
+		}
 		BattleGameState next = BattleGameState.values()[
-			battle.getGame().getState().ordinal() + 1 % BattleGameState.values().length
+			curr.ordinal() + 1 % BattleGameState.values().length
 			];
 		battle.getGame().setState(next);
 		sender.sendMessage(curr.name() + " -> " + next.name());

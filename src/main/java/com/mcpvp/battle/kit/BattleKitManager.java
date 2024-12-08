@@ -12,9 +12,7 @@ public class BattleKitManager extends KitManager {
 
     private final List<KitType<?>> KIT_TYPES;
 
-    public BattleKitManager(BattlePlugin plugin) {
-        super(plugin);
-
+    public BattleKitManager(BattlePlugin plugin) { 
         KIT_TYPES = List.of(
                 new KitType<>(HeavyKit.class, plugin),
                 new KitType<>(ArcherKit.class, plugin)

@@ -3,6 +3,7 @@ package com.mcpvp.battle.scoreboard;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
+import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.util.ScoreboardUtil;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
@@ -47,7 +48,12 @@ public class BattleScoreboardListener implements EasyListener {
 	private List<String> getScores(Player player) {
 		List<String> scores = new ArrayList<>();
 		
-		scores.add(battle.getGame().getState().name());
+		BattleGameState state = battle.getGame().getState();
+		if (state == null) {
+			return scores;
+		}
+
+		scores.add(state.name());
 		battle.getTeamManager().getTeams().forEach(bt -> {
 			scores.add(bt.getName());
 			if (bt.getFlag().isHome()) {

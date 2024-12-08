@@ -1,6 +1,5 @@
 package com.mcpvp.common;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -106,8 +105,6 @@ public class ProjectileManager implements EasyListener {
         };
         private Consumer<EntityDamageByEntityEvent> eventHandler = e -> {
         };
-        private Consumer<Entity> entityCollideHandler = e -> {
-        };
         private Consumer<ProjectileHitEvent> blockCollideHandler = e -> {
         };
 
@@ -147,16 +144,16 @@ public class ProjectileManager implements EasyListener {
             return this;
         }
 
-        /**
-         * Registers a Consumer that will receive a Entity.
-         *
-         * @param collideHandler The consumer that will handle the event.
-         * @return The instance for chaining.
-         */
-        public ProjectileListener onCollideEntity(Consumer<Entity> collideHandler) {
-            this.entityCollideHandler = collideHandler;
-            return this;
-        }
+        // /**
+        //  * Registers a Consumer that will receive a Entity.
+        //  *
+        //  * @param collideHandler The consumer that will handle the event.
+        //  * @return The instance for chaining.
+        //  */
+        // public ProjectileListener onCollideEntity(Consumer<Entity> collideHandler) {
+        //     this.entityCollideHandler = collideHandler;
+        //     return this;
+        // }
 
         public ProjectileListener onCollideBlock(Consumer<ProjectileHitEvent> blockCollideHandler) {
             this.blockCollideHandler = blockCollideHandler;
