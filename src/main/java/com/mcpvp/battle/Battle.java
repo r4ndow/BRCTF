@@ -1,0 +1,61 @@
+package com.mcpvp.battle;
+
+import com.mcpvp.battle.game.BattleGame;
+import com.mcpvp.battle.game.BattleGameManager;
+import com.mcpvp.battle.kit.BattleKitManager;
+import com.mcpvp.battle.map.manager.LocalMapManager;
+import com.mcpvp.battle.map.manager.MapManager;
+import com.mcpvp.battle.map.parser.BattleMapLoaderSignImpl;
+import com.mcpvp.battle.map.repo.LocalMapRepo;
+import com.mcpvp.battle.map.repo.MapRepo;
+import com.mcpvp.battle.match.BattleMatch;
+import com.mcpvp.battle.match.BattleMatchManager;
+import com.mcpvp.battle.options.BattleOptions;
+import com.mcpvp.battle.options.BattleOptionsLoader;
+import com.mcpvp.battle.scoreboard.BattleScoreboardManager;
+import com.mcpvp.battle.team.BattleTeamManager;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
+
+@Getter
+@RequiredArgsConstructor
+public class Battle {
+	
+	private final BattlePlugin plugin;
+	private BattleOptions options;
+	private MapRepo mapRepo;
+	private MapManager mapManager;
+	private BattleTeamManager teamManager;
+	private BattleGameManager gameManager;
+	private BattleMatchManager matchManager;
+	private BattleScoreboardManager scoreboardManager;
+	private BattleKitManager kitManager;
+	private BattleMatch match;
+	
+	public void load() throws IOException {
+		this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin));
+		this.mapRepo = new LocalMapRepo(this.options.getMaps());
+		this.mapRepo.init();
+		this.mapManager = new LocalMapManager(this.plugin, this.mapRepo);
+		this.teamManager = new BattleTeamManager(this.options);
+		this.gameManager = new BattleGameManager(this, new BattleMapLoaderSignImpl());
+		this.matchManager = new BattleMatchManager(plugin, this, this.options, this.gameManager, this.mapManager);
+		this.scoreboardManager = new BattleScoreboardManager(plugin, this, this.teamManager);
+		this.kitManager = new BattleKitManager(plugin);
+	}
+	
+	public void start() {
+		teamManager.createDefaultTeams();
+		scoreboardManager.init();
+		
+		this.match = this.matchManager.create();
+		this.match.start();
+	}
+	
+	public BattleGame getGame() {
+		return getMatch().getCurrentGame();
+	}
+	
+}

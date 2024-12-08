@@ -1,0 +1,136 @@
+package com.mcpvp.battle.game;
+
+import com.mcpvp.battle.Battle;
+import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.config.BattleGameConfig;
+import com.mcpvp.battle.event.PlayerParticipateEvent;
+import com.mcpvp.battle.game.listener.BattlePermanentGameListener;
+import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
+import com.mcpvp.battle.game.state.BattleGameStateHandler;
+import com.mcpvp.battle.game.state.BattleOutsideGameStateHandler;
+import com.mcpvp.battle.map.BattleMapData;
+import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.EasyLifecycle;
+import com.mcpvp.common.kit.Kit;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+@Getter
+@RequiredArgsConstructor
+public class BattleGame extends EasyLifecycle {
+
+	private final BattlePlugin plugin;
+	private final Battle battle;
+	private final BattleMapData map;
+	private final World world;
+	private final BattleGameConfig config;
+	private final Map<BattleTeam, BattleGameTeamData> teamData = new HashMap<>();
+	
+	@Nullable
+	private BattleGameState state = null;
+	
+	private BattlePermanentGameListener permanentGameListener;
+	private BattleGameStateHandler stateHandler;
+	
+	public void setup() {
+		this.permanentGameListener = new BattlePermanentGameListener(plugin, this);
+		attach(this.permanentGameListener);
+		
+		world.setGameRuleValue("doDaylightCycle", "false");
+		world.setGameRuleValue("naturalGeneration", "false");
+		
+		setState(BattleGameState.BEFORE);
+	}
+	
+	public void stop() {
+		setState(null);
+		super.shutdown();
+	}
+	
+	/**
+	 * Leaves the current state (if present) and enters the given state (if not null).
+	 * 
+	 * @param state The state to enter.
+	 */
+	public void setState(BattleGameState state) {
+		if (this.state != state) {
+			if (this.state != null) {
+				leaveState(this.state);
+			}
+			
+			this.state = state;
+			
+			if (state != null) {
+				enterState(state);
+			}
+		}
+	}
+	
+	private void enterState(BattleGameState state) {
+		this.stateHandler = switch (state) {
+			case BEFORE, AFTER -> new BattleOutsideGameStateHandler(plugin, this);
+			case DURING -> new BattleDuringGameStateHandler(plugin, this);
+		};
+		this.stateHandler.enter();
+		
+		fireParticipateEvents();
+	}
+	
+	private void leaveState(BattleGameState state) {
+		if (this.stateHandler != null) {
+			this.stateHandler.leave();
+		}
+		this.stateHandler = null;
+	}
+	
+	public void respawn(Player player) {
+		// Reset negative statues
+		player.setHealth(player.getMaxHealth());
+		player.setFireTicks(0);
+		
+		// Teleport to spawn
+		BattleTeam team = getBattle().getTeamManager().getTeam(player);
+		Location spawn = getConfig().getTeamConfig(team).getSpawn();
+		player.teleport(spawn);
+
+		// Equip kit
+		battle.getKitManager().createSelected(player);
+	}
+
+	public void remove(Player player) {
+		// Remove kit
+		Kit kit = battle.getKitManager().get(player);
+		if (kit != null) {
+			kit.shutdown();
+		}
+
+		// Remove player from team
+		battle.getTeamManager().setTeam(player, null);
+	}
+	
+	private void fireParticipateEvents() {
+		for (Player player : getParticipants()) {
+			new PlayerParticipateEvent(player, this).call();
+		}
+	}
+	
+	public Collection<? extends Player> getParticipants() {
+		return Bukkit.getOnlinePlayers().stream().filter(p -> p.getGameMode() == GameMode.SURVIVAL).toList();
+	}
+	
+	public BattleGameTeamData getTeamData(BattleTeam team) {
+		return this.getTeamData().computeIfAbsent(team, k -> new BattleGameTeamData());
+	}
+	
+}

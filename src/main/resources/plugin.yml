@@ -1,0 +1,6 @@
+name: mcctf
+version: 2.0.0
+description: The classic MCPVP plugin reborn
+author: NomNuggetNom
+main: com.mcpvp.battle.BattlePlugin
+depend: []
