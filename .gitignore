@@ -9,3 +9,6 @@ bin
 # IDE
 .idea
 .vscode
+
+# Server files
+server

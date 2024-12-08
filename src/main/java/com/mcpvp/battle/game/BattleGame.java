@@ -15,6 +15,9 @@ import com.mcpvp.common.kit.Kit;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -26,6 +29,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log4j2
 @Getter
 @RequiredArgsConstructor
 public class BattleGame extends EasyLifecycle {
@@ -105,7 +109,8 @@ public class BattleGame extends EasyLifecycle {
 		player.teleport(spawn);
 
 		// Equip kit
-		battle.getKitManager().createSelected(player);
+		boolean created = battle.getKitManager().createSelected(player);
+		log.info("Created kit for player? " + created);
 	}
 
 	public void remove(Player player) {

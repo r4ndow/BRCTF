@@ -17,7 +17,7 @@ import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
 
 public abstract class BattleKit extends Kit {
-    
+
     public BattleKit(BattlePlugin plugin, @Nullable Player player) {
         super(plugin, player);
     }
@@ -29,32 +29,29 @@ public abstract class BattleKit extends Kit {
     public class KitInventoryBuilder {
 
         private static final int INVENTORY_SIZE = 27 + 9;
-        private final List<ItemStack> items = new ArrayList<>(INVENTORY_SIZE);
+        private final ItemStack[] items = new ItemStack[INVENTORY_SIZE];
 
         private int currentSlot = 0;
 
         public KitInventoryBuilder add(Material material) {
-            items.set(currentSlot++, autoAdjust(ItemBuilder.of(material)).build());
+            items[currentSlot++] = autoAdjust(ItemBuilder.of(material)).build();
             return this;
         }
 
         public KitInventoryBuilder addFood(int count) {
-            items.set(currentSlot++, ItemBuilder.of(Material.COOKED_BEEF).name(getName() + " Food").build());
+            items[currentSlot++] = ItemBuilder.of(Material.COOKED_BEEF).name(getName() + " Food").amount(count).build();
             return this;
         }
 
         private ItemBuilder autoAdjust(ItemBuilder itemBuilder) {
             return itemBuilder.unbreakable().name(
-                getName() + " " + StringUtils.capitalize(itemBuilder.build().getType().name().toLowerCase())
-            );
+                    getName() + " " + StringUtils.capitalize(itemBuilder.build().getType().name().toLowerCase()));
         }
 
         public Map<Integer, ItemStack> build() {
             Map<Integer, ItemStack> map = new HashMap<>();
-            for (int i = 0; i < INVENTORY_SIZE; i++) {
-                if (items.get(i) != null) {
-                    map.put(i, items.get(i));
-                }
+            for (int i = 0; i < items.length; i++) {
+                map.put(i, items[i]);
             }
             return map;
         }

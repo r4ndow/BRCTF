@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * One-stop shop for managing KitTypes and Kits. There are two important concepts:
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
  *  and it exists when a game is actually in progress.</li>
  * </ul>
  */
+@Log4j2
 @RequiredArgsConstructor
 public class KitManager {
 
@@ -43,7 +45,7 @@ public class KitManager {
         KitType<?> kitType = getKitType(type);
 
         // Allow the kit selection event to be rejected to enforce limits and resitrctions.
-        if (new KitSelectedEvent(player, kitType).call() && !force) {
+        if (new KitSelectedEvent(player, kitType).call() || force) {
             selected.put(player, kitType);
             return true;
         }

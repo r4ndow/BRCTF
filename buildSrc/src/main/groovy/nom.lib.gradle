@@ -1,0 +1,19 @@
+plugins {
+	id "com.github.johnrengelman.shadow"
+}
+
+//
+// Generate JARs into the libs directory
+//
+
+java {
+	withSourcesJar()
+}
+
+shadowJar {
+	archiveClassifier.set("")
+	archiveVersion.set(project.version)
+//	dependencies {
+//		exclude(dependency("org.jetbrains.kotlin::"))
+//	}
+}

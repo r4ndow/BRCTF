@@ -1,0 +1,10 @@
+// Here, we can define plugin versions to be used by our other configurations
+// This doesn't actually apply plugins. Just declares versions.
+pluginManagement {
+	plugins {
+		// Plugin dependencies must be specified in the build.gradle too (really dumb)
+		// This block seems basically useless
+//		id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+		id "com.github.johnrengelman.shadow" version "${shadowVersion}"
+	}
+}

@@ -86,9 +86,9 @@ public class BattleOptionsInput {
 	public static class MapOptions {
 		
 		@Builder.Default
-		private final String dir = "plugins/ctf/maps";
+		private final String dir = "plugins/mcctf/maps";
 		@Builder.Default
-		private final String mapsJson = "plugins/ctf/maps.json";
+		private final String mapsJson = "plugins/mcctf/maps.json";
 		@Builder.Default
 		private final Map<BattleMapCategory, Boolean> categories = new LinkedHashMap<>() {
 			{

@@ -10,16 +10,19 @@ import com.mcpvp.common.kit.KitType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+@Log4j2
 @Getter
 @AllArgsConstructor
 public class BattlePermanentGameListener implements EasyListener {
@@ -38,6 +41,11 @@ public class BattlePermanentGameListener implements EasyListener {
 	@EventHandler
 	public void onResign(PlayerResignEvent event) {
 		game.remove(event.getPlayer());
+	}
+
+	@EventHandler(priority = EventPriority.LOW)
+	public void clearInventory(PlayerParticipateEvent event) {
+		event.getPlayer().getInventory().clear();
 	}
 
 	@EventHandler

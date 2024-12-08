@@ -24,25 +24,20 @@ public class HeavyKit extends BattleKit {
 
     @Override
     public ItemStack[] getArmor() {
-        return new ItemStack[]{
-            new ItemStack(Material.DIAMOND_HELMET),
-            new ItemStack(Material.DIAMOND_CHESTPLATE),
-            new ItemStack(Material.DIAMOND_LEGGINGS),
-            new ItemStack(Material.DIAMOND_BOOTS)
+        return new ItemStack[] {
+                new ItemStack(Material.DIAMOND_BOOTS),
+                new ItemStack(Material.DIAMOND_LEGGINGS),
+                new ItemStack(Material.DIAMOND_CHESTPLATE),
+                new ItemStack(Material.DIAMOND_HELMET)
         };
     }
 
     @Override
     public Map<Integer, ItemStack> getItems() {
         return new KitInventoryBuilder()
-            .add(Material.DIAMOND_SWORD)
-            .addFood(3)
-            .build();
+                .add(Material.DIAMOND_SWORD)
+                .addFood(3)
+                .build();
     }
 
-    @Override
-    public Plugin getPlugin() {
-        return Bukkit.getPluginManager().getPlugin("Battle");
-    }
-    
 }
