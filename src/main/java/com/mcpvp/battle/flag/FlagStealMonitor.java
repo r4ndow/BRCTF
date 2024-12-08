@@ -5,8 +5,8 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.FlagStealEvent;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
-import com.mcpvp.battle.util.TickEvent;
 import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 

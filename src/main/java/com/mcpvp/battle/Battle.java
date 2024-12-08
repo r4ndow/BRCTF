@@ -14,6 +14,8 @@ import com.mcpvp.battle.options.BattleOptions;
 import com.mcpvp.battle.options.BattleOptionsLoader;
 import com.mcpvp.battle.scoreboard.BattleScoreboardManager;
 import com.mcpvp.battle.team.BattleTeamManager;
+import com.mcpvp.common.ProjectileManager;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +35,7 @@ public class Battle {
 	private BattleScoreboardManager scoreboardManager;
 	private BattleKitManager kitManager;
 	private BattleMatch match;
+	private ProjectileManager projectileManager;
 	
 	public void load() throws IOException {
 		this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin));
@@ -44,6 +47,8 @@ public class Battle {
 		this.matchManager = new BattleMatchManager(plugin, this, this.options, this.gameManager, this.mapManager);
 		this.scoreboardManager = new BattleScoreboardManager(plugin, this, this.teamManager);
 		this.kitManager = new BattleKitManager(plugin);
+		this.projectileManager = new ProjectileManager(plugin);
+		this.projectileManager.register();
 	}
 	
 	public void start() {

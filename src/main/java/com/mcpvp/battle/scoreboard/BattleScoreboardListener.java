@@ -4,8 +4,8 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.util.ScoreboardUtil;
-import com.mcpvp.battle.util.TickEvent;
 import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.event.TickEvent;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,8 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Score;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -3,19 +3,22 @@ package com.mcpvp.battle.game.state;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
-import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.flag.FlagDropMonitor;
 import com.mcpvp.battle.flag.FlagPickupMonitor;
 import com.mcpvp.battle.flag.FlagStealMonitor;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.kit.KitSelectedEvent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 	
@@ -35,6 +38,11 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 			bt.getFlag().setLocked(false);
 		});
 	}
+
+	@Override
+	public void leave() {
+		Bukkit.broadcastMessage("Game over!");
+	}
 	
 	@EventHandler
 	public void onJoinTeam(PlayerJoinTeamEvent event) {
@@ -45,11 +53,23 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 	public void onParticipate(PlayerParticipateEvent event) {
 		game.respawn(event.getPlayer());
 	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onKitSelected(KitSelectedEvent event) {
+		game.respawn(event.getPlayer());
+	}
 	
 	@EventHandler
 	public void onDeath(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player player && player.getHealth() - event.getDamage() <= 0) {
 			game.respawn(player);
+		}
+	}
+		
+	@EventHandler
+	public void onRespawn(PlayerRespawnEvent event) {
+		if (game.isParticipant(event.getPlayer())) {
+			game.respawn(event.getPlayer());
 		}
 	}
 	

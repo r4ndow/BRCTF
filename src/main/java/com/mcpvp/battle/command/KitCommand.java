@@ -21,6 +21,7 @@ public class KitCommand extends BattleCommand {
         Player player = asPlayer(sender);
         
         this.kitManager.getKitTypes().stream().filter(type -> type.getBackingKit().getName().equalsIgnoreCase(args.get(0))).findAny().ifPresent(kt -> {
+            player.sendMessage("Selected " + kt.getBackingKit().getName());
             kitManager.setSelected(player, kt.getKitType(), false);
         });
 

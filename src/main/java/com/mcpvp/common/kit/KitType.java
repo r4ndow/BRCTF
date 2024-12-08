@@ -74,4 +74,9 @@ public class KitType<K extends Kit> {
         return wrapper;
     }
 
+    @Override
+    public String toString() {
+        return "KitType[backing=%s]".formatted(getBackingKit().getName());
+    }
+
 }

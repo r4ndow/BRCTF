@@ -15,7 +15,6 @@ import com.mcpvp.common.kit.Kit;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 
 import org.bukkit.Bukkit;
@@ -41,30 +40,29 @@ public class BattleGame extends EasyLifecycle {
 	private final World world;
 	private final BattleGameConfig config;
 	private final Map<BattleTeam, BattleGameTeamData> teamData = new HashMap<>();
-	
+
 	@Nullable
 	private BattleGameState state = null;
-	
+
 	private BattlePermanentGameListener permanentGameListener;
 	private BattleGameStateHandler stateHandler;
-	
+
 	public void setup() {
-		this.permanentGameListener = new BattlePermanentGameListener(plugin, this);
-		attach(this.permanentGameListener);
-		
+		setState(BattleGameState.BEFORE);
+		attach(new BattlePermanentGameListener(plugin, this));
+
 		world.setGameRuleValue("doDaylightCycle", "false");
 		world.setGameRuleValue("naturalGeneration", "false");
-		
-		setState(BattleGameState.BEFORE);
 	}
-	
+
 	public void stop() {
 		setState(null);
 		super.shutdown();
 	}
-	
+
 	/**
-	 * Leaves the current state (if present) and enters the given state (if not null).
+	 * Leaves the current state (if present) and enters the given state (if not
+	 * null).
 	 * 
 	 * @param state The state to enter.
 	 */
@@ -73,32 +71,32 @@ public class BattleGame extends EasyLifecycle {
 			if (this.state != null) {
 				leaveState(this.state);
 			}
-			
+
 			this.state = state;
-			
+
 			if (state != null) {
 				enterState(state);
 			}
 		}
 	}
-	
+
 	private void enterState(BattleGameState state) {
 		this.stateHandler = switch (state) {
 			case BEFORE, AFTER -> new BattleOutsideGameStateHandler(plugin, this);
 			case DURING -> new BattleDuringGameStateHandler(plugin, this);
 		};
 		this.stateHandler.enter();
-		
+
 		fireParticipateEvents();
 	}
-	
+
 	private void leaveState(BattleGameState state) {
 		if (this.stateHandler != null) {
 			this.stateHandler.leave();
 		}
 		this.stateHandler = null;
 	}
-	
+
 	/**
 	 * Respawns the player **during the game**. Not before or after.
 	 * 
@@ -112,15 +110,14 @@ public class BattleGame extends EasyLifecycle {
 		// Clear inventory
 		player.getInventory().clear();
 		player.getInventory().setArmorContents(new ItemStack[4]);
-		
+
 		// Teleport to spawn
 		BattleTeam team = getBattle().getTeamManager().getTeam(player);
 		Location spawn = getConfig().getTeamConfig(team).getSpawn();
 		player.teleport(spawn);
 
 		// Equip kit
-		boolean created = battle.getKitManager().createSelected(player);
-		log.info("Created kit for player? " + created);
+		battle.getKitManager().createSelected(player);
 	}
 
 	public void remove(Player player) {
@@ -133,19 +130,25 @@ public class BattleGame extends EasyLifecycle {
 		// Remove player from team
 		battle.getTeamManager().setTeam(player, null);
 	}
-	
+
 	private void fireParticipateEvents() {
 		for (Player player : getParticipants()) {
 			new PlayerParticipateEvent(player, this).call();
 		}
 	}
-	
-	public Collection<? extends Player> getParticipants() {
-		return Bukkit.getOnlinePlayers().stream().filter(p -> p.getGameMode() == GameMode.SURVIVAL).toList();
+
+	public boolean isParticipant(Player player) {
+		return player.getGameMode() == GameMode.SURVIVAL && player.getLocation().getWorld() == world;
 	}
-	
+
+	public Collection<? extends Player> getParticipants() {
+		return Bukkit.getOnlinePlayers().stream()
+				.filter(this::isParticipant)
+				.toList();
+	}
+
 	public BattleGameTeamData getTeamData(BattleTeam team) {
 		return this.getTeamData().computeIfAbsent(team, k -> new BattleGameTeamData());
 	}
-	
+
 }

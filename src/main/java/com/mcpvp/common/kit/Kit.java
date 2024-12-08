@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.event.EasyListener;
@@ -24,6 +25,7 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
     
     @Getter
     protected final Plugin plugin;
+    @Getter
     @Nullable
     private final Player player;
 
@@ -48,6 +50,14 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
         player.getInventory().clear();
         player.getInventory().setArmorContents(getArmor());
         getItems().forEach(player.getInventory()::setItem);
+    }
+
+    protected boolean isPlayer(Player player) {
+        return player.equals(this.player);
+    }
+
+    protected boolean isPlayer(ProjectileSource source) {
+        return source.equals(this.player);
     }
 
     public abstract String getName();

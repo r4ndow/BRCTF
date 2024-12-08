@@ -45,8 +45,9 @@ public class KitManager {
         KitType<?> kitType = getKitType(type);
 
         // Allow the kit selection event to be rejected to enforce limits and resitrctions.
-        if (new KitSelectedEvent(player, kitType).call() || force) {
+        if (!new KitAttemptSelectEvent(player, kitType).call() || force) {
             selected.put(player, kitType);
+            new KitSelectedEvent(player, kitType).call();
             return true;
         }
 
@@ -67,6 +68,8 @@ public class KitManager {
         if (selected == null) {
             return false;
         }
+
+        log.info("Creating selected " + selected + " for " + player.getName());
 
         // Remove the existing kit
         if (active.containsKey(player)) {
