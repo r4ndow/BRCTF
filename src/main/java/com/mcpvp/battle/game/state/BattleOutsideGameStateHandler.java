@@ -3,14 +3,13 @@ package com.mcpvp.battle.game.state;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.game.BattleGame;
-import com.mcpvp.battle.kits.HeavyKit;
 
 /**
  * A state handler for outside the game, i.e. before and after but not during.
@@ -36,23 +35,21 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
-		event.getPlayer().teleport(game.getConfig().getSpawn());
-	}
-
-	@EventHandler
 	public void onParticipate(PlayerParticipateEvent event) {
 		event.getPlayer().teleport(game.getConfig().getSpawn());
-		game.getBattle().getKitManager().setSelected(event.getPlayer(), HeavyKit.class, true);
+		event.getPlayer().getInventory().clear();
+		event.getPlayer().getInventory().setArmorContents(new ItemStack[4]);
 	}
 
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
+		// For when players fall into the void
 		event.getEntity().teleport(game.getConfig().getSpawn());
 	}
 
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent event) {
+		// For when players fall into the void
 		event.setRespawnLocation(game.getConfig().getSpawn());
 	}
 

@@ -23,6 +23,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -98,10 +99,19 @@ public class BattleGame extends EasyLifecycle {
 		this.stateHandler = null;
 	}
 	
+	/**
+	 * Respawns the player **during the game**. Not before or after.
+	 * 
+	 * @param player The player to respawn.
+	 */
 	public void respawn(Player player) {
 		// Reset negative statues
 		player.setHealth(player.getMaxHealth());
 		player.setFireTicks(0);
+
+		// Clear inventory
+		player.getInventory().clear();
+		player.getInventory().setArmorContents(new ItemStack[4]);
 		
 		// Teleport to spawn
 		BattleTeam team = getBattle().getTeamManager().getTeam(player);
