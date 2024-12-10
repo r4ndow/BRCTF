@@ -16,6 +16,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -92,6 +93,15 @@ public class BattlePermanentGameListener implements EasyListener {
 	@EventHandler
 	public void onResign(PlayerResignEvent event) {
 		game.remove(event.getPlayer());
+	}
+
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event) {
+		if (game.getBattle().getTeamManager().getTeams().stream().noneMatch(bt ->
+			bt.getFlag().isItem(event.getItemDrop().getItemStack())
+		)) {
+			event.setCancelled(true);
+		}
 	}
 
 }

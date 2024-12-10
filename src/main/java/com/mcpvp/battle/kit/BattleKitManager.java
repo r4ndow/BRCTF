@@ -5,6 +5,7 @@ import java.util.List;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kits.ArcherKit;
 import com.mcpvp.battle.kits.HeavyKit;
+import com.mcpvp.battle.kits.SoldierKit;
 import com.mcpvp.common.kit.KitManager;
 import com.mcpvp.common.kit.KitType;
 
@@ -15,7 +16,8 @@ public class BattleKitManager extends KitManager {
     public BattleKitManager(BattlePlugin plugin) { 
         KIT_TYPES = List.of(
                 new KitType<>(HeavyKit.class, plugin),
-                new KitType<>(ArcherKit.class, plugin)
+                new KitType<>(ArcherKit.class, plugin),
+                new KitType<>(SoldierKit.class, plugin)
         );
     }
 

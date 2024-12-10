@@ -3,6 +3,7 @@ package com.mcpvp.battle.kits;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
@@ -14,11 +15,10 @@ import org.bukkit.inventory.ItemStack;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
-import com.mcpvp.common.event.EasyCancellableEvent;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.mcpvp.battle.util.C;
+import com.mcpvp.common.item.ItemBuilder;
 
+// TODO remove arrows on respawn
 public class ArcherKit extends BattleKit {
 
 	private static final int HEADSHOT_DIST = 30;
@@ -46,9 +46,10 @@ public class ArcherKit extends BattleKit {
     public Map<Integer, ItemStack> getItems() {
         return new KitInventoryBuilder()
                 .add(Material.STONE_SWORD)
-                .add(Material.BOW)
-                .add(Material.ARROW)
-                .addFood(3)
+                .addFood(4)
+                .add(ItemBuilder.of(Material.BOW).enchant(Enchantment.ARROW_KNOCKBACK, 1))
+                .add(ItemBuilder.of(Material.ARROW).amount(64))
+                .add(ItemBuilder.of(Material.ARROW).amount(64))
                 .build();
     }
 
@@ -57,20 +58,6 @@ public class ArcherKit extends BattleKit {
         if (isPlayer(event.getEntity().getShooter())) {
             getBattle().getProjectileManager().register(event.getEntity()).onHitEvent(this::onHit);
         }
-    }
-
-    @Data
-    @EqualsAndHashCode(callSuper = false)
-    @AllArgsConstructor
-    public static class ArcherSnipeEvent extends EasyCancellableEvent {
-
-        private final Player shooter;
-        private final Player hit;
-
-    }
-
-    private boolean attemptSnipe(Player hit, int distance) {
-        return !new ArcherSnipeEvent(this.getPlayer(), hit).call();
     }
 
 	private void onHit(EntityDamageByEntityEvent event) {
@@ -94,10 +81,10 @@ public class ArcherKit extends BattleKit {
 		if (distance < HEADSHOT_DIST)
 			return;
 		
-		if (!attemptSnipe(shooter, distance))
-			return;
-		
 		event.setDamage(1000);
+
+		hit.sendMessage(C.info(C.GOLD) + "You were sniped by " + C.highlight(shooter.getName()) + " from " + distance + " blocks!");
+		shooter.sendMessage(C.info(C.GOLD) + "You sniped " + C.highlight(hit.getName()) + " from " + distance + " blocks!");
 	}
 
 }

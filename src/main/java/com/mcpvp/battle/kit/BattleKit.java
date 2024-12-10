@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.common.item.InteractiveItem;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
 
@@ -24,6 +25,18 @@ public abstract class BattleKit extends Kit {
         return ((BattlePlugin) plugin).getBattle();
     }
 
+    public class BattleKitItem extends InteractiveItem {
+
+        public BattleKitItem(ItemStack item) {
+            super(plugin, item);
+        }
+
+        public BattleKitItem(ItemBuilder builder) {
+            super(plugin, builder);
+        }
+
+    }
+
     public class KitInventoryBuilder {
 
         private static final int INVENTORY_SIZE = 27 + 9;
@@ -33,6 +46,27 @@ public abstract class BattleKit extends Kit {
 
         public KitInventoryBuilder add(Material material) {
             items[currentSlot++] = autoAdjust(ItemBuilder.of(material)).build();
+            return this;
+        }
+
+        public KitInventoryBuilder add(ItemBuilder builder) {
+            items[currentSlot++] = autoAdjust(builder).build();
+            return this;
+        }
+
+        public KitInventoryBuilder add(InteractiveItem item) {
+            items[currentSlot++] = autoAdjust(ItemBuilder.of(item.getItem())).build();
+            if (getPlayer() != null) {
+                attach(item);
+            }
+            return this;
+        }
+
+        public KitInventoryBuilder add(BattleKitItem item) {
+            items[currentSlot++] = autoAdjust(ItemBuilder.of(item.getItem())).build();
+            if (getPlayer() != null) {
+                attach(item);
+            }
             return this;
         }
 
