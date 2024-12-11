@@ -1,29 +1,22 @@
 package com.mcpvp.battle.kit;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.kits.ArcherKit;
-import com.mcpvp.battle.kits.HeavyKit;
-import com.mcpvp.battle.kits.SoldierKit;
+import org.bukkit.plugin.Plugin;
+
+import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitManager;
-import com.mcpvp.common.kit.KitType;
 
 public class BattleKitManager extends KitManager {
 
-    private final List<KitType<?>> KIT_TYPES;
-
-    public BattleKitManager(BattlePlugin plugin) { 
-        KIT_TYPES = List.of(
-                new KitType<>(HeavyKit.class, plugin),
-                new KitType<>(ArcherKit.class, plugin),
-                new KitType<>(SoldierKit.class, plugin)
-        );
+    public BattleKitManager(Plugin plugin) {
+        super(plugin);
     }
 
     @Override
-    public List<KitType<?>> getKitTypes() {
-        return KIT_TYPES;
+    public List<KitDefinition> getKitDefinitions() {
+        return Arrays.asList(BattleKitType.values());
     }
 
 }

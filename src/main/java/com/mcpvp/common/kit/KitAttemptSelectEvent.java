@@ -17,6 +17,6 @@ import lombok.RequiredArgsConstructor;
 public class KitAttemptSelectEvent extends EasyCancellableEvent {
     
     private final Player player;
-    private final KitType<?> kitType;
+    private final KitDefinition kitDefinition;
 
 }

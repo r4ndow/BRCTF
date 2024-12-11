@@ -39,7 +39,7 @@ public abstract class BattleKit extends Kit {
 
     public class KitInventoryBuilder {
 
-        private static final int INVENTORY_SIZE = 27 + 9;
+        private static final int INVENTORY_SIZE = 9 * 4;
         private final ItemStack[] items = new ItemStack[INVENTORY_SIZE];
 
         private int currentSlot = 0;

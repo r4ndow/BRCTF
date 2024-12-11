@@ -4,9 +4,9 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
-import com.mcpvp.battle.kits.HeavyKit;
+import com.mcpvp.battle.kit.BattleKitType;
 import com.mcpvp.common.event.EasyListener;
-import com.mcpvp.common.kit.KitType;
+import com.mcpvp.common.kit.KitDefinition;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -76,9 +76,9 @@ public class BattlePermanentGameListener implements EasyListener {
 	public void selectDefaultKit(PlayerParticipateEvent event) {
 		// For players who join without a kit selected, make sure they have one before they are respawned
 		// The kit creation/equipping will be handled by the game
-		KitType<?> selected = game.getBattle().getKitManager().getSelected(event.getPlayer());
+		KitDefinition selected = game.getBattle().getKitManager().getSelected(event.getPlayer());
 		if (selected == null) {
-			game.getBattle().getKitManager().setSelected(event.getPlayer(), HeavyKit.class, true);
+			game.getBattle().getKitManager().setSelected(event.getPlayer(), BattleKitType.HEAVY, true);
 		}
 	}
 

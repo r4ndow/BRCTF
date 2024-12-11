@@ -3,6 +3,8 @@ package com.mcpvp.common;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.scheduler.BukkitTask;
+
 import com.mcpvp.common.event.EasyListener;
 
 /**
@@ -12,7 +14,8 @@ import com.mcpvp.common.event.EasyListener;
 public class EasyLifecycle {
 
 	private final Set<EasyListener> listeners = new HashSet<>();
-	
+	private final Set<BukkitTask> tasks = new HashSet<>();
+
 	/**
 	 * Registers the given listener. It will be unregistered on {@link #shutdown()}.
 	 * 
@@ -24,10 +27,20 @@ public class EasyLifecycle {
 	}
 
 	/**
+	 * Attaches the given task. It will be cancelled on {@link #shutdown()}.
+	 * 
+	 * @param task The task to attach.
+	 */
+	protected void attach(BukkitTask task) {
+		this.tasks.add(task);
+	}
+
+	/**
 	 * End this lifecycle, such as unregistering all listeners.
 	 */
 	public void shutdown() {
 		listeners.forEach(EasyListener::unregister);
+		tasks.forEach(BukkitTask::cancel);
 	}
 	
 }

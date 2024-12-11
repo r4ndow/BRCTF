@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nullable;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -26,41 +28,40 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class KitManager {
 
-    private Map<Player, KitType<?>> selected = new ConcurrentHashMap<>();
+    private final Plugin plugin;
+    private Map<Player, KitDefinition> selected = new ConcurrentHashMap<>();
     private Map<Player, Kit> active = new ConcurrentHashMap<>();
     
-    public List<KitType<?>> getKitTypes() {
+    public List<KitDefinition> getKitDefinitions() {
         return Collections.emptyList();
     }
 
-    public KitType<?> getKitType(Class<? extends Kit> clazz) {
-        return getKitTypes().stream().filter(k -> k.getKitType().equals(clazz)).findFirst().orElse(null);
+    public KitDefinition getKitDefinition(String name) {
+        return getKitDefinitions().stream().filter(k -> k.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
-    public boolean setSelected(Player player, Class<? extends Kit> type, boolean force) {
-        KitType<?> kitType = getKitType(type);
-
+    public boolean setSelected(Player player, KitDefinition definition, boolean force) {
         // Allow the kit selection event to be rejected to enforce limits and resitrctions.
-        if (!new KitAttemptSelectEvent(player, kitType).call() || force) {
-            selected.put(player, kitType);
-            new KitSelectedEvent(player, kitType).call();
+        if (!new KitAttemptSelectEvent(player, definition).call() || force) {
+            selected.put(player, definition);
+            new KitSelectedEvent(player, definition).call();
             return true;
         }
 
         return false;
     }
 
-    public boolean isSelected(Player player, KitType<?> type) {
-        return selected.containsKey(player) && selected.get(player).getClass().equals(type.getClass());
+    public boolean isSelected(Player player, KitDefinition definition) {
+        return selected.containsKey(player) && selected.get(player).equals(definition);
     }
 
     @Nullable
-    public KitType<?> getSelected(Player player) {
+    public KitDefinition getSelected(Player player) {
         return selected.get(player);
     }
 
     public boolean createSelected(Player player) {
-        KitType<?> selected = getSelected(player);
+        KitDefinition selected = getSelected(player);
         if (selected == null) {
             return false;
         }
@@ -72,7 +73,7 @@ public class KitManager {
             active.get(player).shutdown();
         }
 
-        Kit created = selected.create(player);
+        Kit created = selected.create(plugin, player);
         active.put(player, created);
         return true;
     }
@@ -80,10 +81,6 @@ public class KitManager {
     @Nullable
     public Kit get(Player player) {
         return active.get(player);
-    }
-
-    public boolean isPlaying(Player player, Class<Kit> type) {
-        return active.containsKey(player) && active.get(player).getClass().equals(type);
     }
 
 }
