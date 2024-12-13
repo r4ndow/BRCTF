@@ -15,11 +15,11 @@ public abstract class BattleGameStateHandler extends EasyLifecycle implements Ea
 	protected final BattlePlugin plugin;
 	protected final BattleGame game;
 	
-	public void enter() {
+	public void enterState() {
 		attach(this);
 	}
 	
-	public void leave() {
+	public void leaveState() {
 		shutdown();
 	}
 

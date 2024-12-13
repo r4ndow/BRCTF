@@ -43,8 +43,6 @@ public class BattleGame extends EasyLifecycle {
 
 	@Nullable
 	private BattleGameState state = null;
-
-	private BattlePermanentGameListener permanentGameListener;
 	private BattleGameStateHandler stateHandler;
 
 	public void setup() {
@@ -85,14 +83,14 @@ public class BattleGame extends EasyLifecycle {
 			case BEFORE, AFTER -> new BattleOutsideGameStateHandler(plugin, this);
 			case DURING -> new BattleDuringGameStateHandler(plugin, this);
 		};
-		this.stateHandler.enter();
+		this.stateHandler.enterState();
 
 		fireParticipateEvents();
 	}
 
 	private void leaveState(BattleGameState state) {
 		if (this.stateHandler != null) {
-			this.stateHandler.leave();
+			this.stateHandler.leaveState();
 		}
 		this.stateHandler = null;
 	}

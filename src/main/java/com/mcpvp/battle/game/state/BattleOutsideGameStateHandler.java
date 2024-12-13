@@ -21,8 +21,10 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
 	}
 
 	@Override
-	public void enter() {
-		super.enter();
+	public void enterState() {
+		super.enterState();
+
+		plugin.getBattle().getMatch().getTimer().setSeconds(15);
 
 		setupFlags();
 	}

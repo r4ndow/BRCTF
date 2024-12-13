@@ -27,8 +27,8 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 	}
 	
 	@Override
-	public void enter() {
-		super.enter();
+	public void enterState() {
+		super.enterState();
 		
 		attach(new FlagStealMonitor(plugin, game.getBattle(), game));
 		attach(new FlagDropMonitor(plugin, game.getBattle(), game));
@@ -37,10 +37,12 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 		game.getBattle().getTeamManager().getTeams().forEach(bt -> {
 			bt.getFlag().setLocked(false);
 		});
+
+		game.getBattle().getMatch().getTimer().setSeconds(game.getConfig().getTime() * 60);
 	}
 
 	@Override
-	public void leave() {
+	public void leaveState() {
 		Bukkit.broadcastMessage("Game over!");
 	}
 	

@@ -27,6 +27,7 @@ public class KitCommand extends BattleCommand {
                 player.sendMessage("Selected " + kit.getName());
                 return true;
             } else {
+                player.sendMessage("Not allowed :(");
                 return false;
             }
         }
