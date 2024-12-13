@@ -4,6 +4,7 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
+import com.mcpvp.battle.flag.IBattleFlag;
 import com.mcpvp.battle.game.listener.BattlePermanentGameListener;
 import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
 import com.mcpvp.battle.game.state.BattleGameStateHandler;
@@ -46,11 +47,15 @@ public class BattleGame extends EasyLifecycle {
 	private BattleGameStateHandler stateHandler;
 
 	public void setup() {
-		setState(BattleGameState.BEFORE);
+		log.info("Setup game on map " + map);
+
+		// Make sure the listener is registered before transitioning states
 		attach(new BattlePermanentGameListener(plugin, this));
 
 		world.setGameRuleValue("doDaylightCycle", "false");
 		world.setGameRuleValue("naturalGeneration", "false");
+
+		setState(BattleGameState.BEFORE);
 	}
 
 	public void stop() {
@@ -136,7 +141,7 @@ public class BattleGame extends EasyLifecycle {
 	}
 
 	public boolean isParticipant(Player player) {
-		return player.getGameMode() == GameMode.SURVIVAL && player.getLocation().getWorld() == world;
+		return player.getGameMode() == GameMode.SURVIVAL;
 	}
 
 	public Collection<? extends Player> getParticipants() {

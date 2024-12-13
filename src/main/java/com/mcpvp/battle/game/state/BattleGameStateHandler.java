@@ -7,7 +7,9 @@ import com.mcpvp.common.event.EasyListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Getter
 @AllArgsConstructor
 public abstract class BattleGameStateHandler extends EasyLifecycle implements EasyListener {
@@ -17,10 +19,12 @@ public abstract class BattleGameStateHandler extends EasyLifecycle implements Ea
 	
 	public void enterState() {
 		attach(this);
+		log.info("Entering state " + this);
 	}
 	
 	public void leaveState() {
 		shutdown();
+		log.info("Leaving state " + this);
 	}
 
 }

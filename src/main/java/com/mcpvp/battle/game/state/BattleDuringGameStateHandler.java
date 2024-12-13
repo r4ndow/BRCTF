@@ -43,6 +43,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
 	@Override
 	public void leaveState() {
+		super.leaveState();
 		Bukkit.broadcastMessage("Game over!");
 	}
 	

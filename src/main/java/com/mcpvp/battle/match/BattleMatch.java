@@ -4,8 +4,6 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.game.BattleGame;
-import com.mcpvp.battle.game.BattleGameState;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
