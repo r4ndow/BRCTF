@@ -21,14 +21,14 @@ import java.util.Objects;
 
 public class WoolFlag extends AbstractFlag {
 
-	private final BattleGame game;
+	private final Location spawn;
 	private final List<Item> visuals = new ArrayList<>();
 	private Item home;
 	private Item dropped;
 
-	public WoolFlag(BattleGame game, BattleTeam team) {
+	public WoolFlag(BattleTeam team, Location spawn) {
 		super(team);
-		this.game = game;
+		this.spawn = spawn;
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class WoolFlag extends AbstractFlag {
 		if (home != null) {
 			home.setItemStack(getItem());
 		} else {
-			home = BattleUtil.spawnWool(getTeamConfig().getFlag(), getItem());
+			home = BattleUtil.spawnWool(getHome(), getItem());
 		}
 	}
 
@@ -79,7 +79,7 @@ public class WoolFlag extends AbstractFlag {
 		if (home != null) {
 			home.setItemStack(BattleUtil.getColoredWool(DyeColor.WHITE));
 		} else {
-			home = BattleUtil.spawnWool(getTeamConfig().getFlag(), ItemBuilder.of(getItem()).color(Color.WHITE).build());
+			home = BattleUtil.spawnWool(getHome(), ItemBuilder.of(getItem()).color(Color.WHITE).build());
 		}
 	}
 
@@ -90,12 +90,12 @@ public class WoolFlag extends AbstractFlag {
 		} else if (dropped != null) {
 			return dropped.getLocation().clone().add(0, 1.8, 0);
 		}
-		return getTeamConfig().getFlag();
+		return getHome();
 	}
 
 	@Override
 	public Location getHome() {
-		return getTeamConfig().getFlag();
+		return spawn;
 	}
 
 	@Override
@@ -162,10 +162,6 @@ public class WoolFlag extends AbstractFlag {
 			}
 			return false;
 		});
-	}
-	
-	private BattleTeamConfig getTeamConfig() {
-		return game.getConfig().getTeamConfig(getTeam());
 	}
 	
 }

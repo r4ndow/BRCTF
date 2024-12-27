@@ -49,7 +49,6 @@ public class BattleGame extends EasyLifecycle {
 	public void setup() {
 		log.info("Setup game on map " + map);
 
-		// Make sure the listener is registered before transitioning states
 		attach(new BattlePermanentGameListener(plugin, this));
 
 		world.setGameRuleValue("doDaylightCycle", "false");

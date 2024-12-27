@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 @RequiredArgsConstructor
 public class BattleTeamManager {
 
+	private final Random random = new Random();
 	@Getter
 	private final List<BattleTeam> teams = new ArrayList<>();
 	private BattleTeam red;
@@ -24,7 +25,7 @@ public class BattleTeamManager {
 
 	public void createDefaultTeams() {
 		// The IDs are very important! They are used for map parsing
-		// eg a sign `{{flag 1}}` specifies the blue flag
+		// eg a sign `{{flag 1}}` specifies the red flag
 		this.red = new BattleTeam(1, "Red", Colors.RED);
 		this.blue = new BattleTeam(2, "Blue", Colors.BLUE);
 		this.teams.add(red);
@@ -54,12 +55,12 @@ public class BattleTeamManager {
 	public BattleTeam selectAutoTeam() {
 		if (getTeams().stream().map(t -> t.getPlayers().size()).distinct().count() == 1) {
 			// All teams have the same size
-			return getTeams().get(new Random().nextInt(getTeams().size()));
+			return getTeams().get(random.nextInt(getTeams().size()));
 		} else {
 			// Find the team with the fewest players
 			return getTeams().stream()
 				.min(Comparator.comparingInt(t -> t.getPlayers().size()))
-				.orElse(getTeams().get(new Random().nextInt(getTeams().size())));
+				.orElse(getTeams().get(random.nextInt(getTeams().size())));
 		}
 	}
 	

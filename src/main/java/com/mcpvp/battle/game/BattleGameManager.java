@@ -7,7 +7,6 @@ import com.mcpvp.battle.flag.WoolFlag;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.map.BattleWorldCreator;
 import com.mcpvp.battle.map.parser.BattleMapLoader;
-import com.mcpvp.battle.match.BattleMatchTimer;
 import com.mcpvp.battle.team.BattleTeam;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,14 +29,14 @@ public class BattleGameManager {
 			// Parse the config. Teams must already exist at this point
 			BattleGameConfig config = parser.parse(map, world, battle.getTeamManager());
 			log.info("Parsed config: " + config);
-			
+
 			// Create game instance. Just creating this doesn't do anything
 			BattleGame game = new BattleGame(battle.getPlugin(), battle, map, world, config);
 			
 			// Kind of weird, but we need to go back after and set up the flags
 			// The flag needs a reference to the game, which doesn't exist when the map is parsed
 			config.getTeams().forEach(bt -> {
-				bt.setFlag(getFlag(game, bt));
+				bt.setFlag(getFlag(config, bt));
 			});
 			
 			return game;
@@ -46,8 +45,8 @@ public class BattleGameManager {
 		}
 	}
 	
-	private IBattleFlag getFlag(BattleGame game, BattleTeam team) {
-		return new WoolFlag(game, team);
+	private IBattleFlag getFlag(BattleGameConfig config, BattleTeam team) {
+		return new WoolFlag(team, config.getTeamConfig(team).getFlag());
 	}
 	
 }
