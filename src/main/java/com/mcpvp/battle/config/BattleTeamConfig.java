@@ -1,6 +1,7 @@
 package com.mcpvp.battle.config;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import org.bukkit.Location;
 
 import lombok.Data;
@@ -9,9 +10,10 @@ import lombok.Data;
  * Configuration for a single team within one game.
  */
 @Data
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class BattleTeamConfig {
  
+    private final int id;
     private Location spawn;
     private Location flag;
 

@@ -27,26 +27,16 @@ public class BattleGameManager {
 			// Extract map and create a world from it
 			World world = BattleWorldCreator.create(map, new File(battle.getOptions().getMaps().getDir()), index);
 			// Parse the config. Teams must already exist at this point
-			BattleGameConfig config = parser.parse(map, world, battle.getTeamManager());
+			BattleGameConfig config = parser.parse(map, world);
 			log.info("Parsed config: " + config);
 
 			// Create game instance. Just creating this doesn't do anything
 			BattleGame game = new BattleGame(battle.getPlugin(), battle, map, world, config);
 			
-			// Kind of weird, but we need to go back after and set up the flags
-			// The flag needs a reference to the game, which doesn't exist when the map is parsed
-			config.getTeams().forEach(bt -> {
-				bt.setFlag(getFlag(config, bt));
-			});
-			
 			return game;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-	
-	private IBattleFlag getFlag(BattleGameConfig config, BattleTeam team) {
-		return new WoolFlag(team, config.getTeamConfig(team).getFlag());
 	}
 	
 }

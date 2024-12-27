@@ -2,6 +2,7 @@ package com.mcpvp.battle.team;
 
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.event.PlayerLeaveTeamEvent;
+import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.util.Colors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,8 @@ import javax.annotation.Nullable;
 @RequiredArgsConstructor
 public class BattleTeamManager {
 
-	private final Random random = new Random();
+	private static final Random RANDOM = new Random();
+
 	@Getter
 	private final List<BattleTeam> teams = new ArrayList<>();
 	private BattleTeam red;
@@ -55,12 +57,12 @@ public class BattleTeamManager {
 	public BattleTeam selectAutoTeam() {
 		if (getTeams().stream().map(t -> t.getPlayers().size()).distinct().count() == 1) {
 			// All teams have the same size
-			return getTeams().get(random.nextInt(getTeams().size()));
+			return getTeams().get(RANDOM.nextInt(getTeams().size()));
 		} else {
 			// Find the team with the fewest players
 			return getTeams().stream()
 				.min(Comparator.comparingInt(t -> t.getPlayers().size()))
-				.orElse(getTeams().get(random.nextInt(getTeams().size())));
+				.orElse(getTeams().get(RANDOM.nextInt(getTeams().size())));
 		}
 	}
 	

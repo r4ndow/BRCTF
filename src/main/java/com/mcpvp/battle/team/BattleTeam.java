@@ -1,10 +1,10 @@
 package com.mcpvp.battle.team;
 
 import com.mcpvp.battle.flag.IBattleFlag;
+import com.mcpvp.battle.flag.WoolFlag;
 import com.mcpvp.battle.util.Colors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.bukkit.entity.Player;
 
@@ -16,17 +16,17 @@ import java.util.Set;
 @ToString(of={"id", "name"})
 public class BattleTeam {
 	
-	private final Set<Player> players = new HashSet<>();
 	private final int id;
+	private final Set<Player> players = new HashSet<>();
 	private String name;
 	private Colors color;
-	@Setter
 	private IBattleFlag flag;
 	
 	public BattleTeam(int id, String name, Colors color) {
 		this.id = id;
 		this.name = name;
 		this.color = color;
+		this.flag = new WoolFlag(this, null);
 	}
 	
 	void add(Player player) {

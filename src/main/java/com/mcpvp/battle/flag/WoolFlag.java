@@ -1,7 +1,5 @@
 package com.mcpvp.battle.flag;
 
-import com.mcpvp.battle.config.BattleTeamConfig;
-import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.util.BattleUtil;
 import com.mcpvp.common.item.ItemBuilder;

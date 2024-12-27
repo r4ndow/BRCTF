@@ -10,8 +10,6 @@ import java.util.stream.Stream;
 
 import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleTeamConfig;
-import com.mcpvp.battle.team.BattleTeam;
-import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.battle.util.LookUtil;
 import lombok.Data;
 import org.bukkit.Bukkit;
@@ -91,10 +89,9 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
     }
     
     @Override
-    public BattleGameConfig parse(BattleMapData map, World world, BattleTeamManager teamManager) {
+    public BattleGameConfig parse(BattleMapData map, World world) {
         BattleGameConfig builder = new BattleGameConfig();
         log.info("Parsing map " + map);
-        
         
         // Step 1: find center of the map
         // By default, we assume it's getSpawnLocation
@@ -123,23 +120,23 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
             signs = this.getAllMapSigns(chunks);
         }
         
-        loadSignsIntoConfig(builder, teamManager, signs);
+        loadSignsIntoConfig(builder, signs);
 
         return builder;
     }
     
     private void loadSignsIntoConfig(
-        BattleGameConfig builder, BattleTeamManager teamManager, List<MapSign> signs
+        BattleGameConfig builder, List<MapSign> signs
     ) {
         for (MapSign sign : signs) {
             if (sign instanceof TeamMapSign teamSign) {
-                loadTeamSign(builder, teamManager, teamSign);
+                loadTeamSign(builder, teamSign);
             } else if (sign instanceof ValueMapSign valueSign) {
                 loadValueSign(builder, valueSign);
             } else if (sign instanceof SimpleMapSign simpleSign) {
                 loadSimpleSign(builder, simpleSign);
             } else if (sign instanceof CalloutSign calloutSign) {
-                loadCalloutSign(builder, teamManager, calloutSign);
+                loadCalloutSign(builder, calloutSign);
             }
         }
     }
@@ -159,9 +156,8 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         }
     }
 
-    private void loadTeamSign(BattleGameConfig builder, BattleTeamManager teamManager, TeamMapSign sign) {
-        BattleTeam team = teamManager.getTeams().stream().filter(bt -> bt.getId() == sign.getTeam()).findAny().orElseThrow();
-        BattleTeamConfig teamConfig = builder.getTeamConfig(team);
+    private void loadTeamSign(BattleGameConfig builder, TeamMapSign sign) {
+        BattleTeamConfig teamConfig = builder.getTeamConfig(sign.getTeam());
         Location loc = sign.getBlock().getLocation();
 		
 		switch (sign.getText()) {
@@ -171,12 +167,12 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         }
     }
     
-    private void loadCalloutSign(BattleGameConfig builder, BattleTeamManager teamManager, CalloutSign sign) {
+    private void loadCalloutSign(BattleGameConfig builder, CalloutSign sign) {
         if (sign.getTeam() == null) {
             builder.getCallouts().add(new BattleCallout(sign.getBlock().getLocation(), null, sign.getText()));
         } else {
-            BattleTeam team = teamManager.getTeams().stream().filter(bt -> bt.getId() == sign.getTeam()).findAny().orElseThrow();
-            builder.getCallouts().add(new BattleCallout(sign.getBlock().getLocation(), team, sign.getText()));
+            BattleTeamConfig config = builder.getTeamConfig(sign.getTeam());
+            builder.getCallouts().add(new BattleCallout(sign.getBlock().getLocation(), config, sign.getText()));
         }
     }
 
