@@ -54,7 +54,7 @@ public class BattleScoreboardListener implements EasyListener {
 		}
 
 		scores.add(state.name() + " " + battle.getMatch().getTimer().getSeconds() + "s");
-		battle.getTeamManager().getTeams().forEach(bt -> {
+		scoreboardManager.getTeamManager().getTeams().forEach(bt -> {
 			scores.add(bt.getName());
 			if (bt.getFlag().isHome()) {
 				scores.add(bt.getColor().CHAT_STRING + "- flag home");

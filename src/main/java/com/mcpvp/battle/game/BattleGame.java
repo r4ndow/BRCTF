@@ -4,13 +4,14 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
-import com.mcpvp.battle.flag.IBattleFlag;
 import com.mcpvp.battle.game.listener.BattlePermanentGameListener;
 import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
 import com.mcpvp.battle.game.state.BattleGameStateHandler;
 import com.mcpvp.battle.game.state.BattleOutsideGameStateHandler;
 import com.mcpvp.battle.map.BattleMapData;
+import com.mcpvp.battle.scoreboard.BattleScoreboardManager;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
 
@@ -40,6 +41,8 @@ public class BattleGame extends EasyLifecycle {
 	private final BattleMapData map;
 	private final World world;
 	private final BattleGameConfig config;
+	private final BattleTeamManager teamManager;
+	private final BattleScoreboardManager scoreboardManager;
 	private final Map<BattleTeam, BattleGameTeamData> teamData = new HashMap<>();
 
 	@Nullable
@@ -50,6 +53,7 @@ public class BattleGame extends EasyLifecycle {
 		log.info("Setup game on map " + map);
 
 		attach(new BattlePermanentGameListener(plugin, this));
+		attach(scoreboardManager);
 
 		world.setGameRuleValue("doDaylightCycle", "false");
 		world.setGameRuleValue("naturalGeneration", "false");
@@ -114,7 +118,7 @@ public class BattleGame extends EasyLifecycle {
 		player.getInventory().setArmorContents(new ItemStack[4]);
 
 		// Teleport to spawn
-		BattleTeam team = getBattle().getTeamManager().getTeam(player);
+		BattleTeam team = getTeamManager().getTeam(player);
 		Location spawn = getConfig().getTeamConfig(team).getSpawn();
 		player.teleport(spawn);
 
@@ -130,7 +134,7 @@ public class BattleGame extends EasyLifecycle {
 		}
 
 		// Remove player from team
-		battle.getTeamManager().setTeam(player, null);
+		getTeamManager().setTeam(player, null);
 	}
 
 	private void fireParticipateEvents() {

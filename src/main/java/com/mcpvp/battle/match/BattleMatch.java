@@ -4,12 +4,18 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.game.BattleGame;
+import com.mcpvp.battle.team.BattleTeam;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
 public class BattleMatch {
@@ -40,6 +46,9 @@ public class BattleMatch {
 		BattleGame current = getCurrentGame();
 		current.stop();
 
+		// Preserve team IDs
+		Map<BattleTeam, Set<Player>> playerMap = current.getTeamManager().getPlayerMap();
+
 		// Start the next game
 		if (currentGameIndex + 1 == games.size()) {
 			Bukkit.broadcastMessage("All done!");
@@ -47,6 +56,14 @@ public class BattleMatch {
 		} else {
 			BattleGame next = games.get(++currentGameIndex);
 			next.setup();
+
+			// Move everyone to their proper teams
+			playerMap.forEach((oldTeam, players) -> {
+				BattleTeam nextTeam = next.getTeamManager().getTeam(oldTeam.getId());
+				players.forEach(player -> {
+					next.getTeamManager().setTeam(player, nextTeam);
+				});
+			});
 		}
 	}
 

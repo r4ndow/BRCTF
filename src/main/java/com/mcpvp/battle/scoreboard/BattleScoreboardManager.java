@@ -4,6 +4,9 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
+import com.mcpvp.common.EasyLifecycle;
+
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,15 +17,16 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.List;
 
+@Getter
 @RequiredArgsConstructor
-public class BattleScoreboardManager {
+public class BattleScoreboardManager extends EasyLifecycle {
 	
 	private final BattlePlugin plugin;
 	private final Battle battle;
 	private final BattleTeamManager teamManager;
 	
 	public void init() {
-		new BattleScoreboardListener(plugin, battle, this).register();
+		attach(new BattleScoreboardListener(plugin, battle, this));
 	}
 	
 	public Scoreboard create() {

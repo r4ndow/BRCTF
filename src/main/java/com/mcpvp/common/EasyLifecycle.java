@@ -15,6 +15,7 @@ public class EasyLifecycle {
 
 	private final Set<EasyListener> listeners = new HashSet<>();
 	private final Set<BukkitTask> tasks = new HashSet<>();
+	private final Set<EasyLifecycle> lifecycles = new HashSet<>();
 
 	/**
 	 * Registers the given listener. It will be unregistered on {@link #shutdown()}.
@@ -36,11 +37,21 @@ public class EasyLifecycle {
 	}
 
 	/**
+	 * Attaches the given lifecycle. It will be shutdown on {@link #shutdown()}.
+	 * 
+	 * @param task The task to attach.
+	 */
+	protected void attach(EasyLifecycle lifecycle) {
+		this.lifecycles.add(lifecycle);
+	}
+
+	/**
 	 * End this lifecycle, such as unregistering all listeners.
 	 */
 	public void shutdown() {
 		listeners.forEach(EasyListener::unregister);
 		tasks.forEach(BukkitTask::cancel);
+		lifecycles.forEach(EasyLifecycle::shutdown);
 	}
 	
 }

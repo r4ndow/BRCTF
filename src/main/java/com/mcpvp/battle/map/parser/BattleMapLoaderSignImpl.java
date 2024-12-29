@@ -102,7 +102,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         // If changed: reload new chunks, process
         // Otherwise: keep old chunk list, process
         Location assumedCenter = world.getSpawnLocation();
-        List<ChunkSnapshot> chunks = getChunkSnapshotsAround(assumedCenter, 12);
+        List<ChunkSnapshot> chunks = getChunkSnapshotsAround(assumedCenter, 16);
         chunks.forEach(cs -> this.highlightChunk(cs, world));
         List<MapSign> signs = this.getAllMapSigns(chunks);
         Optional<MapSign> spawnBox = signs

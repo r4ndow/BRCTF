@@ -2,12 +2,12 @@ package com.mcpvp.battle.game;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.config.BattleGameConfig;
-import com.mcpvp.battle.flag.IBattleFlag;
-import com.mcpvp.battle.flag.WoolFlag;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.map.BattleWorldCreator;
 import com.mcpvp.battle.map.parser.BattleMapLoader;
-import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.battle.scoreboard.BattleScoreboardManager;
+import com.mcpvp.battle.team.BattleTeamManager;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.World;
@@ -30,8 +30,15 @@ public class BattleGameManager {
 			BattleGameConfig config = parser.parse(map, world);
 			log.info("Parsed config: " + config);
 
+			// Create default teams. This could be created from the parsed config.
+			BattleTeamManager teamManager = new BattleTeamManager();
+			teamManager.createDefaultTeams();
+
+			// Create scoreboard manager with the teams
+			BattleScoreboardManager scoreboardManager = new BattleScoreboardManager(battle.getPlugin(), battle, teamManager);
+
 			// Create game instance. Just creating this doesn't do anything
-			BattleGame game = new BattleGame(battle.getPlugin(), battle, map, world, config);
+			BattleGame game = new BattleGame(battle.getPlugin(), battle, map, world, config, teamManager, scoreboardManager);
 			
 			return game;
 		} catch (IOException e) {
