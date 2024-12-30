@@ -2,8 +2,6 @@ package com.mcpvp.battle.kit;
 
 import java.util.function.BiFunction;
 
-import javax.annotation.Nullable;
-
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -29,7 +27,7 @@ public enum BattleKitType implements KitDefinition {
     private final BiFunction<BattlePlugin, Player, Kit> creator;
 
     @Override
-    public Kit create(Plugin plugin, @Nullable Player player) {
+    public Kit create(Plugin plugin, Player player) {
         return creator.apply((BattlePlugin) plugin, player);
     }
     

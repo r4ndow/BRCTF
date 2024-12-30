@@ -17,25 +17,20 @@ import lombok.NonNull;
 
 /**
  * An instance of this class represents a "live" instance of a KitType. Every Kit corresponds
- * to one player, although the player might be null (supported for KitType). Instances are recreated
- * often. For example when a player dies, a new Kit will be created and re-initialized. This makes
- * state management significantly easier.
+ * to one player, and instances are recreated often. For example, when a player dies,
+ * a new Kit will be created and re-initialized. This makess tate management significantly easier.
  */
 public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener {
     
     @Getter
     protected final Plugin plugin;
     @Getter
-    @Nullable
     private final Player player;
 
-    public Kit(Plugin plugin, @Nullable Player player) {
+    public Kit(Plugin plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
-
-        if (player != null) {
-            setup(player);
-        }
+        setup(player);
     }
 
     /**
@@ -45,7 +40,7 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
      * @param player The player this Kit exists for.
      */
     protected void setup(@NonNull Player player) {
-        attach(this);
+        attach((EasyListener) this);
 
         player.getInventory().clear();
         player.getInventory().setArmorContents(getArmor());

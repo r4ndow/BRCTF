@@ -5,6 +5,7 @@ import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.kit.BattleKitType;
+import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.kit.KitDefinition;
 
@@ -71,6 +72,22 @@ public class BattlePermanentGameListener implements EasyListener {
 	// ==============
 	// EVENT HANDLING
 	// ==============
+
+	@EventHandler
+	public void selectAutoTeam(PlayerJoinEvent event) {
+		BattleTeam toJoin = game.getTeamManager().selectAutoTeam();
+		game.getTeamManager().setTeam(event.getPlayer(), toJoin);
+	}
+	
+	@EventHandler
+	public void onLeave(PlayerQuitEvent event) {
+		game.getTeamManager().setTeam(event.getPlayer(), null);
+	}
+	
+	@EventHandler
+	public void onKicked(PlayerKickEvent event) {
+		game.getTeamManager().setTeam(event.getPlayer(), null);
+	}
 
 	@EventHandler
 	public void selectDefaultKit(PlayerParticipateEvent event) {

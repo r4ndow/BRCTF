@@ -3,8 +3,6 @@ package com.mcpvp.battle.kit;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,7 +15,7 @@ import com.mcpvp.common.kit.Kit;
 
 public abstract class BattleKit extends Kit {
 
-    public BattleKit(BattlePlugin plugin, @Nullable Player player) {
+    public BattleKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
     }
 

@@ -4,6 +4,7 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.game.BattleGame;
+import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.team.BattleTeam;
 
 import lombok.Getter;
@@ -12,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -41,6 +40,9 @@ public class BattleMatch {
 		getCurrentGame().setup();
 	}
 
+	/**
+	 * Advances to the next game in the match.
+	 */
 	private void advanceGame() {
 		// Shut down the current game
 		BattleGame current = getCurrentGame();
@@ -67,6 +69,10 @@ public class BattleMatch {
 		}
 	}
 
+	/**
+	 * @return A task that runs every second to advanve the game timer, or proceed to the
+	 * next game in the match.
+	 */
 	private Runnable getTimerTask() {
 		return () -> {
 			if (timer.isPaused()) {
@@ -74,8 +80,13 @@ public class BattleMatch {
 			}
 
 			if (timer.getSeconds() == 0) {
-				if (getCurrentGame().getState().getNext() != null) {
-					getCurrentGame().setState(getCurrentGame().getState().getNext());
+				BattleGameState state = getCurrentGame().getState();
+				if (state == null) {
+					throw new IllegalStateException("Game state was null");
+				}
+
+				if (state.getNext() != null) {
+					getCurrentGame().setState(state.getNext());
 				} else {
 					// Advance to the next game
 					advanceGame();
