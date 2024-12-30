@@ -114,7 +114,7 @@ public class BattlePermanentGameListener implements EasyListener {
 
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent event) {
-		if (game.getBattle().getTeamManager().getTeams().stream().noneMatch(bt ->
+		if (game.getTeamManager().getTeams().stream().noneMatch(bt ->
 			bt.getFlag().isItem(event.getItemDrop().getItemStack())
 		)) {
 			event.setCancelled(true);

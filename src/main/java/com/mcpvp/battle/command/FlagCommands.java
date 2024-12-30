@@ -28,7 +28,7 @@ public class FlagCommands extends EasyCommandGroup {
 		
 		@Override
 		public boolean onCommand(CommandSender sender, String label, List<String> args) {
-			battle.getTeamManager().getTeams().stream().filter(bt -> bt.getName().toLowerCase().contains(args.get(0))).findAny().ifPresent(bt -> {
+			battle.getGame().getTeamManager().getTeams().stream().filter(bt -> bt.getName().toLowerCase().contains(args.get(0))).findAny().ifPresent(bt -> {
 				((Player) sender).teleport(bt.getFlag().getLocation());
 			});
 			return true;
@@ -36,7 +36,7 @@ public class FlagCommands extends EasyCommandGroup {
 		
 		@Override
 		public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
-			return CmdUtil.partialMatches(battle.getTeamManager().getTeams().stream()
+			return CmdUtil.partialMatches(battle.getGame().getTeamManager().getTeams().stream()
 				.filter(bt -> bt.getName().toLowerCase().contains(args.get(args.size() - 1)))
 				.map(bt -> bt.getName().toLowerCase())
 				.toList(),

@@ -1,12 +1,12 @@
 package com.mcpvp.battle.flag;
 
-import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.FlagDropEvent;
 import com.mcpvp.battle.event.FlagPickupEvent;
 import com.mcpvp.battle.event.FlagRecoverEvent;
 import com.mcpvp.battle.event.FlagStealEvent;
 import com.mcpvp.battle.event.FlagTakeEvent;
+import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
 
@@ -23,12 +23,12 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 public class FlagListener implements EasyListener {
 	
 	private final BattlePlugin plugin;
-	private final Battle battle;
+	private final BattleGame game;
 	
 	@EventHandler
 	public void onPickup(PlayerPickupItemEvent event) {
-		BattleTeam team = battle.getTeamManager().getTeam(event.getPlayer());
-		battle.getTeamManager().getTeams().forEach(bt -> {
+		BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
+		game.getTeamManager().getTeams().forEach(bt -> {
 			if (!bt.getFlag().isItem(event.getItem().getItemStack())) {
 				return;
 			}
@@ -53,7 +53,7 @@ public class FlagListener implements EasyListener {
 	
 	@EventHandler(ignoreCancelled = true)
 	public void onItemDrop(PlayerDropItemEvent event) {
-		battle.getTeamManager().getTeams().forEach(bt -> {
+		game.getTeamManager().getTeams().forEach(bt -> {
 			if (bt.getFlag().isItem(event.getItemDrop().getItemStack())) {
 				new FlagDropEvent(event.getPlayer(), bt.getFlag(), event.getItemDrop()).call();
 			}
@@ -69,7 +69,7 @@ public class FlagListener implements EasyListener {
 	
 	@EventHandler
 	public void onItemMerge(ItemMergeEvent event) {
-		battle.getTeamManager().getTeams().forEach(bt -> {
+		game.getTeamManager().getTeams().forEach(bt -> {
 			if (bt.getFlag().isItem(event.getEntity().getItemStack())) {
 				event.setCancelled(true);
 			}
@@ -78,7 +78,7 @@ public class FlagListener implements EasyListener {
 	
 	@EventHandler
 	public void onItemDespawn(ItemDespawnEvent event) {
-		battle.getTeamManager().getTeams().forEach(bt -> {
+		game.getTeamManager().getTeams().forEach(bt -> {
 			if (bt.getFlag().isItem(event.getEntity().getItemStack())) {
 				event.setCancelled(true);
 			}

@@ -33,7 +33,6 @@ public class BattleMatch {
 
 	public void start() {
 		new BattleMatchListener(plugin, battle).register();
-		new FlagListener(plugin, battle).register();
 
 		Bukkit.getScheduler().runTaskTimer(plugin, getTimerTask(), 0, 20);
 

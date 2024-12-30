@@ -31,6 +31,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mcpvp.battle.flag.FlagListener;
+
 @Log4j2
 @Getter
 @RequiredArgsConstructor
@@ -53,6 +55,7 @@ public class BattleGame extends EasyLifecycle {
 		log.info("Setup game on map " + map);
 
 		attach(new BattlePermanentGameListener(plugin, this));
+		attach(new FlagListener(plugin, this));
 		attach(scoreboardManager);
 
 		world.setGameRuleValue("doDaylightCycle", "false");

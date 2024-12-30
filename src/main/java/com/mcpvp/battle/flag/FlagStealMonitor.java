@@ -33,12 +33,12 @@ public class FlagStealMonitor implements EasyListener {
 	@EventHandler
 	public void onTick(TickEvent event) {
 		for (Player player : game.getParticipants()) {
-			BattleTeam team = battle.getTeamManager().getTeam(player);
+			BattleTeam team = game.getTeamManager().getTeam(player);
 			if (team == null) {
 				continue;
 			}
 			
-			for (BattleTeam bt : battle.getTeamManager().getTeams()) {
+			for (BattleTeam bt : game.getTeamManager().getTeams()) {
 				if (team == bt || !bt.getFlag().isHome()) {
 					continue;
 				}

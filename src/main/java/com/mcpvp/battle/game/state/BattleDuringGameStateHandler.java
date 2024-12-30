@@ -34,7 +34,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 		attach(new FlagDropMonitor(plugin, game.getBattle(), game));
 		attach(new FlagPickupMonitor(plugin, game.getBattle(), game));
 		
-		game.getBattle().getTeamManager().getTeams().forEach(bt -> {
+		game.getTeamManager().getTeams().forEach(bt -> {
 			bt.getFlag().setLocked(false);
 		});
 
@@ -82,7 +82,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 			return;
 		}
 		
-		BattleTeam team = game.getBattle().getTeamManager().getTeam(player);
+		BattleTeam team = game.getTeamManager().getTeam(player);
 		Block spawnBlock = game.getConfig().getTeamConfig(team).getSpawn().getBlock().getRelative(BlockFace.DOWN);
 		Block onBlock = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
 		

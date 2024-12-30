@@ -16,7 +16,7 @@ public class PlaceCommand extends BattleCommand {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, String label, List<String> args) {
-		battle.getTeamManager().getTeams().forEach(bt -> {
+		battle.getGame().getTeamManager().getTeams().forEach(bt -> {
 			bt.getFlag().reset();
 		});
 		return true;

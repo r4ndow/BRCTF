@@ -30,7 +30,7 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
 	}
 
 	private void setupFlags() {
-		game.getBattle().getTeamManager().getTeams().forEach(bt -> {
+		game.getTeamManager().getTeams().forEach(bt -> {
 			bt.getFlag().reset();
 			bt.getFlag().setLocked(true);
 		});

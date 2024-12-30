@@ -18,7 +18,7 @@ public abstract class BattleGameStateHandler extends EasyLifecycle implements Ea
 	protected final BattleGame game;
 	
 	public void enterState() {
-		attach(this);
+		attach((EasyListener) this);
 		log.info("Entering state " + this);
 	}
 	
