@@ -6,9 +6,11 @@ import com.mcpvp.battle.event.FlagPickupEvent;
 import com.mcpvp.battle.event.FlagRecoverEvent;
 import com.mcpvp.battle.event.FlagStealEvent;
 import com.mcpvp.battle.event.FlagTakeEvent;
+import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.event.TickEvent;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +26,16 @@ public class FlagListener implements EasyListener {
 	
 	private final BattlePlugin plugin;
 	private final BattleGame game;
+
+	@EventHandler
+	public void onTick(TickEvent event) {
+		game.getTeamManager().getTeams().forEach(bt -> {
+			IBattleFlag flag = bt.getFlag();
+			if (flag.isDropped() && flag.getRestoreExpiration().isExpired()) {
+				flag.reset();
+			}
+		});
+	}
 	
 	@EventHandler
 	public void onPickup(PlayerPickupItemEvent event) {
@@ -82,6 +94,15 @@ public class FlagListener implements EasyListener {
 		game.getTeamManager().getTeams().forEach(bt -> {
 			if (bt.getFlag().isItem(event.getEntity().getItemStack())) {
 				event.setCancelled(true);
+			}
+		});
+	}
+
+	@EventHandler
+	public void onResign(PlayerResignEvent event) {
+		game.getTeamManager().getTeams().forEach(bt -> {
+			if (bt.getFlag().getCarrier() == event.getPlayer()) {
+				new FlagDropEvent(event.getPlayer(), bt.getFlag(), null).call();
 			}
 		});
 	}

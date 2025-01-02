@@ -124,6 +124,11 @@ public interface IBattleFlag {
 	Expiration getPickupExpiration();
 	
 	/**
+	 * @return An expiration that represents when a flag should be automatically restored.
+	 */
+	Expiration getRestoreExpiration();
+
+	/**
 	 * Called every tick to perform updates.
 	 *
 	 * @param tick The tick number.

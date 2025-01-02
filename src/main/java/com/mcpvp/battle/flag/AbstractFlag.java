@@ -25,6 +25,7 @@ public abstract class AbstractFlag implements IBattleFlag {
 	private final BattleTeam team;
 	private Player carrier;
 	private Expiration pickupExpiration = new Expiration();
+	private Expiration restoreExpiration = new Expiration();
 	private boolean locked;
 	private long droppedAt = 0;
 	private long stolenAt = 0;
@@ -55,6 +56,7 @@ public abstract class AbstractFlag implements IBattleFlag {
 	public void drop(Location location, Item item) {
 		droppedAt = System.currentTimeMillis();
 		pickupExpiration.expireIn(Duration.milliseconds(1000));
+		restoreExpiration.expireIn(Duration.seconds(15));
 		
 		setCarrier(null);
 	}
