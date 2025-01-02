@@ -3,6 +3,7 @@ package com.mcpvp.battle.game;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.config.BattleGameConfig;
+import com.mcpvp.battle.event.FlagDropEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.game.listener.BattlePermanentGameListener;
 import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
@@ -114,6 +115,14 @@ public class BattleGame extends EasyLifecycle {
 	 * @param player The player to respawn.
 	 */
 	public void respawn(Player player) {
+		// Drop the flag if they have it
+		teamManager.getTeams().forEach(bt -> {
+			if (bt.getFlag().getCarrier() == player) {
+				System.out.println("drop flag of team " + bt);
+				new FlagDropEvent(player, bt.getFlag(), null).call();
+			}
+		});
+
 		// Reset negative statues
 		player.setHealth(player.getMaxHealth());
 		player.setFireTicks(0);

@@ -45,6 +45,7 @@ public class FlagListener implements EasyListener {
 				}
 			} else if (!bt.getFlag().isHome()) {
 				new FlagRecoverEvent(event.getPlayer(), bt.getFlag()).call();
+				event.setCancelled(true);
 			} else {
 				event.setCancelled(true);
 			}

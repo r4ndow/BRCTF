@@ -5,6 +5,7 @@ import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.flag.FlagDropMonitor;
 import com.mcpvp.battle.flag.FlagPickupMonitor;
+import com.mcpvp.battle.flag.FlagRecoverMonitor;
 import com.mcpvp.battle.flag.FlagStealMonitor;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
@@ -33,6 +34,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 		attach(new FlagStealMonitor(plugin, game.getBattle(), game));
 		attach(new FlagDropMonitor(plugin, game.getBattle(), game));
 		attach(new FlagPickupMonitor(plugin, game.getBattle(), game));
+		attach(new FlagRecoverMonitor(plugin, game.getBattle(), game));
 		
 		game.getTeamManager().getTeams().forEach(bt -> {
 			bt.getFlag().setLocked(false);
