@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.mcpvp.battle.config.BattleTeamConfig;
+
 /**
  * Manages a set of unique teams. This should be used per-game since teams are per-game.
  */
@@ -30,11 +32,15 @@ public class BattleTeamManager {
 	private BattleTeam red;
 	private BattleTeam blue;
 
-	public void createDefaultTeams() {
+	public void createDefaultTeams(Set<BattleTeamConfig> configs) {
 		// The IDs are very important! They are used for map parsing
 		// eg a sign `{{flag 1}}` specifies the red flag
-		this.red = new BattleTeam(1, "Red", Colors.RED);
-		this.blue = new BattleTeam(2, "Blue", Colors.BLUE);
+		Map<Integer, BattleTeamConfig> configById = configs.stream().collect(
+			Collectors.toMap(e -> e.getId(), e -> e)
+		);
+
+		this.red = new BattleTeam(1, "Red", Colors.RED, configById.get(1));
+		this.blue = new BattleTeam(2, "Blue", Colors.BLUE, configById.get(2));
 		this.teams.add(red);
 		this.teams.add(blue);
 	}
@@ -78,7 +84,7 @@ public class BattleTeamManager {
 	}
 	
 	public BattleTeam getNext(BattleTeam team) {
-		return teams.get(teams.size() % teams.indexOf(team) + 1);
+		return teams.get((teams.indexOf(team) + 1) % teams.size());
 	}
 
 	public Map<BattleTeam, Set<Player>> getPlayerMap() {

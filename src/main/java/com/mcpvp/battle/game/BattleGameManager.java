@@ -32,14 +32,14 @@ public class BattleGameManager {
 
 			// Create default teams. This could be created from the parsed config.
 			BattleTeamManager teamManager = new BattleTeamManager();
-			teamManager.createDefaultTeams();
+			teamManager.createDefaultTeams(config.getTeamConfigs());
 
 			// Create scoreboard manager with the teams
-			BattleScoreboardManager scoreboardManager = new BattleScoreboardManager(battle.getPlugin(), battle, teamManager);
+			BattleScoreboardManager scoreboardManager = new BattleScoreboardManager(battle.getPlugin(), battle);
 
 			// Create game instance. Just creating this doesn't do anything
 			BattleGame game = new BattleGame(battle.getPlugin(), battle, map, world, config, teamManager, scoreboardManager);
-			
+		
 			return game;
 		} catch (IOException e) {
 			throw new RuntimeException(e);

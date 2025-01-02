@@ -68,6 +68,20 @@ public class BattleMatch {
 		}
 	}
 
+	public void advanceStateOrGame() {
+		BattleGameState state = getCurrentGame().getState();
+		if (state == null) {
+			throw new IllegalStateException("Game state was null");
+		}
+
+		if (state.getNext() != null) {
+			getCurrentGame().setState(state.getNext());
+		} else {
+			// Advance to the next game
+			advanceGame();
+		}
+	}
+
 	/**
 	 * @return A task that runs every second to advanve the game timer, or proceed to the
 	 * next game in the match.
@@ -79,17 +93,7 @@ public class BattleMatch {
 			}
 
 			if (timer.getSeconds() == 0) {
-				BattleGameState state = getCurrentGame().getState();
-				if (state == null) {
-					throw new IllegalStateException("Game state was null");
-				}
-
-				if (state.getNext() != null) {
-					getCurrentGame().setState(state.getNext());
-				} else {
-					// Advance to the next game
-					advanceGame();
-				}
+				advanceStateOrGame();
 			} else {
 				timer.setSeconds(timer.getSeconds() - 1);
 			}

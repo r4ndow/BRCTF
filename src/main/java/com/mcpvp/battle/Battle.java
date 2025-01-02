@@ -46,7 +46,7 @@ public class Battle {
 	}
 	
 	public void start() {
-		this.scoreboardManager.init();
+		// this.scoreboardManager.init();
 		this.projectileManager.register();
 		
 		this.match = this.matchManager.create();

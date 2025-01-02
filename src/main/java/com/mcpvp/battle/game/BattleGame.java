@@ -58,6 +58,8 @@ public class BattleGame extends EasyLifecycle {
 		attach(new FlagListener(plugin, this));
 		attach(scoreboardManager);
 
+		scoreboardManager.init();
+
 		world.setGameRuleValue("doDaylightCycle", "false");
 		world.setGameRuleValue("naturalGeneration", "false");
 

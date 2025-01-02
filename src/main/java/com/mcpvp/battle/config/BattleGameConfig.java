@@ -20,13 +20,7 @@ import lombok.Data;
 public class BattleGameConfig {
     
     private Location spawn;
-    @Getter(AccessLevel.PRIVATE)
-    private Set<BattleTeamConfig> teamConfigs = new HashSet<>() {
-        {
-            add(new BattleTeamConfig(1));
-            add(new BattleTeamConfig(2));
-        }
-    };
+    private Set<BattleTeamConfig> teamConfigs = new HashSet<>();
     private Set<BattleCallout> callouts = new HashSet<>();
     private Set<Location> restricted = new HashSet<>();
     private int caps = 3;

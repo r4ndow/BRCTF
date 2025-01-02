@@ -3,7 +3,6 @@ package com.mcpvp.battle.scoreboard;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.team.BattleTeam;
-import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 
 import lombok.Getter;
@@ -23,7 +22,6 @@ public class BattleScoreboardManager extends EasyLifecycle {
 	
 	private final BattlePlugin plugin;
 	private final Battle battle;
-	private final BattleTeamManager teamManager;
 	
 	public void init() {
 		attach(new BattleScoreboardListener(plugin, battle, this));
@@ -34,7 +32,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
 		Objective objective = scoreboard.registerNewObjective("score", "dummy");
 		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		
-		for (BattleTeam bt : teamManager.getTeams()) {
+		for (BattleTeam bt : battle.getGame().getTeamManager().getTeams()) {
 			createTeam(scoreboard, bt);
 		}
 		
@@ -43,6 +41,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
 	
 	public void setTeam(Player player, BattleTeam bt) {
 		for (Scoreboard sb : getAllScoreboards()) {
+			System.out.println("Set team of " + player + " to " + getScoreboardTeam(sb, bt));
 			getScoreboardTeam(sb, bt).addEntry(player.getName());
 		}
 	}
@@ -58,8 +57,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
 		team.setPrefix(bt.getColor().toString());
 		
 		// Add all players to the team. From here the join and quit
-		// events are responsible
-		// for updating team members.
+		// events are responsible for updating team members.
 		for (Player player : Bukkit.getOnlinePlayers())
 			if (bt.contains(player))
 				team.addEntry(player.getName());

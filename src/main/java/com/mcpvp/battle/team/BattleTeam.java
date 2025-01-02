@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.mcpvp.battle.config.BattleTeamConfig;
+
 @Getter
 @AllArgsConstructor
 @ToString(of={"id", "name"})
@@ -22,11 +24,11 @@ public class BattleTeam {
 	private Colors color;
 	private IBattleFlag flag;
 	
-	public BattleTeam(int id, String name, Colors color) {
+	public BattleTeam(int id, String name, Colors color, BattleTeamConfig config) {
 		this.id = id;
 		this.name = name;
 		this.color = color;
-		this.flag = new WoolFlag(this, null);
+		this.flag = new WoolFlag(this, config.getFlag());
 	}
 	
 	void add(Player player) {

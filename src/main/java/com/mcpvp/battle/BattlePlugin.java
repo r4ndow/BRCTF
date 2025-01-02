@@ -5,6 +5,7 @@ import com.mcpvp.battle.command.KitCommand;
 import com.mcpvp.battle.command.NextCommand;
 import com.mcpvp.battle.command.PlaceCommand;
 import com.mcpvp.battle.command.StartCommand;
+import com.mcpvp.battle.command.SwitchCommand;
 import com.mcpvp.battle.command.TimerCommand;
 import com.mcpvp.common.event.TickEvent;
 
@@ -47,6 +48,7 @@ public class BattlePlugin extends JavaPlugin {
 		new FlagCommands(battle).register();
 		new KitCommand(battle.getKitManager()).register();
 		new TimerCommand(battle).register();
+		new SwitchCommand(battle).register();
 	}
 	
 }

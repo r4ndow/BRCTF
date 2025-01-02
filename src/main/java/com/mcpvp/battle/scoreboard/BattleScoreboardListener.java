@@ -13,6 +13,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scoreboard.DisplaySlot;
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class BattleScoreboardListener implements EasyListener {
 	private final Battle battle;
 	private final BattleScoreboardManager scoreboardManager;
 	
-	@EventHandler
+	// Need to have a scoreboard for other join events
+	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		event.getPlayer().setScoreboard(scoreboardManager.create());
 	}
@@ -54,7 +56,7 @@ public class BattleScoreboardListener implements EasyListener {
 		}
 
 		scores.add(state.name() + " " + battle.getMatch().getTimer().getSeconds() + "s");
-		scoreboardManager.getTeamManager().getTeams().forEach(bt -> {
+		battle.getGame().getTeamManager().getTeams().forEach(bt -> {
 			scores.add(bt.getName());
 			if (bt.getFlag().isHome()) {
 				scores.add(bt.getColor().CHAT_STRING + "- flag home");
