@@ -17,6 +17,7 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.util.C;
 import com.mcpvp.common.item.ItemBuilder;
+import com.mcpvp.common.kit.KitItem;
 
 // TODO remove arrows on respawn
 public class ArcherKit extends BattleKit {
@@ -43,7 +44,7 @@ public class ArcherKit extends BattleKit {
     }
 
     @Override
-    public Map<Integer, ItemStack> getItems() {
+    public Map<Integer, KitItem> getItems() {
         return new KitInventoryBuilder()
                 .add(Material.STONE_SWORD)
                 .addFood(4)

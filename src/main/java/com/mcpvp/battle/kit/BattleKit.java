@@ -6,12 +6,13 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.item.InteractiveItem;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
+import com.mcpvp.common.kit.KitItem;
 
 public abstract class BattleKit extends Kit {
 
@@ -23,45 +24,38 @@ public abstract class BattleKit extends Kit {
         return ((BattlePlugin) plugin).getBattle();
     }
 
-    public class BattleKitItem extends InteractiveItem {
-
-        public BattleKitItem(ItemStack item) {
-            super(plugin, item);
+    protected void eatFood(KitItem food) {
+        if (food.isPlaceholder()) {
+            return;
         }
 
-        public BattleKitItem(ItemBuilder builder) {
-            super(plugin, builder);
+        if (getPlayer().getHealth() == getPlayer().getMaxHealth()) {
+            return;
         }
 
+        getPlayer().setHealth(getPlayer().getHealth() + 8);
+        food.decrement(true);
     }
 
     public class KitInventoryBuilder {
 
         private static final int INVENTORY_SIZE = 9 * 4;
-        private final ItemStack[] items = new ItemStack[INVENTORY_SIZE];
+        private final KitItem[] items = new KitItem[INVENTORY_SIZE];
 
         private int currentSlot = 0;
 
         public KitInventoryBuilder add(Material material) {
-            items[currentSlot++] = autoAdjust(ItemBuilder.of(material)).build();
+            items[currentSlot++] = autoAdjust(ItemBuilder.of(material));
             return this;
         }
 
         public KitInventoryBuilder add(ItemBuilder builder) {
-            items[currentSlot++] = autoAdjust(builder).build();
+            items[currentSlot++] = autoAdjust(builder);
             return this;
         }
 
         public KitInventoryBuilder add(InteractiveItem item) {
-            items[currentSlot++] = autoAdjust(ItemBuilder.of(item.getItem())).build();
-            if (getPlayer() != null) {
-                attach(item);
-            }
-            return this;
-        }
-
-        public KitInventoryBuilder add(BattleKitItem item) {
-            items[currentSlot++] = autoAdjust(ItemBuilder.of(item.getItem())).build();
+            items[currentSlot++] = autoAdjust(ItemBuilder.of(item.getItem()));
             if (getPlayer() != null) {
                 attach(item);
             }
@@ -69,17 +63,23 @@ public abstract class BattleKit extends Kit {
         }
 
         public KitInventoryBuilder addFood(int count) {
-            items[currentSlot++] = ItemBuilder.of(Material.COOKED_BEEF).name(getName() + " Food").amount(count).build();
+            KitItem ki = new KitItem(BattleKit.this, ItemBuilder.of(Material.COOKED_BEEF).name(getName() + " Food").amount(count).build());
+            ki.onInteract(ev -> {
+                if (EventUtil.isRightClick(ev)) {
+                    eatFood(ki);
+                }
+            });
+            items[currentSlot++] = ki;
             return this;
         }
 
-        private ItemBuilder autoAdjust(ItemBuilder itemBuilder) {
-            return itemBuilder.unbreakable().name(
-                    getName() + " " + StringUtils.capitalize(itemBuilder.build().getType().name().toLowerCase()));
+        private KitItem autoAdjust(ItemBuilder itemBuilder) {
+            return new KitItem(BattleKit.this, itemBuilder.unbreakable().name(
+                    getName() + " " + StringUtils.capitalize(itemBuilder.build().getType().name().toLowerCase())).build());
         }
 
-        public Map<Integer, ItemStack> build() {
-            Map<Integer, ItemStack> map = new HashMap<>();
+        public Map<Integer, KitItem> build() {
+            Map<Integer, KitItem> map = new HashMap<>();
             for (int i = 0; i < items.length; i++) {
                 map.put(i, items[i]);
             }

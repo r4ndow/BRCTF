@@ -1,6 +1,7 @@
 package com.mcpvp.common.kit;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -16,12 +17,15 @@ import lombok.Getter;
 import lombok.NonNull;
 
 /**
- * An instance of this class represents a "live" instance of a KitType. Every Kit corresponds
- * to one player, and instances are recreated often. For example, when a player dies,
- * a new Kit will be created and re-initialized. This makess tate management significantly easier.
+ * An instance of this class represents a "live" instance of a KitType. Every
+ * Kit corresponds
+ * to one player, and instances are recreated often. For example, when a player
+ * dies,
+ * a new Kit will be created and re-initialized. This makess tate management
+ * significantly easier.
  */
 public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener {
-    
+
     @Getter
     protected final Plugin plugin;
     @Getter
@@ -44,7 +48,12 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
 
         player.getInventory().clear();
         player.getInventory().setArmorContents(getArmor());
-        getItems().forEach(player.getInventory()::setItem);
+        getItems().entrySet().stream()
+                .filter(e -> e.getValue() != null)
+                .forEach(e -> {
+                    attach(e.getValue());
+                    player.getInventory().setItem(e.getKey(), e.getValue().getItem());
+                });
     }
 
     protected boolean isPlayer(Player player) {
@@ -59,6 +68,6 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
 
     public abstract ItemStack[] getArmor();
 
-    public abstract Map<Integer, ItemStack> getItems();
+    public abstract Map<Integer, KitItem> getItems();
 
 }

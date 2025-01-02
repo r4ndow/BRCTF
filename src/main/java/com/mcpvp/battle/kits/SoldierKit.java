@@ -21,6 +21,7 @@ import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
+import com.mcpvp.common.kit.KitItem;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -109,8 +110,8 @@ public class SoldierKit extends BattleKit {
     }
 
     @Override
-    public Map<Integer, ItemStack> getItems() {
-        var sword = new BattleKitItem(ItemBuilder.of(Material.IRON_SWORD));
+    public Map<Integer, KitItem> getItems() {
+        var sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).build());
         sword.onInteract(ev -> {
             onClick(ev);
         });

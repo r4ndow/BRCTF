@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.common.kit.KitItem;
 
 public class HeavyKit extends BattleKit {
 
@@ -30,7 +31,7 @@ public class HeavyKit extends BattleKit {
     }
 
     @Override
-    public Map<Integer, ItemStack> getItems() {
+    public Map<Integer, KitItem> getItems() {
         return new KitInventoryBuilder()
                 .add(Material.DIAMOND_SWORD)
                 .addFood(3)

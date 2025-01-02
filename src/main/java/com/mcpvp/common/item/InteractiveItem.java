@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -24,7 +25,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 /**
- * A simple class for handling an interact event on one item.
+ * A simple class for handling interact events on one item. Items are identified by an NBT tag,
+ * which allows mutation of all other item properties, even the material.
  *
  * @author NomNuggetNom
  */
@@ -162,6 +164,13 @@ public class InteractiveItem implements EasyListener {
         return id;
     }
 
+    protected void setItem(ItemStack item) {
+        if (!this.isItem(item)) {
+            throw new IllegalArgumentException("Given ItemStack did not have correct tag");
+        }
+        this.item = item;
+    }
+
     public ItemStack getItem() {
         return item;
     }
@@ -179,6 +188,9 @@ public class InteractiveItem implements EasyListener {
             return;
 
         if (isItem(event.getItem())) {
+            // Re-assign the ItemStack instance, which improves syncing with the client
+            // Without doing this, a call to `update()` would be required
+            this.setItem(event.getItem());
             interactHandlers.forEach(ih -> ih.accept(event));
             anyHandler.accept(event.getPlayer());
         }
@@ -273,11 +285,24 @@ public class InteractiveItem implements EasyListener {
         return isItem(item.getItemStack());
     }
 
-    // /**
-    //  * @return An ItemQuery that will match this item.
-    //  */
-    // public ItemQuery query() {
-    //     return new ItemQuery().nbt(NBT_KEY, String.valueOf(this.id));
-    // }
+    /**
+     * @return An ItemQuery that will match this item.
+     */
+    public ItemQuery query() {
+        return new ItemQuery().nbt(NBT_KEY, String.valueOf(this.id));
+    }
+
+    /**
+     * Updates this ItemStack in the given inventory. This should be called whenever a change to the ItemStack is made.
+     *
+     * @param inv The Inventory to update the item in.
+     */
+    public void update(Inventory inv) {
+        ItemQuery iq = new ItemQuery().nbt(NBT_KEY, "" + this.id);
+
+        iq.all(inv).forEach(is -> {
+            inv.setItem(inv.first(is), getItem());
+        });
+    }
     
 }
