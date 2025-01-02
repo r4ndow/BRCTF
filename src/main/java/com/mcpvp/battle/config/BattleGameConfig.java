@@ -3,8 +3,6 @@ package com.mcpvp.battle.config;
 import java.util.HashSet;
 import java.util.Set;
 
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.bukkit.Location;
 
@@ -24,6 +22,7 @@ public class BattleGameConfig {
     private Set<BattleCallout> callouts = new HashSet<>();
     private Set<Location> restricted = new HashSet<>();
     private int caps = 3;
+    /** Time in minutes */
     private int time = 15;
 
     public BattleTeamConfig getTeamConfig(int id) {

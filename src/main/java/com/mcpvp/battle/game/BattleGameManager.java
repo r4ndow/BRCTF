@@ -5,6 +5,8 @@ import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.map.BattleWorldCreator;
 import com.mcpvp.battle.map.parser.BattleMapLoader;
+import com.mcpvp.battle.map.parser.BattleMapLoaderMetadataImpl;
+import com.mcpvp.battle.map.parser.BattleMapLoaderSignImpl;
 import com.mcpvp.battle.scoreboard.BattleScoreboardManager;
 import com.mcpvp.battle.team.BattleTeamManager;
 
@@ -20,9 +22,15 @@ import java.io.IOException;
 public class BattleGameManager {
 	
 	private final Battle battle;
-	private final BattleMapLoader parser;
 	
 	public BattleGame create(BattleMapData map, int index) {
+		BattleMapLoader parser;
+		if (map.getMetadata() != null) {
+			parser = new BattleMapLoaderMetadataImpl();
+		} else {
+			parser = new BattleMapLoaderSignImpl();
+		}
+
 		try {
 			// Extract map and create a world from it
 			World world = BattleWorldCreator.create(map, new File(battle.getOptions().getMaps().getDir()), index);
