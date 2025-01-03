@@ -64,7 +64,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 		game.respawn(event.getPlayer());
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onDeath(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player player && player.getHealth() - event.getDamage() <= 0) {
 			game.respawn(player);

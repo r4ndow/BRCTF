@@ -8,12 +8,16 @@ import com.mcpvp.battle.kit.BattleKitType;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.kit.KitDefinition;
+import com.mcpvp.common.util.movement.SpongeUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -25,6 +29,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 @Log4j2
@@ -143,6 +148,14 @@ public class BattlePermanentGameListener implements EasyListener {
 	public void onRemoveArmor(InventoryClickEvent event) {
 		if (event.getSlotType() == SlotType.ARMOR) {
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onWalkOntoSponge(PlayerMoveEvent event) {
+		Block onto = event.getTo().getBlock().getRelative(BlockFace.DOWN);
+		if (onto.getType() == Material.SPONGE) {
+			SpongeUtil.launch(plugin, event.getPlayer(), onto, true);
 		}
 	}
 
