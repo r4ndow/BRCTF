@@ -3,7 +3,7 @@ package com.mcpvp.battle.kit;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import com.mcpvp.battle.Battle;
@@ -45,8 +45,7 @@ public abstract class BattleKit extends Kit {
         private int currentSlot = 0;
 
         public KitInventoryBuilder add(Material material) {
-            items[currentSlot++] = autoAdjust(ItemBuilder.of(material));
-            return this;
+            return add(ItemBuilder.of(material));
         }
 
         public KitInventoryBuilder add(ItemBuilder builder) {
@@ -54,11 +53,8 @@ public abstract class BattleKit extends Kit {
             return this;
         }
 
-        public KitInventoryBuilder add(InteractiveItem item) {
-            items[currentSlot++] = autoAdjust(ItemBuilder.of(item.getItem()));
-            if (getPlayer() != null) {
-                attach(item);
-            }
+        public KitInventoryBuilder add(KitItem item) {
+            items[currentSlot++] = item;
             return this;
         }
 
@@ -74,14 +70,16 @@ public abstract class BattleKit extends Kit {
         }
 
         private KitItem autoAdjust(ItemBuilder itemBuilder) {
-            return new KitItem(BattleKit.this, itemBuilder.unbreakable().name(
-                    getName() + " " + StringUtils.capitalize(itemBuilder.build().getType().name().toLowerCase())).build());
+            String typeName = WordUtils.capitalize(itemBuilder.build().getType().name().replace("_", " ").toLowerCase());
+            return new KitItem(BattleKit.this, itemBuilder.unbreakable().name(getName() + " " + typeName).build());
         }
 
         public Map<Integer, KitItem> build() {
             Map<Integer, KitItem> map = new HashMap<>();
             for (int i = 0; i < items.length; i++) {
-                map.put(i, items[i]);
+                if (items[i] != null) {
+                    map.put(i, items[i]);
+                }
             }
             return map;
         }

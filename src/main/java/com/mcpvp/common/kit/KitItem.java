@@ -15,7 +15,7 @@ public class KitItem extends InteractiveItem {
     public KitItem(Kit kit, ItemStack itemStack) {
         super(kit.getPlugin(), itemStack);
         this.kit = kit;
-        this.original = itemStack;
+        this.original = itemStack.clone();
     }
 
     /**
@@ -55,7 +55,9 @@ public class KitItem extends InteractiveItem {
      * @param max The maximum amount.
      */
     public void increment(int max) {
-        if (getItem().getAmount() < max) {
+        if (isPlaceholder()) {
+            getItem().setType(original.getType());
+        } else if (getItem().getAmount() < max) {
             getItem().setAmount(getItem().getAmount() + 1);
         }
     }

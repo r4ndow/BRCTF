@@ -111,13 +111,12 @@ public class SoldierKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> getItems() {
-        var sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).build());
-        sword.onInteract(ev -> {
-            onClick(ev);
-        });
+        KitItem sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).build());
+        sword.onInteract(this::onClick);
 
         return new KitInventoryBuilder()
                 .add(sword)
+                .addFood(4)
                 .build();
     }
 

@@ -16,7 +16,11 @@ import lombok.extern.log4j.Log4j2;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -117,6 +121,27 @@ public class BattlePermanentGameListener implements EasyListener {
 		if (game.getTeamManager().getTeams().stream().noneMatch(bt ->
 			bt.getFlag().isItem(event.getItemDrop().getItemStack())
 		)) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onBreak(BlockBreakEvent event) {
+		if (game.isParticipant(event.getPlayer())) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onPlace(BlockPlaceEvent event) {
+		if (game.isParticipant(event.getPlayer()) && event.getBlockPlaced() != null) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onRemoveArmor(InventoryClickEvent event) {
+		if (event.getSlotType() == SlotType.ARMOR) {
 			event.setCancelled(true);
 		}
 	}

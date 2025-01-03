@@ -2,8 +2,10 @@ package com.mcpvp.common.item;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,8 +41,8 @@ public class InteractiveItem implements EasyListener {
 
     @Getter
     private final Plugin plugin;
+    private final int id;
     private ItemStack item;
-    private int id;
     private boolean ignoreCancelled;
     private List<Consumer<BlockPlaceEvent>> blockPlaceHandlers = new ArrayList<>();
     private List<Consumer<PlayerInteractEvent>> interactHandlers = new ArrayList<>();
@@ -179,6 +181,15 @@ public class InteractiveItem implements EasyListener {
         this.ignoreCancelled = ignoreCancelled;
     }
 
+	private static NBTTagCompound getCompound(net.minecraft.server.v1_8_R3.ItemStack itemStack) {
+		NBTTagCompound nbt = itemStack.getTag();
+		if (nbt == null) {
+			itemStack.setTag(new NBTTagCompound());
+			nbt = itemStack.getTag();
+		}
+		return nbt;
+	}
+
     @EventHandler
     public void onInteractEvent(PlayerInteractEvent event) {
         if (event.isCancelled() && ignoreCancelled)
@@ -187,6 +198,21 @@ public class InteractiveItem implements EasyListener {
         if (!event.hasItem())
             return;
 
+        System.out.println("interactevent " + isItem(event.getItem()));
+        System.out.println(event.getItem());
+        System.out.println(this.getItem());
+
+        System.out.println(getCompound(CraftItemStack.asNMSCopy(event.getItem())));
+        System.out.println(getCompound(CraftItemStack.asNMSCopy(event.getItem())).getString(NBT_KEY));
+        System.out.println(getCompound(CraftItemStack.asNMSCopy(this.getItem())));
+        System.out.println(getCompound(CraftItemStack.asNMSCopy(this.getItem())).getString(NBT_KEY));
+
+        System.out.println(
+            getCompound(CraftItemStack.asNMSCopy(event.getItem())).getString(NBT_KEY).equals(
+                getCompound(CraftItemStack.asNMSCopy(this.getItem())).getString(NBT_KEY)
+            )
+            
+            );
         if (isItem(event.getItem())) {
             // Re-assign the ItemStack instance, which improves syncing with the client
             // Without doing this, a call to `update()` would be required

@@ -5,7 +5,6 @@ import com.mcpvp.battle.game.BattleGameManager;
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.battle.map.manager.LocalMapManager;
 import com.mcpvp.battle.map.manager.MapManager;
-import com.mcpvp.battle.map.parser.BattleMapLoaderSignImpl;
 import com.mcpvp.battle.map.repo.LocalMapRepo;
 import com.mcpvp.battle.map.repo.MapRepo;
 import com.mcpvp.battle.match.BattleMatch;

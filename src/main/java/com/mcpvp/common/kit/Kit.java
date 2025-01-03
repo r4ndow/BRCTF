@@ -1,10 +1,6 @@
 package com.mcpvp.common.kit;
 
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nullable;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -48,6 +44,7 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
 
         player.getInventory().clear();
         player.getInventory().setArmorContents(getArmor());
+
         getItems().entrySet().stream()
                 .filter(e -> e.getValue() != null)
                 .forEach(e -> {
