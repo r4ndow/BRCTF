@@ -29,9 +29,6 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.mcpvp.battle.flag.FlagListener;
 
 @Log4j2
@@ -46,7 +43,6 @@ public class BattleGame extends EasyLifecycle {
 	private final BattleGameConfig config;
 	private final BattleTeamManager teamManager;
 	private final BattleScoreboardManager scoreboardManager;
-	private final Map<BattleTeam, BattleGameTeamData> teamData = new HashMap<>();
 
 	@Nullable
 	private BattleGameState state = null;
@@ -165,10 +161,6 @@ public class BattleGame extends EasyLifecycle {
 		return Bukkit.getOnlinePlayers().stream()
 				.filter(this::isParticipant)
 				.toList();
-	}
-
-	public BattleGameTeamData getTeamData(BattleTeam team) {
-		return this.getTeamData().computeIfAbsent(team, k -> new BattleGameTeamData());
 	}
 
 }

@@ -23,6 +23,7 @@ public class BattleTeam {
 	private String name;
 	private Colors color;
 	private IBattleFlag flag;
+	private int captures;
 	
 	public BattleTeam(int id, String name, Colors color, BattleTeamConfig config) {
 		this.id = id;
@@ -41,6 +42,10 @@ public class BattleTeam {
 	
 	public boolean contains(Player player) {
 		return players.contains(player);
+	}
+
+	public void onCapture() {
+		captures++;
 	}
 	
 }

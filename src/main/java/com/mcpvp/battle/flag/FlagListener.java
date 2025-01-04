@@ -1,6 +1,7 @@
 package com.mcpvp.battle.flag;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.FlagCaptureEvent;
 import com.mcpvp.battle.event.FlagDropEvent;
 import com.mcpvp.battle.event.FlagPickupEvent;
 import com.mcpvp.battle.event.FlagRecoverEvent;
@@ -12,8 +13,12 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
@@ -21,11 +26,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FlagListener implements EasyListener {
 	
 	private final BattlePlugin plugin;
 	private final BattleGame game;
+	private int tick = 0;
 
 	@EventHandler
 	public void onTick(TickEvent event) {
@@ -34,6 +40,8 @@ public class FlagListener implements EasyListener {
 			if (flag.isDropped() && flag.getRestoreExpiration().isExpired()) {
 				flag.reset();
 			}
+
+			flag.onTick(tick++);
 		});
 	}
 	
@@ -44,24 +52,50 @@ public class FlagListener implements EasyListener {
 			if (!bt.getFlag().isItem(event.getItem().getItemStack())) {
 				return;
 			}
+
+			// Always cancel picking up the item for simplicity
+			event.setCancelled(true);
+
+			if (bt.getFlag().getCarrier() != null) {
+				return;
+			}
 			
 			if (bt != team) {
 				if (bt.getFlag().isHome()) {
-					if (new FlagStealEvent(event.getPlayer(), bt.getFlag()).call()) {
-						event.setCancelled(true);
-					}
+					new FlagStealEvent(event.getPlayer(), bt.getFlag()).call();
 				} else {
-					if (new FlagPickupEvent(event.getPlayer(), bt.getFlag()).call()) {
-						event.setCancelled(true);
-					}
+					new FlagPickupEvent(event.getPlayer(), bt.getFlag()).call();
 				}
 			} else if (!bt.getFlag().isHome()) {
 				new FlagRecoverEvent(event.getPlayer(), bt.getFlag()).call();
-				event.setCancelled(true);
-			} else {
-				event.setCancelled(true);
 			}
 		});
+	}
+
+	@EventHandler
+	public void onCapture(PlayerPickupItemEvent event) {
+		if (!game.getTeamManager().getTeams().stream().anyMatch(bt -> bt.getFlag().isItem(event.getItem().getItemStack()))) {
+			return;
+		}
+
+		BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
+		Optional<BattleTeam> carried = game.getTeamManager().getTeams().stream().filter(bt -> {
+			return bt.getFlag().getCarrier() == event.getPlayer();
+		}).findFirst();
+
+		if (!team.getFlag().isItem(event.getItem().getItemStack())) {
+			return;
+		}
+
+		if (!carried.isPresent()) {
+			return;
+		}
+
+		if (!team.getFlag().isHome()) {
+			return;
+		}
+
+		new FlagCaptureEvent(event.getPlayer(), team, carried.get().getFlag()).call();
 	}
 	
 	@EventHandler(ignoreCancelled = true)
@@ -87,6 +121,19 @@ public class FlagListener implements EasyListener {
 				event.setCancelled(true);
 			}
 		});
+
+		// For the visuals
+		if (event.getEntity().getItemStack().getType() == Material.WOOL) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onPickupVisuals(PlayerPickupItemEvent event) {
+		// For the visuals
+		if (event.getItem().getItemStack().getType() == Material.WOOL) {
+			event.setCancelled(true);
+		}
 	}
 	
 	@EventHandler

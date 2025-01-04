@@ -4,7 +4,8 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.util.BattleUtil;
 import com.mcpvp.common.item.ItemBuilder;
 
-import org.bukkit.Color;
+import lombok.NonNull;
+
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,12 +22,14 @@ public class WoolFlag extends AbstractFlag {
 
 	private final Location spawn;
 	private final List<Item> visuals = new ArrayList<>();
+	@NonNull
 	private Item home;
 	private Item dropped;
 
 	public WoolFlag(BattleTeam team, Location spawn) {
 		super(team);
 		this.spawn = spawn;
+		this.home = BattleUtil.spawnWool(getHome(), getItem());
 	}
 
 	@Override
@@ -65,20 +68,12 @@ public class WoolFlag extends AbstractFlag {
 
 	@Override
 	public void placeFlag() {
-		if (home != null) {
-			home.setItemStack(getItem());
-		} else {
-			home = BattleUtil.spawnWool(getHome(), getItem());
-		}
+		home.setItemStack(getItem());
 	}
 
 	@Override
 	public void placeGhost() {
-		if (home != null) {
-			home.setItemStack(BattleUtil.getColoredWool(DyeColor.WHITE));
-		} else {
-			home = BattleUtil.spawnWool(getHome(), ItemBuilder.of(getItem()).color(Color.WHITE).build());
-		}
+		home.setItemStack(ItemBuilder.of(getItem().clone()).color(DyeColor.WHITE).build());
 	}
 
 	@Override
@@ -109,15 +104,6 @@ public class WoolFlag extends AbstractFlag {
 	}
 
 	@Override
-	public void reset() {
-		if (home != null) {
-			home.remove();
-			home = null;
-		}
-		super.reset();
-	}
-
-	@Override
 	protected ItemStack getItem() {
 		return ItemBuilder.of(BattleUtil.getColoredWool(getTeam().getColor().DYE))
 			.name(getTeam().getName() + " Flag")
@@ -142,12 +128,12 @@ public class WoolFlag extends AbstractFlag {
 			return;
 		}
 
-		if (tick % 4 != 0) {
+		if (tick % 5 != 0) {
 			return;
 		}
 
 		// Spawn a visual indicator that the player is holding the flag.
-		Location l = getCarrier().getLocation().add(0, 2.5, 0);
+		Location l = getCarrier().getEyeLocation().add(0, 0.5, 0);
 		Item i = getCarrier().getWorld().dropItem(l, BattleUtil.getColoredWool(getTeam().getColor().DYE));
 		i.setVelocity(i.getVelocity().multiply(new Vector(0.3, 2, 0.3)));
 		visuals.add(i);

@@ -69,6 +69,8 @@ public class BattleScoreboardListener implements EasyListener {
 			} else {
 				scores.add(bt.getColor().CHAT_STRING + "- carrier: " + bt.getFlag().getCarrier().getName());
 			}
+
+			scores.add(bt.getColor().CHAT_STRING + "- caps: " + bt.getCaptures());
 		});
 		
 		return scores;

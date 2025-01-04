@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.common.event.EventUtil;
-import com.mcpvp.common.item.InteractiveItem;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;

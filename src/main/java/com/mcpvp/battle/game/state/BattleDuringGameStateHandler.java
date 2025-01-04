@@ -1,13 +1,16 @@
 package com.mcpvp.battle.game.state;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.FlagCaptureEvent;
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
+import com.mcpvp.battle.flag.FlagCaptureMonitor;
 import com.mcpvp.battle.flag.FlagDropMonitor;
 import com.mcpvp.battle.flag.FlagPickupMonitor;
 import com.mcpvp.battle.flag.FlagRecoverMonitor;
 import com.mcpvp.battle.flag.FlagStealMonitor;
 import com.mcpvp.battle.game.BattleGame;
+import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.kit.KitSelectedEvent;
 
@@ -35,6 +38,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 		attach(new FlagDropMonitor(plugin, game.getBattle(), game));
 		attach(new FlagPickupMonitor(plugin, game.getBattle(), game));
 		attach(new FlagRecoverMonitor(plugin, game.getBattle(), game));
+		attach(new FlagCaptureMonitor(plugin, game.getBattle(), game));
 		
 		game.getTeamManager().getTeams().forEach(bt -> {
 			bt.getFlag().setLocked(false);
@@ -90,6 +94,14 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 		
 		if (spawnBlock.getType() != Material.AIR && spawnBlock.getType() == onBlock.getType()) {
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onCapture(FlagCaptureEvent event) {
+		// Game over, the team won!
+		if (event.getPlayerTeam().getCaptures() == game.getConfig().getCaps()) {
+			game.setState(BattleGameState.AFTER);
 		}
 	}
 	

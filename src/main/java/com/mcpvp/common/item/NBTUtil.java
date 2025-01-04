@@ -12,10 +12,6 @@ public class NBTUtil {
 		
 		net.minecraft.server.v1_8_R3.ItemStack nmsCopy = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound nbt = getCompound(nmsCopy);
-		System.out.println("hasKey? " + nbt.hasKey(key));
-		System.out.println("getString: " + nbt.getString(key));
-		System.out.println("value: " + value);
-		System.out.println(nbt.getString(key).equals(value));
 		return nbt.hasKey(key) && nbt.getString(key).equals(value);
 	}
 	

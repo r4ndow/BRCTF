@@ -197,22 +197,7 @@ public class InteractiveItem implements EasyListener {
 
         if (!event.hasItem())
             return;
-
-        System.out.println("interactevent " + isItem(event.getItem()));
-        System.out.println(event.getItem());
-        System.out.println(this.getItem());
-
-        System.out.println(getCompound(CraftItemStack.asNMSCopy(event.getItem())));
-        System.out.println(getCompound(CraftItemStack.asNMSCopy(event.getItem())).getString(NBT_KEY));
-        System.out.println(getCompound(CraftItemStack.asNMSCopy(this.getItem())));
-        System.out.println(getCompound(CraftItemStack.asNMSCopy(this.getItem())).getString(NBT_KEY));
-
-        System.out.println(
-            getCompound(CraftItemStack.asNMSCopy(event.getItem())).getString(NBT_KEY).equals(
-                getCompound(CraftItemStack.asNMSCopy(this.getItem())).getString(NBT_KEY)
-            )
             
-            );
         if (isItem(event.getItem())) {
             // Re-assign the ItemStack instance, which improves syncing with the client
             // Without doing this, a call to `update()` would be required
@@ -286,14 +271,6 @@ public class InteractiveItem implements EasyListener {
             dropHandlers.forEach(h -> h.accept(event));
         }
     }
-
-    // /**
-    //  * @param inv The inventory to check.
-    //  * @return True if the item is in the inventory.
-    //  */
-    // public boolean inInventory(Inventory inv) {
-    //     return new ItemQuery().nbt(NBT_KEY, "" + this.id).all(inv).size() > 0;
-    // }
 
     /**
      * @param item The item to compare.

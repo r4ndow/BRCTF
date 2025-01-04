@@ -8,6 +8,8 @@ import com.mcpvp.common.time.Expiration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -71,10 +73,10 @@ public abstract class AbstractFlag implements IBattleFlag {
 	
 	@Override
 	public void steal(Player carrier) {
+		Bukkit.broadcastMessage("Flag stolen!");
 		stolenAt = System.currentTimeMillis();
-		placeGhost();
-		
 		pickup(carrier);
+		placeGhost();
 	}
 	
 	@Override
@@ -115,10 +117,10 @@ public abstract class AbstractFlag implements IBattleFlag {
 		if (previous != null) {
 			previous.getInventory().remove(getItem());
 		}
-		
-//		if (current != null) {
-//			current.getInventory().addItem(getItem());
-//		}
+
+		if (current != null) {
+			current.getInventory().addItem(getItem());
+		}
 	}
 	
 	@Override
