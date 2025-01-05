@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.item.FlagCompassItem;
-import com.mcpvp.common.event.EventUtil;
+import com.mcpvp.battle.kit.item.FoodItem;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
@@ -22,19 +22,6 @@ public abstract class BattleKit extends Kit {
 
     protected Battle getBattle() {
         return ((BattlePlugin) plugin).getBattle();
-    }
-
-    protected void eatFood(KitItem food) {
-        if (food.isPlaceholder()) {
-            return;
-        }
-
-        if (getPlayer().getHealth() == getPlayer().getMaxHealth()) {
-            return;
-        }
-
-        getPlayer().setHealth(getPlayer().getHealth() + 8);
-        food.decrement(true);
     }
 
     public class KitInventoryBuilder {
@@ -59,13 +46,7 @@ public abstract class BattleKit extends Kit {
         }
 
         public KitInventoryBuilder addFood(int count) {
-            KitItem ki = new KitItem(BattleKit.this, ItemBuilder.of(Material.COOKED_BEEF).name(getName() + " Food").amount(count).build());
-            ki.onInteract(ev -> {
-                if (EventUtil.isRightClick(ev)) {
-                    eatFood(ki);
-                }
-            });
-            items[currentSlot++] = ki;
+            items[currentSlot++] = new FoodItem(BattleKit.this, ItemBuilder.of(Material.COOKED_BEEF).name("Food").amount(count).build());
             return this;
         }
 

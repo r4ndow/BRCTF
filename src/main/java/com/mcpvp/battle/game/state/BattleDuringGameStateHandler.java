@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class BattleDuringGameStateHandler extends BattleGameStateHandler {
@@ -70,9 +71,17 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onDeath(EntityDamageEvent event) {
-		if (event.getEntity() instanceof Player player && player.getHealth() - event.getDamage() <= 0) {
+		if (event.getEntity() instanceof Player player && player.getHealth() - event.getFinalDamage() <= 0) {
 			game.respawn(player);
+
+			// Canceling the event causes no damage splat animation
+			event.setDamage(0);
 		}
+	}
+
+	@EventHandler
+	public void onActualDeath(PlayerDeathEvent event) {
+		game.respawn(event.getEntity());
 	}
 		
 	@EventHandler

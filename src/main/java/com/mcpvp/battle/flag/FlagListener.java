@@ -64,7 +64,9 @@ public class FlagListener implements EasyListener {
 				if (bt.getFlag().isHome()) {
 					new FlagStealEvent(event.getPlayer(), bt.getFlag()).call();
 				} else {
-					new FlagPickupEvent(event.getPlayer(), bt.getFlag()).call();
+					if (bt.getFlag().getPickupExpiration().isExpired()) {
+						new FlagPickupEvent(event.getPlayer(), bt.getFlag()).call();
+					}
 				}
 			} else if (!bt.getFlag().isHome()) {
 				new FlagRecoverEvent(event.getPlayer(), bt.getFlag()).call();

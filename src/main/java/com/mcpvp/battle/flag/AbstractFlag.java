@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -55,11 +57,15 @@ public abstract class AbstractFlag implements IBattleFlag {
 	protected abstract void placeFlag();
 	
 	@Override
-	public void drop(Location location, Item item) {
+	public void drop(Location location, @Nullable Item item) {
 		droppedAt = System.currentTimeMillis();
 		pickupExpiration.expireIn(Duration.milliseconds(1000));
 		restoreExpiration.expireIn(Duration.seconds(15));
-		
+
+		if (item != null) {
+			item.setPickupDelay(0);
+		}
+
 		setCarrier(null);
 	}
 	

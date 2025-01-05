@@ -26,6 +26,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -130,6 +131,7 @@ public class BattleGame extends EasyLifecycle {
 		BattleTeam team = getTeamManager().getTeam(player);
 		Location spawn = getConfig().getTeamConfig(team).getSpawn();
 		player.teleport(spawn);
+		player.setVelocity(new Vector());
 
 		// Equip kit
 		battle.getKitManager().createSelected(player);
