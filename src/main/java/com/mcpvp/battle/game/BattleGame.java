@@ -114,7 +114,6 @@ public class BattleGame extends EasyLifecycle {
 		// Drop the flag if they have it
 		teamManager.getTeams().forEach(bt -> {
 			if (bt.getFlag().getCarrier() == player) {
-				System.out.println("drop flag of team " + bt);
 				new FlagDropEvent(player, bt.getFlag(), null).call();
 			}
 		});

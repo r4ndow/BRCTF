@@ -67,6 +67,9 @@ public class BattleMatch {
 		}
 	}
 
+	/**
+	 * Advance the state of the current game, or proceed to the next game entirely.
+	 */
 	public void advanceStateOrGame() {
 		BattleGameState state = getCurrentGame().getState();
 		if (state == null) {

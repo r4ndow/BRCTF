@@ -147,6 +147,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
     private void loadSimpleSign(BattleGameConfig builder, SimpleMapSign sign) {
         switch (sign.getText()) {
             case "restrict" -> builder.getRestricted().add(sign.getBlock().getLocation());
+            case "spawn_box" -> builder.setSpawn(sign.getBlock().getLocation());
             default -> log.warn("Unknown simple config given: " + sign);
         }
     }

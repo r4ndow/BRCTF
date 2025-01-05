@@ -20,6 +20,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -82,10 +83,12 @@ public class BattlePermanentGameListener implements EasyListener {
 	// EVENT HANDLING
 	// ==============
 
-	@EventHandler
-	public void selectAutoTeam(PlayerJoinEvent event) {
-		BattleTeam toJoin = game.getTeamManager().selectAutoTeam();
-		game.getTeamManager().setTeam(event.getPlayer(), toJoin);
+	@EventHandler(priority = EventPriority.LOW)
+	public void selectAutoTeam(PlayerParticipateEvent event) {
+		if (game.getTeamManager().getTeam(event.getPlayer()) == null) {
+			BattleTeam toJoin = game.getTeamManager().selectAutoTeam();
+			game.getTeamManager().setTeam(event.getPlayer(), toJoin);
+		}
 	}
 	
 	@EventHandler
