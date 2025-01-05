@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 /**
  * A simple class for handling interact events on one item. Items are identified by an NBT tag,
@@ -164,6 +165,10 @@ public class InteractiveItem implements EasyListener {
      */
     public int getID() {
         return id;
+    }
+
+    protected void editItem(UnaryOperator<ItemBuilder> editor) {
+        setItem(editor.apply(ItemBuilder.of(getItem())).build());
     }
 
     protected void setItem(ItemStack item) {

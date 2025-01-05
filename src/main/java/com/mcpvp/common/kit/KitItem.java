@@ -9,7 +9,7 @@ import com.mcpvp.common.item.InteractiveItem;
  */
 public class KitItem extends InteractiveItem {
     
-    private final Kit kit;
+    protected final Kit kit;
     private final ItemStack original;
 
     public KitItem(Kit kit, ItemStack itemStack) {

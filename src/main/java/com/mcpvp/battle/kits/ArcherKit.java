@@ -51,6 +51,7 @@ public class ArcherKit extends BattleKit {
                 .add(ItemBuilder.of(Material.BOW).enchant(Enchantment.ARROW_KNOCKBACK, 1))
                 .add(ItemBuilder.of(Material.ARROW).amount(64))
                 .add(ItemBuilder.of(Material.ARROW).amount(64))
+                .addCompass(8)
                 .build();
     }
 

@@ -35,6 +35,7 @@ public class HeavyKit extends BattleKit {
         return new KitInventoryBuilder()
                 .add(Material.DIAMOND_SWORD)
                 .addFood(3)
+                .addCompass(8)
                 .build();
     }
 

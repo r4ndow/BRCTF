@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.kit.item.FlagCompassItem;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
@@ -65,6 +66,11 @@ public abstract class BattleKit extends Kit {
                 }
             });
             items[currentSlot++] = ki;
+            return this;
+        }
+
+        public KitInventoryBuilder addCompass(int slot) {
+            items[slot] = new FlagCompassItem(getBattle().getGame(), BattleKit.this);
             return this;
         }
 

@@ -117,6 +117,7 @@ public class SoldierKit extends BattleKit {
         return new KitInventoryBuilder()
                 .add(sword)
                 .addFood(4)
+                .addCompass(8)
                 .build();
     }
 
