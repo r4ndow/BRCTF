@@ -6,6 +6,7 @@ import com.mcpvp.battle.util.Colors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;

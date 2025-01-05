@@ -41,7 +41,6 @@ public class BattleScoreboardManager extends EasyLifecycle {
 	
 	public void setTeam(Player player, BattleTeam bt) {
 		for (Scoreboard sb : getAllScoreboards()) {
-			System.out.println("Set team of " + player + " to " + getScoreboardTeam(sb, bt));
 			getScoreboardTeam(sb, bt).addEntry(player.getName());
 		}
 	}

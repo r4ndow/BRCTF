@@ -30,5 +30,4 @@ public class FoodItem extends KitItem {
         decrement(true);
     }
 
-
 }

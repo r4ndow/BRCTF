@@ -2,10 +2,7 @@ package com.mcpvp.common.item;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -185,15 +182,6 @@ public class InteractiveItem implements EasyListener {
     public void setIgnoreCancelled(boolean ignoreCancelled) {
         this.ignoreCancelled = ignoreCancelled;
     }
-
-	private static NBTTagCompound getCompound(net.minecraft.server.v1_8_R3.ItemStack itemStack) {
-		NBTTagCompound nbt = itemStack.getTag();
-		if (nbt == null) {
-			itemStack.setTag(new NBTTagCompound());
-			nbt = itemStack.getTag();
-		}
-		return nbt;
-	}
 
     @EventHandler
     public void onInteractEvent(PlayerInteractEvent event) {

@@ -31,7 +31,6 @@ public class FlagListener implements EasyListener {
 	
 	private final BattlePlugin plugin;
 	private final BattleGame game;
-	private int tick = 0;
 
 	@EventHandler
 	public void onTick(TickEvent event) {
@@ -41,7 +40,7 @@ public class FlagListener implements EasyListener {
 				flag.reset();
 			}
 
-			flag.onTick(tick++);
+			flag.onTick(event.getTick());
 		});
 	}
 	

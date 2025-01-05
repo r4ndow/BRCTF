@@ -32,7 +32,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 @Log4j2
@@ -94,16 +93,6 @@ public class BattlePermanentGameListener implements EasyListener {
 	}
 	
 	@EventHandler
-	public void onLeave(PlayerQuitEvent event) {
-		game.getTeamManager().setTeam(event.getPlayer(), null);
-	}
-	
-	@EventHandler
-	public void onKicked(PlayerKickEvent event) {
-		game.getTeamManager().setTeam(event.getPlayer(), null);
-	}
-
-	@EventHandler
 	public void selectDefaultKit(PlayerParticipateEvent event) {
 		// For players who join without a kit selected, make sure they have one before they are respawned
 		// The kit creation/equipping will be handled by the game
@@ -114,16 +103,16 @@ public class BattlePermanentGameListener implements EasyListener {
 	}
 
 	@EventHandler
+	public void onResign(PlayerResignEvent event) {
+		game.remove(event.getPlayer());
+	}
+
+	@EventHandler
 	public void onHunger(FoodLevelChangeEvent event) {
 		event.setCancelled(true);
 		if (event.getEntity() instanceof Player player) {
 			player.setFoodLevel(50);
 		}
-	}
-
-	@EventHandler
-	public void onResign(PlayerResignEvent event) {
-		game.remove(event.getPlayer());
 	}
 
 	@EventHandler

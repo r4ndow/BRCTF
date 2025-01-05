@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 public class WoolFlag extends AbstractFlag {
 
 	private final Location spawn;
@@ -33,7 +35,7 @@ public class WoolFlag extends AbstractFlag {
 	}
 
 	@Override
-	public void drop(Location location, Item item) {
+	public void drop(Location location, @Nullable Item item) {
 		Player carrier = Objects.requireNonNull(getCarrier());
 
 		if (item != null) {

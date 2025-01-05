@@ -11,6 +11,9 @@ import com.mcpvp.common.event.TickEvent;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,8 +37,9 @@ public class BattlePlugin extends JavaPlugin {
 	public void onEnable() {
 		super.onEnable();
 		
+		final AtomicInteger tick = new AtomicInteger();
 		Bukkit.getScheduler().runTaskTimer(this, () -> {
-			new TickEvent().call();
+			new TickEvent(tick.getAndIncrement()).call();
 		}, 1, 1);
 
 		this.battle.start();
