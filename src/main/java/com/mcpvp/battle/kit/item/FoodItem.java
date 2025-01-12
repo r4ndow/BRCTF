@@ -9,7 +9,7 @@ import com.mcpvp.common.kit.KitItem;
 public class FoodItem extends KitItem {
     
     public FoodItem(Kit kit, ItemStack itemStack) {
-        super(kit, itemStack);
+        super(kit, itemStack, true);
         this.onInteract(ev -> {
             if (EventUtil.isRightClick(ev)) {
                 consume();

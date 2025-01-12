@@ -100,7 +100,7 @@ public class SoldierKit extends BattleKit {
     }
 
     @Override
-    public ItemStack[] getArmor() {
+    public ItemStack[] createArmor() {
         return new ItemStack[] {
                 new ItemStack(Material.IRON_BOOTS),
                 new ItemStack(Material.IRON_LEGGINGS),
@@ -110,7 +110,7 @@ public class SoldierKit extends BattleKit {
     }
 
     @Override
-    public Map<Integer, KitItem> getItems() {
+    public Map<Integer, KitItem> createItems() {
         KitItem sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).build());
         sword.onInteract(this::onClick);
 

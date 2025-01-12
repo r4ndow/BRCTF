@@ -1,5 +1,7 @@
 package com.mcpvp.common.kit;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,10 +28,12 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
     protected final Plugin plugin;
     @Getter
     private final Player player;
+    private final Map<Integer, KitItem> items;
 
     public Kit(Plugin plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
+        this.items = createItems();
         setup(player);
     }
 
@@ -43,9 +47,9 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
         attach((EasyListener) this);
 
         player.getInventory().clear();
-        player.getInventory().setArmorContents(getArmor());
+        player.getInventory().setArmorContents(createArmor());
 
-        getItems().entrySet().stream()
+        this.items.entrySet().stream()
                 .filter(e -> e.getValue() != null)
                 .forEach(e -> {
                     attach(e.getValue());
@@ -63,8 +67,23 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
 
     public abstract String getName();
 
-    public abstract ItemStack[] getArmor();
+    /**
+     * Create the armor to equip the player with.
+     */
+    public abstract ItemStack[] createArmor();
 
-    public abstract Map<Integer, KitItem> getItems();
+    /**
+     * Create all the items for this Kit. This should only be called once per
+     * kit instance to avoid duplicating items.
+     */
+    public abstract Map<Integer, KitItem> createItems();
+
+    /**
+     * @return A list of all KitItems associated with this Kit. These items should
+     * be created when the Kit is initialized.
+     */
+    public Collection<KitItem> getAllItems() {
+        return this.items.values();
+    }
 
 }

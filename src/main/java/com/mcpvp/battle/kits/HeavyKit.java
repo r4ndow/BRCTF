@@ -21,7 +21,7 @@ public class HeavyKit extends BattleKit {
     }
 
     @Override
-    public ItemStack[] getArmor() {
+    public ItemStack[] createArmor() {
         return new ItemStack[] {
                 new ItemStack(Material.DIAMOND_BOOTS),
                 new ItemStack(Material.DIAMOND_LEGGINGS),
@@ -31,7 +31,7 @@ public class HeavyKit extends BattleKit {
     }
 
     @Override
-    public Map<Integer, KitItem> getItems() {
+    public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
                 .add(Material.DIAMOND_SWORD)
                 .addFood(3)

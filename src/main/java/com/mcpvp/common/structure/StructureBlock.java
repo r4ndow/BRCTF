@@ -18,6 +18,7 @@ public class StructureBlock {
     private final Block block;
     private final BlockState original;
 
+    @SuppressWarnings("deprecation")
     public void restore() {
         log.debug("Restoring " + block.getLocation() + " to " + original.getType());
         block.setType(original.getType());

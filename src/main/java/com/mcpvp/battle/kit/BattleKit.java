@@ -1,10 +1,13 @@
 package com.mcpvp.battle.kit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
@@ -13,6 +16,8 @@ import com.mcpvp.battle.kit.item.FoodItem;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
+import com.mcpvp.common.structure.Structure;
+import com.mcpvp.common.structure.StructureViolation;
 
 public abstract class BattleKit extends Kit {
 
@@ -20,8 +25,20 @@ public abstract class BattleKit extends Kit {
         super(plugin, player);
     }
 
-    protected Battle getBattle() {
+    public Battle getBattle() {
         return ((BattlePlugin) plugin).getBattle();
+    }
+
+    protected void placeStructure(Structure structure, Block center) {
+        List<StructureViolation> violations = structure.place(center);
+        if (!violations.isEmpty()) {
+            violations.forEach(v -> {
+                getPlayer().sendMessage("! " + v.getMessage());
+            });
+        } else {
+            attach(structure);
+            attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> structure.remove(), 40));
+        }
     }
 
     public class KitInventoryBuilder {

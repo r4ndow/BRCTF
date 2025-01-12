@@ -4,18 +4,28 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import com.mcpvp.common.item.InteractiveItem;
 
+import lombok.Getter;
+
 /**
  * An item tied to an instance of a kit, with extra utilities.
  */
 public class KitItem extends InteractiveItem {
     
     protected final Kit kit;
+    @Getter
     private final ItemStack original;
+    @Getter
+    private final boolean restorable;
 
-    public KitItem(Kit kit, ItemStack itemStack) {
+    public KitItem(Kit kit, ItemStack itemStack, boolean restorable) {
         super(kit.getPlugin(), itemStack);
         this.kit = kit;
         this.original = itemStack.clone();
+        this.restorable = restorable;
+    }
+
+    public KitItem(Kit kit, ItemStack itemStack) {
+        this(kit, itemStack, false);
     }
 
     /**

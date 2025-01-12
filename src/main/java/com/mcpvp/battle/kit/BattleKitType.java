@@ -8,6 +8,7 @@ import org.bukkit.plugin.Plugin;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kits.ArcherKit;
 import com.mcpvp.battle.kits.HeavyKit;
+import com.mcpvp.battle.kits.MedicKit;
 import com.mcpvp.battle.kits.SoldierKit;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitDefinition;
@@ -20,6 +21,7 @@ public enum BattleKitType implements KitDefinition {
     ARCHER("Archer", ArcherKit::new),
     SOLDIER("Soldier", SoldierKit::new),
     HEAVY("Heavy", HeavyKit::new),
+    MEDIC("Medic", MedicKit::new),
     ;
 
     @Getter

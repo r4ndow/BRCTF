@@ -21,6 +21,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -103,6 +104,18 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 		
 		if (spawnBlock.getType() != Material.AIR && spawnBlock.getType() == onBlock.getType()) {
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onDamageSameTeam(EntityDamageByEntityEvent event) {
+		if (event.getEntity() instanceof Player damaged && event.getDamager() instanceof Player damager) {
+			BattleTeam damagedTeam = game.getTeamManager().getTeam(damaged);
+			BattleTeam damagerTeam = game.getTeamManager().getTeam(damager);
+
+			if (damagedTeam == damagerTeam) {
+				event.setCancelled(true);
+			}
 		}
 	}
 

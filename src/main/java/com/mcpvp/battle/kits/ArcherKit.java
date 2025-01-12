@@ -34,7 +34,7 @@ public class ArcherKit extends BattleKit {
     }
 
     @Override
-    public ItemStack[] getArmor() {
+    public ItemStack[] createArmor() {
         return new ItemStack[] {
                 new ItemStack(Material.CHAINMAIL_BOOTS),
                 new ItemStack(Material.CHAINMAIL_LEGGINGS),
@@ -44,9 +44,9 @@ public class ArcherKit extends BattleKit {
     }
 
     @Override
-    public Map<Integer, KitItem> getItems() {
+    public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-                .add(Material.STONE_SWORD)
+                .add(ItemBuilder.of(Material.STONE_SWORD).name("Archer Sword").unbreakable())
                 .addFood(4)
                 .add(ItemBuilder.of(Material.BOW).enchant(Enchantment.ARROW_KNOCKBACK, 1))
                 .add(ItemBuilder.of(Material.ARROW).amount(64))
