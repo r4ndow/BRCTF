@@ -4,18 +4,26 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.game.BattleGameState;
+import com.mcpvp.battle.map.BattleMapData;
+import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.battle.util.C;
 import com.mcpvp.battle.util.ScoreboardUtil;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scoreboard.DisplaySlot;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,40 +48,7 @@ public class BattleScoreboardListener implements EasyListener {
 	
 	@EventHandler
 	public void onTick(TickEvent event) {
-		Bukkit.getOnlinePlayers().forEach(p -> {
-			List<String> scores = getScores(p);
-			ScoreboardUtil.resetChanged(p.getScoreboard(), scores);
-			ScoreboardUtil.addLargeScores(p.getScoreboard(), p.getScoreboard().getObjective(DisplaySlot.SIDEBAR), scores);
-		});
-	}
-	
-	private List<String> getScores(Player player) {
-		List<String> scores = new ArrayList<>();
-		
-		BattleGameState state = battle.getGame().getState();
-		if (state == null) {
-			return scores;
-		}
-
-		scores.add(state.name() + " " + battle.getMatch().getTimer().getSeconds() + "s");
-		battle.getGame().getTeamManager().getTeams().forEach(bt -> {
-			scores.add(bt.getName());
-			if (bt.getFlag().isHome()) {
-				scores.add(bt.getColor().CHAT_STRING + "- flag home");
-			} else {
-				scores.add(bt.getColor().CHAT_STRING + "- flag taken");
-			}
-			
-			if (bt.getFlag().getCarrier() == null) {
-				scores.add(bt.getColor().CHAT_STRING + "- no carrier");
-			} else {
-				scores.add(bt.getColor().CHAT_STRING + "- carrier: " + bt.getFlag().getCarrier().getName());
-			}
-
-			scores.add(bt.getColor().CHAT_STRING + "- caps: " + bt.getCaptures());
-		});
-		
-		return scores;
+		Bukkit.getOnlinePlayers().forEach(scoreboardManager::refresh);
 	}
 	
 }

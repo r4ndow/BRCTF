@@ -24,6 +24,7 @@ public class BattleMatch {
 	private final List<BattleGame> games;
 	@Getter
 	private final BattleMatchTimer timer = new BattleMatchTimer();
+	@Getter
 	private int currentGameIndex = 0;
 
 	public BattleGame getCurrentGame() {
