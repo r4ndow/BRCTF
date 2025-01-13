@@ -1,12 +1,11 @@
 package com.mcpvp.battle.command;
 
-import java.util.List;
-
+import com.mcpvp.battle.kit.BattleKitManager;
+import com.mcpvp.common.kit.KitDefinition;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.mcpvp.battle.kit.BattleKitManager;
-import com.mcpvp.common.kit.KitDefinition;
+import java.util.List;
 
 public class KitCommand extends BattleCommand {
 

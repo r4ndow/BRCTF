@@ -1,12 +1,10 @@
 package com.mcpvp.common.kit;
 
-import org.bukkit.entity.Player;
-
 import com.mcpvp.common.event.EasyCancellableEvent;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.entity.Player;
 
 /**
  * Called when a player attempts to select a kit. This might be cancelled.

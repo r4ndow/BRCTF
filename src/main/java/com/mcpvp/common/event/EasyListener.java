@@ -1,10 +1,9 @@
 package com.mcpvp.common.event;
 
+import com.mcpvp.common.PluginContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-
-import com.mcpvp.common.PluginContainer;
 
 public interface EasyListener extends Listener, PluginContainer {
 	

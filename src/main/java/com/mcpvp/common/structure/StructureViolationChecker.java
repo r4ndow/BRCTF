@@ -1,8 +1,8 @@
 package com.mcpvp.common.structure;
 
-import java.util.Optional;
-
 import org.bukkit.block.Block;
+
+import java.util.Optional;
 
 /**
  * Represents a class that can check if a given block violates any known rules.

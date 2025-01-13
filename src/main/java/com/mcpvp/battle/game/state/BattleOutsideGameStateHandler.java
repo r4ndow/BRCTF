@@ -1,15 +1,14 @@
 package com.mcpvp.battle.game.state;
 
+import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.PlayerParticipateEvent;
+import com.mcpvp.battle.game.BattleGame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.event.PlayerParticipateEvent;
-import com.mcpvp.battle.game.BattleGame;
 
 /**
  * A state handler for outside the game, i.e. before and after but not during.

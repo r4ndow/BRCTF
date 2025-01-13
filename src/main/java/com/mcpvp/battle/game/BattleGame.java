@@ -5,6 +5,7 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.event.FlagDropEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
+import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.game.listener.BattlePermanentGameListener;
 import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
 import com.mcpvp.battle.game.state.BattleGameStateHandler;
@@ -15,11 +16,9 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -30,7 +29,6 @@ import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
-import com.mcpvp.battle.flag.FlagListener;
 
 @Log4j2
 @Getter
@@ -162,6 +160,18 @@ public class BattleGame extends EasyLifecycle {
 		return Bukkit.getOnlinePlayers().stream()
 				.filter(this::isParticipant)
 				.toList();
+	}
+
+	/**
+	 * @return The team that won this game (eg by meeting the required number of caps).
+	 * Returns null if no team has won.
+	 */
+	@Nullable
+	public BattleTeam getWinner() {
+		return teamManager.getTeams().stream()
+			.filter(t -> t.getCaptures() == config.getCaps())
+			.findFirst()
+			.orElse(null);
 	}
 
 }

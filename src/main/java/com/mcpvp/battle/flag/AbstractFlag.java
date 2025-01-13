@@ -4,18 +4,16 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.item.NBTUtil;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import javax.annotation.Nullable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import javax.annotation.Nullable;
 
 /**
  * Encapsulates functionality common to all flags such as pickup timers,

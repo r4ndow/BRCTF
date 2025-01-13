@@ -1,12 +1,7 @@
 package com.mcpvp.battle.options;
 
 import com.mcpvp.battle.map.BattleMapCategory;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 import java.util.ArrayList;

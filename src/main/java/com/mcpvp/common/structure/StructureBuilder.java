@@ -1,16 +1,15 @@
 package com.mcpvp.common.structure;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * A utility class that makes it easy to add blocks to a structure. Building a structure is a two-step process:

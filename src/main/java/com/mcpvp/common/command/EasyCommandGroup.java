@@ -1,7 +1,6 @@
 package com.mcpvp.common.command;
 
 import com.mcpvp.battle.util.cmd.CmdUtil;
-
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;

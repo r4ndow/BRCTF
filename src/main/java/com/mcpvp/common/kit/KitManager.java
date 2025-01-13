@@ -1,17 +1,15 @@
 package com.mcpvp.common.kit;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.annotation.Nullable;
-
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 /**
  * One-stop shop for managing KitTypes and Kits. There are two important concepts:

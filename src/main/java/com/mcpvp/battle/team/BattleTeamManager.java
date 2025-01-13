@@ -1,5 +1,6 @@
 package com.mcpvp.battle.team;
 
+import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.event.PlayerLeaveTeamEvent;
 import com.mcpvp.battle.util.Colors;
@@ -7,17 +8,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import javax.annotation.Nullable;
-
-import com.mcpvp.battle.config.BattleTeamConfig;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Manages a set of unique teams. This should be used per-game since teams are per-game.

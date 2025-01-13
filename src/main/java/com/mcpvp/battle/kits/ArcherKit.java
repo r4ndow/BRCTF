@@ -1,7 +1,10 @@
 package com.mcpvp.battle.kits;
 
-import java.util.Map;
-
+import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.battle.util.C;
+import com.mcpvp.common.item.ItemBuilder;
+import com.mcpvp.common.kit.KitItem;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
@@ -13,11 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.kit.BattleKit;
-import com.mcpvp.battle.util.C;
-import com.mcpvp.common.item.ItemBuilder;
-import com.mcpvp.common.kit.KitItem;
+import java.util.Map;
 
 // TODO remove arrows on respawn
 public class ArcherKit extends BattleKit {

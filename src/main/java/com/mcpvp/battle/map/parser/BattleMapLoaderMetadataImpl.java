@@ -1,17 +1,16 @@
 package com.mcpvp.battle.map.parser;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.BlockFace;
-
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.util.LookUtil;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.BlockFace;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
     

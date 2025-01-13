@@ -1,29 +1,21 @@
 package com.mcpvp.battle.flag;
 
 import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.event.FlagCaptureEvent;
-import com.mcpvp.battle.event.FlagDropEvent;
-import com.mcpvp.battle.event.FlagPickupEvent;
-import com.mcpvp.battle.event.FlagRecoverEvent;
-import com.mcpvp.battle.event.FlagStealEvent;
-import com.mcpvp.battle.event.FlagTakeEvent;
-import com.mcpvp.battle.event.PlayerResignEvent;
+import com.mcpvp.battle.event.*;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
-
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+
+import java.util.Optional;
 
 @Getter
 @RequiredArgsConstructor

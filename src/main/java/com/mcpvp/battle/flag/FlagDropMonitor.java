@@ -5,7 +5,6 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.FlagDropEvent;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.common.event.EasyListener;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.event.EventHandler;

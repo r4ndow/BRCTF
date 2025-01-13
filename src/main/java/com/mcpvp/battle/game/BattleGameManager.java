@@ -9,7 +9,6 @@ import com.mcpvp.battle.map.parser.BattleMapLoaderMetadataImpl;
 import com.mcpvp.battle.map.parser.BattleMapLoaderSignImpl;
 import com.mcpvp.battle.scoreboard.BattleScoreboardManager;
 import com.mcpvp.battle.team.BattleTeamManager;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.World;

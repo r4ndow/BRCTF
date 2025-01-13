@@ -1,17 +1,15 @@
 package com.mcpvp.common;
 
+import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.event.TickEvent;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.plugin.Plugin;
-
-import com.mcpvp.common.event.EasyListener;
-import com.mcpvp.common.event.TickEvent;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Iterator;

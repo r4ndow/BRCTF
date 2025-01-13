@@ -1,14 +1,13 @@
 package com.mcpvp.battle.kit.item;
 
-import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
-
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
+import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 
 public class FlagCompassItem extends KitItem {
 

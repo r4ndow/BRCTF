@@ -1,12 +1,11 @@
 package com.mcpvp.battle.kit;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.plugin.Plugin;
-
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitManager;
+import org.bukkit.plugin.Plugin;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BattleKitManager extends KitManager {
 

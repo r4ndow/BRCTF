@@ -1,10 +1,10 @@
 package com.mcpvp.common.structure;
 
+import org.bukkit.block.Block;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.bukkit.block.Block;
 
 /**
  * Manages a list of placed structures to prevent collisions. Also enforces restrictions.

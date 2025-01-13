@@ -1,14 +1,12 @@
 package com.mcpvp.battle.config;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.mcpvp.battle.team.BattleTeam;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bukkit.Location;
 
-import com.mcpvp.battle.team.BattleTeam;
-
-import lombok.Data;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Configuration for a single game, most of which is parsed from map data.

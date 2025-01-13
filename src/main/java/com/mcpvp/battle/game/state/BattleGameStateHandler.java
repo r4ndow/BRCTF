@@ -4,7 +4,6 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.event.EasyListener;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;

@@ -1,14 +1,5 @@
 package com.mcpvp.battle.kit;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.text.WordUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.item.FlagCompassItem;
@@ -18,6 +9,15 @@ import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureViolation;
+import org.apache.commons.lang3.text.WordUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class BattleKit extends Kit {
 

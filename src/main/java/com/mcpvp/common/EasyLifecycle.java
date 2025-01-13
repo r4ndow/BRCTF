@@ -1,11 +1,10 @@
 package com.mcpvp.common;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.mcpvp.common.event.EasyListener;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.mcpvp.common.event.EasyListener;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Allows different "live" objects to be attached, such as listeners. When {@link #shutdown()} is called,

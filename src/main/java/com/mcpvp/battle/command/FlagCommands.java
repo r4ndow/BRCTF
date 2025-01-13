@@ -4,7 +4,6 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.util.cmd.CmdUtil;
 import com.mcpvp.common.command.EasyCommand;
 import com.mcpvp.common.command.EasyCommandGroup;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

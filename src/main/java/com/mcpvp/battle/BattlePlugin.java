@@ -1,21 +1,13 @@
 package com.mcpvp.battle;
 
-import com.mcpvp.battle.command.FlagCommands;
-import com.mcpvp.battle.command.KitCommand;
-import com.mcpvp.battle.command.NextCommand;
-import com.mcpvp.battle.command.PlaceCommand;
-import com.mcpvp.battle.command.StartCommand;
-import com.mcpvp.battle.command.SwitchCommand;
-import com.mcpvp.battle.command.TimerCommand;
+import com.mcpvp.battle.command.*;
 import com.mcpvp.common.event.TickEvent;
-
 import lombok.Getter;
 import lombok.SneakyThrows;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BattlePlugin extends JavaPlugin {
 	

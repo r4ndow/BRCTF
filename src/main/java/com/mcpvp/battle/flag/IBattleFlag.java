@@ -2,7 +2,6 @@ package com.mcpvp.battle.flag;
 
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.time.Expiration;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;

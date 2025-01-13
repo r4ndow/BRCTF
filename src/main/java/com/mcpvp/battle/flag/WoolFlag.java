@@ -3,9 +3,7 @@ package com.mcpvp.battle.flag;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.util.BattleUtil;
 import com.mcpvp.common.item.ItemBuilder;
-
 import lombok.NonNull;
-
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,11 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import javax.annotation.Nullable;
 
 public class WoolFlag extends AbstractFlag {
 

@@ -5,15 +5,14 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.team.BattleTeam;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
 public class BattleMatch {

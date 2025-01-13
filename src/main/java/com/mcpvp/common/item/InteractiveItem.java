@@ -1,5 +1,6 @@
 package com.mcpvp.common.item;
 
+import com.mcpvp.common.event.EasyListener;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -15,8 +16,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-
-import com.mcpvp.common.event.EasyListener;
 
 import java.util.ArrayList;
 import java.util.List;

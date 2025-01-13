@@ -1,12 +1,11 @@
 package com.mcpvp.battle.command;
 
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
-
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
+import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 public class SwitchCommand extends BattleCommand {
 

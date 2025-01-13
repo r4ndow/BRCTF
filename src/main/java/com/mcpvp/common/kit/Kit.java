@@ -1,18 +1,16 @@
 package com.mcpvp.common.kit;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import com.mcpvp.common.EasyLifecycle;
+import com.mcpvp.common.event.EasyListener;
+import lombok.Getter;
+import lombok.NonNull;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 
-import com.mcpvp.common.EasyLifecycle;
-import com.mcpvp.common.event.EasyListener;
-
-import lombok.Getter;
-import lombok.NonNull;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * An instance of this class represents a "live" instance of a KitType. Every

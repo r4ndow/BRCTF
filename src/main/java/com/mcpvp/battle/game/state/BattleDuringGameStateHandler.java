@@ -4,16 +4,11 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.FlagCaptureEvent;
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
-import com.mcpvp.battle.flag.FlagCaptureMonitor;
-import com.mcpvp.battle.flag.FlagDropMonitor;
-import com.mcpvp.battle.flag.FlagPickupMonitor;
-import com.mcpvp.battle.flag.FlagRecoverMonitor;
-import com.mcpvp.battle.flag.FlagStealMonitor;
+import com.mcpvp.battle.flag.*;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.kit.KitSelectedEvent;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -35,7 +30,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 	@Override
 	public void enterState() {
 		super.enterState();
-		
+
 		attach(new FlagStealMonitor(plugin, game.getBattle(), game));
 		attach(new FlagDropMonitor(plugin, game.getBattle(), game));
 		attach(new FlagPickupMonitor(plugin, game.getBattle(), game));

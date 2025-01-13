@@ -1,10 +1,9 @@
 package com.mcpvp.common.kit;
 
+import com.mcpvp.common.item.InteractiveItem;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import com.mcpvp.common.item.InteractiveItem;
-
-import lombok.Getter;
 
 /**
  * An item tied to an instance of a kit, with extra utilities.

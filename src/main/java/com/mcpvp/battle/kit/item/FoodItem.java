@@ -1,10 +1,9 @@
 package com.mcpvp.battle.kit.item;
 
-import org.bukkit.inventory.ItemStack;
-
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
+import org.bukkit.inventory.ItemStack;
 
 public class FoodItem extends KitItem {
     

@@ -1,18 +1,16 @@
 package com.mcpvp.battle.team;
 
+import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.flag.IBattleFlag;
 import com.mcpvp.battle.flag.WoolFlag;
 import com.mcpvp.battle.util.Colors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import com.mcpvp.battle.config.BattleTeamConfig;
 
 @Getter
 @AllArgsConstructor

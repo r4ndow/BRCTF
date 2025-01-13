@@ -8,7 +8,6 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.util.C;
 import com.mcpvp.battle.util.ScoreboardUtil;
 import com.mcpvp.common.EasyLifecycle;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
@@ -65,13 +64,13 @@ public class BattleScoreboardManager extends EasyLifecycle {
 	}
 	
 	private void createTeam(Scoreboard scoreboard, BattleTeam bt) {
-		// Register the team.
+		// Register the team
 		Team team = scoreboard.registerNewTeam(getTeamName(bt));
 		team.setAllowFriendlyFire(true);
 		team.setPrefix(bt.getColor().toString());
 		
 		// Add all players to the team. From here the join and quit
-		// events are responsible for updating team members.
+		// events are responsible for updating team members
 		for (Player player : Bukkit.getOnlinePlayers())
 			if (bt.contains(player))
 				team.addEntry(player.getName());
@@ -84,7 +83,6 @@ public class BattleScoreboardManager extends EasyLifecycle {
 	private String getTeamName(BattleTeam bt) {
 		return "team_" + bt.getId();
 	}
-
 	
 	private List<String> getScores(Player player) {
         ScoreboardUtil.setMaxLength(48);

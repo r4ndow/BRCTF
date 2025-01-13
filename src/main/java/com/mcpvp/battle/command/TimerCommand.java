@@ -1,12 +1,11 @@
 package com.mcpvp.battle.command;
 
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
-
 import com.mcpvp.battle.Battle;
 import com.mcpvp.common.command.EasyCommand;
 import com.mcpvp.common.command.EasyCommandGroup;
+import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 public class TimerCommand extends EasyCommandGroup {
     

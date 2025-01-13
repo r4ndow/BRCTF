@@ -1,10 +1,8 @@
 package com.mcpvp.battle.config;
 
-import lombok.RequiredArgsConstructor;
-
-import org.bukkit.Location;
-
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.Location;
 
 /**
  * Configuration for a single team within one game.

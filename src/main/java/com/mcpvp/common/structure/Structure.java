@@ -1,14 +1,12 @@
 package com.mcpvp.common.structure;
 
+import com.mcpvp.common.EasyLifecycle;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.block.Block;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.bukkit.block.Block;
-
-import com.mcpvp.common.EasyLifecycle;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * A structure is a collection of blocks which can be placed and removed all at once.

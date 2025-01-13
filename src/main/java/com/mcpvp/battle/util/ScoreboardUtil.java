@@ -1,10 +1,9 @@
 package com.mcpvp.battle.util;
 
+import com.mcpvp.common.item.ItemUtil;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-
-import com.mcpvp.common.item.ItemUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;

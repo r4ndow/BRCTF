@@ -9,7 +9,6 @@ import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.entity.Player;

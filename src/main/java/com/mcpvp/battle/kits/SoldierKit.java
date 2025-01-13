@@ -1,11 +1,12 @@
 package com.mcpvp.battle.kits;
 
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-
+import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.common.event.EventUtil;
+import com.mcpvp.common.event.TickEvent;
+import com.mcpvp.common.item.ItemBuilder;
+import com.mcpvp.common.kit.KitItem;
+import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,14 +17,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.kit.BattleKit;
-import com.mcpvp.common.event.EventUtil;
-import com.mcpvp.common.event.TickEvent;
-import com.mcpvp.common.item.ItemBuilder;
-import com.mcpvp.common.kit.KitItem;
-
-import lombok.extern.log4j.Log4j2;
+import javax.annotation.Nullable;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
 @Log4j2
 public class SoldierKit extends BattleKit {
