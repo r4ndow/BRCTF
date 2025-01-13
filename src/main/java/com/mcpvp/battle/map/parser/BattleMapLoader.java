@@ -5,7 +5,7 @@ import com.mcpvp.battle.map.BattleMapData;
 import org.bukkit.World;
 
 public interface BattleMapLoader {
- 
-	BattleGameConfig parse(BattleMapData map, World world);
-	
+
+    BattleGameConfig parse(BattleMapData map, World world);
+
 }

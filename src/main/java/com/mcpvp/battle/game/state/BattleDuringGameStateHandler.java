@@ -22,104 +22,104 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class BattleDuringGameStateHandler extends BattleGameStateHandler {
-	
-	public BattleDuringGameStateHandler(BattlePlugin plugin, BattleGame game) {
-		super(plugin, game);
-	}
-	
-	@Override
-	public void enterState() {
-		super.enterState();
 
-		attach(new FlagStealMonitor(plugin, game.getBattle(), game));
-		attach(new FlagDropMonitor(plugin, game.getBattle(), game));
-		attach(new FlagPickupMonitor(plugin, game.getBattle(), game));
-		attach(new FlagRecoverMonitor(plugin, game.getBattle(), game));
-		attach(new FlagCaptureMonitor(plugin, game.getBattle(), game));
-		
-		game.getTeamManager().getTeams().forEach(bt -> {
-			bt.getFlag().setLocked(false);
-		});
+    public BattleDuringGameStateHandler(BattlePlugin plugin, BattleGame game) {
+        super(plugin, game);
+    }
 
-		game.getBattle().getMatch().getTimer().setSeconds(game.getConfig().getTime() * 60);
-	}
+    @Override
+    public void enterState() {
+        super.enterState();
 
-	@Override
-	public void leaveState() {
-		super.leaveState();
-		Bukkit.broadcastMessage("Game over!");
-	}
-	
-	@EventHandler
-	public void onJoinTeam(PlayerJoinTeamEvent event) {
-		game.respawn(event.getPlayer());
-	}
-	
-	@EventHandler
-	public void onParticipate(PlayerParticipateEvent event) {
-		game.respawn(event.getPlayer());
-	}
+        attach(new FlagStealMonitor(plugin, game.getBattle(), game));
+        attach(new FlagDropMonitor(plugin, game.getBattle(), game));
+        attach(new FlagPickupMonitor(plugin, game.getBattle(), game));
+        attach(new FlagRecoverMonitor(plugin, game.getBattle(), game));
+        attach(new FlagCaptureMonitor(plugin, game.getBattle(), game));
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onKitSelected(KitSelectedEvent event) {
-		game.respawn(event.getPlayer());
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onDeath(EntityDamageEvent event) {
-		if (event.getEntity() instanceof Player player && player.getHealth() - event.getFinalDamage() <= 0) {
-			game.respawn(player);
+        game.getTeamManager().getTeams().forEach(bt -> {
+            bt.getFlag().setLocked(false);
+        });
 
-			// Canceling the event causes no damage splat animation
-			event.setDamage(0);
-		}
-	}
+        game.getBattle().getMatch().getTimer().setSeconds(game.getConfig().getTime() * 60);
+    }
 
-	@EventHandler
-	public void onActualDeath(PlayerDeathEvent event) {
-		game.respawn(event.getEntity());
-	}
-		
-	@EventHandler
-	public void onRespawn(PlayerRespawnEvent event) {
-		if (game.isParticipant(event.getPlayer())) {
-			game.respawn(event.getPlayer());
-		}
-	}
-	
-	@EventHandler
-	public void onDamageWhileInSpawn(EntityDamageEvent event) {
-		if (!(event.getEntity() instanceof Player player)) {
-			return;
-		}
-		
-		BattleTeam team = game.getTeamManager().getTeam(player);
-		Block spawnBlock = game.getConfig().getTeamConfig(team).getSpawn().getBlock().getRelative(BlockFace.DOWN);
-		Block onBlock = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
-		
-		if (spawnBlock.getType() != Material.AIR && spawnBlock.getType() == onBlock.getType()) {
-			event.setCancelled(true);
-		}
-	}
+    @Override
+    public void leaveState() {
+        super.leaveState();
+        Bukkit.broadcastMessage("Game over!");
+    }
 
-	@EventHandler
-	public void onDamageSameTeam(EntityDamageByEntityEvent event) {
-		if (event.getEntity() instanceof Player damaged && event.getDamager() instanceof Player damager) {
-			BattleTeam damagedTeam = game.getTeamManager().getTeam(damaged);
-			BattleTeam damagerTeam = game.getTeamManager().getTeam(damager);
+    @EventHandler
+    public void onJoinTeam(PlayerJoinTeamEvent event) {
+        game.respawn(event.getPlayer());
+    }
 
-			if (damagedTeam == damagerTeam) {
-				event.setCancelled(true);
-			}
-		}
-	}
+    @EventHandler
+    public void onParticipate(PlayerParticipateEvent event) {
+        game.respawn(event.getPlayer());
+    }
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onCapture(FlagCaptureEvent event) {
-		// Game over, the team won!
-		if (event.getPlayerTeam().getCaptures() == game.getConfig().getCaps()) {
-			game.setState(BattleGameState.AFTER);
-		}
-	}
-	
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onKitSelected(KitSelectedEvent event) {
+        game.respawn(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDeath(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player player && player.getHealth() - event.getFinalDamage() <= 0) {
+            game.respawn(player);
+
+            // Canceling the event causes no damage splat animation
+            event.setDamage(0);
+        }
+    }
+
+    @EventHandler
+    public void onActualDeath(PlayerDeathEvent event) {
+        game.respawn(event.getEntity());
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        if (game.isParticipant(event.getPlayer())) {
+            game.respawn(event.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void onDamageWhileInSpawn(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+
+        BattleTeam team = game.getTeamManager().getTeam(player);
+        Block spawnBlock = game.getConfig().getTeamConfig(team).getSpawn().getBlock().getRelative(BlockFace.DOWN);
+        Block onBlock = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+
+        if (spawnBlock.getType() != Material.AIR && spawnBlock.getType() == onBlock.getType()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onDamageSameTeam(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Player damaged && event.getDamager() instanceof Player damager) {
+            BattleTeam damagedTeam = game.getTeamManager().getTeam(damaged);
+            BattleTeam damagerTeam = game.getTeamManager().getTeam(damager);
+
+            if (damagedTeam == damagerTeam) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onCapture(FlagCaptureEvent event) {
+        // Game over, the team won!
+        if (event.getPlayerTeam().getCaptures() == game.getConfig().getCaps()) {
+            game.setState(BattleGameState.AFTER);
+        }
+    }
+
 }

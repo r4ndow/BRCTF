@@ -13,7 +13,7 @@ import org.bukkit.block.BlockState;
 @Getter
 @RequiredArgsConstructor
 public class StructureBlock {
-    
+
     private final Block block;
     private final BlockState original;
 

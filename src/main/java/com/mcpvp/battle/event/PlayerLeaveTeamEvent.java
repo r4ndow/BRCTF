@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 @EqualsAndHashCode(callSuper = false)
 public class PlayerLeaveTeamEvent extends EasyEvent {
 
-	private final Player player;
-	private final BattleTeam team;
-	
+    private final Player player;
+    private final BattleTeam team;
+
 }

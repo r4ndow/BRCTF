@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 @EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor
 public class KitAttemptSelectEvent extends EasyCancellableEvent {
-    
+
     private final Player player;
     private final KitDefinition kitDefinition;
 

@@ -6,13 +6,13 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 public interface EasyListener extends Listener, PluginContainer {
-	
-	default void register() {
-		Bukkit.getPluginManager().registerEvents(this, getPlugin());
-	}
-	
-	default void unregister() {
-		HandlerList.unregisterAll(this);
-	}
-	
+
+    default void register() {
+        Bukkit.getPluginManager().registerEvents(this, getPlugin());
+    }
+
+    default void unregister() {
+        HandlerList.unregisterAll(this);
+    }
+
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 // TODO remove arrows on respawn
 public class ArcherKit extends BattleKit {
 
-	private static final int HEADSHOT_DIST = 30;
+    private static final int HEADSHOT_DIST = 30;
 
     public ArcherKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
@@ -34,7 +34,7 @@ public class ArcherKit extends BattleKit {
 
     @Override
     public ItemStack[] createArmor() {
-        return new ItemStack[] {
+        return new ItemStack[]{
                 new ItemStack(Material.CHAINMAIL_BOOTS),
                 new ItemStack(Material.CHAINMAIL_LEGGINGS),
                 new ItemStack(Material.CHAINMAIL_CHESTPLATE),
@@ -61,31 +61,31 @@ public class ArcherKit extends BattleKit {
         }
     }
 
-	private void onHit(EntityDamageByEntityEvent event) {
-		if (event.isCancelled())
-			return;
-		
-		if (!(event.getDamager() instanceof Arrow arrow))
-			return;
-		
-		if (!(arrow.getShooter() instanceof Player shooter))
-			return;
-		
-		if (!(event.getEntity() instanceof LivingEntity hit))
-			return;
-		
-		int distance = (int) hit.getLocation().distance(shooter.getLocation());
-		
-		if (hit instanceof ArmorStand)
-			return;
-		
-		if (distance < HEADSHOT_DIST)
-			return;
-		
-		event.setDamage(1000);
+    private void onHit(EntityDamageByEntityEvent event) {
+        if (event.isCancelled())
+            return;
 
-		hit.sendMessage(C.info(C.GOLD) + "You were sniped by " + C.highlight(shooter.getName()) + " from " + distance + " blocks!");
-		shooter.sendMessage(C.info(C.GOLD) + "You sniped " + C.highlight(hit.getName()) + " from " + distance + " blocks!");
-	}
+        if (!(event.getDamager() instanceof Arrow arrow))
+            return;
+
+        if (!(arrow.getShooter() instanceof Player shooter))
+            return;
+
+        if (!(event.getEntity() instanceof LivingEntity hit))
+            return;
+
+        int distance = (int) hit.getLocation().distance(shooter.getLocation());
+
+        if (hit instanceof ArmorStand)
+            return;
+
+        if (distance < HEADSHOT_DIST)
+            return;
+
+        event.setDamage(1000);
+
+        hit.sendMessage(C.info(C.GOLD) + "You were sniped by " + C.highlight(shooter.getName()) + " from " + distance + " blocks!");
+        shooter.sendMessage(C.info(C.GOLD) + "You sniped " + C.highlight(hit.getName()) + " from " + distance + " blocks!");
+    }
 
 }

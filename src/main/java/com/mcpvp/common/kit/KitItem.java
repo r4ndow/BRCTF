@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
  * An item tied to an instance of a kit, with extra utilities.
  */
 public class KitItem extends InteractiveItem {
-    
+
     protected final Kit kit;
     @Getter
     private final ItemStack original;
@@ -30,7 +30,7 @@ public class KitItem extends InteractiveItem {
     /**
      * Decrease the number of items in the stack by one, or swap the item to a placeholder
      * if there will be no items left.
-     * 
+     *
      * @param placeholder If the item should be swapped to a placeholder.
      */
     public void decrement(boolean placeholder) {
@@ -50,7 +50,7 @@ public class KitItem extends InteractiveItem {
 
     /**
      * Check if this item has been made into a placeholder by {@link #setPlaceholder()}.
-     * 
+     *
      * @return If this item is a placeholder.
      */
     public boolean isPlaceholder() {
@@ -60,7 +60,7 @@ public class KitItem extends InteractiveItem {
     /**
      * Increases the number of items in the item stack, unless the number of items is already
      * the given max.
-     * 
+     *
      * @param max The maximum amount.
      */
     public void increment(int max) {

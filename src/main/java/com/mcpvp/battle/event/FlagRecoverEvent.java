@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class FlagRecoverEvent extends EasyEvent {
-	
-	private final Player player;
-	private final IBattleFlag flag;
-	
+
+    private final Player player;
+    private final IBattleFlag flag;
+
 }

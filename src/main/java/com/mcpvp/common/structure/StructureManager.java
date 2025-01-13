@@ -10,7 +10,7 @@ import java.util.Optional;
  * Manages a list of placed structures to prevent collisions. Also enforces restrictions.
  */
 public class StructureManager {
-    
+
     private final List<StructureViolationChecker> checkers = new ArrayList<>();
     private final List<Structure> structures = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class StructureManager {
 
     /**
      * Checks the given block for any violations.
-     * 
+     *
      * @param block The block to check.
      * @return All found violations, or an empty list if nothing was found.
      */

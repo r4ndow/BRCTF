@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
-    
-	public BattleGameConfig parse(BattleMapData map, World world) {
+
+    public BattleGameConfig parse(BattleMapData map, World world) {
         BattleGameConfig builder = new BattleGameConfig();
         BattleTeamConfig red = new BattleTeamConfig(1);
         BattleTeamConfig blue = new BattleTeamConfig(2);

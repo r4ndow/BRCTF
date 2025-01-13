@@ -12,10 +12,10 @@ import org.bukkit.event.EventHandler;
 @Getter
 @AllArgsConstructor
 public class FlagCaptureMonitor implements EasyListener {
-    
+
     private final BattlePlugin plugin;
-	private final Battle battle;
-	private final BattleGame game;
+    private final Battle battle;
+    private final BattleGame game;
 
     @EventHandler
     public void onCapture(FlagCaptureEvent event) {

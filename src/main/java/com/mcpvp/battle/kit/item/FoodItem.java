@@ -6,7 +6,7 @@ import com.mcpvp.common.kit.KitItem;
 import org.bukkit.inventory.ItemStack;
 
 public class FoodItem extends KitItem {
-    
+
     public FoodItem(Kit kit, ItemStack itemStack) {
         super(kit, itemStack, true);
         this.onInteract(ev -> {

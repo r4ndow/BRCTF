@@ -33,7 +33,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
     public sealed interface MapSign permits SimpleMapSign, ValueMapSign, TeamMapSign, CalloutSign {
         Block getBlock();
     }
-    
+
     @Data
     @Getter
     @AllArgsConstructor
@@ -41,7 +41,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         private final Block block;
         private final String text;
     }
-    
+
     @Data
     @Getter
     @AllArgsConstructor
@@ -50,7 +50,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         private final String key;
         private final String value;
     }
-    
+
     @Data
     @Getter
     @AllArgsConstructor
@@ -59,14 +59,14 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         private final Integer team;
         private final String text;
     }
-    
+
     /**
      * General:
      * ```
      * {{callout}}
      * Center
      * ```
-     *
+     * <p>
      * Team specific:
      * ```
      * {{callout 2}}
@@ -81,7 +81,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         private final Integer team;
         private final String text;
     }
-    
+
     @Override
     public BattleGameConfig parse(BattleMapData map, World world) {
         BattleGameConfig builder = new BattleGameConfig();
@@ -89,11 +89,11 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         builder.getTeamConfigs().add(new BattleTeamConfig(1));
         builder.getTeamConfigs().add(new BattleTeamConfig(2));
         log.info("Parsing map " + map);
-        
+
         // Step 1: find center of the map
         // By default, we assume it's getSpawnLocation
         // But a `spawn_box` sign should override this
-        
+
         // Assume spawn, load chunks
         // Check for new center, detect if changed
         // If changed: reload new chunks, process
@@ -103,27 +103,27 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         chunks.forEach(cs -> this.highlightChunk(cs, world));
         List<MapSign> signs = this.getAllMapSigns(chunks);
         Optional<MapSign> spawnBox = signs
-            .stream()
-            .filter(ms -> ms instanceof SimpleMapSign sms && sms.getText().equals("spawn_box"))
-            .findAny();
+                .stream()
+                .filter(ms -> ms instanceof SimpleMapSign sms && sms.getText().equals("spawn_box"))
+                .findAny();
         Location foundCenter = spawnBox.map(ms -> ms.getBlock().getLocation()).orElse(assumedCenter);
         boolean spawnChanged = foundCenter.getBlockX() != assumedCenter.getBlockX() || foundCenter.getBlockZ() != assumedCenter.getBlockZ();
 
         builder.setSpawn(center(foundCenter));
-        
+
         if (spawnChanged) {
             log.info("New spawn location found, re-loading chunks");
             chunks = getChunkSnapshotsAround(foundCenter, 16);
             signs = this.getAllMapSigns(chunks);
         }
-        
+
         loadSignsIntoConfig(builder, signs);
 
         return builder;
     }
-    
+
     private void loadSignsIntoConfig(
-        BattleGameConfig builder, List<MapSign> signs
+            BattleGameConfig builder, List<MapSign> signs
     ) {
         for (MapSign sign : signs) {
             if (sign instanceof TeamMapSign teamSign) {
@@ -137,7 +137,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
             }
         }
     }
-    
+
     private void loadSimpleSign(BattleGameConfig builder, SimpleMapSign sign) {
         switch (sign.getText()) {
             case "restrict" -> builder.getRestricted().add(sign.getBlock().getLocation());
@@ -145,7 +145,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
             default -> log.warn("Unknown simple config given: " + sign);
         }
     }
-    
+
     private void loadValueSign(BattleGameConfig builder, ValueMapSign sign) {
         switch (sign.getKey()) {
             case "caps" -> builder.setCaps(Integer.parseInt(sign.getValue()));
@@ -157,14 +157,14 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
     private void loadTeamSign(BattleGameConfig builder, TeamMapSign sign) {
         BattleTeamConfig teamConfig = builder.getTeamConfig(sign.getTeam());
         Location loc = sign.getBlock().getLocation();
-		
-		switch (sign.getText()) {
+
+        switch (sign.getText()) {
             case "spawn" -> teamConfig.setSpawn(center(loc));
             case "flag" -> teamConfig.setFlag(center(loc));
             default -> log.warn("Unknown team config given: " + sign);
         }
     }
-    
+
     private void loadCalloutSign(BattleGameConfig builder, CalloutSign sign) {
         if (sign.getTeam() == null) {
             builder.getCallouts().add(new BattleCallout(sign.getBlock().getLocation(), null, sign.getText()));
@@ -191,7 +191,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
             if (line.isBlank()) {
                 continue;
             }
-            
+
             if (line.matches(RE_VAL_SIGN)) {
                 found.add(new ValueMapSign(block, line.replaceAll(RE_VAL_SIGN, "$1"), line.replaceAll(RE_VAL_SIGN, "$2")));
             } else if (line.matches(RE_CALLOUT_SIGN)) {
@@ -249,22 +249,22 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         }
         return chunkSnapshots;
     }
-    
+
     private void highlightChunk(ChunkSnapshot snapshot, World world) {
         world.getChunkAt(snapshot.getX(), snapshot.getZ()).getBlock(10, 128, 10).setType(Material.DIAMOND_BLOCK);
     }
-    
+
     private Location center(Location loc) {
-		if (loc.getBlock().getState().getData() instanceof Directional) {
-			loc = getSignLocation(loc);
-		}
+        if (loc.getBlock().getState().getData() instanceof Directional) {
+            loc = getSignLocation(loc);
+        }
         return loc.clone().add(0.5, 0, 0.5);
     }
-	
-	private Location getSignLocation(Location sign) {
-		Directional dir = (Directional) sign.getBlock().getState().getData();
-		Location targ = sign.getBlock().getRelative(dir.getFacing()).getLocation();
-		return LookUtil.lookAt(sign, targ);
-	}
-    
+
+    private Location getSignLocation(Location sign) {
+        Directional dir = (Directional) sign.getBlock().getState().getData();
+        Location targ = sign.getBlock().getRelative(dir.getFacing()).getLocation();
+        return LookUtil.lookAt(sign, targ);
+    }
+
 }

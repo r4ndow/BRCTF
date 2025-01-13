@@ -19,7 +19,7 @@ public class KitCommand extends BattleCommand {
     @Override
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
         Player player = asPlayer(sender);
-        
+
         KitDefinition kit = this.kitManager.getKitDefinition(args.get(0));
         if (kit != null) {
             if (kitManager.setSelected(player, kit, false)) {
@@ -33,7 +33,6 @@ public class KitCommand extends BattleCommand {
 
         return false;
     }
-    
 
 
 }

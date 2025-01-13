@@ -14,8 +14,8 @@ import org.bukkit.event.EventHandler;
 public class FlagRecoverMonitor implements EasyListener {
 
     private final BattlePlugin plugin;
-	private final Battle battle;
-	private final BattleGame game;
+    private final Battle battle;
+    private final BattleGame game;
 
     @EventHandler
     public void onRecover(FlagRecoverEvent event) {

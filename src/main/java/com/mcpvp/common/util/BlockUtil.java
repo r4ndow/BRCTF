@@ -13,7 +13,7 @@ public class BlockUtil {
      * @param type   The type of Material to look for.
      * @param radius The radius to search in.
      * @return The closest Location of a block of the given type, or null if none is
-     *         found in the given radius.
+     * found in the given radius.
      */
     public static Block getNearestType(Block block, Material type, int radius) {
         for (int i = 0; i < radius; i++) {
@@ -37,7 +37,7 @@ public class BlockUtil {
      * @param center The center to get locations around.
      * @param radius The maximum distance from the center.
      * @return An Array of all the Locations within the given (spherical) distance
-     *         of the center.
+     * of the center.
      */
     public static List<Block> getBlocksInRadius(Block center, int radius) {
         List<Block> blocks = new ArrayList<>();

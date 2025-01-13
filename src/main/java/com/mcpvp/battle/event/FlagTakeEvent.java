@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 @EqualsAndHashCode(callSuper = false)
 public class FlagTakeEvent extends EasyCancellableEvent {
 
-	private final Player player;
-	private final IBattleFlag flag;
-	
+    private final Player player;
+    private final IBattleFlag flag;
+
 }

@@ -35,143 +35,143 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class BattleGame extends EasyLifecycle {
 
-	private final BattlePlugin plugin;
-	private final Battle battle;
-	private final BattleMapData map;
-	private final World world;
-	private final BattleGameConfig config;
-	private final BattleTeamManager teamManager;
-	private final BattleScoreboardManager scoreboardManager;
+    private final BattlePlugin plugin;
+    private final Battle battle;
+    private final BattleMapData map;
+    private final World world;
+    private final BattleGameConfig config;
+    private final BattleTeamManager teamManager;
+    private final BattleScoreboardManager scoreboardManager;
 
-	@Nullable
-	private BattleGameState state = null;
-	private BattleGameStateHandler stateHandler;
+    @Nullable
+    private BattleGameState state = null;
+    private BattleGameStateHandler stateHandler;
 
-	public void setup() {
-		log.info("Setup game on map " + map);
+    public void setup() {
+        log.info("Setup game on map " + map);
 
-		attach(new BattlePermanentGameListener(plugin, this));
-		attach(new FlagListener(plugin, this));
-		attach(scoreboardManager);
+        attach(new BattlePermanentGameListener(plugin, this));
+        attach(new FlagListener(plugin, this));
+        attach(scoreboardManager);
 
-		scoreboardManager.init();
+        scoreboardManager.init();
 
-		world.setGameRuleValue("doDaylightCycle", "false");
-		world.setGameRuleValue("naturalGeneration", "false");
+        world.setGameRuleValue("doDaylightCycle", "false");
+        world.setGameRuleValue("naturalGeneration", "false");
 
-		setState(BattleGameState.BEFORE);
-	}
+        setState(BattleGameState.BEFORE);
+    }
 
-	public void stop() {
-		setState(null);
-		super.shutdown();
-	}
+    public void stop() {
+        setState(null);
+        super.shutdown();
+    }
 
-	/**
-	 * Leaves the current state (if present) and enters the given state (if not
-	 * null).
-	 * 
-	 * @param state The state to enter.
-	 */
-	public void setState(BattleGameState state) {
-		if (this.state != state) {
-			if (this.state != null) {
-				leaveState(this.state);
-			}
+    /**
+     * Leaves the current state (if present) and enters the given state (if not
+     * null).
+     *
+     * @param state The state to enter.
+     */
+    public void setState(BattleGameState state) {
+        if (this.state != state) {
+            if (this.state != null) {
+                leaveState(this.state);
+            }
 
-			this.state = state;
+            this.state = state;
 
-			if (state != null) {
-				enterState(state);
-			}
-		}
-	}
+            if (state != null) {
+                enterState(state);
+            }
+        }
+    }
 
-	private void enterState(BattleGameState state) {
-		this.stateHandler = switch (state) {
-			case BEFORE, AFTER -> new BattleOutsideGameStateHandler(plugin, this);
-			case DURING -> new BattleDuringGameStateHandler(plugin, this);
-		};
-		this.stateHandler.enterState();
+    private void enterState(BattleGameState state) {
+        this.stateHandler = switch (state) {
+            case BEFORE, AFTER -> new BattleOutsideGameStateHandler(plugin, this);
+            case DURING -> new BattleDuringGameStateHandler(plugin, this);
+        };
+        this.stateHandler.enterState();
 
-		fireParticipateEvents();
-	}
+        fireParticipateEvents();
+    }
 
-	private void leaveState(BattleGameState state) {
-		if (this.stateHandler != null) {
-			this.stateHandler.leaveState();
-		}
-		this.stateHandler = null;
-	}
+    private void leaveState(BattleGameState state) {
+        if (this.stateHandler != null) {
+            this.stateHandler.leaveState();
+        }
+        this.stateHandler = null;
+    }
 
-	/**
-	 * Respawns the player **during the game**. Not before or after.
-	 * 
-	 * @param player The player to respawn.
-	 */
-	public void respawn(Player player) {
-		// Drop the flag if they have it
-		teamManager.getTeams().forEach(bt -> {
-			if (bt.getFlag().getCarrier() == player) {
-				new FlagDropEvent(player, bt.getFlag(), null).call();
-			}
-		});
+    /**
+     * Respawns the player **during the game**. Not before or after.
+     *
+     * @param player The player to respawn.
+     */
+    public void respawn(Player player) {
+        // Drop the flag if they have it
+        teamManager.getTeams().forEach(bt -> {
+            if (bt.getFlag().getCarrier() == player) {
+                new FlagDropEvent(player, bt.getFlag(), null).call();
+            }
+        });
 
-		// Reset negative statues
-		player.setHealth(player.getMaxHealth());
-		player.setFireTicks(0);
+        // Reset negative statues
+        player.setHealth(player.getMaxHealth());
+        player.setFireTicks(0);
 
-		// Clear inventory
-		player.getInventory().clear();
-		player.getInventory().setArmorContents(new ItemStack[4]);
+        // Clear inventory
+        player.getInventory().clear();
+        player.getInventory().setArmorContents(new ItemStack[4]);
 
-		// Teleport to spawn
-		BattleTeam team = getTeamManager().getTeam(player);
-		Location spawn = getConfig().getTeamConfig(team).getSpawn();
-		player.teleport(spawn);
-		player.setVelocity(new Vector());
+        // Teleport to spawn
+        BattleTeam team = getTeamManager().getTeam(player);
+        Location spawn = getConfig().getTeamConfig(team).getSpawn();
+        player.teleport(spawn);
+        player.setVelocity(new Vector());
 
-		// Equip kit
-		battle.getKitManager().createSelected(player);
-	}
+        // Equip kit
+        battle.getKitManager().createSelected(player);
+    }
 
-	public void remove(Player player) {
-		// Remove kit
-		Kit kit = battle.getKitManager().get(player);
-		if (kit != null) {
-			kit.shutdown();
-		}
+    public void remove(Player player) {
+        // Remove kit
+        Kit kit = battle.getKitManager().get(player);
+        if (kit != null) {
+            kit.shutdown();
+        }
 
-		// Remove player from team
-		getTeamManager().setTeam(player, null);
-	}
+        // Remove player from team
+        getTeamManager().setTeam(player, null);
+    }
 
-	private void fireParticipateEvents() {
-		for (Player player : getParticipants()) {
-			new PlayerParticipateEvent(player, this).call();
-		}
-	}
+    private void fireParticipateEvents() {
+        for (Player player : getParticipants()) {
+            new PlayerParticipateEvent(player, this).call();
+        }
+    }
 
-	public boolean isParticipant(Player player) {
-		return player.getGameMode() == GameMode.SURVIVAL;
-	}
+    public boolean isParticipant(Player player) {
+        return player.getGameMode() == GameMode.SURVIVAL;
+    }
 
-	public Collection<? extends Player> getParticipants() {
-		return Bukkit.getOnlinePlayers().stream()
-				.filter(this::isParticipant)
-				.toList();
-	}
+    public Collection<? extends Player> getParticipants() {
+        return Bukkit.getOnlinePlayers().stream()
+                .filter(this::isParticipant)
+                .toList();
+    }
 
-	/**
-	 * @return The team that won this game (eg by meeting the required number of caps).
-	 * Returns null if no team has won.
-	 */
-	@Nullable
-	public BattleTeam getWinner() {
-		return teamManager.getTeams().stream()
-			.filter(t -> t.getCaptures() == config.getCaps())
-			.findFirst()
-			.orElse(null);
-	}
+    /**
+     * @return The team that won this game (eg by meeting the required number of caps).
+     * Returns null if no team has won.
+     */
+    @Nullable
+    public BattleTeam getWinner() {
+        return teamManager.getTeams().stream()
+                .filter(t -> t.getCaptures() == config.getCaps())
+                .findFirst()
+                .orElse(null);
+    }
 
 }

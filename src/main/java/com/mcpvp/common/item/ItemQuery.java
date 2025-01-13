@@ -81,7 +81,7 @@ public class ItemQuery {
 
     /**
      * @param enchants The enchantments to require. All enchantments must be
-     *            present for an ItemStack to pass.
+     *                 present for an ItemStack to pass.
      * @return The instance for chaining.
      */
     public ItemQuery enchants(Map<Enchantment, Integer> enchants) {
@@ -91,7 +91,7 @@ public class ItemQuery {
 
     /**
      * @param enchant An enchantment to require of any level. Other enchantments
-     *            will not cause an ItemStack to fail.
+     *                will not cause an ItemStack to fail.
      * @return The instance for chaining.
      */
     public ItemQuery enchant(Enchantment enchant) {
@@ -101,8 +101,8 @@ public class ItemQuery {
 
     /**
      * @param enchant An enchantment to require. Other enchantments will not
-     *            cause an ItemStack to fail.
-     * @param level The level of the Enchantment to have.
+     *                cause an ItemStack to fail.
+     * @param level   The level of the Enchantment to have.
      * @return The instance for chaining.
      */
     public ItemQuery enchant(Enchantment enchant, int level) {
@@ -130,13 +130,13 @@ public class ItemQuery {
     }
 
     /**
-     * @param key The NBT key to look for.
+     * @param key   The NBT key to look for.
      * @param value The NBT value for the key to look for.
      * @return The instance for chaining.
      */
     public ItemQuery nbt(String key, String value) {
         rules.add(i -> {
-            if(i == null)
+            if (i == null)
                 return false;
             return NBTUtil.hasString(i, key, value);
         });
@@ -212,7 +212,6 @@ public class ItemQuery {
     }
 
     /**
-     *
      * Attempts to find all occurrences of an ItemStack that matches this query.
      * The order of checking is: main inventory, crafting grid, cursor.
      *

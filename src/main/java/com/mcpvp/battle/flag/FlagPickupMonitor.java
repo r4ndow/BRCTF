@@ -12,14 +12,14 @@ import org.bukkit.event.EventHandler;
 @Getter
 @AllArgsConstructor
 public class FlagPickupMonitor implements EasyListener {
-	
-	private final BattlePlugin plugin;
-	private final Battle battle;
-	private final BattleGame game;
-	
-	@EventHandler
-	public void onPickup(FlagPickupEvent event) {
-		event.getFlag().pickup(event.getPlayer());
-	}
-	
+
+    private final BattlePlugin plugin;
+    private final Battle battle;
+    private final BattleGame game;
+
+    @EventHandler
+    public void onPickup(FlagPickupEvent event) {
+        event.getFlag().pickup(event.getPlayer());
+    }
+
 }

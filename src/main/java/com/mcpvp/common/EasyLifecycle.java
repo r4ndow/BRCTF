@@ -12,45 +12,45 @@ import java.util.Set;
  */
 public class EasyLifecycle {
 
-	private final Set<EasyListener> listeners = new HashSet<>();
-	private final Set<BukkitTask> tasks = new HashSet<>();
-	private final Set<EasyLifecycle> lifecycles = new HashSet<>();
+    private final Set<EasyListener> listeners = new HashSet<>();
+    private final Set<BukkitTask> tasks = new HashSet<>();
+    private final Set<EasyLifecycle> lifecycles = new HashSet<>();
 
-	/**
-	 * Registers the given listener. It will be unregistered on {@link #shutdown()}.
-	 * 
-	 * @param listener The listener to register.
-	 */
-	protected void attach(EasyListener listener) {
-		this.listeners.add(listener);
-		listener.register();
-	}
+    /**
+     * Registers the given listener. It will be unregistered on {@link #shutdown()}.
+     *
+     * @param listener The listener to register.
+     */
+    protected void attach(EasyListener listener) {
+        this.listeners.add(listener);
+        listener.register();
+    }
 
-	/**
-	 * Attaches the given task. It will be cancelled on {@link #shutdown()}.
-	 * 
-	 * @param task The task to attach.
-	 */
-	protected void attach(BukkitTask task) {
-		this.tasks.add(task);
-	}
+    /**
+     * Attaches the given task. It will be cancelled on {@link #shutdown()}.
+     *
+     * @param task The task to attach.
+     */
+    protected void attach(BukkitTask task) {
+        this.tasks.add(task);
+    }
 
-	/**
-	 * Attaches the given lifecycle. It will be shutdown on {@link #shutdown()}.
-	 * 
-	 * @param task The task to attach.
-	 */
-	protected void attach(EasyLifecycle lifecycle) {
-		this.lifecycles.add(lifecycle);
-	}
+    /**
+     * Attaches the given lifecycle. It will be shutdown on {@link #shutdown()}.
+     *
+     * @param task The task to attach.
+     */
+    protected void attach(EasyLifecycle lifecycle) {
+        this.lifecycles.add(lifecycle);
+    }
 
-	/**
-	 * End this lifecycle, such as unregistering all listeners.
-	 */
-	public void shutdown() {
-		listeners.forEach(EasyListener::unregister);
-		tasks.forEach(BukkitTask::cancel);
-		lifecycles.forEach(EasyLifecycle::shutdown);
-	}
-	
+    /**
+     * End this lifecycle, such as unregistering all listeners.
+     */
+    public void shutdown() {
+        listeners.forEach(EasyListener::unregister);
+        tasks.forEach(BukkitTask::cancel);
+        lifecycles.forEach(EasyLifecycle::shutdown);
+    }
+
 }

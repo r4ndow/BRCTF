@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * One-stop shop for managing KitTypes and Kits. There are two important concepts:
- * 
+ *
  * <ul>
  *  <li><b>Selected KitType</b>: A user can have a type of Kit selected without an instance existing.
  *  For example, before a game starts, a user has already decided which they want to play. But they have
@@ -29,7 +29,7 @@ public class KitManager {
     private final Plugin plugin;
     private Map<Player, KitDefinition> selected = new ConcurrentHashMap<>();
     private Map<Player, Kit> active = new ConcurrentHashMap<>();
-    
+
     public List<KitDefinition> getKitDefinitions() {
         return Collections.emptyList();
     }

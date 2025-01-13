@@ -30,5 +30,5 @@ public enum BattleKitType implements KitDefinition {
     public Kit create(Plugin plugin, Player player) {
         return creator.apply((BattlePlugin) plugin, player);
     }
-    
+
 }

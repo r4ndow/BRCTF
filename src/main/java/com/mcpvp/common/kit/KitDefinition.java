@@ -6,5 +6,5 @@ import org.bukkit.plugin.Plugin;
 public interface KitDefinition extends KitInfo {
 
     Kit create(Plugin plugin, Player player);
-    
+
 }

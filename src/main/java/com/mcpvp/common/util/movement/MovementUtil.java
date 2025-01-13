@@ -9,7 +9,7 @@ public class MovementUtil {
 
     /**
      * @return The force of gravity that acts on all entities every tick. If an
-     *         entity is on the ground, this is their Y velocity.
+     * entity is on the ground, this is their Y velocity.
      */
     public static final double GRAVITY = -0.0784000015258789;
 
@@ -35,7 +35,7 @@ public class MovementUtil {
     /**
      * @param entity The entity to check.
      * @return True if the player has the velocity of a player standing on the
-     *         ground, and there is a block other than air below them.
+     * ground, and there is a block other than air below them.
      */
     public static boolean isOnGround(Entity entity) {
         return (entity.getVelocity().getY() == GRAVITY || entity.getVelocity().getY() == -0.0)

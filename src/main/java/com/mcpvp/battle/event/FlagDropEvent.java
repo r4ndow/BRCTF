@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class FlagDropEvent extends EasyEvent {
-	
-	private final Player player;
-	private final IBattleFlag flag;
-	private final Item item;
-	
+
+    private final Player player;
+    private final IBattleFlag flag;
+    private final Item item;
+
 }

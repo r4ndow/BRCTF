@@ -15,25 +15,25 @@ import org.bukkit.event.player.PlayerJoinEvent;
 @Getter
 @AllArgsConstructor
 public class BattleScoreboardListener implements EasyListener {
-	
-	private final BattlePlugin plugin;
-	private final Battle battle;
-	private final BattleScoreboardManager scoreboardManager;
-	
-	// Need to have a scoreboard for other join events
-	@EventHandler(priority = EventPriority.LOW)
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		event.getPlayer().setScoreboard(scoreboardManager.create());
-	}
 
-	@EventHandler
-	public void onJoinTeam(PlayerJoinTeamEvent event) {
-		scoreboardManager.setTeam(event.getPlayer(), event.getTeam());
-	}
-	
-	@EventHandler
-	public void onTick(TickEvent event) {
-		Bukkit.getOnlinePlayers().forEach(scoreboardManager::refresh);
-	}
-	
+    private final BattlePlugin plugin;
+    private final Battle battle;
+    private final BattleScoreboardManager scoreboardManager;
+
+    // Need to have a scoreboard for other join events
+    @EventHandler(priority = EventPriority.LOW)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        event.getPlayer().setScoreboard(scoreboardManager.create());
+    }
+
+    @EventHandler
+    public void onJoinTeam(PlayerJoinTeamEvent event) {
+        scoreboardManager.setTeam(event.getPlayer(), event.getTeam());
+    }
+
+    @EventHandler
+    public void onTick(TickEvent event) {
+        Bukkit.getOnlinePlayers().forEach(scoreboardManager::refresh);
+    }
+
 }

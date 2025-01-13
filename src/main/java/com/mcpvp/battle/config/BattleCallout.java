@@ -8,8 +8,8 @@ import org.bukkit.Location;
 @AllArgsConstructor
 public class BattleCallout {
 
-	private final Location location;
-	private final BattleTeamConfig config;
-	private final String text;
-	
+    private final Location location;
+    private final BattleTeamConfig config;
+    private final String text;
+
 }

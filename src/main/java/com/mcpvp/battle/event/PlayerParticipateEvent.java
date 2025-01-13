@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class PlayerParticipateEvent extends EasyEvent {
-	
-	private final Player player;
-	private final BattleGame game;
-	
+
+    private final Player player;
+    private final BattleGame game;
+
 }

@@ -10,7 +10,7 @@ import org.bukkit.Location;
 @Data
 @RequiredArgsConstructor
 public class BattleTeamConfig {
- 
+
     private final int id;
     private Location spawn;
     private Location flag;

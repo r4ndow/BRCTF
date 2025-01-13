@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 public class TimerCommand extends EasyCommandGroup {
-    
+
     private final Battle battle;
 
     public TimerCommand(Battle battle) {

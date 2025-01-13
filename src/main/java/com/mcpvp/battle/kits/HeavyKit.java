@@ -22,7 +22,7 @@ public class HeavyKit extends BattleKit {
 
     @Override
     public ItemStack[] createArmor() {
-        return new ItemStack[] {
+        return new ItemStack[]{
                 new ItemStack(Material.DIAMOND_BOOTS),
                 new ItemStack(Material.DIAMOND_LEGGINGS),
                 new ItemStack(Material.DIAMOND_CHESTPLATE),

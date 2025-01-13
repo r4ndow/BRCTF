@@ -24,5 +24,5 @@ public class SwitchCommand extends BattleCommand {
         teamManager.setTeam(asPlayer(sender), next);
         return true;
     }
-    
+
 }

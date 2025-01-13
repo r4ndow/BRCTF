@@ -38,7 +38,7 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
     /**
      * Performs required setup when this kit is created for a player.
      * Things like registering listeners should be called here.
-     * 
+     *
      * @param player The player this Kit exists for.
      */
     protected void setup(@NonNull Player player) {

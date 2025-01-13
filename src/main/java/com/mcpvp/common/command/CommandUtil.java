@@ -7,13 +7,13 @@ import org.bukkit.command.CommandMap;
 import java.lang.reflect.Field;
 
 public class CommandUtil {
-	
-	@SneakyThrows
-	public static CommandMap getCommandMap() {
-		Field mapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-		mapField.setAccessible(true);
-		
-		return (CommandMap) mapField.get(Bukkit.getServer());
-	}
-	
+
+    @SneakyThrows
+    public static CommandMap getCommandMap() {
+        Field mapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+        mapField.setAccessible(true);
+
+        return (CommandMap) mapField.get(Bukkit.getServer());
+    }
+
 }

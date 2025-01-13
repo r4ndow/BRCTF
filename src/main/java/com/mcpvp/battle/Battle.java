@@ -20,37 +20,37 @@ import java.io.IOException;
 @Getter
 @RequiredArgsConstructor
 public class Battle {
-	
-	private final BattlePlugin plugin;
-	private BattleOptions options;
-	private MapRepo mapRepo;
-	private MapManager mapManager;
-	private BattleGameManager gameManager;
-	private BattleMatchManager matchManager;
-	private BattleKitManager kitManager;
-	private BattleMatch match;
-	private ProjectileManager projectileManager;
-	
-	public void load() throws IOException {
-		this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin));
-		this.mapRepo = new LocalMapRepo(this.options.getMaps());
-		this.mapRepo.init();
-		this.mapManager = new LocalMapManager(this.plugin, this.mapRepo);
-		this.gameManager = new BattleGameManager(this);
-		this.matchManager = new BattleMatchManager(plugin, this, this.gameManager, this.mapManager);
-		this.kitManager = new BattleKitManager(plugin);
-		this.projectileManager = new ProjectileManager(plugin);
-	}
-	
-	public void start() {
-		this.projectileManager.register();
-		
-		this.match = this.matchManager.create();
-		this.match.start();
-	}
-	
-	public BattleGame getGame() {
-		return getMatch().getCurrentGame();
-	}
-	
+
+    private final BattlePlugin plugin;
+    private BattleOptions options;
+    private MapRepo mapRepo;
+    private MapManager mapManager;
+    private BattleGameManager gameManager;
+    private BattleMatchManager matchManager;
+    private BattleKitManager kitManager;
+    private BattleMatch match;
+    private ProjectileManager projectileManager;
+
+    public void load() throws IOException {
+        this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin));
+        this.mapRepo = new LocalMapRepo(this.options.getMaps());
+        this.mapRepo.init();
+        this.mapManager = new LocalMapManager(this.plugin, this.mapRepo);
+        this.gameManager = new BattleGameManager(this);
+        this.matchManager = new BattleMatchManager(plugin, this, this.gameManager, this.mapManager);
+        this.kitManager = new BattleKitManager(plugin);
+        this.projectileManager = new ProjectileManager(plugin);
+    }
+
+    public void start() {
+        this.projectileManager.register();
+
+        this.match = this.matchManager.create();
+        this.match.start();
+    }
+
+    public BattleGame getGame() {
+        return getMatch().getCurrentGame();
+    }
+
 }

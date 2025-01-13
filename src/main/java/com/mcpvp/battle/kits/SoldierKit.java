@@ -52,11 +52,11 @@ public class SoldierKit extends BattleKit {
         if (e.getPlayer() != getPlayer()) {
             return;
         }
-        
+
         if (!EventUtil.isRightClick(e) || e.getClickedBlock() == null) {
             return;
         }
-        
+
         if (UNCLIMABLE.contains(e.getClickedBlock().getType())) {
             return;
         }
@@ -98,7 +98,7 @@ public class SoldierKit extends BattleKit {
 
     @Override
     public ItemStack[] createArmor() {
-        return new ItemStack[] {
+        return new ItemStack[]{
                 new ItemStack(Material.IRON_BOOTS),
                 new ItemStack(Material.IRON_LEGGINGS),
                 new ItemStack(Material.IRON_CHESTPLATE),

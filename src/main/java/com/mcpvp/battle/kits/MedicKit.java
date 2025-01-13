@@ -42,7 +42,7 @@ public class MedicKit extends BattleKit {
 
     @Override
     public ItemStack[] createArmor() {
-        return new ItemStack[] {
+        return new ItemStack[]{
                 new ItemStack(Material.GOLD_BOOTS),
                 new ItemStack(Material.GOLD_LEGGINGS),
                 new ItemStack(Material.GOLD_CHESTPLATE),
@@ -58,7 +58,7 @@ public class MedicKit extends BattleKit {
             if (ev.getEntity() instanceof Player damaged) {
                 BattleTeam damagedTeam = getBattle().getGame().getTeamManager().getTeam(damaged);
                 BattleTeam playerTeam = getBattle().getGame().getTeamManager().getTeam(getPlayer());
-                
+
                 if (damagedTeam == playerTeam) {
                     System.out.println("player with same team!");
                     heal(damaged);
@@ -109,18 +109,18 @@ public class MedicKit extends BattleKit {
         public void throwWeb(PlayerInteractEvent event) {
             if (!EventUtil.isRightClick(event))
                 return;
-            
+
             event.setCancelled(true);
-            
+
             if (isPlaceholder())
                 return;
-            
+
             decrement(true);
-            
+
             Snowball ent = kit.getPlayer().launchProjectile(Snowball.class);
             projectileManager.register(ent)
-                .onHit(e -> this.placeWeb(ent.getLocation()))
-                .onCollideBlock(e -> this.placeWeb(ent.getLocation()));
+                    .onHit(e -> this.placeWeb(ent.getLocation()))
+                    .onCollideBlock(e -> this.placeWeb(ent.getLocation()));
         }
 
         public void placeWeb(Location location) {

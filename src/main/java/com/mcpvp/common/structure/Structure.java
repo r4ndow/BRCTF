@@ -14,13 +14,13 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 public abstract class Structure extends EasyLifecycle {
-    
+
     private final StructureManager manager;
     private final List<StructureBlock> blocks = new ArrayList<>();
 
     /**
      * Attempt to place the structure at the given center block.
-     * 
+     *
      * @param center The center block of the structure.
      * @return A list of structure violations. If this list is empty, the structure has been placed. Otherwise,
      * one of the violations caused the placing to be stopped, in which case nothing has been changed.
@@ -43,8 +43,8 @@ public abstract class Structure extends EasyLifecycle {
     /**
      * The abstract method for actually building this structure. The given builder should be used to adjust
      * blocks. Nothing will be changed if any violations are generated in {@link StructureBuilder#getViolations()}.
-     * 
-     * @param center The center of the structure.
+     *
+     * @param center  The center of the structure.
      * @param builder A builder instance that can be used to adjust blocks.
      */
     protected abstract void build(Block center, StructureBuilder builder);

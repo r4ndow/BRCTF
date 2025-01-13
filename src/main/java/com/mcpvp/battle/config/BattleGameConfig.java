@@ -14,13 +14,15 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class BattleGameConfig {
-    
+
     private Location spawn;
     private Set<BattleTeamConfig> teamConfigs = new HashSet<>();
     private Set<BattleCallout> callouts = new HashSet<>();
     private Set<Location> restricted = new HashSet<>();
     private int caps = 3;
-    /** Time in minutes */
+    /**
+     * Time in minutes
+     */
     private int time = 15;
 
     public BattleTeamConfig getTeamConfig(int id) {
@@ -30,5 +32,5 @@ public class BattleGameConfig {
     public BattleTeamConfig getTeamConfig(BattleTeam team) {
         return getTeamConfig(team.getId());
     }
-    
+
 }

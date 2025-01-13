@@ -19,38 +19,38 @@ import java.io.IOException;
 @Log4j2
 @AllArgsConstructor
 public class BattleGameManager {
-	
-	private final Battle battle;
-	
-	public BattleGame create(BattleMapData map, int index) {
-		BattleMapLoader parser;
-		if (map.getMetadata() != null) {
-			parser = new BattleMapLoaderMetadataImpl();
-		} else {
-			parser = new BattleMapLoaderSignImpl();
-		}
 
-		try {
-			// Extract map and create a world from it
-			World world = BattleWorldCreator.create(map, new File(battle.getOptions().getMaps().getDir()), index);
-			// Parse the config. Teams must already exist at this point
-			BattleGameConfig config = parser.parse(map, world);
-			log.info("Parsed config: " + config);
+    private final Battle battle;
 
-			// Create default teams. This could be created from the parsed config.
-			BattleTeamManager teamManager = new BattleTeamManager();
-			teamManager.createDefaultTeams(config.getTeamConfigs());
+    public BattleGame create(BattleMapData map, int index) {
+        BattleMapLoader parser;
+        if (map.getMetadata() != null) {
+            parser = new BattleMapLoaderMetadataImpl();
+        } else {
+            parser = new BattleMapLoaderSignImpl();
+        }
 
-			// Create scoreboard manager with the teams
-			BattleScoreboardManager scoreboardManager = new BattleScoreboardManager(battle.getPlugin(), battle);
+        try {
+            // Extract map and create a world from it
+            World world = BattleWorldCreator.create(map, new File(battle.getOptions().getMaps().getDir()), index);
+            // Parse the config. Teams must already exist at this point
+            BattleGameConfig config = parser.parse(map, world);
+            log.info("Parsed config: " + config);
 
-			// Create game instance. Just creating this doesn't do anything
-			BattleGame game = new BattleGame(battle.getPlugin(), battle, map, world, config, teamManager, scoreboardManager);
-		
-			return game;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
+            // Create default teams. This could be created from the parsed config.
+            BattleTeamManager teamManager = new BattleTeamManager();
+            teamManager.createDefaultTeams(config.getTeamConfigs());
+
+            // Create scoreboard manager with the teams
+            BattleScoreboardManager scoreboardManager = new BattleScoreboardManager(battle.getPlugin(), battle);
+
+            // Create game instance. Just creating this doesn't do anything
+            BattleGame game = new BattleGame(battle.getPlugin(), battle, map, world, config, teamManager, scoreboardManager);
+
+            return game;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

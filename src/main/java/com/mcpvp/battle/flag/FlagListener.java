@@ -20,131 +20,131 @@ import java.util.Optional;
 @Getter
 @RequiredArgsConstructor
 public class FlagListener implements EasyListener {
-	
-	private final BattlePlugin plugin;
-	private final BattleGame game;
 
-	@EventHandler
-	public void onTick(TickEvent event) {
-		game.getTeamManager().getTeams().forEach(bt -> {
-			IBattleFlag flag = bt.getFlag();
-			if (flag.isDropped() && flag.getRestoreExpiration().isExpired()) {
-				flag.reset();
-			}
+    private final BattlePlugin plugin;
+    private final BattleGame game;
 
-			flag.onTick(event.getTick());
-		});
-	}
-	
-	@EventHandler
-	public void onPickup(PlayerPickupItemEvent event) {
-		BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
-		game.getTeamManager().getTeams().forEach(bt -> {
-			if (!bt.getFlag().isItem(event.getItem().getItemStack())) {
-				return;
-			}
+    @EventHandler
+    public void onTick(TickEvent event) {
+        game.getTeamManager().getTeams().forEach(bt -> {
+            IBattleFlag flag = bt.getFlag();
+            if (flag.isDropped() && flag.getRestoreExpiration().isExpired()) {
+                flag.reset();
+            }
 
-			// Always cancel picking up the item for simplicity
-			event.setCancelled(true);
+            flag.onTick(event.getTick());
+        });
+    }
 
-			if (bt.getFlag().getCarrier() != null) {
-				return;
-			}
-			
-			if (bt != team) {
-				if (bt.getFlag().isHome()) {
-					new FlagStealEvent(event.getPlayer(), bt.getFlag()).call();
-				} else {
-					if (bt.getFlag().getPickupExpiration().isExpired()) {
-						new FlagPickupEvent(event.getPlayer(), bt.getFlag()).call();
-					}
-				}
-			} else if (!bt.getFlag().isHome()) {
-				new FlagRecoverEvent(event.getPlayer(), bt.getFlag()).call();
-			}
-		});
-	}
+    @EventHandler
+    public void onPickup(PlayerPickupItemEvent event) {
+        BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
+        game.getTeamManager().getTeams().forEach(bt -> {
+            if (!bt.getFlag().isItem(event.getItem().getItemStack())) {
+                return;
+            }
 
-	@EventHandler
-	public void onCapture(PlayerPickupItemEvent event) {
-		if (!game.getTeamManager().getTeams().stream().anyMatch(bt -> bt.getFlag().isItem(event.getItem().getItemStack()))) {
-			return;
-		}
+            // Always cancel picking up the item for simplicity
+            event.setCancelled(true);
 
-		BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
-		Optional<BattleTeam> carried = game.getTeamManager().getTeams().stream().filter(bt -> {
-			return bt.getFlag().getCarrier() == event.getPlayer();
-		}).findFirst();
+            if (bt.getFlag().getCarrier() != null) {
+                return;
+            }
 
-		if (!team.getFlag().isItem(event.getItem().getItemStack())) {
-			return;
-		}
+            if (bt != team) {
+                if (bt.getFlag().isHome()) {
+                    new FlagStealEvent(event.getPlayer(), bt.getFlag()).call();
+                } else {
+                    if (bt.getFlag().getPickupExpiration().isExpired()) {
+                        new FlagPickupEvent(event.getPlayer(), bt.getFlag()).call();
+                    }
+                }
+            } else if (!bt.getFlag().isHome()) {
+                new FlagRecoverEvent(event.getPlayer(), bt.getFlag()).call();
+            }
+        });
+    }
 
-		if (!carried.isPresent()) {
-			return;
-		}
+    @EventHandler
+    public void onCapture(PlayerPickupItemEvent event) {
+        if (!game.getTeamManager().getTeams().stream().anyMatch(bt -> bt.getFlag().isItem(event.getItem().getItemStack()))) {
+            return;
+        }
 
-		if (!team.getFlag().isHome()) {
-			return;
-		}
+        BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
+        Optional<BattleTeam> carried = game.getTeamManager().getTeams().stream().filter(bt -> {
+            return bt.getFlag().getCarrier() == event.getPlayer();
+        }).findFirst();
 
-		new FlagCaptureEvent(event.getPlayer(), team, carried.get().getFlag()).call();
-	}
-	
-	@EventHandler(ignoreCancelled = true)
-	public void onItemDrop(PlayerDropItemEvent event) {
-		game.getTeamManager().getTeams().forEach(bt -> {
-			if (bt.getFlag().isItem(event.getItemDrop().getItemStack())) {
-				new FlagDropEvent(event.getPlayer(), bt.getFlag(), event.getItemDrop()).call();
-			}
-		});
-	}
-	
-	@EventHandler
-	public void onTakeLocked(FlagTakeEvent event) {
-		if (event.getFlag().isLocked()) {
-			event.setCancelled(true);
-		}
-	}
-	
-	@EventHandler
-	public void onItemMerge(ItemMergeEvent event) {
-		game.getTeamManager().getTeams().forEach(bt -> {
-			if (bt.getFlag().isItem(event.getEntity().getItemStack())) {
-				event.setCancelled(true);
-			}
-		});
+        if (!team.getFlag().isItem(event.getItem().getItemStack())) {
+            return;
+        }
 
-		// For the visuals
-		if (event.getEntity().getItemStack().getType() == Material.WOOL) {
-			event.setCancelled(true);
-		}
-	}
+        if (!carried.isPresent()) {
+            return;
+        }
 
-	@EventHandler
-	public void onPickupVisuals(PlayerPickupItemEvent event) {
-		// For the visuals
-		if (event.getItem().getItemStack().getType() == Material.WOOL) {
-			event.setCancelled(true);
-		}
-	}
-	
-	@EventHandler
-	public void onItemDespawn(ItemDespawnEvent event) {
-		game.getTeamManager().getTeams().forEach(bt -> {
-			if (bt.getFlag().isItem(event.getEntity().getItemStack())) {
-				event.setCancelled(true);
-			}
-		});
-	}
+        if (!team.getFlag().isHome()) {
+            return;
+        }
 
-	@EventHandler
-	public void onResign(PlayerResignEvent event) {
-		game.getTeamManager().getTeams().forEach(bt -> {
-			if (bt.getFlag().getCarrier() == event.getPlayer()) {
-				new FlagDropEvent(event.getPlayer(), bt.getFlag(), null).call();
-			}
-		});
-	}
-	
+        new FlagCaptureEvent(event.getPlayer(), team, carried.get().getFlag()).call();
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemDrop(PlayerDropItemEvent event) {
+        game.getTeamManager().getTeams().forEach(bt -> {
+            if (bt.getFlag().isItem(event.getItemDrop().getItemStack())) {
+                new FlagDropEvent(event.getPlayer(), bt.getFlag(), event.getItemDrop()).call();
+            }
+        });
+    }
+
+    @EventHandler
+    public void onTakeLocked(FlagTakeEvent event) {
+        if (event.getFlag().isLocked()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemMerge(ItemMergeEvent event) {
+        game.getTeamManager().getTeams().forEach(bt -> {
+            if (bt.getFlag().isItem(event.getEntity().getItemStack())) {
+                event.setCancelled(true);
+            }
+        });
+
+        // For the visuals
+        if (event.getEntity().getItemStack().getType() == Material.WOOL) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPickupVisuals(PlayerPickupItemEvent event) {
+        // For the visuals
+        if (event.getItem().getItemStack().getType() == Material.WOOL) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemDespawn(ItemDespawnEvent event) {
+        game.getTeamManager().getTeams().forEach(bt -> {
+            if (bt.getFlag().isItem(event.getEntity().getItemStack())) {
+                event.setCancelled(true);
+            }
+        });
+    }
+
+    @EventHandler
+    public void onResign(PlayerResignEvent event) {
+        game.getTeamManager().getTeams().forEach(bt -> {
+            if (bt.getFlag().getCarrier() == event.getPlayer()) {
+                new FlagDropEvent(event.getPlayer(), bt.getFlag(), null).call();
+            }
+        });
+    }
+
 }

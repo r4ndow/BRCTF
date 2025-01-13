@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class BattleMatchListener implements EasyListener {
-	
-	@Getter
-	private final BattlePlugin plugin;
-	private final Battle battle;
-	
+
+    @Getter
+    private final BattlePlugin plugin;
+    private final Battle battle;
+
 }

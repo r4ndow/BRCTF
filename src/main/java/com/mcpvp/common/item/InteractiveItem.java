@@ -45,8 +45,10 @@ public class InteractiveItem implements EasyListener {
     private List<Consumer<PlayerInteractEvent>> interactHandlers = new ArrayList<>();
     private List<Consumer<EntityDamageByEntityEvent>> edbeeHandlers = new ArrayList<>();
     private List<Consumer<PlayerInteractEntityEvent>> interactEntityHandlers = new ArrayList<>();
-    private Consumer<InventoryClickEvent> clickHandler = e -> {};
-    private Consumer<Player> anyHandler = e -> {};
+    private Consumer<InventoryClickEvent> clickHandler = e -> {
+    };
+    private Consumer<Player> anyHandler = e -> {
+    };
     private List<Consumer<PlayerDropItemEvent>> dropHandlers = new ArrayList<>();
 
     /**
@@ -64,13 +66,13 @@ public class InteractiveItem implements EasyListener {
     public InteractiveItem(Plugin plugin, ItemBuilder builder) {
         this(plugin, builder.build());
     }
-    
+
     /**
      * Assigns a consumer that will receive any PlayerInteractEvent that involves
      * place on this item.
      *
      * @param consumer The consumer that will receive the event. This event has
-     *        already been cancelled when it is passed.
+     *                 already been cancelled when it is passed.
      * @return The instance for chaining.
      */
     public InteractiveItem onInteract(Consumer<PlayerInteractEvent> consumer) {
@@ -96,7 +98,7 @@ public class InteractiveItem implements EasyListener {
      * place on this item.
      *
      * @param consumer The consumer that will receive the event. This event has
-     *        already been cancelled when it is passed.
+     *                 already been cancelled when it is passed.
      * @return The instance for chaining.
      */
     public InteractiveItem onClick(Consumer<InventoryClickEvent> consumer) {
@@ -189,7 +191,7 @@ public class InteractiveItem implements EasyListener {
 
         if (!event.hasItem())
             return;
-            
+
         if (isItem(event.getItem())) {
             // Re-assign the ItemStack instance, which improves syncing with the client
             // Without doing this, a call to `update()` would be required
@@ -299,5 +301,5 @@ public class InteractiveItem implements EasyListener {
             inv.setItem(inv.first(is), getItem());
         });
     }
-    
+
 }

@@ -12,14 +12,14 @@ import org.bukkit.event.EventHandler;
 @Getter
 @AllArgsConstructor
 public class FlagDropMonitor implements EasyListener {
-	
-	private final BattlePlugin plugin;
-	private final Battle battle;
-	private final BattleGame game;
-	
-	@EventHandler
-	public void onDrop(FlagDropEvent event) {
-		event.getFlag().drop(event.getPlayer().getEyeLocation(), event.getItem());
-	}
-	
+
+    private final BattlePlugin plugin;
+    private final Battle battle;
+    private final BattleGame game;
+
+    @EventHandler
+    public void onDrop(FlagDropEvent event) {
+        event.getFlag().drop(event.getPlayer().getEyeLocation(), event.getItem());
+    }
+
 }
