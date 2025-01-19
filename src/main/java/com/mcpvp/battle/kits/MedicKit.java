@@ -53,14 +53,13 @@ public class MedicKit extends BattleKit {
     @Override
     public Map<Integer, KitItem> createItems() {
         KitItem sword = new KitItem(MedicKit.this, ItemBuilder.of(Material.GOLD_SWORD).enchant(Enchantment.DAMAGE_ALL, 1).unbreakable().build());
+
         sword.onDamage(ev -> {
-            System.out.println("damaged someone with the sword");
             if (ev.getEntity() instanceof Player damaged) {
                 BattleTeam damagedTeam = getBattle().getGame().getTeamManager().getTeam(damaged);
                 BattleTeam playerTeam = getBattle().getGame().getTeamManager().getTeam(getPlayer());
 
                 if (damagedTeam == playerTeam) {
-                    System.out.println("player with same team!");
                     heal(damaged);
                 }
             }
@@ -77,23 +76,32 @@ public class MedicKit extends BattleKit {
     public void heal(Player player) {
         Kit kit = getBattle().getKitManager().get(player);
         if (kit == null) {
-            System.out.println("no kit");
             return;
         }
 
-        // Restore items
-        kit.getAllItems().stream().filter(ki -> ki.isRestorable()).forEach(ki -> {
-            this.restoreItem(player, kit, ki);
-        });
-
-        // Heal player
-        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 4));
-        player.setFireTicks(0);
         player.playEffect(EntityEffect.HURT);
+
+        // Players must be full health before restoring items
+        if (player.getHealth() == player.getMaxHealth()) {
+            // Restore items
+            kit.getAllItems().stream().filter(KitItem::isRestorable).forEach(ki -> {
+                this.restoreItem(player, kit, ki);
+            });
+        } else {
+            // Heal player
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 4));
+            player.setFireTicks(0);
+        }
     }
 
     private void restoreItem(Player player, Kit kit, KitItem item) {
+        // Un-placeholder
         item.increment(item.getOriginal().getAmount());
+
+        // Ensure max amount
+        if (item.getItem().getAmount() != item.getOriginal().getAmount()) {
+            item.getItem().setAmount(item.getOriginal().getAmount());
+        }
     }
 
     public class MedicWebItem extends KitItem {

@@ -7,6 +7,8 @@ import com.mcpvp.battle.util.Colors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -19,6 +21,7 @@ public class BattleTeam {
 
     private final int id;
     private final Set<Player> players = new HashSet<>();
+	private final BattleTeamConfig config;
     private String name;
     private Colors color;
     private IBattleFlag flag;
@@ -28,6 +31,7 @@ public class BattleTeam {
         this.id = id;
         this.name = name;
         this.color = color;
+		this.config = config;
         this.flag = new WoolFlag(this, config.getFlag());
     }
 
@@ -46,5 +50,11 @@ public class BattleTeam {
     public void onCapture() {
         captures++;
     }
+
+	public boolean isInSpawn(Player player) {
+		Block underFeet = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+		Block spawnBlock = config.getSpawn().getBlock().getRelative(BlockFace.DOWN);
+        return underFeet.getType() == spawnBlock.getType();
+	}
 
 }

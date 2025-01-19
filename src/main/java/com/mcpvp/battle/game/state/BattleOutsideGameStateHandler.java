@@ -3,6 +3,7 @@ package com.mcpvp.battle.game.state;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.game.BattleGame;
+import com.mcpvp.common.event.TickEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;

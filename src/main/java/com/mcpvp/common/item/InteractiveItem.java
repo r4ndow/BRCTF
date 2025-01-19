@@ -201,7 +201,8 @@ public class InteractiveItem implements EasyListener {
         }
     }
 
-    protected void onInteractEvent(PlayerInteractEntityEvent event) {
+    @EventHandler
+    public void onInteractEvent(PlayerInteractEntityEvent event) {
         if (event.isCancelled() && ignoreCancelled)
             return;
 
@@ -213,7 +214,8 @@ public class InteractiveItem implements EasyListener {
         }
     }
 
-    protected void onBlockPlaceEvent(BlockPlaceEvent event) {
+    @EventHandler
+    public void onBlockPlaceEvent(BlockPlaceEvent event) {
         if (event.isCancelled() && ignoreCancelled)
             return;
 
@@ -223,7 +225,8 @@ public class InteractiveItem implements EasyListener {
         }
     }
 
-    protected void onClickEvent(InventoryClickEvent event) {
+    @EventHandler
+    public void onClickEvent(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player))
             return;
 
@@ -237,7 +240,8 @@ public class InteractiveItem implements EasyListener {
         }
     }
 
-    protected void onEntityDamage(EntityDamageByEntityEvent event) {
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player))
             return;
 
@@ -250,7 +254,8 @@ public class InteractiveItem implements EasyListener {
             edbeeHandlers.forEach(h -> h.accept(event));
     }
 
-    protected void onInteractEntity(PlayerInteractEntityEvent event) {
+    @EventHandler
+    public void onInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
 
         if (player.getItemInHand() == null)
@@ -260,7 +265,8 @@ public class InteractiveItem implements EasyListener {
             interactEntityHandlers.forEach(h -> h.accept(event));
     }
 
-    protected void onDrop(PlayerDropItemEvent event) {
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event) {
         if (isItem(event.getItemDrop())) {
             dropHandlers.forEach(h -> h.accept(event));
         }

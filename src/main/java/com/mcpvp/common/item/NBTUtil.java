@@ -11,6 +11,9 @@ public class NBTUtil {
             return false;
 
         net.minecraft.server.v1_8_R3.ItemStack nmsCopy = CraftItemStack.asNMSCopy(item);
+        if (nmsCopy == null)
+            return false;
+
         NBTTagCompound nbt = getCompound(nmsCopy);
         return nbt.hasKey(key) && nbt.getString(key).equals(value);
     }
@@ -39,6 +42,10 @@ public class NBTUtil {
     }
 
     private static NBTTagCompound getCompound(net.minecraft.server.v1_8_R3.ItemStack itemStack) {
+        if (itemStack == null) {
+            return null;
+        }
+
         NBTTagCompound nbt = itemStack.getTag();
         if (nbt == null) {
             itemStack.setTag(new NBTTagCompound());

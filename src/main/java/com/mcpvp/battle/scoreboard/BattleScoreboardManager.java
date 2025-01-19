@@ -197,6 +197,10 @@ public class BattleScoreboardManager extends EasyLifecycle {
         String display = "[" + (battle.getMatch().getCurrentGameIndex() + 1) + "/" + battle.getMatch().getGames().size() + "] ";
         String timer = formatDuration(Duration.ofSeconds((long) battle.getMatch().getTimer().getSeconds()));
 
+        if (battle.getMatch().getTimer().isPaused()) {
+            timer += "*";
+        }
+
         if (battle.getGame().getState() == null) {
             return "???";
         }

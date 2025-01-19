@@ -8,6 +8,7 @@ import com.mcpvp.battle.flag.*;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.KitSelectedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -77,6 +78,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler
     public void onActualDeath(PlayerDeathEvent event) {
+        // This should never happen, but just to be safe...
         game.respawn(event.getEntity());
     }
 
@@ -94,10 +96,8 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         }
 
         BattleTeam team = game.getTeamManager().getTeam(player);
-        Block spawnBlock = game.getConfig().getTeamConfig(team).getSpawn().getBlock().getRelative(BlockFace.DOWN);
-        Block onBlock = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
 
-        if (spawnBlock.getType() != Material.AIR && spawnBlock.getType() == onBlock.getType()) {
+        if (team.isInSpawn(player)) {
             event.setCancelled(true);
         }
     }
@@ -112,6 +112,16 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
                 event.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void passiveHealInSpawn(TickEvent event) {
+        game.getParticipants().forEach(p -> {
+            BattleTeam team = game.getTeamManager().getTeam(p);
+            if (team != null && team.isInSpawn(p) && event.getTick() % 20 == 0) {
+                p.setHealth(Math.min(p.getMaxHealth(), p.getHealth() + 1));
+            }
+        });
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

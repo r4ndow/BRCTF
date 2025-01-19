@@ -34,7 +34,7 @@ public class KitItem extends InteractiveItem {
      * @param placeholder If the item should be swapped to a placeholder.
      */
     public void decrement(boolean placeholder) {
-        if (getItem().getAmount() == 1) {
+        if (getItem().getAmount() == 1 && placeholder) {
             setPlaceholder();
         } else {
             getItem().setAmount(getItem().getAmount() - 1);

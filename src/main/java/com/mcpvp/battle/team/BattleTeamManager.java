@@ -29,7 +29,7 @@ public class BattleTeamManager {
         // The IDs are very important! They are used for map parsing
         // eg a sign `{{flag 1}}` specifies the red flag
         Map<Integer, BattleTeamConfig> configById = configs.stream().collect(
-                Collectors.toMap(e -> e.getId(), e -> e)
+                Collectors.toMap(BattleTeamConfig::getId, e -> e)
         );
 
         this.red = new BattleTeam(1, "Red", Colors.RED, configById.get(1));
@@ -81,7 +81,7 @@ public class BattleTeamManager {
     }
 
     public Map<BattleTeam, Set<Player>> getPlayerMap() {
-        return teams.stream().collect(Collectors.toMap(e -> e, e -> e.getPlayers()));
+        return teams.stream().collect(Collectors.toMap(e -> e, BattleTeam::getPlayers));
     }
 
 }

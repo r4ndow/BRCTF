@@ -27,6 +27,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
+import org.bukkit.event.weather.WeatherChangeEvent;
 
 @Log4j2
 @Getter
@@ -102,6 +103,16 @@ public class BattlePermanentGameListener implements EasyListener {
     }
 
     @EventHandler
+    public void onWalkOntoSponge(TickEvent event) {
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            Block under = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+            if (under.getType() == Material.SPONGE) {
+                SpongeUtil.launch(plugin, player, under, true);
+            }
+        });
+    }
+
+    @EventHandler
     public void onHunger(FoodLevelChangeEvent event) {
         event.setCancelled(true);
         if (event.getEntity() instanceof Player player) {
@@ -140,13 +151,8 @@ public class BattlePermanentGameListener implements EasyListener {
     }
 
     @EventHandler
-    public void onWalkOntoSponge(TickEvent event) {
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            Block under = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
-            if (under.getType() == Material.SPONGE) {
-                SpongeUtil.launch(plugin, player, under, true);
-            }
-        });
+    public void onWeatherChange(WeatherChangeEvent event) {
+        event.setCancelled(true);
     }
 
 }
