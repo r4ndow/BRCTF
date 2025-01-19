@@ -29,7 +29,7 @@ public class FlagListener implements EasyListener {
         game.getTeamManager().getTeams().forEach(bt -> {
             IBattleFlag flag = bt.getFlag();
             if (flag.isDropped() && flag.getRestoreExpiration().isExpired()) {
-                flag.reset();
+                new FlagRestoreEvent(flag).call();
             }
 
             flag.onTick(event.getTick());

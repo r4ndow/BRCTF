@@ -7,6 +7,7 @@ import com.mcpvp.battle.util.Colors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -52,9 +53,13 @@ public class BattleTeam {
     }
 
 	public boolean isInSpawn(Player player) {
-		Block underFeet = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
-		Block spawnBlock = config.getSpawn().getBlock().getRelative(BlockFace.DOWN);
-        return underFeet.getType() == spawnBlock.getType();
+        return isInSpawn(player.getLocation());
 	}
+
+    public boolean isInSpawn(Location location) {
+        Block underFeet = location.getBlock().getRelative(BlockFace.DOWN);
+        Block spawnBlock = config.getSpawn().getBlock().getRelative(BlockFace.DOWN);
+        return underFeet.getType() == spawnBlock.getType();
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.mcpvp.battle.game.listener;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.EnterSpawnEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
@@ -73,6 +74,19 @@ public class BattlePermanentGameListener implements EasyListener {
             // Switching into survival, probably to play
             new PlayerParticipateEvent(event.getPlayer(), game).call();
         }
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+        if (!game.isParticipant(event.getPlayer())) {
+            return;
+        }
+
+        game.getTeamManager().getTeams().forEach(bt -> {
+            if (!bt.isInSpawn(event.getFrom()) && bt.isInSpawn(event.getTo())) {
+                new EnterSpawnEvent(event.getPlayer(), bt).call();
+            }
+        });
     }
 
     // ==============

@@ -1,9 +1,7 @@
 package com.mcpvp.battle.game.state;
 
 import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.event.FlagCaptureEvent;
-import com.mcpvp.battle.event.PlayerJoinTeamEvent;
-import com.mcpvp.battle.event.PlayerParticipateEvent;
+import com.mcpvp.battle.event.*;
 import com.mcpvp.battle.flag.*;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
@@ -22,6 +20,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import java.util.Optional;
+
 public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     public BattleDuringGameStateHandler(BattlePlugin plugin, BattleGame game) {
@@ -37,6 +37,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         attach(new FlagPickupMonitor(plugin, game.getBattle(), game));
         attach(new FlagRecoverMonitor(plugin, game.getBattle(), game));
         attach(new FlagCaptureMonitor(plugin, game.getBattle(), game));
+        attach(new FlagRestoreMonitor(plugin, game.getBattle(), game));
 
         game.getTeamManager().getTeams().forEach(bt -> {
             bt.getFlag().setLocked(false);
@@ -122,6 +123,20 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
                 p.setHealth(Math.min(p.getMaxHealth(), p.getHealth() + 1));
             }
         });
+    }
+
+    @EventHandler
+    public void killInEnemySpawn(EnterSpawnEvent event) {
+        if (game.getTeamManager().getTeam(event.getPlayer()) != event.getTeam()) {
+            game.respawn(event.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void loseFlagInSpawn(EnterSpawnEvent event) {
+        Optional<BattleTeam> carryingFlag = game.getTeamManager().getTeams().stream().filter(bt ->
+                bt.getFlag().getCarrier() == event.getPlayer()).findAny();
+        carryingFlag.ifPresent(battleTeam -> new FlagRestoreEvent(battleTeam.getFlag()).call());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
