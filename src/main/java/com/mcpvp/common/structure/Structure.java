@@ -1,6 +1,7 @@
 package com.mcpvp.common.structure;
 
 import com.mcpvp.common.EasyLifecycle;
+import com.mcpvp.common.event.EasyListener;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.block.Block;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * Every instance should be only be placed once.
  */
 @RequiredArgsConstructor
-public abstract class Structure extends EasyLifecycle {
+public abstract class Structure extends EasyLifecycle implements EasyListener {
 
     private final StructureManager manager;
     private final List<StructureBlock> blocks = new ArrayList<>();
@@ -37,6 +38,7 @@ public abstract class Structure extends EasyLifecycle {
         builder.complete();
         this.blocks.addAll(builder.getBuilt());
         manager.onBuild(this);
+        attach((EasyListener) this);
         return Collections.emptyList();
     }
 

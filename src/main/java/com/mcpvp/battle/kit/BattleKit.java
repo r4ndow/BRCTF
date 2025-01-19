@@ -4,6 +4,7 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.item.FlagCompassItem;
 import com.mcpvp.battle.kit.item.FoodItem;
+import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
@@ -36,7 +37,7 @@ public abstract class BattleKit extends Kit {
                 getPlayer().sendMessage("! " + v.getMessage());
             });
         } else {
-            attach(structure);
+            attach((EasyLifecycle) structure);
             attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> structure.remove(), 40));
         }
     }

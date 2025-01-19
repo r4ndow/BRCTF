@@ -12,6 +12,7 @@ import com.mcpvp.battle.match.BattleMatchManager;
 import com.mcpvp.battle.options.BattleOptions;
 import com.mcpvp.battle.options.BattleOptionsLoader;
 import com.mcpvp.common.ProjectileManager;
+import com.mcpvp.common.structure.StructureManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +31,7 @@ public class Battle {
     private BattleKitManager kitManager;
     private BattleMatch match;
     private ProjectileManager projectileManager;
+    private StructureManager structureManager;
 
     public void load() throws IOException {
         this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin));
@@ -40,6 +42,7 @@ public class Battle {
         this.matchManager = new BattleMatchManager(plugin, this, this.gameManager, this.mapManager);
         this.kitManager = new BattleKitManager(plugin);
         this.projectileManager = new ProjectileManager(plugin);
+        this.structureManager = new StructureManager();
     }
 
     public void start() {
