@@ -19,10 +19,10 @@ import com.mcpvp.common.kit.Kit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -109,13 +109,18 @@ public class BattleGame extends EasyLifecycle {
      *
      * @param player The player to respawn.
      */
-    public void respawn(Player player) {
+    public void respawn(Player player, boolean deathAnimation) {
         // Drop the flag if they have it
         teamManager.getTeams().forEach(bt -> {
             if (bt.getFlag().getCarrier() == player) {
                 new FlagDropEvent(player, bt.getFlag(), null).call();
             }
         });
+
+        // Death animation
+        if (deathAnimation) {
+            doDeathAnimation(player);
+        }
 
         // Reset negative statues
         player.setHealth(player.getMaxHealth());
@@ -144,6 +149,12 @@ public class BattleGame extends EasyLifecycle {
 
         // Remove player from team
         getTeamManager().setTeam(player, null);
+    }
+
+    private void doDeathAnimation(Player player) {
+        player.playEffect(EntityEffect.HURT);
+        LivingEntity skeleton = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), EntityType.SKELETON);
+        skeleton.damage(100);
     }
 
     private void fireParticipateEvents() {

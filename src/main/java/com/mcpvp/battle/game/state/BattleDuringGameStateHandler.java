@@ -54,23 +54,23 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler
     public void onJoinTeam(PlayerJoinTeamEvent event) {
-        game.respawn(event.getPlayer());
+        game.respawn(event.getPlayer(), false);
     }
 
     @EventHandler
     public void onParticipate(PlayerParticipateEvent event) {
-        game.respawn(event.getPlayer());
+        game.respawn(event.getPlayer(), false);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onKitSelected(KitSelectedEvent event) {
-        game.respawn(event.getPlayer());
+        game.respawn(event.getPlayer(), false);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player && player.getHealth() - event.getFinalDamage() <= 0) {
-            game.respawn(player);
+            game.respawn(player, true);
 
             // Canceling the event causes no damage splat animation
             event.setDamage(0);
@@ -80,13 +80,13 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     @EventHandler
     public void onActualDeath(PlayerDeathEvent event) {
         // This should never happen, but just to be safe...
-        game.respawn(event.getEntity());
+        game.respawn(event.getEntity(), true);
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         if (game.isParticipant(event.getPlayer())) {
-            game.respawn(event.getPlayer());
+            game.respawn(event.getPlayer(), false);
         }
     }
 
@@ -128,21 +128,21 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     @EventHandler
     public void killInEnemySpawn(EnterSpawnEvent event) {
         if (game.getTeamManager().getTeam(event.getPlayer()) != event.getTeam()) {
-            game.respawn(event.getPlayer());
+            game.respawn(event.getPlayer(), true);
         }
     }
 
     @EventHandler
     public void loseFlagInSpawn(EnterSpawnEvent event) {
-        Optional<BattleTeam> carryingFlag = game.getTeamManager().getTeams().stream().filter(bt ->
-                bt.getFlag().getCarrier() == event.getPlayer()).findAny();
+        Optional<BattleTeam> carryingFlag = game.getTeamManager().getTeams().stream()
+                .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
+                .findAny();
         carryingFlag.ifPresent(battleTeam -> new FlagRestoreEvent(battleTeam.getFlag()).call());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCapture(FlagCaptureEvent event) {
-        // Game over, the team won!
-        if (event.getPlayerTeam().getCaptures() == game.getConfig().getCaps()) {
+        if (game.getWinner() != null) {
             game.setState(BattleGameState.AFTER);
         }
     }
