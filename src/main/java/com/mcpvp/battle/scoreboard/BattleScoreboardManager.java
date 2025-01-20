@@ -177,8 +177,9 @@ public class BattleScoreboardManager extends EasyLifecycle {
         }
 
         if (t.getFlag().getCarrier() != null) {
+            BattleTeam heldTeam = battle.getGame().getTeamManager().getTeam(t.getFlag().getCarrier());
             loc.add("Taken");
-            loc.add("Held by " + t.getColor().CHAT + t.getFlag().getCarrier().getName());
+            loc.add("Held by " + heldTeam.getColor().CHAT + t.getFlag().getCarrier().getName());
         }
 
         if (t.getFlag().isDropped()) {

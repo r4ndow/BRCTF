@@ -4,6 +4,7 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.item.NBTUtil;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
+import com.mcpvp.common.util.EffectUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -71,13 +72,11 @@ public abstract class AbstractFlag implements IBattleFlag {
     public void pickup(Player carrier) {
         setCarrier(carrier);
         removeEntity();
-
-//		Util.fakeLightning(getLocation());
+        EffectUtil.fakeLightning(getLocation());
     }
 
     @Override
     public void steal(Player carrier) {
-        Bukkit.broadcastMessage("Flag stolen!");
         stolenAt = System.currentTimeMillis();
         pickup(carrier);
         placeGhost();
@@ -86,6 +85,7 @@ public abstract class AbstractFlag implements IBattleFlag {
     @Override
     public void capture() {
         reset();
+        EffectUtil.fakeLightning(getLocation());
     }
 
     protected final void setCarrier(Player carrier) {

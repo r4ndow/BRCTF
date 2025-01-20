@@ -3,9 +3,9 @@ package com.mcpvp.battle.game;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.config.BattleGameConfig;
-import com.mcpvp.battle.event.FlagDropEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.flag.FlagListener;
+import com.mcpvp.battle.flag.FlagMessageBroadcaster;
 import com.mcpvp.battle.game.listener.BattlePermanentGameListener;
 import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
 import com.mcpvp.battle.game.state.BattleGameStateHandler;
@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -52,6 +51,7 @@ public class BattleGame extends EasyLifecycle {
 
         attach(new BattlePermanentGameListener(plugin, this));
         attach(new FlagListener(plugin, this));
+        attach(new FlagMessageBroadcaster(plugin));
         attach(scoreboardManager);
 
         scoreboardManager.init();
@@ -113,7 +113,7 @@ public class BattleGame extends EasyLifecycle {
         // Drop the flag if they have it
         teamManager.getTeams().forEach(bt -> {
             if (bt.getFlag().getCarrier() == player) {
-                new FlagDropEvent(player, bt.getFlag(), null).call();
+                bt.getFlagManager().drop(player, null);
             }
         });
 

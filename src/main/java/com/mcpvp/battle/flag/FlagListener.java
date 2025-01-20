@@ -9,6 +9,7 @@ import com.mcpvp.common.event.TickEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
@@ -17,9 +18,14 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import java.util.Optional;
 
+/**
+ * Listens for flag interactions and calls {@link FlagManager}.
+ */
 @Getter
 @RequiredArgsConstructor
 public class FlagListener implements EasyListener {
+
+    private static final Double FLAG_DIST = 1.5;
 
     private final BattlePlugin plugin;
     private final BattleGame game;
@@ -29,11 +35,29 @@ public class FlagListener implements EasyListener {
         game.getTeamManager().getTeams().forEach(bt -> {
             IBattleFlag flag = bt.getFlag();
             if (flag.isDropped() && flag.getRestoreExpiration().isExpired()) {
-                new FlagRestoreEvent(flag).call();
+                bt.getFlagManager().restore();
             }
 
             flag.onTick(event.getTick());
         });
+
+        for (Player player : game.getParticipants()) {
+            BattleTeam team = game.getTeamManager().getTeam(player);
+            if (team == null) {
+                continue;
+            }
+
+            for (BattleTeam bt : game.getTeamManager().getTeams()) {
+                if (team == bt || !bt.getFlag().isHome()) {
+                    continue;
+                }
+
+                if (player.getLocation().distance(bt.getFlag().getLocation()) > FLAG_DIST) {
+                    // If they've strayed from the flag, make sure they're not considered to be stealing
+                    bt.getFlagManager().stopStealAttempt(player);
+                }
+            }
+        }
     }
 
     @EventHandler
@@ -53,34 +77,35 @@ public class FlagListener implements EasyListener {
 
             if (bt != team) {
                 if (bt.getFlag().isHome()) {
-                    new FlagStealEvent(event.getPlayer(), bt.getFlag()).call();
+                    bt.getFlagManager().attemptSteal(event.getPlayer());
                 } else {
                     if (bt.getFlag().getPickupExpiration().isExpired()) {
-                        new FlagPickupEvent(event.getPlayer(), bt.getFlag()).call();
+                        bt.getFlagManager().pickup(event.getPlayer());
                     }
                 }
             } else if (!bt.getFlag().isHome()) {
-                new FlagRecoverEvent(event.getPlayer(), bt.getFlag()).call();
+                bt.getFlagManager().recover(event.getPlayer());
             }
         });
     }
 
     @EventHandler
     public void onCapture(PlayerPickupItemEvent event) {
-        if (!game.getTeamManager().getTeams().stream().anyMatch(bt -> bt.getFlag().isItem(event.getItem().getItemStack()))) {
+        if (game.getTeamManager().getTeams().stream()
+                .noneMatch(bt -> bt.getFlag().isItem(event.getItem().getItemStack()))) {
             return;
         }
 
         BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
-        Optional<BattleTeam> carried = game.getTeamManager().getTeams().stream().filter(bt -> {
-            return bt.getFlag().getCarrier() == event.getPlayer();
-        }).findFirst();
+        Optional<BattleTeam> carried = game.getTeamManager().getTeams().stream()
+                .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
+                .findFirst();
 
         if (!team.getFlag().isItem(event.getItem().getItemStack())) {
             return;
         }
 
-        if (!carried.isPresent()) {
+        if (carried.isEmpty()) {
             return;
         }
 
@@ -88,14 +113,14 @@ public class FlagListener implements EasyListener {
             return;
         }
 
-        new FlagCaptureEvent(event.getPlayer(), team, carried.get().getFlag()).call();
+        carried.get().getFlagManager().capture(event.getPlayer(), team);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onItemDrop(PlayerDropItemEvent event) {
         game.getTeamManager().getTeams().forEach(bt -> {
             if (bt.getFlag().isItem(event.getItemDrop().getItemStack())) {
-                new FlagDropEvent(event.getPlayer(), bt.getFlag(), event.getItemDrop()).call();
+                bt.getFlagManager().drop(event.getPlayer(), event.getItemDrop());
             }
         });
     }
@@ -142,7 +167,7 @@ public class FlagListener implements EasyListener {
     public void onResign(PlayerResignEvent event) {
         game.getTeamManager().getTeams().forEach(bt -> {
             if (bt.getFlag().getCarrier() == event.getPlayer()) {
-                new FlagDropEvent(event.getPlayer(), bt.getFlag(), null).call();
+                bt.getFlagManager().drop(event.getPlayer(), null);
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.mcpvp.battle.team;
 
 import com.mcpvp.battle.config.BattleTeamConfig;
+import com.mcpvp.battle.flag.FlagManager;
 import com.mcpvp.battle.flag.IBattleFlag;
 import com.mcpvp.battle.flag.WoolFlag;
 import com.mcpvp.battle.util.Colors;
@@ -26,6 +27,7 @@ public class BattleTeam {
     private String name;
     private Colors color;
     private IBattleFlag flag;
+    private FlagManager flagManager;
     private int captures;
 
     public BattleTeam(int id, String name, Colors color, BattleTeamConfig config) {
@@ -34,6 +36,7 @@ public class BattleTeam {
         this.color = color;
 		this.config = config;
         this.flag = new WoolFlag(this, config.getFlag());
+        this.flagManager = new FlagManager(flag);
     }
 
     void add(Player player) {

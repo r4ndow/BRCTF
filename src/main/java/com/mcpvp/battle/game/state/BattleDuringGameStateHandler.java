@@ -32,13 +32,6 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     public void enterState() {
         super.enterState();
 
-        attach(new FlagStealMonitor(plugin, game.getBattle(), game));
-        attach(new FlagDropMonitor(plugin, game.getBattle(), game));
-        attach(new FlagPickupMonitor(plugin, game.getBattle(), game));
-        attach(new FlagRecoverMonitor(plugin, game.getBattle(), game));
-        attach(new FlagCaptureMonitor(plugin, game.getBattle(), game));
-        attach(new FlagRestoreMonitor(plugin, game.getBattle(), game));
-
         game.getTeamManager().getTeams().forEach(bt -> {
             bt.getFlag().setLocked(false);
         });
@@ -137,7 +130,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         Optional<BattleTeam> carryingFlag = game.getTeamManager().getTeams().stream()
                 .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
                 .findAny();
-        carryingFlag.ifPresent(battleTeam -> new FlagRestoreEvent(battleTeam.getFlag()).call());
+        carryingFlag.ifPresent(battleTeam -> battleTeam.getFlagManager().restore());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
