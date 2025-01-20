@@ -4,7 +4,7 @@ import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.map.BattleMapData;
-import com.mcpvp.battle.util.LookUtil;
+import com.mcpvp.common.util.LookUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;

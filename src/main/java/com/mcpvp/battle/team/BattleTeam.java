@@ -4,7 +4,7 @@ import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.flag.FlagManager;
 import com.mcpvp.battle.flag.IBattleFlag;
 import com.mcpvp.battle.flag.WoolFlag;
-import com.mcpvp.battle.util.Colors;
+import com.mcpvp.common.util.chat.Colors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;

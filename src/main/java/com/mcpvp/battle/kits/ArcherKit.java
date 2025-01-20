@@ -2,7 +2,7 @@ package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
-import com.mcpvp.battle.util.C;
+import com.mcpvp.common.util.chat.C;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import org.bukkit.Material;

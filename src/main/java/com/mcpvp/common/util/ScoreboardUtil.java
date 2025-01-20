@@ -1,6 +1,7 @@
-package com.mcpvp.battle.util;
+package com.mcpvp.common.util;
 
 import com.mcpvp.common.item.ItemUtil;
+import com.mcpvp.common.util.chat.C;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;

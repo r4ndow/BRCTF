@@ -3,7 +3,7 @@ package com.mcpvp.battle.flag;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.*;
 import com.mcpvp.battle.team.BattleTeam;
-import com.mcpvp.battle.util.C;
+import com.mcpvp.common.util.chat.C;
 import com.mcpvp.common.event.EasyListener;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

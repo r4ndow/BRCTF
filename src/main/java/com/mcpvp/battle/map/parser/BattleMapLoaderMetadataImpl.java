@@ -3,7 +3,7 @@ package com.mcpvp.battle.map.parser;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.map.BattleMapData;
-import com.mcpvp.battle.util.LookUtil;
+import com.mcpvp.common.util.LookUtil;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;

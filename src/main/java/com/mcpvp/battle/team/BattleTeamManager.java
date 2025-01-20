@@ -3,7 +3,7 @@ package com.mcpvp.battle.team;
 import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.event.PlayerJoinTeamEvent;
 import com.mcpvp.battle.event.PlayerLeaveTeamEvent;
-import com.mcpvp.battle.util.Colors;
+import com.mcpvp.common.util.chat.Colors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
