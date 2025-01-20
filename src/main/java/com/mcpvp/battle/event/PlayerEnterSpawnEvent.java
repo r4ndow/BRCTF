@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class EnterSpawnEvent extends EasyEvent {
+public class PlayerEnterSpawnEvent extends EasyEvent {
 
     private final Player player;
     private final BattleTeam team;

@@ -2,16 +2,12 @@ package com.mcpvp.battle.game.state;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.*;
-import com.mcpvp.battle.flag.*;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.KitSelectedEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -119,14 +115,14 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     }
 
     @EventHandler
-    public void killInEnemySpawn(EnterSpawnEvent event) {
+    public void killInEnemySpawn(PlayerEnterSpawnEvent event) {
         if (game.getTeamManager().getTeam(event.getPlayer()) != event.getTeam()) {
             game.respawn(event.getPlayer(), true);
         }
     }
 
     @EventHandler
-    public void loseFlagInSpawn(EnterSpawnEvent event) {
+    public void loseFlagInSpawn(PlayerEnterSpawnEvent event) {
         Optional<BattleTeam> carryingFlag = game.getTeamManager().getTeams().stream()
                 .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
                 .findAny();

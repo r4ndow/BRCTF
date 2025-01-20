@@ -21,10 +21,6 @@ public class VelocityManager implements Runnable {
     private final BukkitTask task;
     private final Runnable afterLaunch;
 
-    public VelocityManager(Plugin plugin, Entity player, Vector vector) {
-        this(plugin, player, vector, null);
-    }
-
     public VelocityManager(Plugin plugin, Entity player, Vector vector, Runnable afterLaunch) {
         this.player = player;
         this.vector = vector;
@@ -73,5 +69,6 @@ public class VelocityManager implements Runnable {
         }
 
         player.setVelocity(result);
+        player.setFallDistance(-2);
     }
 }

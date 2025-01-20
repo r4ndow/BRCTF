@@ -1,7 +1,7 @@
 package com.mcpvp.battle.game.listener;
 
 import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.event.EnterSpawnEvent;
+import com.mcpvp.battle.event.PlayerEnterSpawnEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
@@ -84,7 +84,7 @@ public class BattlePermanentGameListener implements EasyListener {
 
         game.getTeamManager().getTeams().forEach(bt -> {
             if (!bt.isInSpawn(event.getFrom()) && bt.isInSpawn(event.getTo())) {
-                new EnterSpawnEvent(event.getPlayer(), bt).call();
+                new PlayerEnterSpawnEvent(event.getPlayer(), bt).call();
             }
         });
     }
@@ -121,7 +121,7 @@ public class BattlePermanentGameListener implements EasyListener {
         Bukkit.getOnlinePlayers().forEach(player -> {
             Block under = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             if (under.getType() == Material.SPONGE) {
-                SpongeUtil.launch(plugin, player, under, true);
+                SpongeUtil.launch(plugin, player, under);
             }
         });
     }

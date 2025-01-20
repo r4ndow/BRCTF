@@ -17,12 +17,6 @@ public final class SpongeUtil {
         launch(plugin, player, block, null);
     }
 
-    public static void launch(Plugin plugin, Player player, Block block, boolean cancelFall) {
-        launch(plugin, player, block, null);
-        if (cancelFall)
-            MovementUtil.cancelNextFall(plugin, player);
-    }
-
     public static void launch(Plugin plugin, Player player, Block block, Runnable task) {
         Vector velocity = new Vector(0, getSpongeDepth(block), 0);
         velocity = velocity.add(new Vector(getSpongeDepth(block.getRelative(-1, -1, 0)), 0, 0));
@@ -31,16 +25,6 @@ public final class SpongeUtil {
         velocity = velocity.add(new Vector(0, 0, -getSpongeDepth(block.getRelative(0, -1, 1))));
         velocity = velocity.multiply(10);
         new VelocityManager(plugin, player, velocity, task);
-    }
-
-    public static void launch(Plugin plugin, Entity entity, Block block, Runnable task) {
-        Vector velocity = new Vector(0, getSpongeDepth(block), 0);
-        velocity = velocity.add(new Vector(getSpongeDepth(block.getRelative(-1, -1, 0)), 0, 0));
-        velocity = velocity.add(new Vector(-getSpongeDepth(block.getRelative(1, -1, 0)), 0, 0));
-        velocity = velocity.add(new Vector(0, 0, getSpongeDepth(block.getRelative(0, -1, -1))));
-        velocity = velocity.add(new Vector(0, 0, -getSpongeDepth(block.getRelative(0, -1, 1))));
-        velocity = velocity.multiply(10);
-        new VelocityManager(plugin, entity, velocity, task);
     }
 
     private static int getSpongeDepth(Block block) {
