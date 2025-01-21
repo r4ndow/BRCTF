@@ -16,6 +16,7 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
+import com.mcpvp.common.util.LookUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,10 +25,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
+import java.util.*;
+import java.util.function.Consumer;
 
 @Log4j2
 @Getter
@@ -41,6 +45,7 @@ public class BattleGame extends EasyLifecycle {
     private final BattleGameConfig config;
     private final BattleTeamManager teamManager;
     private final BattleScoreboardManager scoreboardManager;
+    private final Map<Player, BattleGamePlayerStats> playerStats = new HashMap<>();
 
     @Nullable
     private BattleGameState state = null;
@@ -109,7 +114,7 @@ public class BattleGame extends EasyLifecycle {
      *
      * @param player The player to respawn.
      */
-    public void respawn(Player player, boolean deathAnimation) {
+    public void respawn(Player player, boolean died) {
         // Drop the flag if they have it
         teamManager.getTeams().forEach(bt -> {
             if (bt.getFlag().getCarrier() == player) {
@@ -118,7 +123,9 @@ public class BattleGame extends EasyLifecycle {
         });
 
         // Death animation
-        if (deathAnimation) {
+        if (died) {
+            editStats(player, s -> s.setStreak(0));
+            editStats(player, s -> s.setDeaths(s.getDeaths() + 1));
             doDeathAnimation(player);
         }
 
@@ -136,8 +143,11 @@ public class BattleGame extends EasyLifecycle {
         player.teleport(spawn);
         player.setVelocity(new Vector());
 
-        // Equip kit
-        battle.getKitManager().createSelected(player);
+        // Players must be teleported immediately on death to avoid the death screen
+        // But there needs to be a tick delay before equipping the kit due to inventory resets
+        attach(Bukkit.getScheduler().runTask(plugin, () -> {
+            battle.getKitManager().createSelected(player);
+        }));
     }
 
     public void remove(Player player) {
@@ -171,6 +181,12 @@ public class BattleGame extends EasyLifecycle {
         return Bukkit.getOnlinePlayers().stream()
                 .filter(this::isParticipant)
                 .toList();
+    }
+
+    public void editStats(Player player, Consumer<BattleGamePlayerStats> operator) {
+        operator.accept(
+                playerStats.computeIfAbsent(player, k -> new BattleGamePlayerStats())
+        );
     }
 
     /**

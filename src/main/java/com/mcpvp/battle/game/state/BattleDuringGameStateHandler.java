@@ -56,24 +56,22 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         game.respawn(event.getPlayer(), false);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onDeath(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player player && player.getHealth() - event.getFinalDamage() <= 0) {
-            game.respawn(player, true);
-
-            // Canceling the event causes no damage splat animation
-            event.setDamage(0);
-        }
-    }
-
     @EventHandler
-    public void onActualDeath(PlayerDeathEvent event) {
-        // This should never happen, but just to be safe...
+    public void onDeath(PlayerDeathEvent event) {
+        event.setKeepInventory(false);
+        event.setKeepLevel(false);
+        event.setNewExp(0);
+        event.setNewLevel(0);
+        event.setDroppedExp(0);
+        event.getDrops().clear();
+        event.setDeathMessage(null);
+
         game.respawn(event.getEntity(), true);
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
+        // This should not happen, but just to be safe...
         if (game.isParticipant(event.getPlayer())) {
             game.respawn(event.getPlayer(), false);
         }
