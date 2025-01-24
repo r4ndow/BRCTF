@@ -90,7 +90,7 @@ public class FlagManager {
      * Captures the flag.
      *
      * @param carrier The player who is carrying the flag.
-     * @param scored The team that the player is on, which should be rewarded points.
+     * @param scored  The team that the player is on, which should be rewarded points.
      */
     public void capture(Player carrier, BattleTeam scored) {
         flag.capture();
@@ -102,7 +102,7 @@ public class FlagManager {
      * Used when a player drops a flag, either voluntarily or involuntarily.
      *
      * @param player The player who dropped the flag.
-     * @param item The item they dropped, optionally.
+     * @param item   The item they dropped, optionally.
      */
     public void drop(Player player, @Nullable Item item) {
         flag.drop(player.getEyeLocation(), item);

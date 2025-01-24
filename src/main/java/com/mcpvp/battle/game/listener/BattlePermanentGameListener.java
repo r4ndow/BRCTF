@@ -2,6 +2,7 @@ package com.mcpvp.battle.game.listener;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerEnterSpawnEvent;
+import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
@@ -26,7 +27,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
@@ -89,6 +92,17 @@ public class BattlePermanentGameListener implements EasyListener {
                 new PlayerEnterSpawnEvent(event.getPlayer(), bt).call();
             }
         });
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        if (event.getEntity().getLastDamageCause() != null) {
+            if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent edbee) {
+                if (edbee.getDamager() instanceof Player damager) {
+                    new PlayerKilledByPlayerEvent(event.getEntity(), damager).call();
+                }
+            }
+        }
     }
 
     // ==============

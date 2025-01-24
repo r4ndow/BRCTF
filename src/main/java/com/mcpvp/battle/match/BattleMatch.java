@@ -85,7 +85,7 @@ public class BattleMatch {
     }
 
     /**
-     * @return A task that runs every second to advanve the game timer, or proceed to the
+     * @return A task that runs every second to advance the game timer, or proceed to the
      * next game in the match.
      */
     private Runnable getTimerTask() {

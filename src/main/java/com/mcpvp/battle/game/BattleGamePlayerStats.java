@@ -8,5 +8,6 @@ public class BattleGamePlayerStats {
     private int kills;
     private int deaths;
     private int streak;
+    private int bestStreak;
 
 }

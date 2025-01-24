@@ -2,6 +2,7 @@ package com.mcpvp.battle.scoreboard;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.game.BattleGamePlayerStats;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.team.BattleTeam;
@@ -110,6 +111,9 @@ public class BattleScoreboardManager extends EasyLifecycle {
                         scores.addAll(getScoresForTeam(player, bt));
                     }
                 });
+
+                scores.addAll(getPlayerStats(player));
+
             }
         }
 
@@ -193,7 +197,6 @@ public class BattleScoreboardManager extends EasyLifecycle {
         return loc;
     }
 
-
     private String getTitle() {
         String display = "[" + (battle.getMatch().getCurrentGameIndex() + 1) + "/" + battle.getMatch().getGames().size() + "] ";
         String timer = formatDuration(Duration.ofSeconds((long) battle.getMatch().getTimer().getSeconds()));
@@ -228,5 +231,16 @@ public class BattleScoreboardManager extends EasyLifecycle {
         );
     }
 
+    private List<String> getPlayerStats(Player player) {
+        List<String> scores = new ArrayList<>();
+        BattleGamePlayerStats stats = battle.getGame().getStats(player);
+
+        scores.addAll(ScoreboardUtil.wrap(" " + C.RESET + C.B + "Your Stats"));
+        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Kills " + C.R + stats.getKills()));
+        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Deaths " + C.R + stats.getDeaths()));
+        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Streak " + C.R + stats.getStreak()));
+
+        return scores;
+    }
 
 }

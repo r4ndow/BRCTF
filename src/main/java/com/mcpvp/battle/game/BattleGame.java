@@ -16,8 +16,8 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
-import com.mcpvp.common.util.LookUtil;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.*;
@@ -25,8 +25,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
@@ -124,8 +122,13 @@ public class BattleGame extends EasyLifecycle {
 
         // Death animation
         if (died) {
-            editStats(player, s -> s.setStreak(0));
-            editStats(player, s -> s.setDeaths(s.getDeaths() + 1));
+            editStats(player, s -> {
+                if (s.getBestStreak() < s.getStreak()) {
+                    s.setBestStreak(s.getStreak());
+                }
+                s.setStreak(0);
+                s.setDeaths(s.getDeaths() + 1);
+            });
             doDeathAnimation(player);
         }
 
@@ -184,9 +187,12 @@ public class BattleGame extends EasyLifecycle {
     }
 
     public void editStats(Player player, Consumer<BattleGamePlayerStats> operator) {
-        operator.accept(
-                playerStats.computeIfAbsent(player, k -> new BattleGamePlayerStats())
-        );
+        operator.accept(getStats(player));
+    }
+
+    @NonNull
+    public BattleGamePlayerStats getStats(Player player) {
+        return playerStats.computeIfAbsent(player, k -> new BattleGamePlayerStats());
     }
 
     /**

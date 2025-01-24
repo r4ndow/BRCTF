@@ -15,6 +15,7 @@ import com.mcpvp.common.structure.StructureManager;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -167,6 +168,7 @@ public class MedicKit extends BattleKit {
 
             MedicWeb web = new MedicWeb(getBattle().getStructureManager());
             placeStructure(web, target);
+            attach(Bukkit.getScheduler().runTaskLater(plugin, web::remove, Duration.seconds(2).ticks()));
         }
 
         @EventHandler
