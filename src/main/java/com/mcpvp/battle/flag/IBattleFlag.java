@@ -53,16 +53,6 @@ public interface IBattleFlag {
     void reset();
 
     /**
-     * @return The epoch millisecond that the flag was dropped.
-     */
-    long getDroppedAt();
-
-    /**
-     * @return The epoch millisecond that the flag was last stolen.
-     */
-    long getStolenAt();
-
-    /**
      * @return If the flag is at home, e.g. has no carrier and is not dropped.
      */
     boolean isHome();

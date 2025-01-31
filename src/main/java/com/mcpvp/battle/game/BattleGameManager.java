@@ -44,10 +44,17 @@ public class BattleGameManager {
             // Create scoreboard manager with the teams
             BattleScoreboardManager scoreboardManager = new BattleScoreboardManager(battle.getPlugin(), battle);
 
-            // Create game instance. Just creating this doesn't do anything
-            BattleGame game = new BattleGame(battle.getPlugin(), battle, map, world, config, teamManager, scoreboardManager);
-
-            return game;
+            // Create game instance
+            // This game is inactive until `setup` is called
+            return new BattleGame(
+                    battle.getPlugin(),
+                    battle,
+                    map,
+                    world,
+                    config,
+                    teamManager,
+                    scoreboardManager
+            );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

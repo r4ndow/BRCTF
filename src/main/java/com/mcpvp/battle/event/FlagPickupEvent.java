@@ -8,4 +8,5 @@ public class FlagPickupEvent extends FlagTakeEvent {
     public FlagPickupEvent(Player player, IBattleFlag flag) {
         super(player, flag);
     }
+
 }

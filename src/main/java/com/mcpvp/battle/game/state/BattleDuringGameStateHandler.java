@@ -33,6 +33,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         });
 
         game.getBattle().getMatch().getTimer().setSeconds(game.getConfig().getTime() * 60);
+        game.getBattle().getMatch().getTimer().setPaused(false);
     }
 
     @Override

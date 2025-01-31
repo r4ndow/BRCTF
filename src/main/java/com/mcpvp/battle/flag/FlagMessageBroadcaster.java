@@ -7,7 +7,9 @@ import com.mcpvp.common.util.chat.C;
 import com.mcpvp.common.event.EasyListener;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 
 @Getter
 @RequiredArgsConstructor
@@ -15,10 +17,8 @@ public class FlagMessageBroadcaster implements EasyListener {
 
     private final BattlePlugin plugin;
 
-    public void broadcast(String message) {
-        plugin.getBattle().getGame().getParticipants().forEach(player -> {
-            player.sendMessage(message);
-        });
+    private void broadcast(String message) {
+        Bukkit.broadcastMessage(message);
     }
 
     @EventHandler
@@ -63,7 +63,7 @@ public class FlagMessageBroadcaster implements EasyListener {
         broadcast(msg);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSteal(FlagStealEvent event) {
         BattleTeam playerTeam = plugin.getBattle().getGame().getTeamManager().getTeam(event.getPlayer());
         String name = playerTeam.getColor() + event.getPlayer().getName() + C.R;

@@ -122,15 +122,15 @@ public class BattleGame extends EasyLifecycle {
 
         // Death animation
         if (died) {
-            editStats(player, s -> {
-                if (s.getBestStreak() < s.getStreak()) {
-                    s.setBestStreak(s.getStreak());
-                }
-                s.setStreak(0);
-                s.setDeaths(s.getDeaths() + 1);
-            });
             doDeathAnimation(player);
         }
+
+        // Adjust stats
+        editStats(player, s -> {
+            s.setBestStreak(Math.max(s.getBestStreak(), s.getStreak()));
+            s.setStreak(0);
+            s.setDeaths(s.getDeaths() + 1);
+        });
 
         // Reset negative statues
         player.setHealth(player.getMaxHealth());
@@ -196,7 +196,7 @@ public class BattleGame extends EasyLifecycle {
     }
 
     /**
-     * @return The team that won this game (eg by meeting the required number of caps).
+     * @return The team that won this game (e.g. by meeting the required number of caps).
      * Returns null if no team has won.
      */
     @Nullable

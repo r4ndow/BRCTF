@@ -55,6 +55,11 @@ public class BattlePermanentGameListener implements EasyListener {
         } else {
             new PlayerResignEvent(event.getPlayer(), game).call();
         }
+
+        // No matter what, they should be in the world of the current game
+        if (event.getPlayer().getWorld() != game.getWorld()) {
+            event.getPlayer().teleport(game.getConfig().getSpawn());
+        }
     }
 
     @EventHandler
@@ -68,7 +73,7 @@ public class BattlePermanentGameListener implements EasyListener {
     }
 
     @EventHandler
-    public void onGamemodeChange(PlayerGameModeChangeEvent event) {
+    public void onGameModeChange(PlayerGameModeChangeEvent event) {
         GameMode prev = event.getPlayer().getGameMode();
         GameMode next = event.getNewGameMode();
 
@@ -82,7 +87,7 @@ public class BattlePermanentGameListener implements EasyListener {
     }
 
     @EventHandler
-    public void onMove(PlayerMoveEvent event) {
+    public void onMoveIntoSpawn(PlayerMoveEvent event) {
         if (!game.isParticipant(event.getPlayer())) {
             return;
         }
@@ -187,6 +192,7 @@ public class BattlePermanentGameListener implements EasyListener {
 
     @EventHandler
     public void onCombust(EntityCombustEvent event) {
+        // Prevent the death effect skeleton from combusting
         if (event.getEntityType() == EntityType.SKELETON) {
             event.setCancelled(true);
         }
