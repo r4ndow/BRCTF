@@ -173,7 +173,7 @@ public class MedicKit extends BattleKit {
 
         @EventHandler
         public void restorePassively(TickEvent event) {
-            if (event.getTick() % WEB_RESTORE_TIMER.ticks() == 0) {
+            if (event.isInterval(WEB_RESTORE_TIMER)) {
                 increment(getOriginal().getAmount());
                 update(getPlayer().getInventory());
             }
