@@ -291,6 +291,9 @@ public class BattleScoreboardManager extends EasyLifecycle {
         scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Kills " + C.R + stats.getKills()));
         scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Deaths " + C.R + stats.getDeaths()));
         scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Streak " + C.R + stats.getStreak()));
+        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Steals " + C.R + stats.getSteals()));
+        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Captures " + C.R + stats.getCaptures()));
+        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Recovers " + C.R + stats.getRecovers()));
 
         return scores;
     }

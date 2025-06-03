@@ -6,6 +6,7 @@ import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.flag.FlagMessageBroadcaster;
+import com.mcpvp.battle.flag.FlagStatsListener;
 import com.mcpvp.battle.game.listener.BattlePermanentGameListener;
 import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
 import com.mcpvp.battle.game.state.BattleGameStateHandler;
@@ -55,6 +56,7 @@ public class BattleGame extends EasyLifecycle {
         attach(new BattlePermanentGameListener(plugin, this));
         attach(new FlagListener(plugin, this));
         attach(new FlagMessageBroadcaster(plugin));
+        attach(new FlagStatsListener(plugin, this));
         attach(scoreboardManager);
 
         scoreboardManager.init();

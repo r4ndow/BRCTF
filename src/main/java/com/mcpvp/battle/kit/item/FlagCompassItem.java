@@ -25,7 +25,7 @@ public class FlagCompassItem extends KitItem {
     public void toggle() {
         if (this.target != null) {
             target = game.getTeamManager().getNext(target);
-            editItem(ib -> ib.name("Pointing to " + target.getName() + " flag"));
+            editItem(ib -> ib.name("Pointing to " + target.getColoredName() + " flag"));
             update(kit.getPlayer().getInventory());
         }
     }
