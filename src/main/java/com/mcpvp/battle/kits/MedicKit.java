@@ -1,6 +1,7 @@
 package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.FlagPoisonEvent;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.ProjectileManager;
@@ -90,6 +91,13 @@ public class MedicKit extends BattleKit {
         }
     }
 
+    @EventHandler
+    public void preventPoison(FlagPoisonEvent event) {
+        if (event.getPlayer() == getPlayer()) {
+            event.setCancelled(true);
+        }
+    }
+
     public void heal(Player player) {
         Kit kit = getBattle().getKitManager().get(player);
         if (kit == null) {
@@ -109,7 +117,7 @@ public class MedicKit extends BattleKit {
             // Restore items
             kit.getAllItems().stream()
                     .filter(KitItem::isRestorable)
-                    .forEach(ki -> this.restoreItem(player, kit, ki));
+                    .forEach(this::restoreItem);
 
             // No healing for a while
             healCooldowns.put(player, new Expiration().expireIn(RESTORE_PLAYER_COOLDOWN));
@@ -120,7 +128,7 @@ public class MedicKit extends BattleKit {
         }
     }
 
-    private void restoreItem(Player player, Kit kit, KitItem item) {
+    private void restoreItem(KitItem item) {
         // Un-placeholder
         item.increment(item.getOriginal().getAmount());
 

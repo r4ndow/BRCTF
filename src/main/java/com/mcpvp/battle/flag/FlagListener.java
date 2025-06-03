@@ -6,6 +6,8 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
+import com.mcpvp.common.time.Duration;
+import com.mcpvp.common.util.chat.C;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
@@ -32,6 +34,7 @@ public class FlagListener implements EasyListener {
 
     @EventHandler
     public void onTick(TickEvent event) {
+        // Flag timer restoration
         game.getTeamManager().getTeams().forEach(bt -> {
             IBattleFlag flag = bt.getFlag();
             if (flag.isDropped() && flag.getRestoreExpiration().isExpired()) {
@@ -41,6 +44,7 @@ public class FlagListener implements EasyListener {
             flag.onTick(event.getTick());
         });
 
+        // Steal related processing
         for (Player player : game.getParticipants()) {
             BattleTeam team = game.getTeamManager().getTeam(player);
             if (team == null) {
@@ -57,6 +61,19 @@ public class FlagListener implements EasyListener {
                     bt.getFlagManager().stopStealAttempt(player);
                 }
             }
+        }
+
+        // Flag poison every 15 seconds
+        if (event.isInterval(Duration.seconds(15))) {
+            game.getTeamManager().getTeams().stream().map(BattleTeam::getFlag).forEach(flag -> {
+                if (flag.getCarrier() != null) {
+                    if (!new FlagPoisonEvent(flag.getCarrier()).call()) {
+                        String message = "%s%s flag poisoned you!".formatted(C.warn(C.RED), flag.getTeam().getColoredName() + C.GRAY);
+                        flag.getCarrier().sendMessage(message);
+                        flag.getCarrier().damage(3);
+                    }
+                }
+            });
         }
     }
 

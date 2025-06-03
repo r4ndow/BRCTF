@@ -4,6 +4,7 @@ import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.flag.FlagManager;
 import com.mcpvp.battle.flag.IBattleFlag;
 import com.mcpvp.battle.flag.WoolFlag;
+import com.mcpvp.common.util.chat.C;
 import com.mcpvp.common.util.chat.Colors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -63,6 +64,10 @@ public class BattleTeam {
         Block underFeet = location.getBlock().getRelative(BlockFace.DOWN);
         Block spawnBlock = config.getSpawn().getBlock().getRelative(BlockFace.DOWN);
         return underFeet.getType() == spawnBlock.getType();
+    }
+
+    public String getColoredName() {
+        return getColor() + getName() + C.R;
     }
 
 }
