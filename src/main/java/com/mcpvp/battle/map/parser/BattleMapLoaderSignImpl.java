@@ -159,8 +159,14 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         Location loc = sign.getBlock().getLocation();
 
         switch (sign.getText()) {
-            case "spawn" -> teamConfig.setSpawn(center(loc));
-            case "flag" -> teamConfig.setFlag(center(loc));
+            case "spawn" -> {
+                teamConfig.setSpawn(center(loc));
+                builder.getCallouts().add(new BattleCallout(center(loc), teamConfig, "spawn"));
+            }
+            case "flag" -> {
+                teamConfig.setFlag(center(loc));
+                builder.getCallouts().add(new BattleCallout(center(loc), teamConfig, "flag"));
+            }
             default -> log.warn("Unknown team config given: " + sign);
         }
     }

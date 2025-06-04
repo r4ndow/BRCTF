@@ -1,5 +1,6 @@
 package com.mcpvp.battle.map.parser;
 
+import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.map.BattleMapData;
@@ -35,8 +36,16 @@ public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
                 case "Red", "Blue" -> {
                     BattleTeamConfig config = domain.equals("Red") ? red : blue;
                     switch (variable) {
-                        case "Respawn" -> config.setSpawn(parseLocation(value, world).add(0.5, 0, 0.5));
-                        case "Chest" -> config.setFlag(parseLocation(value, world).add(0.5, 1, 0.5));
+                        case "Respawn" -> {
+                            Location loc = parseLocation(value, world).add(0.5, 0, 0.5);
+                            config.setSpawn(loc);
+                            builder.getCallouts().add(new BattleCallout(loc, config, "spawn"));
+                        }
+                        case "Chest" -> {
+                            Location loc = parseLocation(value, world).add(0.5, 0, 0.5);
+                            config.setFlag(loc);
+                            builder.getCallouts().add(new BattleCallout(loc, config, "flag"));
+                        }
                         case "Face" -> {
                             BlockFace face = switch (value) {
                                 case "n" -> BlockFace.NORTH;
