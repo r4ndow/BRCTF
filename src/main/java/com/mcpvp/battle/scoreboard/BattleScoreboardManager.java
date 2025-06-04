@@ -290,10 +290,15 @@ public class BattleScoreboardManager extends EasyLifecycle {
         scores.addAll(ScoreboardUtil.wrap(" " + C.RESET + C.B + "Your Stats"));
         scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Kills " + C.R + stats.getKills()));
         scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Deaths " + C.R + stats.getDeaths()));
-        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Streak " + C.R + stats.getStreak()));
-        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Steals " + C.R + stats.getSteals()));
+
+        if (battle.getGame().getState() == BattleGameState.DURING) {
+            scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Streak " + C.R + stats.getStreak()));
+        } else if (battle.getGame().getState() == BattleGameState.AFTER) {
+            scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Best Streak " + C.R + stats.getBestStreak()));
+        }
+
+        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Recoveries " + C.R + stats.getRecovers()));
         scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Captures " + C.R + stats.getCaptures()));
-        scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Recovers " + C.R + stats.getRecovers()));
 
         return scores;
     }

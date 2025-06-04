@@ -31,6 +31,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -157,6 +158,7 @@ public class BattlePermanentGameListener implements EasyListener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
+        // FlagListener will handle the flag being dropped
         if (game.getTeamManager().getTeams().stream().noneMatch(bt ->
                 bt.getFlag().isItem(event.getItemDrop().getItemStack())
         )) {
@@ -194,6 +196,13 @@ public class BattlePermanentGameListener implements EasyListener {
     public void onCombust(EntityCombustEvent event) {
         // Prevent the death effect skeleton from combusting
         if (event.getEntityType() == EntityType.SKELETON) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        if (event.getPlayer() instanceof Player p && game.isParticipant(p)) {
             event.setCancelled(true);
         }
     }

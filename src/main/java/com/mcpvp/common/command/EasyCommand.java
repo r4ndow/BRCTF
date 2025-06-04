@@ -14,22 +14,22 @@ public abstract class EasyCommand extends Command {
         super(name);
     }
 
+    protected EasyCommand(String name, List<String> aliases) {
+        super(name, "", "", aliases);
+    }
+
     protected EasyCommand(String name, String description, String usageMessage, List<String> aliases) {
         super(name, description, usageMessage, aliases);
     }
 
     /**
-     * Actual invocation path for executing this command.
+     * Actual invocation path (as opposed to {@link #execute(CommandSender, String, String[])}) for executing this command.
      */
     public abstract boolean onCommand(CommandSender sender, String label, List<String> args);
 
     /**
-     * Actual invocation path for executing tab completion for this command. Can be triggered by {@link #onTabComplete(CommandSender, Command, String, String[])}.
-     *
-     * @param sender
-     * @param alias
-     * @param args
-     * @return
+     * Actual invocation path (as opposed to {@link #tabComplete(CommandSender, String, String[])}) for executing tab
+     * completion for this command.
      */
     public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
         return Collections.emptyList();

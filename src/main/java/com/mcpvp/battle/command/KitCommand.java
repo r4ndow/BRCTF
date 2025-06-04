@@ -2,6 +2,8 @@ package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.common.kit.KitDefinition;
+import com.mcpvp.common.kit.KitInfo;
+import com.mcpvp.common.util.chat.C;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,7 +14,11 @@ public class KitCommand extends BattleCommand {
     private final BattleKitManager kitManager;
 
     public KitCommand(BattleKitManager kitManager) {
-        super("kit");
+        super("kit", kitManager.getKitDefinitions().stream()
+                .map(KitInfo::getName)
+                .map(String::toLowerCase)
+                .toList()
+        );
         this.kitManager = kitManager;
     }
 
@@ -20,13 +26,19 @@ public class KitCommand extends BattleCommand {
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
         Player player = asPlayer(sender);
 
-        KitDefinition kit = this.kitManager.getKitDefinition(args.get(0));
+        KitDefinition kit;
+        if (label.equals("kit")) {
+            kit = this.kitManager.getKitDefinition(args.get(0));
+        } else {
+            kit = this.kitManager.getKitDefinition(label);
+        }
+
         if (kit != null) {
             if (kitManager.setSelected(player, kit, false)) {
-                player.sendMessage("Selected " + kit.getName());
+                player.sendMessage(C.cmdPass() + "Selected " + C.hl(kit.getName()));
                 return true;
             } else {
-                player.sendMessage("Not allowed :(");
+                player.sendMessage(C.cmdFail() + "Not allowed :(");
                 return false;
             }
         }

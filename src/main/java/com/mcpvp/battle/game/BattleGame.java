@@ -125,14 +125,14 @@ public class BattleGame extends EasyLifecycle {
         // Death animation
         if (died) {
             doDeathAnimation(player);
-        }
 
-        // Adjust stats
-        editStats(player, s -> {
-            s.setBestStreak(Math.max(s.getBestStreak(), s.getStreak()));
-            s.setStreak(0);
-            s.setDeaths(s.getDeaths() + 1);
-        });
+            // Adjust stats
+            editStats(player, s -> {
+                s.setBestStreak(Math.max(s.getBestStreak(), s.getStreak()));
+                s.setStreak(0);
+                s.setDeaths(s.getDeaths() + 1);
+            });
+        }
 
         // Reset negative statues
         player.setHealth(player.getMaxHealth());

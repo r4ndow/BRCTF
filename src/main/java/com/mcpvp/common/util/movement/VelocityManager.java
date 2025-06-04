@@ -1,5 +1,7 @@
 package com.mcpvp.common.util.movement;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -26,6 +28,7 @@ public class VelocityManager implements Runnable {
         this.vector = vector;
         task = Bukkit.getScheduler().runTaskTimer(plugin, this, 0, 1);
         this.afterLaunch = afterLaunch;
+        new CancelNextFallTask(plugin, (Player) player);
     }
 
     @Override
@@ -40,9 +43,12 @@ public class VelocityManager implements Runnable {
         if (x == 0 && y == 0 && z == 0) {
             if (!smooth)
                 player.setVelocity(new Vector(0, 0, 0));
+
             task.cancel();
+
             if (afterLaunch != null)
                 afterLaunch.run();
+
             return;
         }
         Vector result = new Vector();
@@ -69,6 +75,6 @@ public class VelocityManager implements Runnable {
         }
 
         player.setVelocity(result);
-        player.setFallDistance(-2);
     }
+
 }
