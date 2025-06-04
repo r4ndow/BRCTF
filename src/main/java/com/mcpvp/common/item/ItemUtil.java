@@ -9,6 +9,23 @@ import java.util.List;
 
 public class ItemUtil {
 
+    public static String getName(ItemStack stack) {
+        if (stack == null) {
+            return "";
+        }
+
+        if (stack.getItemMeta() == null) {
+            return "";
+        }
+
+        String displayed = stack.getItemMeta().getDisplayName();
+        if (displayed == null) {
+            return "";
+        }
+
+        return displayed;
+    }
+
     public static List<String> getLore(ItemStack stack) {
         if (stack == null)
             return null;

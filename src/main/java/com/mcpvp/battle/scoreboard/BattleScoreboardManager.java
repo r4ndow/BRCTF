@@ -158,6 +158,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
                 // Then add the stats of the player, e.g. kills and deaths
                 scores.addAll(getPlayerStats(player));
             }
+            case AFTER -> scores.addAll(getPlayerStats(player));
         }
 
         return scores;
@@ -273,7 +274,12 @@ public class BattleScoreboardManager extends EasyLifecycle {
         switch (battle.getGame().getState()) {
             case BEFORE -> display += "Starts in " + timer;
             case DURING -> display += "Ends in " + timer;
-            case AFTER -> display += "Game over " + timer;
+            case AFTER -> {
+                if (battle.getMatch().getCurrentGameIndex() + 1 == battle.getMatch().getGames().size()) {
+                    return "Match over! Restart in " + timer;
+                }
+                display += "Next map in " + timer;
+            }
         }
 
         return display;

@@ -6,15 +6,18 @@ import com.mcpvp.battle.kit.item.FlagCompassItem;
 import com.mcpvp.battle.kit.item.FoodItem;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.item.ItemBuilder;
+import com.mcpvp.common.item.ItemUtil;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureViolation;
 import org.apache.commons.lang3.text.WordUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +43,13 @@ public abstract class BattleKit extends Kit {
             // Structure will be removed on kit destruction
             attach((EasyLifecycle) structure);
         }
+    }
+
+    @EventHandler
+    public void onItemMove(InventoryCloseEvent event) {
+        ((BattlePlugin) plugin).getBattle().getInventoryManager().save(this);
+        // Ideally, we wouldn't save all the layouts here, but whatever
+        ((BattlePlugin) plugin).getBattle().getInventoryManager().saveAll();
     }
 
     public class KitInventoryBuilder {
@@ -74,8 +84,14 @@ public abstract class BattleKit extends Kit {
         }
 
         private KitItem autoAdjust(ItemBuilder itemBuilder) {
-            String typeName = WordUtils.capitalize(itemBuilder.build().getType().name().replace("_", " ").toLowerCase());
-            return new KitItem(BattleKit.this, itemBuilder.unbreakable().name(getName() + " " + typeName).build());
+            boolean customName = !ItemUtil.getName(new ItemStack(itemBuilder.build().getType())).equals(ItemUtil.getName(itemBuilder.build()));
+
+            if (!customName) {
+                String typeName = WordUtils.capitalize(itemBuilder.build().getType().name().replace("_", " ").toLowerCase());
+                itemBuilder.name(getName() + " " + typeName);
+            }
+
+            return new KitItem(BattleKit.this, itemBuilder.unbreakable().build());
         }
 
         public Map<Integer, KitItem> build() {
@@ -85,8 +101,10 @@ public abstract class BattleKit extends Kit {
                     map.put(i, items[i]);
                 }
             }
-            return map;
+            return getBattle().getInventoryManager().applyLayout(BattleKit.this, map);
         }
+
+
 
     }
 

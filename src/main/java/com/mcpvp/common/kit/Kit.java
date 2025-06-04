@@ -17,14 +17,13 @@ import java.util.Map;
  * Kit corresponds
  * to one player, and instances are recreated often. For example, when a player
  * dies,
- * a new Kit will be created and re-initialized. This makess tate management
+ * a new Kit will be created and re-initialized. This makes state management
  * significantly easier.
  */
+@Getter
 public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener {
 
-    @Getter
     protected final Plugin plugin;
-    @Getter
     private final Player player;
     private final Map<Integer, KitItem> items;
 

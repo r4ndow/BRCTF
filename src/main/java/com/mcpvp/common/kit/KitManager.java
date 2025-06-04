@@ -27,8 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class KitManager {
 
     private final Plugin plugin;
-    private Map<Player, KitDefinition> selected = new ConcurrentHashMap<>();
-    private Map<Player, Kit> active = new ConcurrentHashMap<>();
+    private final Map<Player, KitDefinition> selected = new ConcurrentHashMap<>();
+    private final Map<Player, Kit> active = new ConcurrentHashMap<>();
 
     public List<KitDefinition> getKitDefinitions() {
         return Collections.emptyList();
@@ -39,7 +39,7 @@ public class KitManager {
     }
 
     public boolean setSelected(Player player, KitDefinition definition, boolean force) {
-        // Allow the kit selection event to be rejected to enforce limits and resitrctions.
+        // Allow the kit selection event to be rejected to enforce limits and restrictions.
         if (!new KitAttemptSelectEvent(player, definition).call() || force) {
             selected.put(player, definition);
             new KitSelectedEvent(player, definition).call();

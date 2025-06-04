@@ -38,7 +38,7 @@ public class EasyLifecycle {
     /**
      * Attaches the given lifecycle. It will be shutdown on {@link #shutdown()}.
      *
-     * @param task The task to attach.
+     * @param lifecycle The lifecycle to attach.
      */
     protected void attach(EasyLifecycle lifecycle) {
         this.lifecycles.add(lifecycle);

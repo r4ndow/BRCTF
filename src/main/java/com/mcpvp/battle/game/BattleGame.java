@@ -137,6 +137,7 @@ public class BattleGame extends EasyLifecycle {
         // Reset negative statues
         player.setHealth(player.getMaxHealth());
         player.setFireTicks(0);
+        player.setExp(0);
 
         // Clear inventory
         player.getInventory().clear();

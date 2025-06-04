@@ -6,7 +6,9 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.TickEvent;
+import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitSelectedEvent;
+import com.mcpvp.common.util.chat.C;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +18,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class BattleDuringGameStateHandler extends BattleGameStateHandler {
@@ -38,8 +42,29 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @Override
     public void leaveState() {
+        // Shut down all kits
+        game.getParticipants().forEach(player -> {
+            Optional.ofNullable(game.getBattle().getKitManager().get(player)).ifPresent(Kit::shutdown);
+        });
+
         super.leaveState();
-        Bukkit.broadcastMessage("Game over!");
+
+        // Send a summary message
+        List<String> summary = new ArrayList<>();
+        summary.add(" ");
+        summary.add(C.YELLOW + "✦ " + C.GOLD + "✦ " + C.b(C.R) + "GAME SUMMARY" + C.YELLOW + " ✦" + C.GOLD + " ✦");
+
+        BattleTeam winner = game.getWinner();
+        if (winner == null) {
+            summary.add(C.info(C.GOLD) + "Nobody won!");
+        } else {
+            BattleTeam loser = game.getTeamManager().getNext(winner);
+            summary.add("%sWinner: %s (%s - %s)".formatted(
+                    C.info(C.GOLD), winner.getColoredName(), winner.getColor().toString() + winner.getCaptures(), loser.getColor().toString() + loser.getCaptures()
+            ));
+        }
+
+        summary.forEach(Bukkit::broadcastMessage);
     }
 
     @EventHandler

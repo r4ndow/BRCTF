@@ -3,7 +3,6 @@ package com.mcpvp.battle.game.state;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.game.BattleGame;
-import com.mcpvp.common.event.TickEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -42,6 +41,7 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
         event.getPlayer().getInventory().clear();
         event.getPlayer().getInventory().setArmorContents(new ItemStack[4]);
         event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
+        event.getPlayer().setExp(0);
     }
 
     @EventHandler

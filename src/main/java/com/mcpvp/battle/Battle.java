@@ -2,6 +2,7 @@ package com.mcpvp.battle;
 
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameManager;
+import com.mcpvp.battle.kit.BattleInventoryManager;
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.battle.map.manager.LocalMapManager;
 import com.mcpvp.battle.map.manager.MapManager;
@@ -32,6 +33,7 @@ public class Battle {
     private BattleMatch match;
     private ProjectileManager projectileManager;
     private StructureManager structureManager;
+    private BattleInventoryManager inventoryManager;
 
     public void load() throws IOException {
         this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin));
@@ -43,6 +45,8 @@ public class Battle {
         this.kitManager = new BattleKitManager(plugin);
         this.projectileManager = new ProjectileManager(plugin);
         this.structureManager = new StructureManager();
+        this.inventoryManager = new BattleInventoryManager(plugin);
+        this.inventoryManager.loadAll();
     }
 
     public void start() {
