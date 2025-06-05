@@ -1,6 +1,7 @@
 package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.kit.BattleKitManager;
+import com.mcpvp.common.kit.KitAttemptSelectEvent;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitInfo;
 import com.mcpvp.common.util.chat.C;
@@ -34,11 +35,12 @@ public class KitCommand extends BattleCommand {
         }
 
         if (kit != null) {
-            if (kitManager.setSelected(player, kit, false)) {
+            KitAttemptSelectEvent kitAttemptSelectEvent = kitManager.setSelected(player, kit, false);
+            if (!kitAttemptSelectEvent.isCancelled()) {
                 player.sendMessage(C.cmdPass() + "Selected " + C.hl(kit.getName()));
                 return true;
             } else {
-                player.sendMessage(C.cmdFail() + "Not allowed :(");
+                player.sendMessage(C.cmdFail() + kitAttemptSelectEvent.getDenial());
                 return false;
             }
         }

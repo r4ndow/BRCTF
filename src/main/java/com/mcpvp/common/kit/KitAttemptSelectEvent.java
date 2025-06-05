@@ -17,4 +17,11 @@ public class KitAttemptSelectEvent extends EasyCancellableEvent {
     private final Player player;
     private final KitDefinition kitDefinition;
 
+    private String denial;
+
+    public void deny(String reason) {
+        this.denial = reason;
+        cancel();
+    }
+
 }

@@ -12,13 +12,12 @@ public abstract class EasyCommandGroup extends EasyCommand {
     private final List<EasyCommand> commands = new ArrayList<>();
     private EasyCommand defaultCommand;
 
-    /**
-     * Instantiates a new command.
-     *
-     * @param name - the name of this command.
-     */
     public EasyCommandGroup(String name) {
         super(name);
+    }
+
+    public EasyCommandGroup(String name, List<String> aliases) {
+        super(name, aliases);
     }
 
     protected void addCommand(EasyCommand command, boolean setDefault) {

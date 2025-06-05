@@ -6,10 +6,12 @@ import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
+import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.battle.kit.BattleKitType;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
+import com.mcpvp.common.kit.KitAttemptSelectEvent;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.util.movement.SpongeUtil;
 import lombok.AllArgsConstructor;
@@ -35,6 +37,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
+
+import java.util.Optional;
 
 @Log4j2
 @Getter
@@ -136,6 +140,26 @@ public class BattlePermanentGameListener implements EasyListener {
     @EventHandler
     public void onResign(PlayerResignEvent event) {
         game.remove(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onKitSelectAttempt(KitAttemptSelectEvent event) {
+        BattleKitManager kitManager = game.getBattle().getKitManager();
+        if (kitManager.isDisabled(event.getKitDefinition())) {
+            event.deny("This class is disabled");
+        }
+
+        Optional<Integer> limit = kitManager.getLimit(event.getKitDefinition());
+        if (limit.isPresent()) {
+            BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
+            long selected = team.getPlayers().stream().filter(player -> {
+                return game.getBattle().getKitManager().isSelected(player, event.getKitDefinition());
+            }).count();
+
+            if (selected >= limit.get()) {
+                event.deny("Only %s players can use %s".formatted(limit.get(), event.getKitDefinition().getName()));
+            }
+        }
     }
 
     @EventHandler

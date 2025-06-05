@@ -48,8 +48,8 @@ public class ArcherKit extends BattleKit {
                 .add(ItemBuilder.of(Material.STONE_SWORD).name("Archer Sword").unbreakable())
                 .addFood(4)
                 .add(ItemBuilder.of(Material.BOW).enchant(Enchantment.ARROW_KNOCKBACK, 1))
-                .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrow #1"))
-                .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrow #2"))
+                .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #1"))
+                .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #2"))
                 .addCompass(8)
                 .build();
     }

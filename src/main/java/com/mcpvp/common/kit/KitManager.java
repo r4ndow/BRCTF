@@ -38,15 +38,16 @@ public class KitManager {
         return getKitDefinitions().stream().filter(k -> k.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
-    public boolean setSelected(Player player, KitDefinition definition, boolean force) {
+    public KitAttemptSelectEvent setSelected(Player player, KitDefinition definition, boolean force) {
         // Allow the kit selection event to be rejected to enforce limits and restrictions.
-        if (!new KitAttemptSelectEvent(player, definition).call() || force) {
+        KitAttemptSelectEvent kitAttemptSelectEvent = new KitAttemptSelectEvent(player, definition);
+        if (!kitAttemptSelectEvent.call() || force) {
             selected.put(player, definition);
             new KitSelectedEvent(player, definition).call();
-            return true;
+            return kitAttemptSelectEvent;
         }
 
-        return false;
+        return kitAttemptSelectEvent;
     }
 
     public boolean isSelected(Player player, KitDefinition definition) {

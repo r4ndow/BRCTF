@@ -22,14 +22,10 @@ public class FlagCommands extends EasyCommandGroup {
         addCommand(new FlagJumpCommand());
     }
 
-    public List<String> matchTeam(List<String> args) {
-        if (args.isEmpty()) {
-            return Collections.emptyList();
-        }
-
+    public List<String> matchTeam(String arg) {
         return CmdUtil.partialMatches(
                 battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList(),
-                args.get(0)
+                arg
         );
     }
 
@@ -54,8 +50,8 @@ public class FlagCommands extends EasyCommandGroup {
         }
 
         @Override
-        public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
-            return matchTeam(args);
+        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
+            return matchTeam(arg);
         }
     }
 

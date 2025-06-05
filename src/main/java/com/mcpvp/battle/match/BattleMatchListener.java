@@ -4,6 +4,7 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.kit.KitAttemptSelectEvent;
 import com.mcpvp.common.util.chat.C;
 import com.mcpvp.common.util.chat.Colors;
 import lombok.Getter;
@@ -52,11 +53,10 @@ public class BattleMatchListener implements EasyListener {
     private String formatMessage(boolean global, String message, String author, String teamColor) {
         return new StringBuilder()
                 .append(author)
-                .append(" ")
                 .append(teamColor)
-                .append("»")
+                .append(">")
                 .append(" ")
-                .append(global ? C.GOLD + "/all " : "")
+                .append(global ? C.GOLD + "/a " : "")
                 .append(C.R)
                 .append(global && message.startsWith("!") ? message.substring(1) : message)
                 .toString();

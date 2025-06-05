@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,17 @@ public abstract class EasyCommand extends Command {
      * completion for this command.
      */
     public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
+        if (!args.isEmpty()) {
+            return onTabComplete(sender, alias, args.get(args.size() - 1));
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Actual invocation path (as opposed to {@link #tabComplete(CommandSender, String, String[])}) for executing tab
+     * completion for this command.
+     */
+    public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
         return Collections.emptyList();
     }
 
