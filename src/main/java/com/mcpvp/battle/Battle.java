@@ -47,6 +47,22 @@ public class Battle {
         this.structureManager = new StructureManager();
         this.inventoryManager = new BattleInventoryManager(plugin);
         this.inventoryManager.loadAll();
+
+//        this.mapRepo.getAll().forEach(map -> {
+//            if (map.getMetadata() != null && map.isFunctional()) {
+//                for (String line : map.getMetadata().split("\n")) {
+//                    if (line.isBlank() || line.startsWith("#")) {
+//                        continue;
+//                    }
+//
+//                    if (line.split("=").length == 1) {
+//                        System.out.println("Map: " + map);
+//                        System.out.println("Line: " + line);
+//                        throw new RuntimeException();
+//                    }
+//                }
+//            }
+//        });
     }
 
     public void start() {

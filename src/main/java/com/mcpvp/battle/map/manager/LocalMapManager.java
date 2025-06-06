@@ -59,14 +59,18 @@ public class LocalMapManager implements MapManager {
     }
 
     @Override
+    public void clearOverride() {
+        new File(plugin.getDataFolder(), "override_maps.json").delete();
+    }
+
+    @Override
     public List<BattleMapData> getOverride() {
         File file = new File(plugin.getDataFolder(), "override_maps.json");
         if (!file.exists()) {
             return Collections.emptyList();
         }
         try {
-            List<Integer> ids = new ObjectMapper().readValue(file, new TypeReference<List<Integer>>() {
-            });
+            List<Integer> ids = new ObjectMapper().readValue(file, new TypeReference<>() {});
             return ids.stream().map(this::loadMap).toList();
         } catch (IOException e) {
             throw new RuntimeException(e);

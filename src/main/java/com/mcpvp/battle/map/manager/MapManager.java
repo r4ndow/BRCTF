@@ -50,6 +50,11 @@ public interface MapManager {
     void setOverride(List<Integer> ids);
 
     /**
+     * Ditches any existing IDs which should be played next time the server is booted.
+     */
+    void clearOverride();
+
+    /**
      * @return A list of map data which has been manually specified to be played. An empty list is returned if
      * no such maps exist.
      */

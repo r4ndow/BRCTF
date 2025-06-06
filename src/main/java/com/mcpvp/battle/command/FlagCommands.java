@@ -3,16 +3,13 @@ package com.mcpvp.battle.command;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.util.cmd.CmdUtil;
-import com.mcpvp.common.command.EasyCommand;
-import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class FlagCommands extends EasyCommandGroup {
+public class FlagCommands extends BattleCommandGroup {
 
     private final Battle battle;
 
@@ -35,7 +32,7 @@ public class FlagCommands extends EasyCommandGroup {
                 .findAny();
     }
 
-    public class FlagJumpCommand extends EasyCommand {
+    public class FlagJumpCommand extends BattleCommand {
 
         public FlagJumpCommand() {
             super("jump");

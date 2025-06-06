@@ -23,7 +23,7 @@ public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
         builder.getTeamConfigs().add(red);
 
         for (String line : map.getMetadata().split("\n")) {
-            if (line.isEmpty() || line.startsWith("#")) {
+            if (line.isBlank() || line.startsWith("#")) {
                 continue;
             }
 
@@ -42,7 +42,7 @@ public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
                             builder.getCallouts().add(new BattleCallout(loc, config, "spawn"));
                         }
                         case "Chest" -> {
-                            Location loc = parseLocation(value, world).add(0.5, 0, 0.5);
+                            Location loc = parseLocation(value, world).add(0.5, 1, 0.5);
                             config.setFlag(loc);
                             builder.getCallouts().add(new BattleCallout(loc, config, "flag"));
                         }
@@ -64,6 +64,7 @@ public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
                     switch (variable) {
                         case "CapturesToWin" -> builder.setCaps(Integer.parseInt(value));
                         case "Spawn" -> builder.setSpawn(parseLocation(value, world).add(0.5, 1, 0.5));
+                        case "Time" -> builder.setTimeOfDay(Integer.parseInt(value));
                     }
                 }
             }

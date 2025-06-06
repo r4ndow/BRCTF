@@ -37,6 +37,10 @@ public class BattleGameManager {
             BattleGameConfig config = parser.parse(map, world);
             log.info("Parsed config: " + config);
 
+            if (config.getTimeOfDay() != null) {
+                world.setTime(config.getTimeOfDay());
+            }
+
             // Create default teams. This could be created from the parsed config.
             BattleTeamManager teamManager = new BattleTeamManager();
             teamManager.createDefaultTeams(config.getTeamConfigs());

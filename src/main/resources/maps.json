@@ -11523,7 +11523,7 @@
     "name" : "Wonderland",
     "author" : "DeZilla",
     "created" : "2019-11-01T03:19:01",
-    "functional" : true,
+    "functional" : false,
     "file" : "532 - Wonderland",
     "metadata" : "{\n  \"TimeLimit\": 1200,\n  \"Teams\": [\n    {\"Color\": \"Red\",\n      \"SpawnLocation\": {\"X\": -44.0,\"Y\": 45.0,\"Z\": -47.0}},\n    {\"Color\": \"Blue\",\n      \"SpawnLocation\": {\"X\": 49.0,\"Y\": 45.0,\"Z\": -47.0}}\n  ],\n\"Zones\": [\n    {\"Size\": 150, \"Location\": {\"X\": 0, \"Y\": 28, \"Z\": -14.0}},\n    {\"Size\": 150, \"Location\": {\"X\": -32, \"Y\": 34, \"Z\": 37}},\n    {\"Size\": 150, \"Location\": {\"X\": 32, \"Y\": 34, \"Z\": 37}}\n  ]\n}",
     "category" : "DEFAULT",

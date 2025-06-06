@@ -31,6 +31,13 @@ public class BattleMatchManager {
 
     private List<BattleMapData> selectMaps() {
         // 329797 good callout testing map
+        // 335 broken spawn
+        if (mapManager.getOverride() != null && !mapManager.getOverride().isEmpty()) {
+            List<BattleMapData> maps = mapManager.getOverride().stream().map(BattleMapData::getId).map(mapManager::loadMap).toList();
+            mapManager.clearOverride();
+            return maps;
+        }
+
 		return mapManager.loadMaps(plugin.getBattle().getOptions().getMatch().getGames());
     }
 

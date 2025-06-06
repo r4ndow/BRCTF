@@ -21,9 +21,9 @@ dependencies {
     compileOnly(files("libs/craftbukkit-1.8.8.jar"))
     
     // JSON dependencies
-    api("com.fasterxml.jackson.core:jackson-core:2.15.2")
-    api("com.fasterxml.jackson.core:jackson-databind:2.15.2")
-    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
     
     compileOnly("org.apache.logging.log4j:log4j-api:2.22.0")
     

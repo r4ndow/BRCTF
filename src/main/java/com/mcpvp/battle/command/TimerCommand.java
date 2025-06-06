@@ -1,13 +1,11 @@
 package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.Battle;
-import com.mcpvp.common.command.EasyCommand;
-import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class TimerCommand extends EasyCommandGroup {
+public class TimerCommand extends BattleCommandGroup {
 
     private final Battle battle;
 
@@ -20,7 +18,7 @@ public class TimerCommand extends EasyCommandGroup {
         addCommand(new TimerUnlockCommand());
     }
 
-    public class TimerSetCommand extends EasyCommand {
+    public class TimerSetCommand extends BattleCommand {
 
         public TimerSetCommand() {
             super("set");
@@ -43,7 +41,7 @@ public class TimerCommand extends EasyCommandGroup {
 
     }
 
-    public class TimerLockCommand extends EasyCommand {
+    public class TimerLockCommand extends BattleCommand {
 
         public TimerLockCommand() {
             super("lock");
@@ -57,7 +55,7 @@ public class TimerCommand extends EasyCommandGroup {
 
     }
 
-    public class TimerUnlockCommand extends EasyCommand {
+    public class TimerUnlockCommand extends BattleCommand {
 
         public TimerUnlockCommand() {
             super("unlock");

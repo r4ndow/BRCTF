@@ -2,8 +2,6 @@ package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.battle.util.cmd.CmdUtil;
-import com.mcpvp.common.command.EasyCommand;
-import com.mcpvp.common.command.EasyCommandGroup;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitInfo;
 import com.mcpvp.common.util.chat.C;
@@ -14,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class KitManagerCommands extends EasyCommandGroup {
+public class KitManagerCommands extends BattleCommandGroup {
 
     private final BattleKitManager kitManager;
 
@@ -41,7 +39,7 @@ public class KitManagerCommands extends EasyCommandGroup {
         return List.of(kitManager.getKitDefinition(arg));
     }
 
-    public class SummaryCommand extends EasyCommand {
+    public class SummaryCommand extends BattleCommand {
 
         protected SummaryCommand() {
             super("summary");
@@ -76,7 +74,7 @@ public class KitManagerCommands extends EasyCommandGroup {
 
     }
 
-    public class DisableCommand extends EasyCommand {
+    public class DisableCommand extends BattleCommand {
 
         protected DisableCommand() {
             super("disable");
@@ -102,7 +100,7 @@ public class KitManagerCommands extends EasyCommandGroup {
 
     }
 
-    public class EnableCommand extends EasyCommand {
+    public class EnableCommand extends BattleCommand {
 
         protected EnableCommand() {
             super("enable");
@@ -128,7 +126,7 @@ public class KitManagerCommands extends EasyCommandGroup {
 
     }
 
-    public class LimitCommands extends EasyCommandGroup {
+    public class LimitCommands extends BattleCommandGroup {
 
         public LimitCommands() {
             super("limit");
@@ -136,7 +134,7 @@ public class KitManagerCommands extends EasyCommandGroup {
             addCommand(new RemoveCommand());
         }
 
-        public class SetCommand extends EasyCommand {
+        public class SetCommand extends BattleCommand {
 
             protected SetCommand() {
                 super("set");
@@ -174,7 +172,7 @@ public class KitManagerCommands extends EasyCommandGroup {
 
         }
 
-        public class RemoveCommand extends EasyCommand {
+        public class RemoveCommand extends BattleCommand {
 
             protected RemoveCommand() {
                 super("remove");

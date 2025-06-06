@@ -19,6 +19,7 @@ public class BattleGameConfig {
     private Set<BattleTeamConfig> teamConfigs = new HashSet<>();
     private Set<BattleCallout> callouts = new HashSet<>();
     private Set<Location> restricted = new HashSet<>();
+    private Integer timeOfDay;
     private int caps = 3;
     /**
      * Time in minutes

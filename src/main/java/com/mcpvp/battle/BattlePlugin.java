@@ -52,6 +52,7 @@ public class BattlePlugin extends JavaPlugin {
         new TimerCommand(battle).register();
         new SwitchCommand(battle).register();
         new YellCommand().register();
+        new MapCommands(battle).register();
         QuickCommands.registerAll(this.battle);
     }
 
