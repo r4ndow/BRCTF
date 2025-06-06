@@ -21,10 +21,6 @@ public class LocalMapManager implements MapManager {
     private final MapRepo repo;
 
     @Override
-    public void init() {
-    }
-
-    @Override
     public boolean isMap(int id) {
         return repo.getFunctional().stream().anyMatch(d -> d.getId() == id);
     }

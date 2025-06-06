@@ -30,10 +30,8 @@ public class BattleMatchManager {
     }
 
     private List<BattleMapData> selectMaps() {
-        // spawn = 0 138 0
         // 329797 good callout testing map
-        return List.of(mapManager.loadMap(329797), mapManager.loadMap(23787));
-//		return mapManager.loadMaps(options.getMatch().getGames()).stream().filter(d -> d.getMetadata() == null).toList();
+		return mapManager.loadMaps(plugin.getBattle().getOptions().getMatch().getGames());
     }
 
 }

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Log4j2
@@ -88,7 +89,6 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         // TODO
         builder.getTeamConfigs().add(new BattleTeamConfig(1));
         builder.getTeamConfigs().add(new BattleTeamConfig(2));
-        log.info("Parsing map " + map);
 
         // Step 1: find center of the map
         // By default, we assume it's getSpawnLocation
@@ -242,8 +242,8 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
 
     private List<ChunkSnapshot> getChunkSnapshotsAround(Location center, int radius) {
         World world = center.getWorld();
-        int cX = ((int) center.getX());
-        int cZ = ((int) center.getZ());
+        int cX = center.getChunk().getX();
+        int cZ = center.getChunk().getZ();
         List<ChunkSnapshot> chunkSnapshots = new ArrayList<>();
         for (int x = 0; x < radius; x++) {
             for (int z = 0; z < radius; z++) {

@@ -62,25 +62,31 @@ public class ArcherKit extends BattleKit {
     }
 
     private void onHit(EntityDamageByEntityEvent event) {
-        if (event.isCancelled())
+        if (event.isCancelled()) {
             return;
+        }
 
-        if (!(event.getDamager() instanceof Arrow arrow))
+        if (!(event.getDamager() instanceof Arrow arrow)) {
             return;
+        }
 
-        if (!(arrow.getShooter() instanceof Player shooter))
+        if (!(arrow.getShooter() instanceof Player shooter)) {
             return;
+        }
 
-        if (!(event.getEntity() instanceof LivingEntity hit))
+        if (!(event.getEntity() instanceof LivingEntity hit)) {
             return;
+        }
 
         int distance = (int) hit.getLocation().distance(shooter.getLocation());
 
-        if (hit instanceof ArmorStand)
+        if (hit instanceof ArmorStand) {
             return;
+        }
 
-        if (distance < HEADSHOT_DIST)
+        if (distance < HEADSHOT_DIST) {
             return;
+        }
 
         event.setDamage(1000);
 

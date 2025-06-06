@@ -10,11 +10,6 @@ import java.util.List;
 public interface MapManager {
 
     /**
-     * Performs any necessary startup.
-     */
-    void init();
-
-    /**
      * Checks if the given ID is a known map ID.
      *
      * @param id The ID to check.
