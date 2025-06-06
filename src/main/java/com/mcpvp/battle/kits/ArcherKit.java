@@ -18,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-// TODO remove arrows on respawn
 public class ArcherKit extends BattleKit {
 
     private static final int HEADSHOT_DIST = 30;
@@ -58,6 +57,7 @@ public class ArcherKit extends BattleKit {
     public void onFireArrow(ProjectileLaunchEvent event) {
         if (isPlayer(event.getEntity().getShooter())) {
             getBattle().getProjectileManager().register(event.getEntity()).onHitEvent(this::onHit);
+            attach(event.getEntity());
         }
     }
 
