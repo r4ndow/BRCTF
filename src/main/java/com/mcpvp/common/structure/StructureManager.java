@@ -17,7 +17,7 @@ public class StructureManager {
     {
         checkers.add(block -> {
             if (structures.stream().anyMatch(s -> s.getBlocks().contains(block))) {
-                return Optional.of(new StructureViolation("STRUCTURE_ALREADY_PRESENT", "Something is already placed here!"));
+                return Optional.of(new StructureViolation("STRUCTURE_ALREADY_PRESENT", "Something is already placed here"));
             }
             return Optional.empty();
         });

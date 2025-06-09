@@ -2,6 +2,7 @@ package com.mcpvp.battle.kit;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.hud.HeadIndicator;
 import com.mcpvp.battle.kit.item.FlagCompassItem;
 import com.mcpvp.battle.kit.item.FoodItem;
 import com.mcpvp.common.EasyLifecycle;
@@ -11,6 +12,8 @@ import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureViolation;
+import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.util.nms.ActionbarUtil;
 import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,13 +39,16 @@ public abstract class BattleKit extends Kit {
     protected void placeStructure(Structure structure, Block center) {
         List<StructureViolation> violations = structure.place(center);
         if (!violations.isEmpty()) {
-            violations.forEach(v -> {
-                getPlayer().sendMessage("! " + v.getMessage());
-            });
+            ActionbarUtil.send(getPlayer(), C.warn(C.RED) + violations.get(0).getMessage());
         } else {
             // Structure will be removed on kit destruction
             attach((EasyLifecycle) structure);
         }
+    }
+
+    protected void attach(HeadIndicator indicator) {
+        super.attach(indicator);
+        indicator.apply();
     }
 
     @EventHandler

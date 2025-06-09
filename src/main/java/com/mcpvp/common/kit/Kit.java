@@ -14,10 +14,8 @@ import java.util.Map;
 
 /**
  * An instance of this class represents a "live" instance of a KitType. Every
- * Kit corresponds
- * to one player, and instances are recreated often. For example, when a player
- * dies,
- * a new Kit will be created and re-initialized. This makes state management
+ * Kit corresponds to one player, and instances are recreated often. For example, when a player
+ * dies, a new Kit will be created and re-initialized. This makes state management
  * significantly easier.
  */
 @Getter

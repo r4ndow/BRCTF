@@ -63,7 +63,12 @@ public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
                 case "CTF" -> {
                     switch (variable) {
                         case "CapturesToWin" -> builder.setCaps(Integer.parseInt(value));
-                        case "Spawn" -> builder.setSpawn(parseLocation(value, world).add(0.5, 1, 0.5));
+                        case "Spawn" -> {
+                            Location location = parseLocation(value, world);
+                            int highestBlockYAt = world.getHighestBlockYAt(location.getBlockX(), location.getBlockZ());
+                            location.setY(highestBlockYAt);
+                            builder.setSpawn(location.add(0.5, 0, 0.5));
+                        }
                         case "Time" -> builder.setTimeOfDay(Integer.parseInt(value));
                     }
                 }

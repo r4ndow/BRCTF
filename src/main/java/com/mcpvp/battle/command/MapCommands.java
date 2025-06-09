@@ -17,6 +17,7 @@ public class MapCommands extends BattleCommandGroup {
 
         addCommand(new InfoCommand(), true);
         addCommand(new OverrideCommand());
+        addCommand(new NextCommand());
     }
 
     public class InfoCommand extends BattleCommand {
@@ -42,8 +43,30 @@ public class MapCommands extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
+            for (String id : args) {
+                if (!battle.getMapManager().isMap(Integer.parseInt(id))) {
+                    sender.sendMessage(C.cmdFail() + C.hl(id) + " is not a valid map");
+                    return false;
+                }
+            }
+
             battle.getMapManager().setOverride(args.stream().map(Integer::parseInt).toList());
             sender.sendMessage(C.cmdPass() + "The requested maps will play on reboot");
+            return true;
+        }
+
+    }
+
+    public class NextCommand extends BattleCommand {
+
+        public NextCommand() {
+            super("next");
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, String label, List<String> args) {
+            battle.getMatch().insertNextGame(Integer.parseInt(args.get(0)));
+            sender.sendMessage(C.cmdPass() + "The requested map will play next");
             return true;
         }
 

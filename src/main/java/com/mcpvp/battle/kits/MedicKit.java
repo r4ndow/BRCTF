@@ -2,8 +2,10 @@ package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.FlagPoisonEvent;
+import com.mcpvp.battle.hud.impl.HealthHeadIndicator;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.ParticlePacket;
 import com.mcpvp.common.ProjectileManager;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
@@ -16,34 +18,49 @@ import com.mcpvp.common.structure.StructureManager;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.util.nms.ActionbarUtil;
+import lombok.NonNull;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.swing.*;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class MedicKit extends BattleKit {
 
     private static final Duration WEB_RESTORE_TIMER = Duration.seconds(15);
     private static final Duration RESTORE_HEALTH_TIMER = Duration.seconds(1);
     private static final Duration RESTORE_PLAYER_COOLDOWN = Duration.seconds(15);
-    private static final int MAX_WEBS = 3;
-    private static final Map<Player, Expiration> healCooldowns = new HashMap<>();
+    private static final Duration COMBAT_COOLDOWN = Duration.seconds(5);
+    private static final int MAX_WEBS = 64;
+    private static final Map<Player, Expiration> HEAL_COOLDOWNS = new HashMap<>();
+
+    private final Expiration combatCooldown = new Expiration();
 
     public MedicKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
+    }
+
+    @Override
+    protected void setup(@NonNull Player player) {
+        super.setup(player);
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 99999, 1));
+
+        attach(new HealthHeadIndicator(plugin, player));
     }
 
     @Override
@@ -63,7 +80,10 @@ public class MedicKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        KitItem sword = new KitItem(this, ItemBuilder.of(Material.GOLD_SWORD).enchant(Enchantment.DAMAGE_ALL, 1).unbreakable().build());
+        KitItem sword = new KitItem(
+                this,
+                ItemBuilder.of(Material.GOLD_SWORD).name("Medic Sword").enchant(Enchantment.DAMAGE_ALL, 1).unbreakable().build()
+        );
 
         sword.onDamage(ev -> {
             if (ev.getEntity() instanceof Player damaged) {
@@ -86,15 +106,22 @@ public class MedicKit extends BattleKit {
 
     @EventHandler
     public void regenerateHealth(TickEvent event) {
-        if (event.getTick() % RESTORE_HEALTH_TIMER.ticks() == 0) {
+        if (event.isInterval(RESTORE_HEALTH_TIMER)) {
             getPlayer().setHealth(Math.min(getPlayer().getMaxHealth(), getPlayer().getHealth() + 1));
         }
     }
 
     @EventHandler
-    public void preventPoison(FlagPoisonEvent event) {
+    public void preventFlagPoison(FlagPoisonEvent event) {
         if (event.getPlayer() == getPlayer()) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true) // friendly fire events will be cancelled
+    public void triggerCombatCooldown(EntityDamageByEntityEvent event) {
+        if (event.getEntity().equals(getPlayer()) && event.getDamager() instanceof Player) {
+            combatCooldown.expireIn(COMBAT_COOLDOWN);
         }
     }
 
@@ -105,9 +132,24 @@ public class MedicKit extends BattleKit {
         }
 
         // Enforce a global cooldown per player
-        if (healCooldowns.containsKey(player) && !healCooldowns.get(player).isExpired()) {
-            getPlayer().sendMessage("Player can't be healed yet");
+        if (HEAL_COOLDOWNS.containsKey(player) && !HEAL_COOLDOWNS.get(player).isExpired()) {
+            String duration = HEAL_COOLDOWNS.get(player).getRemaining().formatText();
+            ActionbarUtil.send(getPlayer(), "%s can't be healed for %s second(s)".formatted(C.hl(player.getName()), C.hl(duration)));
+            ActionbarUtil.send(player, "%sYou can't be healed for %s second(s)".formatted(C.GRAY, C.hl(duration)));
             return;
+        }
+
+        // Enforce a cooldown specifically on other medics
+        if (kit instanceof MedicKit otherMedic) {
+            if (!combatCooldown.isExpired()) {
+                ActionbarUtil.send(getPlayer(), "%sYou can't heal another medic for %s seconds(s)".formatted(C.GRAY, C.hl(combatCooldown.getRemaining().formatText())));
+                return;
+            }
+
+            if (!otherMedic.combatCooldown.isExpired()) {
+                ActionbarUtil.send(getPlayer(), "%s can't be healed by another medic for %s seconds(s)".formatted(C.hl(player.getName()), C.hl(combatCooldown.getRemaining().formatText())));
+                return;
+            }
         }
 
         player.playEffect(EntityEffect.HURT);
@@ -120,7 +162,7 @@ public class MedicKit extends BattleKit {
                     .forEach(this::restoreItem);
 
             // No healing for a while
-            healCooldowns.put(player, new Expiration().expireIn(RESTORE_PLAYER_COOLDOWN));
+            HEAL_COOLDOWNS.put(player, new Expiration().expireIn(RESTORE_PLAYER_COOLDOWN));
         } else {
             // Heal player
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 4));
@@ -143,40 +185,72 @@ public class MedicKit extends BattleKit {
         private final ProjectileManager projectileManager;
 
         public MedicWebItem(ItemStack itemStack) {
-            super(MedicKit.this, itemStack);
+            super(MedicKit.this, itemStack, true);
             this.projectileManager = MedicKit.this.getBattle().getProjectileManager();
             this.onInteract(this::throwWeb);
         }
 
         public void throwWeb(PlayerInteractEvent event) {
-            if (!EventUtil.isRightClick(event))
+            if (!EventUtil.isRightClick(event)) {
                 return;
+            }
 
             event.setCancelled(true);
 
-            if (isPlaceholder())
+            if (isPlaceholder()) {
                 return;
+            }
 
             decrement(true);
 
             Snowball ent = kit.getPlayer().launchProjectile(Snowball.class);
             projectileManager.register(ent)
-                    .onHit(e -> this.placeWeb(ent.getLocation()))
+                    .onHitEvent(this::onHitEvent)
                     .onCollideBlock(e -> this.placeWeb(ent.getLocation()));
+        }
+
+        private void onHitEvent(EntityDamageByEntityEvent event) {
+            if (!(event.getEntity() instanceof Player hit)) {
+                return;
+            }
+
+            boolean sameTeam = getBattle().getGame().getTeamManager().getTeam(hit).contains(getPlayer());
+            if (sameTeam) {
+                event.setCancelled(true);
+            } else {
+                placeWeb(hit.getLocation());
+            }
         }
 
         public void placeWeb(Location location) {
             // TODO by truncating this to the block's location, it might lose accuracy
             Block target = location.getBlock();
-            if (!target.isEmpty()) {
-                Block nearestAir = BlockUtil.getNearestType(target, Material.AIR, 2);
-                if (nearestAir != null)
-                    target = nearestAir;
+
+            ParticlePacket.colored(Color.RED)
+                    .at(location)
+                    .count(5)
+                    .send();
+
+            Optional<Block> nearestAir = BlockUtil.getBlocksInRadius(target, 2).stream()
+                    .filter(b -> {
+                        return !Stream.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN).allMatch(bf -> {
+                            return b.getRelative(bf).getType() == Material.AIR;
+                        });
+                    })
+                    .filter(b -> b.getType() == Material.AIR || b.getType().isTransparent())
+                    .min(Comparator.comparingDouble(b -> {
+                        return b.getLocation().add(0.5, 0.5, 0.5).distanceSquared(location);
+                    }));
+
+//            Block nearestAir = BlockUtil.getNearestType(location, Material.AIR, 2);
+            if (nearestAir.isPresent()) {
+                target = nearestAir.get();
+            } else {
+                return;
             }
 
             MedicWeb web = new MedicWeb(getBattle().getStructureManager());
             placeStructure(web, target);
-            attach(Bukkit.getScheduler().runTaskLater(plugin, web::remove, Duration.seconds(2).ticks()));
         }
 
         @EventHandler
@@ -193,6 +267,7 @@ public class MedicKit extends BattleKit {
 
         public MedicWeb(StructureManager manager) {
             super(manager);
+            removeAfter(Duration.seconds(2));
         }
 
         @Override
@@ -207,7 +282,8 @@ public class MedicKit extends BattleKit {
 
         @EventHandler
         public void onInteract(PlayerInteractEvent event) {
-            if (getBlocks().contains(event.getClickedBlock()) && event.getPlayer() == getPlayer()) {
+            boolean sameTeam = getBattle().getGame().getTeamManager().getTeam(event.getPlayer()).contains(getPlayer());
+            if (getBlocks().contains(event.getClickedBlock()) && sameTeam && !EventUtil.isRightClick(event)) {
                 this.remove();
             }
         }

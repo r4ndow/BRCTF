@@ -4,6 +4,7 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
+import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.team.BattleTeam;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -82,6 +83,12 @@ public class BattleMatch {
             // Advance to the next game
             advanceGame();
         }
+    }
+
+    public void insertNextGame(int map) {
+        BattleMapData battleMapData = battle.getMapManager().loadMap(map);
+        BattleGame game = battle.getGameManager().create(battleMapData, games.size() + 1);
+        games.add(currentGameIndex + 1, game);
     }
 
     /**

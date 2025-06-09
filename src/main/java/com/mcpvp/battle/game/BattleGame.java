@@ -17,6 +17,7 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
+import com.mcpvp.common.structure.StructureViolation;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -61,10 +62,14 @@ public class BattleGame extends EasyLifecycle {
 
         scoreboardManager.init();
 
-        world.setGameRuleValue("doDaylightCycle", "false");
-        world.setGameRuleValue("naturalGeneration", "false");
-
         setState(BattleGameState.BEFORE);
+
+        battle.getStructureManager().registerChecker((block) -> {
+            if (teamManager.getTeams().stream().anyMatch(bt -> bt.isInSpawn(block.getLocation()))) {
+                return Optional.of(new StructureViolation("IN_SPAWN", "You can't place this in spawn"));
+            }
+            return Optional.empty();
+        });
     }
 
     public void stop() {

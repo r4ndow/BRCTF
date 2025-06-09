@@ -2,7 +2,9 @@ package com.mcpvp.common.structure;
 
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.time.Duration;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 
 import java.util.ArrayList;
@@ -70,6 +72,16 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
         super.shutdown();
         blocks.forEach(StructureBlock::restore);
         manager.onRemove(this);
+    }
+
+    /**
+     * Queue this structure to be removed after the given amount of time. By attaching the task to this
+     * structure, any premature removal will make sure `remove` is not called twice.
+     *
+     * @param duration The time to wait before removing this structure.
+     */
+    protected void removeAfter(Duration duration) {
+        attach(Bukkit.getScheduler().runTaskLater(getPlugin(), this::remove, duration.ticks()));
     }
 
 }

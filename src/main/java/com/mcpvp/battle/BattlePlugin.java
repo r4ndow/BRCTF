@@ -44,15 +44,16 @@ public class BattlePlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        new StartCommand(battle).register();
-        new NextCommand(battle).register();
         new FlagCommands(battle).register();
         new KitCommand(battle.getKitManager()).register();
         new KitManagerCommands(battle.getKitManager()).register();
-        new TimerCommand(battle).register();
-        new SwitchCommand(battle).register();
-        new YellCommand().register();
         new MapCommands(battle).register();
+        new NextCommand(battle).register();
+        new StartCommand(battle).register();
+        new SwitchCommand(battle).register();
+        new TimerCommand(battle).register();
+        new YellCommand().register();
+
         QuickCommands.registerAll(this.battle);
     }
 

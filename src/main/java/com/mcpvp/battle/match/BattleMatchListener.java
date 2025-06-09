@@ -33,7 +33,7 @@ public class BattleMatchListener implements EasyListener {
                 player.sendMessage(formatMessage(
                         true,
                         event.getMessage(),
-                        player.getName(),
+                        event.getPlayer().getName(),
                         senderTeam.map(BattleTeam::getColor).map(Colors::toString).orElse(C.WHITE)
                 ));
             });
@@ -43,7 +43,7 @@ public class BattleMatchListener implements EasyListener {
                 player.sendMessage(formatMessage(
                         false,
                         event.getMessage(),
-                        player.getName(),
+                        event.getPlayer().getName(),
                         senderTeam.map(BattleTeam::getColor).map(Colors::toString).orElse(C.WHITE)
                 ));
             });

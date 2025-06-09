@@ -108,7 +108,7 @@ public class SoldierKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        KitItem sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).build());
+        KitItem sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).name("Wall Climbing Sword").build());
         sword.onInteract(this::onClick);
 
         return new KitInventoryBuilder()
