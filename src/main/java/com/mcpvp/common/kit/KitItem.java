@@ -38,6 +38,7 @@ public class KitItem extends InteractiveItem {
             setPlaceholder();
         } else {
             getItem().setAmount(getItem().getAmount() - 1);
+            update(kit.getPlayer().getInventory());
         }
     }
 
@@ -68,6 +69,7 @@ public class KitItem extends InteractiveItem {
             getItem().setType(original.getType());
         } else if (getItem().getAmount() < max) {
             getItem().setAmount(getItem().getAmount() + 1);
+            update(kit.getPlayer().getInventory());
         }
     }
 

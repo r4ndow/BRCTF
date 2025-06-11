@@ -1,10 +1,7 @@
 package com.mcpvp.battle.kit;
 
 import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.kits.ArcherKit;
-import com.mcpvp.battle.kits.HeavyKit;
-import com.mcpvp.battle.kits.MedicKit;
-import com.mcpvp.battle.kits.SoldierKit;
+import com.mcpvp.battle.kits.*;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitDefinition;
 import lombok.Getter;
@@ -17,6 +14,7 @@ import java.util.function.BiFunction;
 @RequiredArgsConstructor
 public enum BattleKitType implements KitDefinition {
     ARCHER("Archer", ArcherKit::new),
+    ASSASSIN("Assassin", AssassinKit::new),
     SOLDIER("Soldier", SoldierKit::new),
     HEAVY("Heavy", HeavyKit::new),
     MEDIC("Medic", MedicKit::new),
