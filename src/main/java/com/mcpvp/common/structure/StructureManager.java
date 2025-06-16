@@ -1,5 +1,6 @@
 package com.mcpvp.common.structure;
 
+import lombok.Getter;
 import org.bukkit.block.Block;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Optional;
 public class StructureManager {
 
     private final List<StructureViolationChecker> checkers = new ArrayList<>();
+    @Getter
     private final List<Structure> structures = new ArrayList<>();
 
     {

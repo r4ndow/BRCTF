@@ -64,7 +64,7 @@ public class ProjectileManager implements EasyListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onHitByProjectile(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Projectile))
             return;

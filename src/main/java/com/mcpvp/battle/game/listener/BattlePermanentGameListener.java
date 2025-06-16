@@ -233,4 +233,11 @@ public class BattlePermanentGameListener implements EasyListener {
         event.setCancelled(true);
     }
 
+    @EventHandler
+    public void onPickupArrow(PlayerPickupItemEvent event) {
+        if (event.getItem().getItemStack().getType() == Material.ARROW) {
+            event.setCancelled(true);
+        }
+    }
+
 }

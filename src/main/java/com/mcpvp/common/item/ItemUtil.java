@@ -34,6 +34,13 @@ public class ItemUtil {
         return stack.getItemMeta().getLore();
     }
 
+    public static float getItemDurability(ItemStack item) {
+        if (item != null) {
+            return (float) (item.getType().getMaxDurability() - item.getDurability()) / item.getType().getMaxDurability();
+        }
+        return -1;
+    }
+
     public static ItemStack setDescription(ItemStack stack, List<String> description) {
         if (stack == null)
             return stack;

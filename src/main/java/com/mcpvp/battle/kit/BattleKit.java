@@ -74,6 +74,11 @@ public abstract class BattleKit extends Kit {
             return this;
         }
 
+        public KitInventoryBuilder add(ItemBuilder builder, boolean restorable) {
+            items[currentSlot++] = autoAdjust(builder, restorable);
+            return this;
+        }
+
         public KitInventoryBuilder add(KitItem item) {
             items[currentSlot++] = item;
             return this;
@@ -90,6 +95,10 @@ public abstract class BattleKit extends Kit {
         }
 
         private KitItem autoAdjust(ItemBuilder itemBuilder) {
+            return autoAdjust(itemBuilder, false);
+        }
+
+        private KitItem autoAdjust(ItemBuilder itemBuilder, boolean restorable) {
             boolean customName = !ItemUtil.getName(new ItemStack(itemBuilder.build().getType())).equals(ItemUtil.getName(itemBuilder.build()));
 
             if (!customName) {
@@ -97,7 +106,7 @@ public abstract class BattleKit extends Kit {
                 itemBuilder.name(getName() + " " + typeName);
             }
 
-            return new KitItem(BattleKit.this, itemBuilder.unbreakable().build());
+            return new KitItem(BattleKit.this, itemBuilder.unbreakable().build(), restorable);
         }
 
         public Map<Integer, KitItem> build() {

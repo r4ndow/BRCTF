@@ -27,6 +27,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
@@ -147,6 +148,7 @@ public class BattleGame extends EasyLifecycle {
         // Clear inventory
         player.getInventory().clear();
         player.getInventory().setArmorContents(new ItemStack[4]);
+        player.getActivePotionEffects().stream().map(PotionEffect::getType).forEach(player::removePotionEffect);
 
         // Teleport to spawn
         BattleTeam team = getTeamManager().getTeam(player);

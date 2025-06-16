@@ -1,13 +1,18 @@
 package com.mcpvp.common.kit;
 
 import com.mcpvp.common.item.InteractiveItem;
+import com.mcpvp.common.item.ItemBuilder;
 import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.function.UnaryOperator;
 
 /**
  * An item tied to an instance of a kit, with extra utilities.
  */
+@ToString
 public class KitItem extends InteractiveItem {
 
     protected final Kit kit;
@@ -67,10 +72,28 @@ public class KitItem extends InteractiveItem {
     public void increment(int max) {
         if (isPlaceholder()) {
             getItem().setType(original.getType());
+            update(kit.getPlayer().getInventory());
         } else if (getItem().getAmount() < max) {
             getItem().setAmount(getItem().getAmount() + 1);
             update(kit.getPlayer().getInventory());
         }
+    }
+
+    public void restore() {
+        if (isPlaceholder()) {
+            getItem().setType(original.getType());
+        }
+
+        if (getItem().getAmount() != original.getAmount()) {
+            getItem().setAmount(original.getAmount());
+        }
+
+        update(kit.getPlayer().getInventory());
+    }
+
+    public void modify(UnaryOperator<ItemBuilder> editor) {
+        editor.apply(new ItemBuilder(getItem(), false));
+        update(kit.getPlayer().getInventory());
     }
 
 }

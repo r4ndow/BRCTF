@@ -10,9 +10,12 @@ import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitSelectedEvent;
 import com.mcpvp.common.util.chat.C;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -103,7 +106,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onDamageWhileInSpawn(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) {
             return;
@@ -118,13 +121,25 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onDamageSameTeam(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player damaged && event.getDamager() instanceof Player damager) {
-            BattleTeam damagedTeam = game.getTeamManager().getTeam(damaged);
-            BattleTeam damagerTeam = game.getTeamManager().getTeam(damager);
+        BattleTeam damagerTeam = null;
+        BattleTeam damagedTeam = null;
 
-            if (damagedTeam == damagerTeam) {
-                event.setCancelled(true);
+        if (event.getDamager() instanceof Projectile projectile) {
+            if (projectile.getShooter() instanceof Player shooter) {
+                damagerTeam = game.getTeamManager().getTeam(shooter);
             }
+        }
+
+        if (event.getDamager() instanceof Player damager) {
+            damagerTeam = game.getTeamManager().getTeam(damager);
+        }
+
+        if (event.getEntity() instanceof Player damaged) {
+            damagedTeam = game.getTeamManager().getTeam(damaged);
+        }
+
+        if (damagedTeam == damagerTeam) {
+            event.setCancelled(true);
         }
     }
 
@@ -167,6 +182,13 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
             s.setKills(s.getKills() + 1);
             s.setStreak(s.getStreak() + 1);
         });
+    }
+
+    @EventHandler
+    public void onCombust(EntityCombustEvent event) {
+        if (event.getEntity() instanceof Item) {
+            event.setCancelled(true);
+        }
     }
 
 }

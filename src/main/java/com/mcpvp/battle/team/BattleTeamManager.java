@@ -80,6 +80,10 @@ public class BattleTeamManager {
         return teams.get((teams.indexOf(team) + 1) % teams.size());
     }
 
+    public boolean isSameTeam(Player first, Player second) {
+        return getTeam(first) == getTeam(second);
+    }
+
     public Map<BattleTeam, Set<Player>> getPlayerMap() {
         return teams.stream().collect(Collectors.toMap(e -> e, BattleTeam::getPlayers));
     }

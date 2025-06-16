@@ -502,7 +502,7 @@ public class ItemBuilder implements Cloneable {
      */
     public ItemBuilder unbreakable() {
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.spigot().setUnbreakable(false);
+        itemMeta.spigot().setUnbreakable(true);
         return this;
     }
 
@@ -525,6 +525,17 @@ public class ItemBuilder implements Cloneable {
      */
     public ItemBuilder dummyEnchant() {
         return enchant(Enchantment.LURE, 5).flag(ItemFlag.HIDE_ENCHANTS);
+    }
+
+    /**
+     * Adds a dummy enchantment to this item, which players can't see.
+     *
+     * @return this builder instance, for chaining.
+     */
+    public ItemBuilder removeDummyEnchant() {
+        item.removeEnchantment(Enchantment.LURE);
+        editMeta(itemMeta -> itemMeta.removeItemFlags(ItemFlag.HIDE_ENCHANTS));
+        return this;
     }
 
     /**

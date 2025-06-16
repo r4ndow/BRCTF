@@ -59,6 +59,7 @@ public class MedicKit extends BattleKit {
         super.setup(player);
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 99999, 1));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 1));
 
         attach(new HealthHeadIndicator(plugin, player));
     }
@@ -109,6 +110,8 @@ public class MedicKit extends BattleKit {
         if (event.isInterval(RESTORE_HEALTH_TIMER)) {
             getPlayer().setHealth(Math.min(getPlayer().getMaxHealth(), getPlayer().getHealth() + 1));
         }
+
+        getPlayer().setFireTicks(0);
     }
 
     @EventHandler
@@ -159,7 +162,7 @@ public class MedicKit extends BattleKit {
             // Restore items
             kit.getAllItems().stream()
                     .filter(KitItem::isRestorable)
-                    .forEach(this::restoreItem);
+                    .forEach(KitItem::restore);
 
             // No healing for a while
             HEAL_COOLDOWNS.put(player, new Expiration().expireIn(RESTORE_PLAYER_COOLDOWN));
@@ -167,16 +170,6 @@ public class MedicKit extends BattleKit {
             // Heal player
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 4));
             player.setFireTicks(0);
-        }
-    }
-
-    private void restoreItem(KitItem item) {
-        // Un-placeholder
-        item.increment(item.getOriginal().getAmount());
-
-        // Ensure max amount
-        if (item.getItem().getAmount() != item.getOriginal().getAmount()) {
-            item.getItem().setAmount(item.getOriginal().getAmount());
         }
     }
 
@@ -242,7 +235,6 @@ public class MedicKit extends BattleKit {
                         return b.getLocation().add(0.5, 0.5, 0.5).distanceSquared(location);
                     }));
 
-//            Block nearestAir = BlockUtil.getNearestType(location, Material.AIR, 2);
             if (nearestAir.isPresent()) {
                 target = nearestAir.get();
             } else {

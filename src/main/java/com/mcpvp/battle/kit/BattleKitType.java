@@ -15,9 +15,10 @@ import java.util.function.BiFunction;
 public enum BattleKitType implements KitDefinition {
     ARCHER("Archer", ArcherKit::new),
     ASSASSIN("Assassin", AssassinKit::new),
-    SOLDIER("Soldier", SoldierKit::new),
     HEAVY("Heavy", HeavyKit::new),
     MEDIC("Medic", MedicKit::new),
+    PYRO("Pyro", PyroKit::new),
+    SOLDIER("Soldier", SoldierKit::new),
     ;
 
     @Getter

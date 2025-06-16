@@ -9,6 +9,7 @@ import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.task.DrainExpBarTask;
 import com.mcpvp.common.task.FillExpBarTask;
 import com.mcpvp.common.time.Duration;
+import com.mcpvp.common.util.chat.C;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -38,7 +39,6 @@ public class AssassinKit extends BattleKit {
 
     private boolean strong;
     private boolean vulnerable;
-    private KitItem sword;
     private KitItem redstone;
     private KitItem sugar;
     private BukkitTask adrenalineFadeMessageTask;
@@ -64,7 +64,7 @@ public class AssassinKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).name("Assassin Sword").unbreakable().build());
+        KitItem sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).name("Assassin Sword").unbreakable().build());
         redstone = new KitItem(this, ItemBuilder.of(Material.REDSTONE).name("Assassinate").build());
         sugar = new KitItem(this, ItemBuilder.of(Material.SUGAR).name("Speed Boost").amount(SUGAR_AMOUNT).build());
 
@@ -97,7 +97,7 @@ public class AssassinKit extends BattleKit {
         }
 
         // Activate
-        getPlayer().sendMessage("You are now in assassin mode");
+        getPlayer().sendMessage(C.info(C.AQUA) + "You are now in " + C.hl("Assassin mode") + "!");
         strong = true;
         vulnerable = true;
         redstone.decrement(true);
@@ -115,14 +115,14 @@ public class AssassinKit extends BattleKit {
 
         // Task to end the strength
         attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-            getPlayer().sendMessage("Your strength fades");
+            getPlayer().sendMessage(C.info(C.AQUA) + "Your strength fades...");
             strong = false;
             attach(new FillExpBarTask(getPlayer(), STRONG_RESTORE).schedule(getPlugin()));
         }, STRONG_TIME.ticks()));
 
         // Task to end vulnerability
         attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-            getPlayer().sendMessage("You are no longer vulnerable");
+            getPlayer().sendMessage(C.info(C.AQUA) + "You are no longer vulnerable");
             vulnerable = false;
         }, VULNERABLE_TIME.ticks()));
     }
@@ -159,7 +159,7 @@ public class AssassinKit extends BattleKit {
         }
 
         adrenalineFadeMessageTask = Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-            getPlayer().sendMessage("Your adrenaline fades");
+            getPlayer().sendMessage(C.info(C.AQUA) + "Your adrenaline fades...");
         }, STRENGTH_II_TIME.ticks());
         attach(adrenalineFadeMessageTask);
     }

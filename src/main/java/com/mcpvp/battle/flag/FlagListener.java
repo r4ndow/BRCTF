@@ -11,8 +11,11 @@ import com.mcpvp.common.util.chat.C;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -187,6 +190,31 @@ public class FlagListener implements EasyListener {
                 bt.getFlagManager().drop(event.getPlayer(), null);
             }
         });
+    }
+
+    @EventHandler
+    public void onItemCombust(EntityCombustEvent event) {
+        System.out.println("Entity combust! " + event.getEntity());
+        if (event.getEntity() instanceof Item item) {
+            game.getTeamManager().getTeams().forEach(bt -> {
+                if (bt.getFlag().isItem(item.getItemStack())) {
+                    System.out.println("Cancel combust");
+                    event.setCancelled(true);
+                    item.setFireTicks(0);
+                }
+            });
+        }
+    }
+
+    @EventHandler
+    public void onFlagDeath(EntityDeathEvent event) {
+        if (event.getEntity() instanceof Item item) {
+            game.getTeamManager().getTeams().forEach(bt -> {
+                if (bt.getFlag().isItem(item.getItemStack())) {
+                    System.out.println("Flag died :(");
+                }
+            });
+        }
     }
 
 }
