@@ -103,6 +103,11 @@ public class WoolFlag extends AbstractFlag {
     }
 
     @Override
+    public boolean isGhostFlag(ItemStack item) {
+        return item.getType() == Material.WOOL && item.getDurability() == DyeColor.WHITE.getData();
+    }
+
+    @Override
     protected ItemStack getItem() {
         return ItemBuilder.of(BattleUtil.getColoredWool(getTeam().getColor().DYE))
                 .name(getTeam().getName() + " Flag")

@@ -6,6 +6,7 @@ import com.mcpvp.common.item.ItemUtil;
 import com.mcpvp.common.kit.KitItem;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+@Log4j2
 public class BattleInventoryManager {
 
     private final File dataFile;
@@ -30,6 +32,8 @@ public class BattleInventoryManager {
     public void loadAll() {
         if (!dataFile.exists()) {
             try {
+                log.debug("Created new data file");
+
                 dataFile.createNewFile();
                 // Initialize the file with valid JSON by writing
                 saveAll();
@@ -41,6 +45,8 @@ public class BattleInventoryManager {
                 Map<UUID, InventoryLayoutData> saved = objectMapper.readValue(dataFile, new TypeReference<Map<UUID, InventoryLayoutData>>() {
                 });
                 liveData.putAll(saved);
+
+                log.debug("Loaded existing data: " + saved);
             } catch (IOException e) {
                 throw new RuntimeException("Existing inventory_layouts.json file could not be read. Try deleting it and restarting. Location: " + dataFile.getAbsolutePath(), e);
             }
@@ -57,8 +63,11 @@ public class BattleInventoryManager {
 
     public void save(BattleKit kit) {
         InventoryLayoutData data = load(kit.getPlayer()).orElse(new InventoryLayoutData());
+        log.debug("While saving, loaded data for " + data);
         data.keyToSlot.put(kit.getName(), getKeyToSlot(kit));
         save(kit.getPlayer(), data);
+
+        log.debug("Saved " + kit.getPlayer().getName() + " data for " + kit.getName() + ": " + data);
     }
 
     public Optional<InventoryLayoutData> load(Player player) {
@@ -86,6 +95,8 @@ public class BattleInventoryManager {
             Map<String, Integer> savedItemMap = inventoryLayoutData.getKeyToSlot().get(kit.getName());
             Map<Integer, KitItem> reordered = new HashMap<>();
 
+            log.debug("Existing data: " + savedItemMap);
+
             // For all the items in that were saved, find the corresponding KitItem instance
             // Associate the proper slot
             savedItemMap.forEach((itemName, slot) -> {
@@ -105,6 +116,8 @@ public class BattleInventoryManager {
                     reordered.put(++maxSlot, item);
                 }
             }
+
+            log.debug("Reordered: " + reordered);
 
             return reordered;
         }

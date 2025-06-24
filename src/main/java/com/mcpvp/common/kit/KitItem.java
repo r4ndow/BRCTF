@@ -42,8 +42,7 @@ public class KitItem extends InteractiveItem {
         if (getItem().getAmount() == 1 && placeholder) {
             setPlaceholder();
         } else {
-            getItem().setAmount(getItem().getAmount() - 1);
-            update(kit.getPlayer().getInventory());
+            modify(builder -> builder.amount(getItem().getAmount() - 1));
         }
     }
 
@@ -51,7 +50,7 @@ public class KitItem extends InteractiveItem {
      * Makes this item look like a placeholder. Calls to {@link #isPlaceholder()} will be true.
      */
     public void setPlaceholder() {
-        getItem().setType(Material.STAINED_GLASS_PANE);
+        modify(ib -> ib.type(Material.STAINED_GLASS_PANE));
     }
 
     /**
@@ -71,14 +70,15 @@ public class KitItem extends InteractiveItem {
      */
     public void increment(int max) {
         if (isPlaceholder()) {
-            getItem().setType(original.getType());
-            update(kit.getPlayer().getInventory());
+            modify(builder -> builder.type(original.getType()));
         } else if (getItem().getAmount() < max) {
-            getItem().setAmount(getItem().getAmount() + 1);
-            update(kit.getPlayer().getInventory());
+            modify(builder -> builder.amount(getItem().getAmount() + 1));
         }
     }
 
+    /**
+     * Restore this item to its original type and quantity.
+     */
     public void restore() {
         if (isPlaceholder()) {
             getItem().setType(original.getType());

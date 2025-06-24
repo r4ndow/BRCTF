@@ -69,6 +69,12 @@ public interface IBattleFlag {
     boolean isItem(ItemStack item);
 
     /**
+     * @param item The item to check.
+     * @return If the item is the ghost version of the flag.
+     */
+    boolean isGhostFlag(ItemStack item);
+
+    /**
      * @return The player who is carrying the flag. Null when the flag is at home or dropped.
      */
     Player getCarrier();

@@ -99,7 +99,7 @@ public class FlagListener implements EasyListener {
                 if (bt.getFlag().isHome()) {
                     bt.getFlagManager().attemptSteal(event.getPlayer());
                 } else {
-                    if (bt.getFlag().getPickupExpiration().isExpired()) {
+                    if (bt.getFlag().getPickupExpiration().isExpired() && !bt.getFlag().isGhostFlag(event.getItem().getItemStack())) {
                         bt.getFlagManager().pickup(event.getPlayer());
                     }
                 }
