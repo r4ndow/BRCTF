@@ -2,9 +2,11 @@ package com.mcpvp.battle.kit;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.hud.HeadIndicator;
 import com.mcpvp.battle.kit.item.FlagCompassItem;
 import com.mcpvp.battle.kit.item.FoodItem;
+import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.item.ItemUtil;
@@ -25,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class BattleKit extends Kit {
 
@@ -34,6 +37,30 @@ public abstract class BattleKit extends Kit {
 
     public Battle getBattle() {
         return ((BattlePlugin) plugin).getBattle();
+    }
+
+    public BattleGame getGame() {
+        return getBattle().getGame();
+    }
+
+    protected Set<Player> getEnemies() {
+        BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
+        return teamManager.getNext(teamManager.getTeam(getPlayer())).getPlayers();
+    }
+
+    protected Set<Player> getTeammates() {
+        BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
+        return teamManager.getTeam(getPlayer()).getPlayers();
+    }
+
+    protected boolean hasFlag() {
+        BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
+        return teamManager.getTeams().stream().anyMatch(team -> team.getFlag().getCarrier() == getPlayer());
+    }
+
+    protected boolean inSpawn() {
+        BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
+        return teamManager.getTeam(getPlayer()).isInSpawn(getPlayer());
     }
 
     protected void placeStructure(Structure structure, Block center) {
