@@ -2,9 +2,9 @@ package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
-import com.mcpvp.common.util.chat.C;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
+import com.mcpvp.common.util.chat.C;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;

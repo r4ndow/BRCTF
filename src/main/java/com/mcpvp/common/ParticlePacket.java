@@ -12,8 +12,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.Collections;
-
 /**
  * Represents a single particle packet that can be sent to the client.
  *

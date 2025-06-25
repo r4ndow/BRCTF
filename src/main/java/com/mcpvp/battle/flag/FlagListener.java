@@ -1,7 +1,9 @@
 package com.mcpvp.battle.flag;
 
 import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.event.*;
+import com.mcpvp.battle.event.FlagPoisonEvent;
+import com.mcpvp.battle.event.FlagTakeEvent;
+import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;

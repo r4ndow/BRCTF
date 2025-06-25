@@ -5,7 +5,6 @@ import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
-import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;

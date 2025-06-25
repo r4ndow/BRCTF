@@ -2,7 +2,6 @@ package com.mcpvp.common;
 
 import com.mcpvp.common.event.EasyListener;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashSet;

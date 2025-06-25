@@ -1,7 +1,5 @@
 package com.mcpvp.common.util.movement;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

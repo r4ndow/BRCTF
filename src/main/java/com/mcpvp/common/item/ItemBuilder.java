@@ -1,7 +1,7 @@
 package com.mcpvp.common.item;
 
-import com.mcpvp.common.util.chat.Colors;
 import com.mcpvp.common.time.Duration;
+import com.mcpvp.common.util.chat.Colors;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
