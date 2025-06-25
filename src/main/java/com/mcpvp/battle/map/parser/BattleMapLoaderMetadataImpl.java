@@ -37,7 +37,11 @@ public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
                     BattleTeamConfig config = domain.equals("Red") ? red : blue;
                     switch (variable) {
                         case "Respawn" -> {
-                            Location loc = parseLocation(value, world).add(0.5, 0, 0.5);
+                            Location loc = parseLocation(value, world)
+                                .getBlock()
+                                .getRelative(BlockFace.DOWN)
+                                .getLocation()
+                                .add(0.5, 0, 0.5);
                             config.setSpawn(loc);
                             builder.getCallouts().add(new BattleCallout(loc, config, "spawn"));
                         }
