@@ -3,7 +3,7 @@ package com.mcpvp.battle.game;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.map.BattleMapData;
-import com.mcpvp.battle.map.BattleWorldCreator;
+import com.mcpvp.battle.map.BattleWorldManager;
 import com.mcpvp.battle.map.parser.BattleMapLoader;
 import com.mcpvp.battle.map.parser.BattleMapLoaderMetadataImpl;
 import com.mcpvp.battle.map.parser.BattleMapLoaderSignImpl;
@@ -32,7 +32,7 @@ public class BattleGameManager {
 
         try {
             // Extract map and create a world from it
-            World world = BattleWorldCreator.create(map, new File(battle.getOptions().getMaps().getDir()), index);
+            World world = BattleWorldManager.create(map, new File(battle.getOptions().getMaps().getDir()), index);
             // Parse the config. Teams must already exist at this point
             BattleGameConfig config = parser.parse(map, world);
             log.info("Parsed config: " + config);

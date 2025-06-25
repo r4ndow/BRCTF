@@ -4,6 +4,7 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameManager;
 import com.mcpvp.battle.kit.BattleInventoryManager;
 import com.mcpvp.battle.kit.BattleKitManager;
+import com.mcpvp.battle.map.BattleWorldManager;
 import com.mcpvp.battle.map.manager.LocalMapManager;
 import com.mcpvp.battle.map.manager.MapManager;
 import com.mcpvp.battle.map.repo.LocalMapRepo;
@@ -47,6 +48,8 @@ public class Battle {
         this.structureManager = new StructureManager();
         this.inventoryManager = new BattleInventoryManager(plugin);
         this.inventoryManager.loadAll();
+
+        BattleWorldManager.cleanUpWorlds();
     }
 
     public void start() {
