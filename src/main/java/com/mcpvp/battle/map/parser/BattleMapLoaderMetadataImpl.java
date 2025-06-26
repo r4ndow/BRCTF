@@ -6,6 +6,7 @@ import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.common.util.LookUtil;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 

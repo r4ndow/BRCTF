@@ -217,7 +217,6 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
     }
 
     private Stream<Block> findSignBlocks(ChunkSnapshot snapshot) {
-        // TODO might need Material.WALL_SIGN here
         return findBlocks(snapshot, m -> m == Material.SIGN_POST).stream().distinct();
     }
 

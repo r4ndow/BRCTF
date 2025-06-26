@@ -93,6 +93,13 @@ public class ItemBuilder implements Cloneable {
     }
 
     /**
+     * @return A new PotionBuilder instance.
+     */
+    public static PotionBuilder potion() {
+        return new PotionBuilder();
+    }
+
+    /**
      * Gets the {@code ItemStack} that was built.
      *
      * @return the {@link ItemStack} that was built.

@@ -50,7 +50,9 @@ public class KitItem extends InteractiveItem {
      * Makes this item look like a placeholder. Calls to {@link #isPlaceholder()} will be true.
      */
     public void setPlaceholder() {
-        modify(ib -> ib.type(Material.STAINED_GLASS_PANE));
+        modify(ib ->
+            ib.type(Material.STAINED_GLASS_PANE).durability(0)
+        );
     }
 
     /**
@@ -86,6 +88,10 @@ public class KitItem extends InteractiveItem {
 
         if (getItem().getAmount() != original.getAmount()) {
             getItem().setAmount(original.getAmount());
+        }
+
+        if (getItem().getDurability() != original.getDurability()) {
+            getItem().setDurability(original.getDurability());
         }
 
         update(kit.getPlayer().getInventory());

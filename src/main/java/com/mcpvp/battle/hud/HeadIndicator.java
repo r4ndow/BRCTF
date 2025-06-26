@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 @Getter
@@ -97,12 +98,25 @@ public abstract class HeadIndicator implements EasyListener {
             }
 
             Scoreboard scoreboard = observer.getScoreboard();
+            Score score = scoreboard.getObjective(id).getScore(target.getName());
 
             if (canSeeIndicatorOn(target)) {
-                scoreboard.getObjective(id).getScore(target.getName()).setScore(getIndicatorValue(target));
+                updateScore(score, getIndicatorValue(target));
             } else {
-                scoreboard.getObjective(id).getScore(target.getName()).setScore(getObscuredValue(target));
+                updateScore(score, getObscuredValue(target));
             }
+        }
+    }
+
+    /**
+     * Avoids unneeded updates.
+     *
+     * @param score The score to change.
+     * @param value The value to apply.
+     */
+    private void updateScore(Score score, int value) {
+        if (score.getScore() != value) {
+            score.setScore(value);
         }
     }
 

@@ -17,6 +17,7 @@ import org.bukkit.entity.Egg;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -41,7 +42,9 @@ public class NinjaKit extends BattleKit {
 
     public NinjaKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
+
         getPlayer().setExp(1f);
+        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1));
     }
 
     @Override
@@ -66,11 +69,12 @@ public class NinjaKit extends BattleKit {
         );
 
         return new KitInventoryBuilder()
-                .add(sword)
-                .add(new PearlItem())
-                .add(new EggItem())
-                .add(new DustItem())
-                .build();
+            .add(sword)
+            .add(new PearlItem())
+            .add(new EggItem())
+            .add(new DustItem())
+            .addCompass(8)
+            .build();
     }
 
     @EventHandler
@@ -96,7 +100,7 @@ public class NinjaKit extends BattleKit {
     }
 
     public void attemptHeal(TickEvent event) {
-        boolean canHeal = sword.isItem(getPlayer().getItemInHand()) && getPlayer().isSneaking() && getPlayer().isBlocking();
+        boolean canHeal = sword.isItem(getPlayer().getItemInHand()) && getPlayer().isSneaking();
         boolean withFlagHeal = hasFlag() && event.isInterval(HEAL_WITH_FLAG_TIME);
         boolean withoutFlagHeal = !hasFlag() && event.isInterval(HEAL_WITHOUT_FLAG_TIME);
 
@@ -188,6 +192,17 @@ public class NinjaKit extends BattleKit {
             enforceDust();
         }
 
+        @EventHandler(priority = EventPriority.LOW)
+        public void onDamageWithDust(EntityDamageByEntityEvent event) {
+            if (event.getDamager() != getPlayer()) {
+                return;
+            }
+
+            if (this.isItem(getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE) {
+                event.setCancelled(true);
+            }
+        }
+
         private void enforceDust() {
             boolean redstoneAllowed = !hasFlag() && combatCooldown.isExpired();
 
@@ -268,6 +283,8 @@ public class NinjaKit extends BattleKit {
             getBattle().getProjectileManager().register(ep)
                     .onHit(pl -> this.restore())
                     .onMiss(this::restore);
+
+            attach(ep);
         }
 
     }

@@ -20,6 +20,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,6 +157,12 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     @EventHandler
     public void killInEnemySpawn(PlayerEnterSpawnEvent event) {
         if (game.getTeamManager().getTeam(event.getPlayer()) != event.getTeam()) {
+            // If this is caused by teleporting, we need to cancel the teleport
+            // Otherwise the player will be respawned, then the teleport will go through
+            if (event.getCause() instanceof PlayerTeleportEvent) {
+                event.getCause().setCancelled(true);
+            }
+
             game.respawn(event.getPlayer(), true);
         }
     }

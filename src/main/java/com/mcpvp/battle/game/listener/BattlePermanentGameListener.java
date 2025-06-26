@@ -96,7 +96,20 @@ public class BattlePermanentGameListener implements EasyListener {
 
         game.getTeamManager().getTeams().forEach(bt -> {
             if (!bt.isInSpawn(event.getFrom()) && bt.isInSpawn(event.getTo())) {
-                new PlayerEnterSpawnEvent(event.getPlayer(), bt).call();
+                new PlayerEnterSpawnEvent(event.getPlayer(), bt, event).call();
+            }
+        });
+    }
+
+    @EventHandler
+    public void onTeleportIntoSpawn(PlayerTeleportEvent event) {
+        if (!game.isParticipant(event.getPlayer())) {
+            return;
+        }
+
+        game.getTeamManager().getTeams().forEach(bt -> {
+            if (!bt.isInSpawn(event.getFrom()) && bt.isInSpawn(event.getTo())) {
+                new PlayerEnterSpawnEvent(event.getPlayer(), bt, event).call();
             }
         });
     }
