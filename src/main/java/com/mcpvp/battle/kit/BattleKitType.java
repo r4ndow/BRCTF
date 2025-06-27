@@ -17,6 +17,7 @@ public enum BattleKitType implements KitDefinition {
     ASSASSIN("Assassin", AssassinKit::new),
     CHEMIST("Chemist", ChemistKit::new),
     HEAVY("Heavy", HeavyKit::new),
+    MAGE("Mage", MageKit::new),
     MEDIC("Medic", MedicKit::new),
     NINJA("Ninja", NinjaKit::new),
     PYRO("Pyro", PyroKit::new),
