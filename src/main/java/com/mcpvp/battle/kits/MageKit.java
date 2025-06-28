@@ -9,6 +9,7 @@ import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.shape.Cuboid;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureBuilder;
+import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EntityUtil;
@@ -30,11 +31,9 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class MageKit extends BattleKit {
 
@@ -69,11 +68,11 @@ public class MageKit extends BattleKit {
     @Override
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-            .add(new DamageWeapon())
-            .add(new FlameWeapon())
-            .add(new LightningWeapon())
-            .add(new FreezeWeapon())
-            .add(new HealWeapon())
+            .add(new DamageSpell())
+            .add(new FlameSpell())
+            .add(new LightningSpell())
+            .add(new FreezeSpell())
+            .add(new HealSpell())
             .addCompass(8)
             .build();
     }
@@ -85,12 +84,12 @@ public class MageKit extends BattleKit {
         }
     }
 
-    abstract class MageWeapon extends KitItem {
+    abstract class MageSpell extends KitItem {
 
         private final Expiration cooldown = new Expiration();
         private final Duration cooldownTime;
 
-        public MageWeapon(ItemBuilder itemBuilder, Duration cooldownTime) {
+        public MageSpell(ItemBuilder itemBuilder, Duration cooldownTime) {
             super(MageKit.this, itemBuilder.build(), false);
             this.cooldownTime = cooldownTime;
         }
@@ -130,9 +129,9 @@ public class MageKit extends BattleKit {
 
     }
 
-    class DamageWeapon extends MageWeapon {
+    class DamageSpell extends MageSpell {
 
-        public DamageWeapon() {
+        public DamageSpell() {
             super(
                 ItemBuilder.of(Material.DIAMOND_HOE).name("Damage Spell"),
                 Duration.milliseconds(750)
@@ -147,17 +146,14 @@ public class MageKit extends BattleKit {
             attach(arrow);
             Vector v = arrow.getVelocity().clone().add(arrow.getVelocity().clone());
 
-            attach(new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (arrow.isDead() || arrow.getLocation().distanceSquared(spawned) >= DAMAGE_ARROW_DIST_SQUARED) {
-                        arrow.remove();
-                        cancel();
-                    } else {
-                        arrow.setVelocity(v);
-                    }
+            attach(EasyTask.of(task -> {
+                if (arrow.isDead() || arrow.getLocation().distanceSquared(spawned) >= DAMAGE_ARROW_DIST_SQUARED) {
+                    arrow.remove();
+                    task.cancel();
+                } else {
+                    arrow.setVelocity(v);
                 }
-            }.runTaskTimer(getPlugin(), 0, 1));
+            }).runTaskTimer(getPlugin(), 0, 1));
 
             getBattle().getProjectileManager().register(arrow)
                 .onMiss(() -> {
@@ -176,7 +172,7 @@ public class MageKit extends BattleKit {
                         return;
                     }
 
-                    if (getTeammates().contains(hit)) {
+                    if (isTeammate(hit)) {
                         return;
                     }
 
@@ -184,9 +180,9 @@ public class MageKit extends BattleKit {
                     // 7 should be base damage, then do 2 more
                     ev.setDamage(DAMAGE_ARROW_DAMAGE * mult);
                 })
-                .onHit((p) -> {
+                .onHit(player -> {
                     // The arrow hitting the player actually deals the damage.
-                    if (getTeammates().contains(p)) {
+                    if (isTeammate(player)) {
                         return;
                     }
 
@@ -202,9 +198,9 @@ public class MageKit extends BattleKit {
 
     }
 
-    class FlameWeapon extends MageWeapon {
+    class FlameSpell extends MageSpell {
 
-        public FlameWeapon() {
+        public FlameSpell() {
             super(
                 ItemBuilder.of(Material.WOOD_HOE).name("Flame Spell"),
                 Duration.milliseconds(2500)
@@ -216,17 +212,18 @@ public class MageKit extends BattleKit {
             EnderPearl pearl = event.getPlayer().launchProjectile(EnderPearl.class);
             pearl.setShooter(getPlayer());
             pearl.setFireTicks(Duration.seconds(60).toTicks());
-            event.getPlayer().getWorld().playEffect(event.getPlayer().getEyeLocation(), Effect.BLAZE_SHOOT, 0);
             attach(pearl);
 
+            event.getPlayer().getWorld().playEffect(event.getPlayer().getEyeLocation(), Effect.BLAZE_SHOOT, 0);
+
             getBattle().getProjectileManager().register(pearl)
-                .onHit(p -> {
-                    if (getTeammates().contains(p)) {
+                .onHit(player -> {
+                    if (isTeammate(player)) {
                         return;
                     }
 
-                    p.damage(FIRE_IMPACT_DAMAGE, (Entity) pearl.getShooter());
-                    p.setFireTicks(FIRE_DURATION.toTicks());
+                    player.damage(FIRE_IMPACT_DAMAGE, (Entity) pearl.getShooter());
+                    player.setFireTicks(FIRE_DURATION.toTicks());
                     pearl.remove();
                 })
                 .onMiss(pearl::remove);
@@ -234,9 +231,9 @@ public class MageKit extends BattleKit {
 
     }
 
-    class LightningWeapon extends MageWeapon {
+    class LightningSpell extends MageSpell {
 
-        public LightningWeapon() {
+        public LightningSpell() {
             super(
                 ItemBuilder.of(Material.STONE_HOE).name("Lightning Spell"),
                 Duration.seconds(5)
@@ -253,12 +250,9 @@ public class MageKit extends BattleKit {
                 egg.setVelocity(egg.getVelocity().multiply(3));
                 attach(egg);
 
-                attach(new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        egg.remove();
-                    }
-                }.runTaskLater(getPlugin(), 3));
+                // Remove the projectile after 3 ticks
+                // This will trigger the `onMiss` hook of the ProjectileManager
+                attach(EasyTask.of(egg::remove).runTaskLater(getPlugin(), 3));
 
                 getBattle().getProjectileManager().register(egg)
                     .onMiss(() -> strike(egg.getLocation()))
@@ -298,9 +292,9 @@ public class MageKit extends BattleKit {
 
     }
 
-    class FreezeWeapon extends MageWeapon {
+    class FreezeSpell extends MageSpell {
 
-        public FreezeWeapon() {
+        public FreezeSpell() {
             super(
                 ItemBuilder.of(Material.IRON_HOE).name("Freeze Spell"),
                 Duration.seconds(6.5)
@@ -317,7 +311,7 @@ public class MageKit extends BattleKit {
 
             getBattle().getProjectileManager().register(snowball)
                 .onHit(player -> {
-                    if (getTeammates().contains(player)) {
+                    if (isTeammate(player)) {
                         return;
                     }
 
@@ -376,9 +370,9 @@ public class MageKit extends BattleKit {
 
     }
 
-    class HealWeapon extends MageWeapon {
+    class HealSpell extends MageSpell {
 
-        public HealWeapon() {
+        public HealSpell() {
             super(
                 ItemBuilder.of(Material.GOLD_HOE).name("Heal Spell"),
                 Duration.seconds(8)
@@ -404,7 +398,7 @@ public class MageKit extends BattleKit {
             } else {
                 getPlayer().getWorld().playEffect(getPlayer().getLocation(), Effect.POTION_BREAK, PotionEffectType.REGENERATION.getId());
                 EntityUtil.getNearbyEntities(getPlayer().getLocation(), Player.class, 2, 1, 2).stream()
-                    .filter(getTeammates()::contains)
+                    .filter(MageKit.this::isTeammate)
                     .forEach(teammate -> teammate.addPotionEffect(effect));
             }
         }

@@ -53,6 +53,14 @@ public abstract class BattleKit extends Kit {
         return teamManager.getTeam(getPlayer()).getPlayers();
     }
 
+    protected boolean isTeammate(Player player) {
+        return getGame().getTeamManager().isSameTeam(getPlayer(), player);
+    }
+
+    protected boolean isEnemy(Player player) {
+        return !isTeammate(player);
+    }
+
     protected boolean hasFlag() {
         BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
         return teamManager.getTeams().stream().anyMatch(team -> team.getFlag().getCarrier() == getPlayer());

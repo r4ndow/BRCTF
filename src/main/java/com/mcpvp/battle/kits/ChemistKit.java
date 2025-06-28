@@ -127,7 +127,7 @@ public class ChemistKit extends BattleKit {
         boolean hitEnemy = event.getAffectedEntities().stream()
             .filter(livingEntity -> livingEntity instanceof Player)
             .map(livingEntity -> (Player) livingEntity)
-            .anyMatch(getEnemies()::contains);
+            .anyMatch(this::isEnemy);
 
         // When a chemist throws a poison potion, and it hits an enemy, it should also impact the thrower and their team
         if (poison && hitEnemy) {
@@ -143,7 +143,7 @@ public class ChemistKit extends BattleKit {
                 return;
             }
 
-            if (getTeammates().contains(hit) && harmful) {
+            if (isTeammate(hit) && harmful) {
                 // Harmful effects shouldn't impact teammates
                 // Beneficial effects are intentionally allowed to impact enemies
                 event.setIntensity(hit, 0);

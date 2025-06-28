@@ -150,7 +150,7 @@ public class NinjaKit extends BattleKit {
     }
 
     private void applyEggEffect(Player player, boolean direct) {
-        if (getTeammates().contains(player)) {
+        if (isTeammate(player)) {
             return;
         }
 
