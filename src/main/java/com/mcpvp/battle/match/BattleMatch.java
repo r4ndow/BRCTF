@@ -6,6 +6,7 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.structure.StructureViolation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -37,6 +39,13 @@ public class BattleMatch {
         Bukkit.getScheduler().runTaskTimer(plugin, getTimerTask(), 0, 20);
 
         getCurrentGame().setup();
+
+        battle.getStructureManager().registerChecker((block) -> {
+            if (getCurrentGame().getTeamManager().getTeams().stream().anyMatch(bt -> bt.isInSpawn(block.getLocation()))) {
+                return Optional.of(new StructureViolation("IN_SPAWN", "You can't place this in spawn"));
+            }
+            return Optional.empty();
+        });
     }
 
     /**

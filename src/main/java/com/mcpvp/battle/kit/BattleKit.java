@@ -6,6 +6,7 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.hud.HeadIndicator;
 import com.mcpvp.battle.kit.item.FlagCompassItem;
 import com.mcpvp.battle.kit.item.FoodItem;
+import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.item.ItemBuilder;
@@ -24,12 +25,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public abstract class BattleKit extends Kit {
+
+    @Nullable
+    protected FoodItem foodItem;
 
     public BattleKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
@@ -41,6 +46,16 @@ public abstract class BattleKit extends Kit {
 
     public BattleGame getGame() {
         return getBattle().getGame();
+    }
+
+    public BattleTeam getTeam() {
+        return getBattle().getGame().getTeamManager().getTeam(getPlayer());
+    }
+
+    public void restoreFoodItem() {
+        if (foodItem != null) {
+            foodItem.increment(foodItem.getOriginal().getAmount());
+        }
     }
 
     protected Set<Player> getEnemies() {
@@ -66,18 +81,20 @@ public abstract class BattleKit extends Kit {
         return teamManager.getTeams().stream().anyMatch(team -> team.getFlag().getCarrier() == getPlayer());
     }
 
-    protected boolean inSpawn() {
+    public boolean inSpawn() {
         BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
         return teamManager.getTeam(getPlayer()).isInSpawn(getPlayer());
     }
 
-    protected void placeStructure(Structure structure, Block center) {
+    protected boolean placeStructure(Structure structure, Block center) {
         List<StructureViolation> violations = structure.place(center);
         if (!violations.isEmpty()) {
             ActionbarUtil.send(getPlayer(), C.warn(C.RED) + violations.get(0).getMessage());
+            return false;
         } else {
             // Structure will be removed on kit destruction
             attach((EasyLifecycle) structure);
+            return true;
         }
     }
 
@@ -120,7 +137,9 @@ public abstract class BattleKit extends Kit {
         }
 
         public KitInventoryBuilder addFood(int count) {
-            items[currentSlot++] = new FoodItem(BattleKit.this, ItemBuilder.of(Material.COOKED_BEEF).name("Food").amount(count).build());
+            FoodItem food = new FoodItem(BattleKit.this, ItemBuilder.of(Material.COOKED_BEEF).name("Food").amount(count).build());
+            foodItem = food;
+            items[currentSlot++] = food;
             return this;
         }
 

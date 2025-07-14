@@ -67,13 +67,6 @@ public class BattleGame extends EasyLifecycle {
         scoreboardManager.init();
 
         setState(BattleGameState.BEFORE);
-
-        battle.getStructureManager().registerChecker((block) -> {
-            if (teamManager.getTeams().stream().anyMatch(bt -> bt.isInSpawn(block.getLocation()))) {
-                return Optional.of(new StructureViolation("IN_SPAWN", "You can't place this in spawn"));
-            }
-            return Optional.empty();
-        });
     }
 
     public void stop() {

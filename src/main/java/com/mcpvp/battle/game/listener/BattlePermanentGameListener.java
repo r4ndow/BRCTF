@@ -243,7 +243,7 @@ public class BattlePermanentGameListener implements EasyListener {
 
     @EventHandler
     public void onMobSpawn(CreatureSpawnEvent event) {
-        event.setCancelled(true);
+        event.setCancelled(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM);
     }
 
     @EventHandler

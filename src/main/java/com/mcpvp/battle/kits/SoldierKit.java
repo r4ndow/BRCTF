@@ -30,8 +30,9 @@ public class SoldierKit extends BattleKit {
     private static final float PER_CLIMB = 1.0f / 7;
     private static final Duration RESTORE_TIME = Duration.ofSeconds(10);
 
-    public SoldierKit(BattlePlugin plugin, @Nullable Player player) {
+    public SoldierKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
+        player.setExp(1.0f);
     }
 
     @EventHandler

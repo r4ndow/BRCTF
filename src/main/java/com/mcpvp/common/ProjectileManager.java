@@ -57,7 +57,7 @@ public class ProjectileManager implements EasyListener {
             Entry<Projectile, ProjectileListener> set = it.next();
             Projectile ent = set.getKey();
 
-            if (ent.isDead() || ent.isOnGround()) {
+            if (ent.isDead()) {
                 set.getValue().triggerMiss();
                 it.remove();
             }

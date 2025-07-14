@@ -2,8 +2,8 @@ package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.battle.kit.item.CooldownItem;
 import com.mcpvp.common.event.EventUtil;
-import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.shape.Cuboid;
@@ -11,7 +11,6 @@ import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureBuilder;
 import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
-import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EntityUtil;
 import com.mcpvp.common.util.FireworkUtil;
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
@@ -84,62 +83,23 @@ public class MageKit extends BattleKit {
         }
     }
 
-    abstract class MageSpell extends KitItem {
-
-        private final Expiration cooldown = new Expiration();
-        private final Duration cooldownTime;
-
-        public MageSpell(ItemBuilder itemBuilder, Duration cooldownTime) {
-            super(MageKit.this, itemBuilder.build(), false);
-            this.cooldownTime = cooldownTime;
-        }
-
-        private float getRechargePercentage() {
-            return Math.min(1, 1 - ((float) cooldown.getRemaining().ticks() / cooldownTime.ticks()));
-        }
-
-        @EventHandler
-        public void onTick(TickEvent event) {
-             if (isItem(getPlayer().getItemInHand())) {
-                 getPlayer().setExp(getRechargePercentage());
-             }
-
-             modify(item -> item.durabilityPercent(getRechargePercentage()));
-        }
-
-        @EventHandler
-        public void onInteract(PlayerInteractEvent event) {
-            if (!cooldown.isExpired()) {
-                return;
-            }
-
-            if (inSpawn()) {
-                return;
-            }
-
-            if (!isItem(event.getPlayer().getItemInHand())) {
-                return;
-            }
-
-            cast(event);
-            cooldown.expireIn(cooldownTime);
-        }
-
-        public abstract void cast(PlayerInteractEvent event);
-
-    }
-
-    class DamageSpell extends MageSpell {
+    class DamageSpell extends CooldownItem {
 
         public DamageSpell() {
             super(
-                ItemBuilder.of(Material.DIAMOND_HOE).name("Damage Spell"),
+                MageKit.this,
+                ItemBuilder.of(Material.DIAMOND_HOE).name("Damage Spell").build(),
                 Duration.milliseconds(750)
             );
         }
 
         @Override
-        public void cast(PlayerInteractEvent event) {
+        protected boolean showDurabilityRecharge() {
+            return true;
+        }
+
+        @Override
+        public void onUse(PlayerInteractEvent event) {
             Location spawned = event.getPlayer().getLocation().add(0, 1, 0);
             Arrow arrow = event.getPlayer().launchProjectile(Arrow.class);
             arrow.setShooter(getPlayer());
@@ -198,17 +158,23 @@ public class MageKit extends BattleKit {
 
     }
 
-    class FlameSpell extends MageSpell {
+    class FlameSpell extends CooldownItem {
 
         public FlameSpell() {
             super(
-                ItemBuilder.of(Material.WOOD_HOE).name("Flame Spell"),
+                MageKit.this,
+                ItemBuilder.of(Material.WOOD_HOE).name("Flame Spell").build(),
                 Duration.milliseconds(2500)
             );
         }
 
         @Override
-        public void cast(PlayerInteractEvent event) {
+        protected boolean showDurabilityRecharge() {
+            return true;
+        }
+
+        @Override
+        public void onUse(PlayerInteractEvent event) {
             EnderPearl pearl = event.getPlayer().launchProjectile(EnderPearl.class);
             pearl.setShooter(getPlayer());
             pearl.setFireTicks(Duration.seconds(60).toTicks());
@@ -231,17 +197,23 @@ public class MageKit extends BattleKit {
 
     }
 
-    class LightningSpell extends MageSpell {
+    class LightningSpell extends CooldownItem {
 
         public LightningSpell() {
             super(
-                ItemBuilder.of(Material.STONE_HOE).name("Lightning Spell"),
+                MageKit.this,
+                ItemBuilder.of(Material.STONE_HOE).name("Lightning Spell").build(),
                 Duration.seconds(5)
             );
         }
 
         @Override
-        public void cast(PlayerInteractEvent event) {
+        protected boolean showDurabilityRecharge() {
+            return true;
+        }
+
+        @Override
+        public void onUse(PlayerInteractEvent event) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 strike(event.getClickedBlock().getLocation());
             } else {
@@ -292,17 +264,23 @@ public class MageKit extends BattleKit {
 
     }
 
-    class FreezeSpell extends MageSpell {
+    class FreezeSpell extends CooldownItem {
 
         public FreezeSpell() {
             super(
-                ItemBuilder.of(Material.IRON_HOE).name("Freeze Spell"),
+                MageKit.this,
+                ItemBuilder.of(Material.IRON_HOE).name("Freeze Spell").build(),
                 Duration.seconds(6.5)
             );
         }
 
         @Override
-        public void cast(PlayerInteractEvent event) {
+        protected boolean showDurabilityRecharge() {
+            return true;
+        }
+
+        @Override
+        public void onUse(PlayerInteractEvent event) {
             Snowball snowball = event.getPlayer().launchProjectile(Snowball.class);
             snowball.setShooter(getPlayer());
             attach(snowball);
@@ -340,7 +318,7 @@ public class MageKit extends BattleKit {
         private final LivingEntity target;
 
         public IceBoxStructure(LivingEntity target) {
-            super(getBattle().getStructureManager());
+            super(getBattle().getStructureManager(), getPlayer());
             this.target = target;
             removeAfter(FREEZE_DURATION);
         }
@@ -370,17 +348,23 @@ public class MageKit extends BattleKit {
 
     }
 
-    class HealSpell extends MageSpell {
+    class HealSpell extends CooldownItem {
 
         public HealSpell() {
             super(
-                ItemBuilder.of(Material.GOLD_HOE).name("Heal Spell"),
+                MageKit.this,
+                ItemBuilder.of(Material.GOLD_HOE).name("Heal Spell").build(),
                 Duration.seconds(8)
             );
         }
 
         @Override
-        public void cast(PlayerInteractEvent event) {
+        protected boolean showDurabilityRecharge() {
+            return true;
+        }
+
+        @Override
+        public void onUse(PlayerInteractEvent event) {
             PotionEffect effect = new PotionEffect(PotionEffectType.REGENERATION, Duration.seconds(5).toTicks(), 4);
 
             if (EventUtil.isRightClick(event)) {

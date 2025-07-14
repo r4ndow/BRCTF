@@ -3,9 +3,11 @@ package com.mcpvp.common.structure;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.time.Duration;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +21,11 @@ import java.util.List;
 public abstract class Structure extends EasyLifecycle implements EasyListener {
 
     private final StructureManager manager;
+    @Getter
+    private final Player owner;
     private final List<StructureBlock> blocks = new ArrayList<>();
+    @Getter
+    private Block center;
 
     /**
      * Attempt to place the structure at the given center block.
@@ -33,6 +39,9 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
         build(center, builder);
 
         if (!builder.getViolations().isEmpty()) {
+            // Calling shutdown here is useful in case any other type of set up was performed
+            // For example, the build method might try to add decorative entities which should be removed
+            shutdown();
             return builder.getViolations();
         }
 
@@ -41,6 +50,8 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
         this.blocks.addAll(builder.getBuilt());
         manager.onBuild(this);
         attach((EasyListener) this);
+        this.center = center;
+
         return Collections.emptyList();
     }
 

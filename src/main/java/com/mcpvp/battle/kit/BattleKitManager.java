@@ -7,6 +7,7 @@ import com.mcpvp.common.util.chat.C;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class BattleKitManager extends KitManager {
@@ -72,4 +73,9 @@ public class BattleKitManager extends KitManager {
         return Optional.ofNullable(limited.getOrDefault(kit, null));
     }
 
+    @Nullable
+    @Override
+    public BattleKit get(Player player) {
+        return (BattleKit) super.get(player);
+    }
 }

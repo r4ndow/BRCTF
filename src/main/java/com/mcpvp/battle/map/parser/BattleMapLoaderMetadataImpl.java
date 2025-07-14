@@ -6,7 +6,6 @@ import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.common.util.LookUtil;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 
@@ -38,11 +37,8 @@ public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
                     BattleTeamConfig config = domain.equals("Red") ? red : blue;
                     switch (variable) {
                         case "Respawn" -> {
-                            Location loc = parseLocation(value, world)
-                                .getBlock()
-                                .getRelative(BlockFace.DOWN)
-                                .getLocation()
-                                .add(0.5, 0, 0.5);
+                            Location loc = findFirstSolidBlock(parseLocation(value, world))
+                                .add(0.5, 1, 0.5);
                             config.setSpawn(loc);
                             builder.getCallouts().add(new BattleCallout(loc, config, "spawn"));
                         }
@@ -81,6 +77,20 @@ public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
         }
 
         return builder;
+    }
+
+    private Location findFirstSolidBlock(Location location) {
+        if (location.getY() == 0) {
+            throw new IllegalStateException(
+                "Could not find a solid block at the spawn location"
+            );
+        }
+
+        if (location.getBlock().getType().isSolid()) {
+            return location;
+        }
+
+        return findFirstSolidBlock(location.subtract(0, 1, 0));
     }
 
     private Location parseLocation(String string, World world) {

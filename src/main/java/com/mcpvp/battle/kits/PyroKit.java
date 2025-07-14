@@ -228,7 +228,7 @@ public class PyroKit extends BattleKit {
         private Block center;
 
         public PyroFire(StructureManager manager) {
-            super(manager);
+            super(manager, getPlayer());
             removeAfter(FIRE_DELAY);
         }
 

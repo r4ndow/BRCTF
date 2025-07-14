@@ -31,6 +31,8 @@ public class ChemistKit extends BattleKit {
         PotionEffectType.POISON
     );
 
+    private PotionItem healPotion;
+
     public ChemistKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
         getPlayer().setExp(1f);
@@ -89,7 +91,7 @@ public class ChemistKit extends BattleKit {
                     .name("Buff Pot"),
                 0
             ))
-            .add(new PotionItem(
+            .add(healPotion = new PotionItem(
                 ItemBuilder.potion()
                     .effect(PotionType.INSTANT_HEAL, 2)
                     .splash()
@@ -149,6 +151,11 @@ public class ChemistKit extends BattleKit {
                 event.setIntensity(hit, 0);
             }
         }
+    }
+
+    @Override
+    public void restoreFoodItem() {
+        healPotion.increment(healPotion.getOriginal().getAmount());
     }
 
     class PotionItem extends KitItem {

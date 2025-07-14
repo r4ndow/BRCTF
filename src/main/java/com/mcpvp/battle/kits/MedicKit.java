@@ -262,7 +262,7 @@ public class MedicKit extends BattleKit {
     public class MedicWeb extends Structure {
 
         public MedicWeb(StructureManager manager) {
-            super(manager);
+            super(manager, getPlayer());
             removeAfter(Duration.seconds(2));
         }
 

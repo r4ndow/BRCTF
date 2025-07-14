@@ -24,7 +24,7 @@ public class KitItem extends InteractiveItem {
     public KitItem(Kit kit, ItemStack itemStack, boolean restorable) {
         super(kit.getPlugin(), itemStack);
         this.kit = kit;
-        this.original = itemStack.clone();
+        this.original = getItem().clone();
         this.restorable = restorable;
     }
 
@@ -82,7 +82,7 @@ public class KitItem extends InteractiveItem {
      * Restore this item to its original type and quantity.
      */
     public void restore() {
-        if (isPlaceholder()) {
+        if (isPlaceholder() || getItem().getType() != original.getType()) {
             getItem().setType(original.getType());
         }
 
@@ -98,7 +98,8 @@ public class KitItem extends InteractiveItem {
     }
 
     public void modify(UnaryOperator<ItemBuilder> editor) {
-        editor.apply(new ItemBuilder(getItem(), false));
+        ItemBuilder itemBuilder = editor.apply(new ItemBuilder(getItem(), false));
+        setItem(itemBuilder.build());
         update(kit.getPlayer().getInventory());
     }
 
