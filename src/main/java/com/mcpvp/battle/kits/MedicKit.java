@@ -29,6 +29,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -50,7 +51,7 @@ public class MedicKit extends BattleKit {
     private static final Duration RESTORE_HEALTH_TIMER = Duration.seconds(1);
     private static final Duration RESTORE_PLAYER_COOLDOWN = Duration.seconds(15);
     private static final Duration COMBAT_COOLDOWN = Duration.seconds(5);
-    private static final int MAX_WEBS = 64;
+    private static final int MAX_WEBS = 3;
     private static final Map<Player, Expiration> HEAL_COOLDOWNS = new HashMap<>();
 
     private final Expiration combatCooldown = new Expiration();
@@ -212,8 +213,11 @@ public class MedicKit extends BattleKit {
                 return;
             }
 
-            boolean sameTeam = getBattle().getGame().getTeamManager().getTeam(hit).contains(getPlayer());
-            if (sameTeam) {
+            if (!(event.getDamager() instanceof Projectile proj) || !(proj.getShooter() instanceof Player shooter)) {
+                return;
+            }
+
+            if (getGame().getTeamManager().isSameTeam(hit, shooter)) {
                 event.setCancelled(true);
             } else {
                 placeWeb(hit.getLocation());

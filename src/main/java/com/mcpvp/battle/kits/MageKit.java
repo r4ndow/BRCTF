@@ -3,6 +3,7 @@ package com.mcpvp.battle.kits;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.item.CooldownItem;
+import com.mcpvp.common.event.EasyEvent;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
@@ -13,6 +14,8 @@ import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.util.EntityUtil;
 import com.mcpvp.common.util.FireworkUtil;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -259,6 +262,8 @@ public class MageKit extends BattleKit {
                 Location loc = lightning.getLocation().add(0.5, 0, 0.5);
                 loc.setY(enemy.getLocation().getY() - 0.2);
                 enemy.setVelocity(enemy.getLocation().toVector().subtract(loc.toVector()).normalize().multiply(2));
+
+                new MageStrikeEvent(enemy).call();
             }
         }
 
@@ -386,6 +391,14 @@ public class MageKit extends BattleKit {
                     .forEach(teammate -> teammate.addPotionEffect(effect));
             }
         }
+
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public static class MageStrikeEvent extends EasyEvent {
+
+        private final Player player;
 
     }
 

@@ -82,18 +82,7 @@ public class KitItem extends InteractiveItem {
      * Restore this item to its original type and quantity.
      */
     public void restore() {
-        if (isPlaceholder() || getItem().getType() != original.getType()) {
-            getItem().setType(original.getType());
-        }
-
-        if (getItem().getAmount() != original.getAmount()) {
-            getItem().setAmount(original.getAmount());
-        }
-
-        if (getItem().getDurability() != original.getDurability()) {
-            getItem().setDurability(original.getDurability());
-        }
-
+        setItem(getOriginal().clone());
         update(kit.getPlayer().getInventory());
     }
 

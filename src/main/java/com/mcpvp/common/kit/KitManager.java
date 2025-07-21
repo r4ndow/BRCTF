@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -80,6 +81,10 @@ public class KitManager {
     @Nullable
     public Kit get(Player player) {
         return active.get(player);
+    }
+
+    public boolean isPlaying(Player player, Class<? extends Kit> type) {
+        return Optional.ofNullable(get(player)).map(k -> k.getClass().equals(type)).orElse(false);
     }
 
 }

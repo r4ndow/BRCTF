@@ -35,17 +35,11 @@ public class BattleMatch {
 
     public void start() {
         new BattleMatchListener(plugin, battle).register();
+        BattleMatchStructureRestrictions.register(this, battle.getStructureManager());
 
         Bukkit.getScheduler().runTaskTimer(plugin, getTimerTask(), 0, 20);
 
         getCurrentGame().setup();
-
-        battle.getStructureManager().registerChecker((block) -> {
-            if (getCurrentGame().getTeamManager().getTeams().stream().anyMatch(bt -> bt.isInSpawn(block.getLocation()))) {
-                return Optional.of(new StructureViolation("IN_SPAWN", "You can't place this in spawn"));
-            }
-            return Optional.empty();
-        });
     }
 
     /**

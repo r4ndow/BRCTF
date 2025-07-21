@@ -171,9 +171,14 @@ public class PyroKit extends BattleKit {
     }
 
     private void explode(Arrow arrow) {
+        // The projectile source might be changed by an Elf shield
+        if (!(arrow.getShooter() instanceof Player shooter)) {
+            return;
+        }
+
         // Ignite nearby enemies
         EntityUtil.getNearbyEntities(arrow.getLocation(), Player.class, EXPLOSION_RADIUS).stream()
-                .filter(p -> !getBattle().getGame().getTeamManager().isSameTeam(getPlayer(), p))
+                .filter(p -> !getBattle().getGame().getTeamManager().isSameTeam(shooter, p))
                 .forEach(enemy -> {
                     enemy.setFireTicks(Duration.seconds(3.5).ticks());
                 });

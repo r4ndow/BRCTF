@@ -34,7 +34,9 @@ public class AssassinKit extends BattleKit {
     private static final Duration SPEEDY_RESTORE = Duration.seconds(16);
     private static final int SUGAR_AMOUNT = 2;
     private static final List<EntityDamageEvent.DamageCause> IGNORE_WHILE_VULNERABLE = List.of(
-            EntityDamageEvent.DamageCause.FIRE, EntityDamageEvent.DamageCause.FIRE_TICK, EntityDamageEvent.DamageCause.FALL
+        EntityDamageEvent.DamageCause.FIRE,
+        EntityDamageEvent.DamageCause.FIRE_TICK,
+        EntityDamageEvent.DamageCause.FALL
     );
 
     private boolean strong;
@@ -73,7 +75,6 @@ public class AssassinKit extends BattleKit {
                activateStrength();
            }
         });
-
 
         sugar.onInteract(event -> {
             if (EventUtil.isRightClick(event)) {

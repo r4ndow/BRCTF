@@ -32,6 +32,7 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -126,6 +127,7 @@ public class EngineerKit extends BattleKit {
             TNTPrimed tnt = (TNTPrimed) getPlayer().getWorld().spawnEntity(position, EntityType.PRIMED_TNT);
             tnt.setFuseTicks(TNT_FUSE_TIME.ticks());
             tnt.setVelocity(velocity);
+            tnt.setMetadata("shooter", new FixedMetadataValue(getPlugin(), getPlayer()));
             lastGrenade = tnt;
             attach(tnt);
 
@@ -150,7 +152,10 @@ public class EngineerKit extends BattleKit {
                 return;
             }
 
-            if (!(event.getEntity() instanceof Player hit) || isTeammate(hit)) {
+            // The shooter of the grenade might have been changed by an Elf reflection
+            Player shooter = (Player) lastGrenade.getMetadata("shooter").get(0).value();
+
+            if (!(event.getEntity() instanceof Player hit) || getGame().getTeamManager().isSameTeam(shooter, hit)) {
                 event.setCancelled(true);
                 return;
             }
