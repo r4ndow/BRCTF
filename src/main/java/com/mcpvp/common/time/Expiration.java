@@ -1,9 +1,5 @@
 package com.mcpvp.common.time;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-
 public class Expiration {
 
     private long expiration = 0;
@@ -17,16 +13,6 @@ public class Expiration {
         return expireIn(duration.toMilliseconds());
     }
 
-    public Expiration expireAt(Timestamp timestamp) {
-        expiration = timestamp.getTime();
-        return this;
-    }
-
-    public Expiration expireAt(LocalDateTime timestamp) {
-        expiration = timestamp.toInstant(ZoneOffset.UTC).toEpochMilli();
-        return this;
-    }
-
     public boolean isExpired() {
         return System.currentTimeMillis() >= expiration;
     }
@@ -36,14 +22,11 @@ public class Expiration {
         return this;
     }
 
-    public long getExpiration() {
-        return expiration;
-    }
-
     /**
      * @return A Duration spanning the length of time remaining.
      */
     public Duration getRemaining() {
         return Duration.ms(expiration - System.currentTimeMillis());
     }
+
 }

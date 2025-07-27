@@ -64,7 +64,15 @@ public class BattleInventoryManager {
     public void save(BattleKit kit) {
         InventoryLayoutData data = load(kit.getPlayer()).orElse(new InventoryLayoutData());
         log.debug("While saving, loaded data for " + data);
-        data.keyToSlot.put(kit.getName(), getKeyToSlot(kit));
+
+        Map<String, Integer> keyToSlot = getKeyToSlot(kit);
+        if (keyToSlot.isEmpty()) {
+            // When a player dies, it triggers a CloseInventoryEvent, but they have no items in their inventory
+            // So avoid saving the data when there are no items found
+            return;
+        }
+
+        data.keyToSlot.put(kit.getName(), keyToSlot);
         save(kit.getPlayer(), data);
 
         log.debug("Saved " + kit.getPlayer().getName() + " data for " + kit.getName() + ": " + data);

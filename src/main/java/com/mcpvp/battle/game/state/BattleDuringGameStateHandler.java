@@ -184,7 +184,6 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler
     public void onPlayerKillPlayer(PlayerKilledByPlayerEvent event) {
-        System.out.printf("%s killed by %s%n", event.getKilled(), event.getKiller());
         game.editStats(event.getKiller(), s -> {
             s.setKills(s.getKills() + 1);
             s.setStreak(s.getStreak() + 1);

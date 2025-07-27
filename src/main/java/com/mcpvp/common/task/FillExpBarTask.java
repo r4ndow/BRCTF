@@ -6,7 +6,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-public class FillExpBarTask extends BukkitRunnable {
+public final class FillExpBarTask extends BukkitRunnable implements ExpBarTask {
 
     private final Player player;
     private final float perTick;

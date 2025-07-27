@@ -87,8 +87,9 @@ public class KitItem extends InteractiveItem {
     }
 
     public void modify(UnaryOperator<ItemBuilder> editor) {
-        ItemBuilder itemBuilder = editor.apply(new ItemBuilder(getItem(), false));
-        setItem(itemBuilder.build());
+        ItemBuilder itemBuilder = editor.apply(new ItemBuilder(getItem(), true));
+        ItemStack built = itemBuilder.build();
+        setItem(built);
         update(kit.getPlayer().getInventory());
     }
 

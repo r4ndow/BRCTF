@@ -24,6 +24,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -120,6 +121,8 @@ public class BattlePermanentGameListener implements EasyListener {
             if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent edbee) {
                 if (edbee.getDamager() instanceof Player damager) {
                     new PlayerKilledByPlayerEvent(event.getEntity(), damager).call();
+                } else if (edbee.getDamager() instanceof Projectile projectile && projectile.getShooter() instanceof Player shooter) {
+                    new PlayerKilledByPlayerEvent(event.getEntity(), shooter).call();
                 }
             }
         }

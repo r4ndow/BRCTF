@@ -7,7 +7,7 @@ import java.util.List;
 
 public class EntityUtil {
 
-    private static final double GRAVITY = -0.0784000015258789;
+    public static final double GRAVITY = -0.0784000015258789;
 
     public static <T extends Entity> List<T> getNearbyEntities(
             Location location, Class<T> type, double distance

@@ -89,7 +89,9 @@ public class InteractiveProjectile implements EasyListener {
     @EventHandler
     public void onTick(TickEvent event) {
         if (projectile.isDead() || !projectile.isValid()) {
-            deathRunnable.run();
+            if (deathRunnable != null) {
+                deathRunnable.run();
+            }
             unregister();
         }
     }

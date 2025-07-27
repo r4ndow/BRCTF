@@ -12,6 +12,10 @@ public class EventUtil {
         return event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK;
     }
 
+    public static boolean isLeftClick(PlayerInteractEvent event) {
+        return event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK;
+    }
+
     /**
      * Sets the base damage of this event and removes all other damage modifiers,
      * meaning that the final damage of the event should be the number passed.
