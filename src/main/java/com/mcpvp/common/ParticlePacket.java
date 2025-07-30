@@ -135,7 +135,6 @@ public class ParticlePacket {
         return this;
     }
 
-
     /**
      * The client randomizes the location of the particle(s) between the base X
      * and the offset of the X. Essentially this gives it more room to spread.
@@ -262,10 +261,6 @@ public class ParticlePacket {
         return particle.name();
     }
 
-    public boolean doShowFar() {
-        return showFar;
-    }
-
     public void send() {
         Validate.notNull(particle);
         Validate.notNull(world);
@@ -276,36 +271,6 @@ public class ParticlePacket {
         Validate.notNull(particle);
         Validate.notNull(world);
         PacketUtil.sendPacket(player, create());
-    }
-
-    /**
-     * Displays the particles of a block breaking. If the given Material doesn't
-     * exist as a block, use {@link ItemCrackParticlePacket}.
-     */
-    public static class BlockCrackParticlePacket extends ParticlePacket {
-        public BlockCrackParticlePacket(Material block, byte data) {
-            super(EnumParticle.BLOCK_CRACK);
-            setDataArray(new int[]{block.ordinal(), data});
-        }
-
-        public BlockCrackParticlePacket(Material block) {
-            this(block, (byte) 0);
-        }
-    }
-
-    /**
-     * Displays the particles of an item breaking. If the given Material doesn't
-     * exist as an item, use {@link BlockCrackParticlePacket}.
-     */
-    public static class ItemCrackParticlePacket extends ParticlePacket {
-        public ItemCrackParticlePacket(Material item, byte data) {
-            super(EnumParticle.ITEM_CRACK);
-            setDataArray(new int[]{item.getId(), data});
-        }
-
-        public ItemCrackParticlePacket(Material item) {
-            this(item, (byte) 0);
-        }
     }
 
     public PacketPlayOutWorldParticles create() {

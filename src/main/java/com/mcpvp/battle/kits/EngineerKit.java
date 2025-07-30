@@ -234,7 +234,7 @@ public class EngineerKit extends BattleKit {
             setPlaceholder();
             Snowball snowball = getPlayer().launchProjectile(Snowball.class);
 
-            new InteractiveProjectile(EngineerKit.this.getPlugin(), snowball)
+            attach(new InteractiveProjectile(EngineerKit.this.getPlugin(), snowball)
                 .singleEventOnly()
                 .onHitEvent(projectileHitEvent -> {
                     Block block = projectileHitEvent.getEntity().getLocation().getBlock().getRelative(BlockFace.DOWN);
@@ -247,8 +247,7 @@ public class EngineerKit extends BattleKit {
                     damageEvent.setCancelled(true);
                     restore();
                 })
-                .onDeath(this::restore)
-                .register();
+                .onDeath(this::restore));
         }
 
     }

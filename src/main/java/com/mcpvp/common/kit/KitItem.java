@@ -4,7 +4,9 @@ import com.mcpvp.common.item.InteractiveItem;
 import com.mcpvp.common.item.ItemBuilder;
 import lombok.Getter;
 import lombok.ToString;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.UnaryOperator;
@@ -86,10 +88,19 @@ public class KitItem extends InteractiveItem {
         update(kit.getPlayer().getInventory());
     }
 
+    @Override
+    public void update(Inventory inv) {
+        super.update(inv);
+
+        // Only force update the item if the player is holding the item
+        // Otherwise, we might interrupt something else, e.g. a bow being drawn back
+        if (isItem(kit.getPlayer().getItemInHand())) {
+            kit.getPlayer().updateInventory();
+        }
+    }
+
     public void modify(UnaryOperator<ItemBuilder> editor) {
-        ItemBuilder itemBuilder = editor.apply(new ItemBuilder(getItem(), true));
-        ItemStack built = itemBuilder.build();
-        setItem(built);
+        editor.apply(new ItemBuilder(getItem(), false));
         update(kit.getPlayer().getInventory());
     }
 

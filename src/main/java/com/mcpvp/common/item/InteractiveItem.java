@@ -3,7 +3,7 @@ package com.mcpvp.common.item;
 import com.mcpvp.common.event.EasyListener;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.bukkit.Material;
+import lombok.Setter;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,30 +33,32 @@ import java.util.function.UnaryOperator;
 public class InteractiveItem implements EasyListener {
 
     private static final String NBT_KEY = "interactive_item_id";
-    private static final List<Material> DONT_UPDATE = List.of(Material.BOW, Material.WOOD_SWORD, Material.STONE_SWORD, Material.IRON_SWORD, Material.GOLD_SWORD, Material.DIAMOND_SWORD);
-    private static AtomicInteger globalId = new AtomicInteger(1);
+    private static final AtomicInteger GLOBAL_ID = new AtomicInteger(1);
 
     @Getter
     private final Plugin plugin;
+    @Getter
     private final int id;
+    @Getter
     private ItemStack item;
+    @Setter
     private boolean ignoreCancelled;
-    private List<Consumer<BlockPlaceEvent>> blockPlaceHandlers = new ArrayList<>();
-    private List<Consumer<PlayerInteractEvent>> interactHandlers = new ArrayList<>();
-    private List<Consumer<EntityDamageByEntityEvent>> edbeeHandlers = new ArrayList<>();
-    private List<Consumer<PlayerInteractEntityEvent>> interactEntityHandlers = new ArrayList<>();
+    private final List<Consumer<BlockPlaceEvent>> blockPlaceHandlers = new ArrayList<>();
+    private final List<Consumer<PlayerInteractEvent>> interactHandlers = new ArrayList<>();
+    private final List<Consumer<EntityDamageByEntityEvent>> edbeeHandlers = new ArrayList<>();
+    private final List<Consumer<PlayerInteractEntityEvent>> interactEntityHandlers = new ArrayList<>();
+    private final List<Consumer<PlayerDropItemEvent>> dropHandlers = new ArrayList<>();
     private Consumer<InventoryClickEvent> clickHandler = e -> {
     };
     private Consumer<Player> anyHandler = e -> {
     };
-    private List<Consumer<PlayerDropItemEvent>> dropHandlers = new ArrayList<>();
 
     /**
      * @param item The Item to catch and handle events for.
      */
     public InteractiveItem(Plugin plugin, ItemStack item) {
         this.plugin = plugin;
-        this.id = globalId.getAndIncrement();
+        this.id = GLOBAL_ID.getAndIncrement();
         this.item = NBTUtil.saveString(item, NBT_KEY, "" + this.id);
     }
 
@@ -155,20 +157,6 @@ public class InteractiveItem implements EasyListener {
         return this;
     }
 
-    /**
-     * Returns the ID of this {@code InteractiveItem}. Each
-     * instance is guaranteed to return a different value.
-     *
-     * @return the ID of this {@code InteractiveItem}.
-     */
-    public int getID() {
-        return id;
-    }
-
-    protected void editItem(UnaryOperator<ItemBuilder> editor) {
-        setItem(editor.apply(ItemBuilder.of(getItem())).build());
-    }
-
     protected void setItem(ItemStack item) {
         if (!this.isItem(item)) {
             throw new IllegalArgumentException("Given ItemStack did not have correct tag");
@@ -176,26 +164,20 @@ public class InteractiveItem implements EasyListener {
         this.item = item;
     }
 
-    public ItemStack getItem() {
-        return item;
-    }
-
-    public void setIgnoreCancelled(boolean ignoreCancelled) {
-        this.ignoreCancelled = ignoreCancelled;
-    }
-
     @EventHandler
     public void onInteractEvent(PlayerInteractEvent event) {
-        if (event.isCancelled() && ignoreCancelled)
+        if (event.isCancelled() && ignoreCancelled) {
             return;
+        }
 
-        if (!event.hasItem())
+        if (!event.hasItem()) {
             return;
+        }
 
         if (isItem(event.getItem())) {
             // Re-assign the ItemStack instance, which improves syncing with the client
             // Without doing this, a call to `update()` would be required
-            this.setItem(getItem());
+            this.setItem(event.getItem());
             interactHandlers.forEach(ih -> ih.accept(event));
             anyHandler.accept(event.getPlayer());
         }
@@ -203,11 +185,13 @@ public class InteractiveItem implements EasyListener {
 
     @EventHandler
     public void onInteractEvent(PlayerInteractEntityEvent event) {
-        if (event.isCancelled() && ignoreCancelled)
+        if (event.isCancelled() && ignoreCancelled) {
             return;
+        }
 
-        if (event.getPlayer().getItemInHand() == null)
+        if (event.getPlayer().getItemInHand() == null) {
             return;
+        }
 
         if (isItem(event.getPlayer().getItemInHand())) {
             anyHandler.accept(event.getPlayer());
@@ -216,8 +200,9 @@ public class InteractiveItem implements EasyListener {
 
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
-        if (event.isCancelled() && ignoreCancelled)
+        if (event.isCancelled() && ignoreCancelled) {
             return;
+        }
 
         if (isItem(event.getItemInHand())) {
             blockPlaceHandlers.forEach(ih -> ih.accept(event));
@@ -227,11 +212,13 @@ public class InteractiveItem implements EasyListener {
 
     @EventHandler
     public void onClickEvent(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player))
+        if (!(event.getWhoClicked() instanceof Player)) {
             return;
+        }
 
-        if (event.getCurrentItem() == null)
+        if (event.getCurrentItem() == null) {
             return;
+        }
 
         // Allow movement in the player's inventory.
         if (isItem(event.getCurrentItem())) {
@@ -242,27 +229,30 @@ public class InteractiveItem implements EasyListener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player))
+        if (!(event.getDamager() instanceof Player damager)) {
             return;
+        }
 
-        Player damager = (Player) event.getDamager();
-
-        if (damager.getItemInHand() == null)
+        if (damager.getItemInHand() == null) {
             return;
+        }
 
-        if (isItem(damager.getItemInHand()))
+        if (isItem(damager.getItemInHand())) {
             edbeeHandlers.forEach(h -> h.accept(event));
+        }
     }
 
     @EventHandler
     public void onInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
 
-        if (player.getItemInHand() == null)
+        if (player.getItemInHand() == null) {
             return;
+        }
 
-        if (isItem(player.getItemInHand()))
+        if (isItem(player.getItemInHand())) {
             interactEntityHandlers.forEach(h -> h.accept(event));
+        }
     }
 
     @EventHandler

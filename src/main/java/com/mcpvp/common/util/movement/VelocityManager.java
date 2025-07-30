@@ -26,7 +26,7 @@ public class VelocityManager implements Runnable {
         this.vector = vector;
         task = Bukkit.getScheduler().runTaskTimer(plugin, this, 0, 1);
         this.afterLaunch = afterLaunch;
-        new CancelNextFallTask(plugin, (Player) player);
+        new CancelNextFallTask(plugin, (Player) player).register();
     }
 
     @Override

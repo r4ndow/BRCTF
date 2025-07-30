@@ -150,12 +150,14 @@ public class BattleGame extends EasyLifecycle {
         BattleTeam team = getTeamManager().getTeam(player);
         Location spawn = getConfig().getTeamConfig(team).getSpawn();
         player.teleport(spawn);
-        player.setVelocity(new Vector());
 
         // Players must be teleported immediately on death to avoid the death screen
         // But there needs to be a tick delay before equipping the kit due to inventory resets
         attach(Bukkit.getScheduler().runTask(plugin, () -> {
             battle.getKitManager().createSelected(player);
+
+            // Velocity also carries over for some reason
+            player.setVelocity(new Vector());
         }));
     }
 

@@ -41,7 +41,9 @@ public class ElfKit extends BattleKit {
     private static final int ARROW_COUNT = 16;
     private static final Duration SHIELD_FILL = Duration.seconds(15);
     private static final Duration ARROW_RESTORE = Duration.seconds(3);
+    private static final Duration SHIELD_REGEN_COOLDOWN = Duration.seconds(3);
 
+    private final Expiration shieldRegenExpiration = new Expiration();
     private KitItem sword;
     private KitItem arrows;
     private ProjectileShield shield;
@@ -112,11 +114,16 @@ public class ElfKit extends BattleKit {
             }
         } else {
             if (shield != null) {
+                // The player ran out of XP, add a delay until they can regenerate XP again
+                if (getPlayer().getExp() == 0) {
+                    shieldRegenExpiration.expireIn(SHIELD_REGEN_COOLDOWN);
+                }
+
                 shield.shutdown();
                 shield = null;
             }
 
-            if (getPlayer().getExp() < 1) {
+            if (getPlayer().getExp() < 1 && shieldRegenExpiration.isExpired()) {
                 float increased = (float) (getPlayer().getExp() + (double) 1 / (double) SHIELD_FILL.toTicks());
                 getPlayer().setExp(Math.min(increased, 1));
             }
@@ -135,7 +142,11 @@ public class ElfKit extends BattleKit {
 
         public Element(ItemStack itemStack) {
             super(ElfKit.this, itemStack);
-            this.onInteract(this::onInteract);
+            this.onInteract(event -> {
+                if (EventUtil.isLeftClick(event)) {
+                    this.onInteract(event);
+                }
+            });
         }
 
         @EventHandler
@@ -155,14 +166,19 @@ public class ElfKit extends BattleKit {
         public void onShootEvent(EntityShootBowEvent event) {
             if (isItem(event.getBow())) {
                 onShoot(event);
-                new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
+                attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
+                    .singleEventOnly()
                     .onHitEvent(ev -> this.onLand(ev.getEntity().getLocation(), event))
+                    .onDeath(() -> this.onLand(event.getProjectile().getLocation(), event))
                     .onDamageEvent(ev -> {
                         if (ev.getEntity() instanceof Player hit) {
                             this.onHit(hit, event, ev);
                         }
-                    })
-                    .register();
+                    }));
+            }
+
+            if (arrows.getItem().getAmount() == 1) {
+                arrows.setPlaceholder();
             }
         }
 
@@ -329,7 +345,7 @@ public class ElfKit extends BattleKit {
             arrows.decrement(true);
             arrows.decrement(true);
 
-           attach(new CancelNextFallTask(getPlugin(), getPlayer()).getTask());
+           attach(new CancelNextFallTask(getPlugin(), getPlayer()));
         }
 
     }
@@ -451,6 +467,13 @@ public class ElfKit extends BattleKit {
 
             if (attemptReflection(event.getEntity())) {
                 event.setCancelled(true);
+            }
+        }
+
+        @EventHandler
+        public void onDwarfSmash(DwarfKit.SmashEvent event) {
+            if (event.getDamaged() == getPlayer()) {
+                getPlayer().setExp(0);
             }
         }
 

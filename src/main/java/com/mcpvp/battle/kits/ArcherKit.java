@@ -2,6 +2,7 @@ package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.util.chat.C;
@@ -56,7 +57,10 @@ public class ArcherKit extends BattleKit {
     @EventHandler
     public void onFireArrow(ProjectileLaunchEvent event) {
         if (isPlayer(event.getEntity().getShooter())) {
-            getBattle().getProjectileManager().register(event.getEntity()).onHitEvent(this::onHit);
+            attach(new InteractiveProjectile(getPlugin(), event.getEntity())
+                .singleEventOnly()
+                .onDamageEvent(this::onHit)
+            );
             attach(event.getEntity());
         }
     }

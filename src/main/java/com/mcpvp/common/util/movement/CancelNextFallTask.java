@@ -1,34 +1,36 @@
 package com.mcpvp.common.util.movement;
 
+import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.util.EntityUtil;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 
-public class CancelNextFallTask implements Runnable {
+public class CancelNextFallTask implements EasyListener {
 
-    private final Player player;
     @Getter
-    private final BukkitTask task;
+    private final Plugin plugin;
+    private final Player player;
 
     public CancelNextFallTask(Plugin plugin, Player player) {
+        this.plugin = plugin;
         this.player = player;
-        this.task = Bukkit.getScheduler().runTaskTimer(plugin, this, 0, 1);
     }
 
-    @Override
-    public void run() {
+    @EventHandler
+    public void onTick(TickEvent event) {
         if (!player.isOnline()) {
-            task.cancel();
+            unregister();
+            return;
         }
-
-        player.setFallDistance(-100);
 
         if (EntityUtil.isOnGround(player)) {
             player.setFallDistance(0);
-            task.cancel();
+            unregister();
+        } else {
+            player.setFallDistance(-100);
         }
     }
 

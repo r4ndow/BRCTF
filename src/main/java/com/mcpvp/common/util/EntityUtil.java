@@ -26,8 +26,9 @@ public class EntityUtil {
     }
 
     public static boolean isOnGround(Entity entity) {
-        return (entity.getVelocity().getY() == GRAVITY || entity.getVelocity().getY() == -0.0)
-            && entity.getLocation().add(0, -1, 0).getBlock().getType().isSolid();
+        // https://www.spigotmc.org/threads/how-to-actually-detect-which-block-a-player-is-standing-on.492043/
+        // https://www.spigotmc.org/threads/check-if-player-is-on-ground.606724/
+        return entity.getVelocity().getY() == GRAVITY && entity.isOnGround();
     }
 
 }

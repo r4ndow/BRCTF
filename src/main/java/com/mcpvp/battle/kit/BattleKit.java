@@ -15,6 +15,7 @@ import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureViolation;
+import com.mcpvp.common.task.ExpBarTask;
 import com.mcpvp.common.util.chat.C;
 import com.mcpvp.common.util.nms.ActionbarUtil;
 import org.apache.commons.lang3.text.WordUtils;
@@ -24,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -35,6 +37,8 @@ public abstract class BattleKit extends Kit {
 
     @Nullable
     protected FoodItem foodItem;
+    @Nullable
+    protected BukkitTask expBarTask;
 
     public BattleKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
@@ -96,6 +100,15 @@ public abstract class BattleKit extends Kit {
             attach((EasyLifecycle) structure);
             return true;
         }
+    }
+
+    protected void animateExp(ExpBarTask task) {
+        if (this.expBarTask != null) {
+            this.expBarTask.cancel();
+        }
+
+        this.expBarTask = task.schedule(getPlugin());
+        attach(this.expBarTask);
     }
 
     protected void attach(HeadIndicator indicator) {

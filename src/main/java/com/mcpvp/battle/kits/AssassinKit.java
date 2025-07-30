@@ -107,7 +107,7 @@ public class AssassinKit extends BattleKit {
         getPlayer().setExp(1);
 
         // Empty XP bar
-        attach(new DrainExpBarTask(getPlayer(), STRONG_TIME).schedule(getPlugin()));
+        animateExp(new DrainExpBarTask(getPlayer(), STRONG_TIME));
 
         // Task to restore the redstone
         attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
@@ -118,7 +118,7 @@ public class AssassinKit extends BattleKit {
         attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
             getPlayer().sendMessage(C.info(C.AQUA) + "Your strength fades...");
             strong = false;
-            attach(new FillExpBarTask(getPlayer(), STRONG_RESTORE).schedule(getPlugin()));
+            animateExp(new FillExpBarTask(getPlayer(), STRONG_RESTORE));
         }, STRONG_TIME.ticks()));
 
         // Task to end vulnerability
