@@ -1,9 +1,16 @@
 package com.mcpvp.battle;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameManager;
 import com.mcpvp.battle.kit.BattleInventoryManager;
 import com.mcpvp.battle.kit.BattleKitManager;
+import com.mcpvp.battle.map.BattleMapTester;
 import com.mcpvp.battle.map.BattleWorldManager;
 import com.mcpvp.battle.map.manager.LocalMapManager;
 import com.mcpvp.battle.map.manager.MapManager;
@@ -27,6 +34,14 @@ import java.io.IOException;
 public class Battle {
 
     private final BattlePlugin plugin;
+    private final ObjectMapper objectMapper = new ObjectMapper()
+        .enable(JsonParser.Feature.ALLOW_COMMENTS)
+        .enable(SerializationFeature.INDENT_OUTPUT)
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        .registerModule(new JavaTimeModule())
+        .setDateFormat(new StdDateFormat().withColonInTimeZone(true))
+        .findAndRegisterModules();
+
     private BattleOptions options;
     private MapRepo mapRepo;
     private MapManager mapManager;
@@ -40,8 +55,8 @@ public class Battle {
     private VisibilityManager visibilityManager;
 
     public void load() throws IOException {
-        this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin));
-        this.mapRepo = new LocalMapRepo(this.options.getMaps());
+        this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin, objectMapper));
+        this.mapRepo = new LocalMapRepo(this.objectMapper, this.options.getMaps());
         this.mapRepo.init();
         this.mapManager = new LocalMapManager(this.plugin, this.mapRepo);
         this.gameManager = new BattleGameManager(this);
@@ -60,6 +75,11 @@ public class Battle {
         this.projectileManager.register();
 
         this.kitManager.getGlobalScoutKit().register();
+
+        if (getOptions().getMapTester().isEnabled()) {
+            new BattleMapTester(objectMapper).run(getOptions().getMaps(), getOptions().getMapTester(), this.mapRepo);
+            return;
+        }
 
         this.match = this.matchManager.create();
         this.match.start();

@@ -85,7 +85,6 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
     @Override
     public BattleGameConfig parse(BattleMapData map, World world) {
         BattleGameConfig builder = new BattleGameConfig();
-        // TODO
         builder.getTeamConfigs().add(new BattleTeamConfig(1));
         builder.getTeamConfigs().add(new BattleTeamConfig(2));
 

@@ -2,7 +2,6 @@ package com.mcpvp.battle.map.repo;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.options.BattleOptionsInput;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class LocalMapRepo implements MapRepo {
 
-    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final ObjectMapper mapper;
     private final List<BattleMapData> mapData = new ArrayList<>();
     private final BattleOptionsInput.MapOptions mapOptions;
 
@@ -87,7 +86,7 @@ public class LocalMapRepo implements MapRepo {
             File mapData = new File(mapOptions.getDir(), data.getFile());
 
             if (!mapData.exists()) {
-                log.warn("Map file was not found. Expectted at: " + mapData);
+                log.warn("Map file was not found. Expected at: " + mapData);
                 data.setFunctional(false);
             }
         });

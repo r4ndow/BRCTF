@@ -111,6 +111,10 @@ public class BattleOptionsInput {
 
         @Builder.Default
         private final boolean enabled = false;
+        @Builder.Default
+        private final String outputDir = "plugins/mcctf/maps_testing";
+        @Builder.Default
+        private final int runId = 1;
 
     }
 

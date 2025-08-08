@@ -3,11 +3,10 @@ package com.mcpvp.battle.config;
 import com.mcpvp.battle.team.BattleTeam;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.bukkit.Location;
 
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -17,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class BattleGameConfig {
 
+    @NonNull
     private Location spawn;
     private Set<BattleTeamConfig> teamConfigs = new HashSet<>();
     private Set<BattleCallout> callouts = new HashSet<>();

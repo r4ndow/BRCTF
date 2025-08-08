@@ -18,9 +18,6 @@ public class BattleOptions {
     private final BattleOptionsInput input;
     private final BattlePlugin plugin;
 
-    // Below are options parsed on the fly, which rely on the plugin
-
-//	private BKitWrapper defaultKitWrapper;
 
     /**
      * @param plugin The plugin which is creating the options.
@@ -30,14 +27,5 @@ public class BattleOptions {
         this.plugin = plugin;
         this.input = input;
     }
-
-//	public BKitWrapper getDefaultKitWrapper() {
-//		defaultKitWrapper = plugin.getKits().find(input.getDefaultKit());
-//		if (defaultKitWrapper == null) {
-//			log.warn("The default kit wrapper of " + input.getDefaultKit() + " could not be found");
-//			defaultKitWrapper = plugin.getKits().find(HeavyKit.class);
-//		}
-//		return defaultKitWrapper;
-//	}
 
 }

@@ -9,6 +9,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,7 +38,7 @@ public class BattleWorldManager {
         // Find the map directory that needs to be copied
         File mapDir = new File(mapsDir, map.getFile());
         if (!mapDir.exists()) {
-            throw new IllegalStateException("Map file doesn't exist: " + mapDir);
+            throw new FileNotFoundException("Map file doesn't exist: " + mapDir);
         }
 
         // Copy the map directory

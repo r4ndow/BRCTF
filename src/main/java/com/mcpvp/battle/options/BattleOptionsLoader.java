@@ -23,13 +23,7 @@ public class BattleOptionsLoader {
      * @return The deserialized input.
      * @throws IOException If something goes wrong loading the files.
      */
-    public static BattleOptionsInput getInput(BattlePlugin plugin) throws IOException {
-        ObjectMapper mapper = new ObjectMapper()
-                .enable(JsonParser.Feature.ALLOW_COMMENTS)
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .findAndRegisterModules();
-
+    public static BattleOptionsInput getInput(BattlePlugin plugin, ObjectMapper mapper) throws IOException {
         if (!plugin.getDataFolder().exists()) {
             if (!plugin.getDataFolder().mkdir()) {
                 throw new IOException("Unable to make the ctf plugin folder at: " + plugin.getDataFolder() + ". Please create this folder manually.");

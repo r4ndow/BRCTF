@@ -1,93 +1,89 @@
-# MCCTF
+<p align="center">
+  <img src="https://github.com/NomNuggetNom/mcctf/assets/1479568/cdd5190e-2f1d-4b79-a27e-97f182e49e55" />
+</p>
+<p align="center"><b>MCCTF - The classic MPVP gamemode reborn</b></p>
 
+# Getting Started
 
+## Basics
 
-## Getting started
+The JAR file can be found in the releases tab. This is a standalone plugin that can be run on a vanilla server. Here is a quick summary of this plugin:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- Runs on Minecraft 1.8.8
+- Supports around 700 CTF maps
+- Includes all classes up to Wraith
+- No modes (ZC, DM, etc) besides plain CTF
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Downloads
 
-## Add your files
+1. Download the [CTF map archive](https://discord.com/channels/@me/123296961511030784/1153080239711330314). This is a large file and might take some time, so get it started now.
+2. PaperMC 1.8.8 (build 445) is recommended. Head over to their [build explorer](https://papermc.io/downloads/all) and click 1.8.8 on the left. This [direct link](https://api.papermc.io/v2/projects/paper/versions/1.8.8/builds/445/downloads/paper-1.8.8-445.jar) might work too.
+3. Download a compatible Java version. I use [Temurin 17](https://adoptium.net/temurin/releases/). You need to be able to run `java` from your command prompt to start the server - you can follow the [installation instructions here](https://adoptium.net/installation/).
+    - For advanced users, consider using [sdkman](https://sdkman.io/install) to install `17.0.3-tem`.
+4. You'll also need a few more plugins:
+    - [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/). Tested with v4.7.0.
+    - [ViaVersion](https://www.spigotmc.org/resources/viaversion.19254/) for allowing newer clients - this is optional.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+## Running
+
+Before you install the plugins, run the server on its own. Move the downloaded PaperMC JAR to its own folder, as it will create a lot of folders and files. Then open a command prompt, `cd` to that directory, and run the following console command:
+
+```bash
+java -jar paper-1.8.8-455.jar
+```
+
+To stop the server, type `stop` into the console. Within the folder that you made, you should now have a folder called `plugins`. If so, you can proceed:
+
+- Open that folder and place the mcctf JAR as well as all the other plugin JARs into that folder
+- Create a new folder called `ctf`, then a folder called `maps` in that directory.
+- Unzip the map archive into that maps folder. See below for an example.
+- Start the server and hope everything works.
+
+- Make sure to turn off spawn protection
+
+### Example File Layout
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/nomnuggetnom/mcctf.git
-git branch -M main
-git push -uf origin main
+documents/
+├─ ctf_server/
+│  ├─ plugins/
+│  │  ├─ mcctf.jar
+│  │  ├─ LuckPerms-Bukkit.jar
+│  │  ├─ ProtocolLib.jar
+│  │  ├─ ctf/
+│  │  │  ├─ maps/
+│  │  │  │  ├─ 60 - Lighthouse V1/
+│  │  │  │  ├─ 65 - Kill Creek V2/
+│  │  │  │  ├─ ...etc
+│  ├─ paper-1.8.8-445.jar
 ```
 
-## Integrate with your tools
+# Configuration
 
-- [ ] [Set up project integrations](https://gitlab.com/nomnuggetnom/mcctf/-/settings/integrations)
+The plugin will automatically create a config file for you, and it lives at `plugins/ctf/config.json`. This file provides many options for tweaking the plugin.
 
-## Collaborate with your team
+# Development
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+This plugin is designed to be easy to modify. My suggestion is to create a `server` folder alongside the `src` folder in the root directory of this project. For example:
 
-## Test and Deploy
+```
+documents/
+├─ ctf_dev/
+│  ├─ src/main/...
+│  ├─ server/
+│  │  ├─ plugins/
+│  │  ├─ paper-1.8.8-445.jar
+```
 
-Use the built-in continuous integration in GitLab.
+This project uses Gradle to build the plugin. You should be able to run the following command without installing any additional dependencies:
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+```
+./gradlew shadowJar
+```
 
-***
+This will compile the code and build a new plugin JAR. The JAR will automatically be placed in `/server/plugins`. Make sure you don't have multiple versions of the plugin in this folder.
 
-# Editing this README
+# Credits
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- ryguy1 and redslime for their help in modernizing
+- wintergreen3, without whose testing and help, this project would have never been completed
