@@ -11,6 +11,7 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EntityUtil;
 import com.mcpvp.common.util.chat.C;
 import com.mcpvp.common.util.nms.ActionbarUtil;
+import com.mcpvp.common.visibility.VisibilityManager;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Egg;
@@ -111,20 +112,22 @@ public class NinjaKit extends BattleKit {
 
     // TODO ninjas need to be impacted by projectiles while invisible
     private void enforceVisibility() {
+        VisibilityManager visibilityManager = getBattle().getVisibilityManager();
+
         if (invisible) {
             // Hide the player for any enemies who can see them
-            getEnemies().stream()
-                    .filter(player -> player.canSee(getPlayer()))
-                    .forEach(player -> player.hidePlayer(getPlayer()));
+//            getEnemies().stream()
+//                    .filter(player -> visibilityManager.canSee(player, getPlayer()))
+//                    .forEach(player -> visibilityManager.hide(player, getPlayer()));
 
             if (!getPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 99999, 0, true, false));
             }
         } else {
             // Show the player to any enemies who can't see them
-            getEnemies().stream()
-                    .filter(player -> !player.canSee(getPlayer()))
-                    .forEach(player -> player.showPlayer(getPlayer()));
+//            getEnemies().stream()
+//                    .filter(player -> !visibilityManager.canSee(player, getPlayer()))
+//                    .forEach(player -> visibilityManager.show(player, getPlayer()));
 
             if (getPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 getPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -132,9 +135,9 @@ public class NinjaKit extends BattleKit {
         }
 
         // Ensure players are always visible to teammates
-        getTeammates().stream()
-                .filter(player -> !player.canSee(getPlayer()))
-                .forEach(player -> player.showPlayer(getPlayer()));
+//        getTeammates().stream()
+//                .filter(player -> !visibilityManager.canSee(player, getPlayer()))
+//                .forEach(player -> visibilityManager.show(player, getPlayer()));
     }
 
     public void increaseEggMana() {

@@ -3,8 +3,7 @@ import org.gradle.jvm.tasks.Jar
 
 plugins {
     `java-library`
-    id("nom.lombok")
-    id("nom.lib")
+    id("com.github.johnrengelman.shadow").version("6.1.0")
 }
 
 repositories {
@@ -19,36 +18,42 @@ dependencies {
     // These JARs are so old that they aren't on any repository, so include them locally
     compileOnly(files("libs/spigot-1.8.8.jar"))
     compileOnly(files("libs/craftbukkit-1.8.8.jar"))
-    
+
     // JSON dependencies
     implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
-    
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.26")
+    annotationProcessor("org.projectlombok:lombok:1.18.26")
+
+    // Logging
     compileOnly("org.apache.logging.log4j:log4j-api:2.22.0")
-    
-    compileOnly("commons-io:commons-io:2.13.0")
-    implementation("io.github.classgraph:classgraph:4.8.110") // for reflection
-    
+
+    // Plugin versioning
     implementation("com.github.zafarkhaja:java-semver:0.9.0")
 }
 
+val pluginVersion = "3.0.0"
+
 group = "com.mcctf"
-version = "2.0.1"
+version = pluginVersion
 description = "CTF"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 tasks.named<Jar>("jar") {
     manifest {
-        archiveVersion.set("2.0.1")
+        archiveVersion.set(pluginVersion)
         archiveBaseName.set("mcctf")
-        attributes["CTF-Version"] = "2.0.1"
+        attributes["CTF-Version"] = pluginVersion
     }
 }
 
 tasks.named<ShadowJar>("shadowJar") {
+    archiveClassifier.set("") // remove the -all suffix
     archiveBaseName.set("mcctf")
-    archiveVersion.set("2.0.1")
+    archiveVersion.set(pluginVersion)
     destinationDirectory.set(file("server/plugins"))
 }
 

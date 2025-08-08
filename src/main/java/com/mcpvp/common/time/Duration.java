@@ -1,13 +1,10 @@
 package com.mcpvp.common.time;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
+import lombok.Getter;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,11 +13,9 @@ import java.util.regex.Pattern;
 
 /**
  * A duration is a "one fits all" solution for saving an amount of time, being able to convert from and to {@link Unit}s
- * A duration will take an double, but is parsed to a long amount of milliseconds.
+ * A duration will take a double, but is parsed to a long amount of milliseconds.
  */
 public class Duration implements Serializable {
-
-    private static final long serialVersionUID = 1323788364182546968L;
 
     public static final Duration ZERO = new Duration(0, Unit.MILLISECOND);
 
@@ -29,12 +24,9 @@ public class Duration implements Serializable {
         TICK(50, "t"),
         SECOND(1000, "s"),
         MINUTE(60000, "m"),
-        HOUR(3600000, "h"),
-        DAY(86400000, "d"),
-        WEEK(604800000, "w"),
-        MONTH(2629800000L, "mo"),
-        YEAR(31536000000L, "y");
+        HOUR(3600000, "h");
 
+        @Getter
         final long milliseconds;
         final String symbol;
         final Pattern pattern;
@@ -45,15 +37,6 @@ public class Duration implements Serializable {
             this.pattern = Pattern.compile("(\\d+)" + symbol + "(?:\\s|$|\\d)");
         }
 
-        public long getMilliseconds() {
-            return milliseconds;
-        }
-
-        public static Unit getUnit(String id) {
-            return Arrays.stream(values()).filter(u -> u != MILLISECOND && u.name().substring(0, 1).equalsIgnoreCase(id)).findFirst().orElseThrow(() -> {
-                return new NumberFormatException();
-            });
-        }
     }
 
     private final long milliseconds;
@@ -68,18 +51,6 @@ public class Duration implements Serializable {
 
     public Duration(Date startTime, Date endTime) {
         milliseconds = endTime.getTime() - startTime.getTime();
-    }
-
-    public Duration(Timestamp timestamp) {
-        milliseconds = timestamp.getTime();
-    }
-
-    public Duration(LocalDateTime timestamp) {
-        milliseconds = timestamp.toInstant(ZoneOffset.UTC).toEpochMilli();
-    }
-
-    public Date getOffsetDate(Date startDate) {
-        return startDate == null ? null : new Date(startDate.getTime() + toMilliseconds());
     }
 
     public long toMilliseconds() {
@@ -126,111 +97,12 @@ public class Duration implements Serializable {
         return toHours();
     }
 
-    public long toDays() {
-        return getValue(Unit.DAY);
-    }
-
-    public long days() {
-        return toDays();
-    }
-
-    public long toWeeks() {
-        return getValue(Unit.WEEK);
-    }
-
-    public long toMonths() {
-        return getValue(Unit.MONTH);
-    }
-
-    public long months() {
-        return toMonths();
-    }
-
-    public long weeks() {
-        return toWeeks();
-    }
-
-    public long years() {
-        return getValue(Unit.YEAR);
-    }
-
     public long getValue(Unit unit) {
         return toMilliseconds() / unit.getMilliseconds();
     }
 
-    /**
-     * Gets the value of this Duration, casting the longs to doubles to get a decimal.
-     *
-     * @param unit
-     * @return
-     */
-    public double getDecimalValue(Unit unit) {
-        return toMilliseconds() / (double) unit.getMilliseconds();
-    }
-
-    /**
-     * @deprecated Use {@link #valueOf(String)}
-     */
-    public static long totalStringToMinutes(String string) {
-        long total = 0L;
-        boolean contains = false;
-        char[] chars = new char[]{
-                'w', 'd', 'h', 'm', 's'
-        };
-        for (char character : chars) {
-            int charIndex = string.indexOf(character);
-            if (charIndex < 0)
-                continue;
-            total += stringToMinutes(string.substring(0, charIndex + 1));
-            string = string.replaceAll(string.substring(0, charIndex + 1), "");
-            contains = true;
-        }
-        if (!contains)
-            try {
-                total += Long.parseLong(string);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                throw e;
-            }
-        return total;
-    }
-
-    public static long stringToMinutes(String string) {
-        return new Duration(Long.parseLong(string.substring(0, string.length() - 1)), Unit.getUnit(string.substring(string.length() - 1))).getValue(Unit.MINUTE);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof Duration && toMilliseconds() == ((Duration) o).toMilliseconds();
-    }
-
-    @Override
-    public int hashCode() {
-        return Long.valueOf(toMilliseconds()).hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return formatText();
-    }
-
-    public String format() {
-        // Fix formatting for negative durations
-        boolean negative = milliseconds < 0;
-        Duration d = (negative) ? Duration.milliseconds(-milliseconds) : this;
-
-        long hours = d.toHours();
-        long minutes = d.toMinutes() % 60;
-        long seconds = d.toSeconds() % 60;
-
-        String str = (negative) ? "-" : "";
-        if (hours > 0)
-            return String.format("%s%s:%s%s:%s%s", str, hours, minutes / 10, minutes % 10, seconds / 10, seconds % 10);
-        return String.format("%s%s:%s%s", str, minutes, seconds / 10, seconds % 10);
-    }
-
     public String formatText() {
-        return formatText(Unit.SECOND);
+        return formatText(Unit.MILLISECOND);
     }
 
     public String formatText(Unit smallest) {
@@ -250,30 +122,7 @@ public class Duration implements Serializable {
             }
         }
 
-        return StringUtils.join(strings, " ");
-    }
-
-    public String formatShort() {
-        int unit;
-        if ((unit = Math.round(years())) > 1)
-            return unit + " years";
-        if ((unit = Math.round(months())) > 1)
-            return unit + " months";
-        if ((unit = Math.round(weeks())) > 1)
-            return unit + " weeks";
-        if ((unit = Math.round(days())) > 1)
-            return unit + " days";
-        if ((unit = Math.round(hrs())) > 1)
-            return unit + "h";
-        if ((unit = Math.round(mins())) > 1)
-            return unit + "m";
-        if ((unit = Math.round(seconds())) > 1)
-            return unit + "s";
-        return "A few more moments";
-    }
-
-    public boolean isInfinite() {
-        return toMilliseconds() >= Long.MAX_VALUE;
+        return String.join(" ", strings);
     }
 
     /**
@@ -400,50 +249,6 @@ public class Duration implements Serializable {
         return hours(hours);
     }
 
-    public static Duration days(double days) {
-        return new Duration(days, Unit.DAY);
-    }
-
-    public static Duration days(long days) {
-        return new Duration(days, Unit.DAY);
-    }
-
-    public static Duration weeks(double weeks) {
-        return new Duration(weeks, Unit.WEEK);
-    }
-
-    public static Duration weeks(long weeks) {
-        return new Duration(weeks, Unit.WEEK);
-    }
-
-    public static Duration months(double months) {
-        return new Duration(months, Unit.MONTH);
-    }
-
-    public static Duration months(long months) {
-        return new Duration(months, Unit.MONTH);
-    }
-
-    public static Duration years(long years) {
-        return new Duration(years, Unit.YEAR);
-    }
-
-    public static Duration millisecondsFromNow(long timestamp) {
-        return milliseconds(timestamp - System.currentTimeMillis());
-    }
-
-    public static Duration millisecondsToNow(long timestamp) {
-        return milliseconds(System.currentTimeMillis() - timestamp);
-    }
-
-    public static Duration infinite() {
-        return milliseconds(Long.MAX_VALUE);
-    }
-
-    public static Duration now() {
-        return milliseconds(System.currentTimeMillis());
-    }
-
     /**
      * @param time The time to measure between.
      * @return A Duration that is equal to the length of time between right now
@@ -486,9 +291,19 @@ public class Duration implements Serializable {
         return dur;
     }
 
-    public static void main(String[] args) {
-        Validate.isTrue(Duration.milliseconds(398474383).formatText().equals("4d 14h 41m 14s"));
-        Validate.isTrue(valueOf("6d5m10s3ms").milliseconds == days(6).add(mins(5)).add(secs(10)).add(ms(3)).milliseconds);
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Duration && toMilliseconds() == ((Duration) o).toMilliseconds();
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.valueOf(toMilliseconds()).hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return formatText();
     }
 
 }

@@ -15,6 +15,8 @@ import com.mcpvp.battle.options.BattleOptions;
 import com.mcpvp.battle.options.BattleOptionsLoader;
 import com.mcpvp.common.ProjectileManager;
 import com.mcpvp.common.structure.StructureManager;
+import com.mcpvp.common.visibility.VanillaVisibilityManager;
+import com.mcpvp.common.visibility.VisibilityManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +37,7 @@ public class Battle {
     private ProjectileManager projectileManager;
     private StructureManager structureManager;
     private BattleInventoryManager inventoryManager;
+    private VisibilityManager visibilityManager;
 
     public void load() throws IOException {
         this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin));
@@ -48,6 +51,7 @@ public class Battle {
         this.structureManager = new StructureManager();
         this.inventoryManager = new BattleInventoryManager(plugin);
         this.inventoryManager.loadAll();
+        this.visibilityManager = new VanillaVisibilityManager();
 
         BattleWorldManager.cleanUpWorlds();
     }
