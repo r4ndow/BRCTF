@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public class QuickCommand extends BattleCommand {
 
-    private static final double RADIUS = 15;
     private final Battle battle;
     private final String message;
     private boolean sendToAll;
@@ -26,7 +25,7 @@ public class QuickCommand extends BattleCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
-        String callout = findClosestCallout(asPlayer(sender).getLocation())
+        String callout = battle.getGame().findClosestCallout(asPlayer(sender).getLocation())
                 .map(c -> {
                     if (c.getConfig() != null) {
                         return " (near %s %s)".formatted(
@@ -57,11 +56,4 @@ public class QuickCommand extends BattleCommand {
         this.includeLocation = true;
         return this;
     }
-
-    private Optional<BattleCallout> findClosestCallout(Location location) {
-        return battle.getGame().getConfig().getCallouts().stream()
-                .filter(callout -> callout.getLocation().distance(location) <= RADIUS)
-                .min(Comparator.comparingDouble(c -> c.getLocation().distanceSquared(location)));
-    }
-
 }

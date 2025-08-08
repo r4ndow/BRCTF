@@ -2,7 +2,9 @@ package com.mcpvp.battle.game;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleGameConfig;
+import com.mcpvp.battle.event.GameRespawnEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.flag.FlagMessageBroadcaster;
@@ -17,7 +19,6 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
-import com.mcpvp.common.structure.StructureViolation;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +32,16 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 @Log4j2
 @Getter
 @RequiredArgsConstructor
 public class BattleGame extends EasyLifecycle {
+
+    private static final double CALLOUT_RADIUS = 15;
 
     private final BattlePlugin plugin;
     private final Battle battle;
@@ -159,6 +160,8 @@ public class BattleGame extends EasyLifecycle {
             // Velocity also carries over for some reason
             player.setVelocity(new Vector());
         }));
+
+        new GameRespawnEvent(player).call();
     }
 
     public void remove(Player player) {
@@ -194,8 +197,18 @@ public class BattleGame extends EasyLifecycle {
                 .toList();
     }
 
+    public List<? extends Player> getSpectators() {
+        return Bukkit.getOnlinePlayers().stream().filter(Predicate.not(this::isParticipant)).toList();
+    }
+
     public void editStats(Player player, Consumer<BattleGamePlayerStats> operator) {
         operator.accept(getStats(player));
+    }
+
+    public Optional<BattleCallout> findClosestCallout(Location location) {
+        return getConfig().getCallouts().stream()
+            .filter(callout -> callout.getLocation().distance(location) <= CALLOUT_RADIUS)
+            .min(Comparator.comparingDouble(c -> c.getLocation().distanceSquared(location)));
     }
 
     @NonNull

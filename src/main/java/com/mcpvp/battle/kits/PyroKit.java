@@ -3,6 +3,7 @@ package com.mcpvp.battle.kits;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.BattleKitType;
+import com.mcpvp.battle.match.BattleMatchStructureRestrictions;
 import com.mcpvp.common.ParticlePacket;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
@@ -228,6 +229,7 @@ public class PyroKit extends BattleKit {
         }
     }
 
+    // TODO remove player in the way restriction
     public class PyroFire extends Structure {
 
         private Block center;
@@ -239,6 +241,7 @@ public class PyroKit extends BattleKit {
 
         @Override
         public void build(Block center, StructureBuilder builder) {
+            builder.ignoreRestriction(BattleMatchStructureRestrictions.NEAR_PLAYER);
             builder.setBlock(center, Material.FIRE);
             this.center = center;
         }

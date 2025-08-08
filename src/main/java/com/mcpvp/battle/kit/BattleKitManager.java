@@ -1,9 +1,12 @@
 package com.mcpvp.battle.kit;
 
 import com.mcpvp.battle.Battle;
+import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.kits.global.ScoutDeathTagManager;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitManager;
 import com.mcpvp.common.util.chat.C;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -16,9 +19,13 @@ public class BattleKitManager extends KitManager {
     private final List<KitDefinition> disabled = new ArrayList<>();
     private final Map<KitDefinition, Integer> limited = new HashMap<>();
 
+    @Getter
+    private final ScoutDeathTagManager globalScoutKit;
+
     public BattleKitManager(Plugin plugin, Battle battle) {
         super(plugin);
         this.battle = battle;
+        this.globalScoutKit = new ScoutDeathTagManager((BattlePlugin) plugin);
     }
 
     @Override

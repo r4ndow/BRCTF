@@ -77,7 +77,7 @@ public abstract class BattleKit extends Kit {
     }
 
     protected boolean isEnemy(Player player) {
-        return !isTeammate(player);
+        return !isTeammate(player) && getGame().getTeamManager().getTeam(player) != null;
     }
 
     protected boolean hasFlag() {

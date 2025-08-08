@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -21,6 +18,7 @@ import java.util.function.Consumer;
 public class StructureBuilder {
 
     private final StructureManager manager;
+    private final Set<String> ignoredRestrictions = new HashSet<>();
     /**
      * A queue of actions to be taken if the structure can be built.
      */
@@ -50,7 +48,9 @@ public class StructureBuilder {
         }
 
         // Register any violations
-        List<StructureViolation> violations = manager.check(block);
+        List<StructureViolation> violations = manager.check(block).stream().filter(violation -> {
+            return !ignoredRestrictions.contains(violation.getKey());
+        }).toList();
         this.violations.addAll(violations);
 
         // Queue the action anyway
@@ -69,7 +69,17 @@ public class StructureBuilder {
     }
 
     /**
-     * Builds the structure by executing all the queued changes. Ensure {@link #getViolations()} is empty before calling this.
+     * Sets a restriction to be ignored when setting blocks.
+     *
+     * @param key The key of the restriction, e.g. "IN_SPAWN"
+     */
+    public void ignoreRestriction(String key) {
+        this.ignoredRestrictions.add(key);
+    }
+
+    /**
+     * Builds the structure by executing all the queued changes.
+     * Ensure {@link #getViolations()} is empty before calling this.
      */
     public void complete() {
         if (!this.violations.isEmpty()) {

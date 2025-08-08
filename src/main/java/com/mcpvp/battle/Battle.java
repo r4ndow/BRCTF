@@ -55,6 +55,8 @@ public class Battle {
     public void start() {
         this.projectileManager.register();
 
+        this.kitManager.getGlobalScoutKit().register();
+
         this.match = this.matchManager.create();
         this.match.start();
     }

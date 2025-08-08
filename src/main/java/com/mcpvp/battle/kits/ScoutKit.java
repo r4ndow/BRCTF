@@ -1,0 +1,278 @@
+package com.mcpvp.battle.kits;
+
+import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
+import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.battle.kit.item.CooldownItem;
+import com.mcpvp.battle.kits.global.ScoutDeathTagManager;
+import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.InteractiveProjectile;
+import com.mcpvp.common.ParticlePacket;
+import com.mcpvp.common.item.ItemBuilder;
+import com.mcpvp.common.kit.KitItem;
+import com.mcpvp.common.task.EasyTask;
+import com.mcpvp.common.time.Duration;
+import com.mcpvp.common.time.Expiration;
+import com.mcpvp.common.util.EntityUtil;
+import com.mcpvp.common.util.LocationUtil;
+import com.mcpvp.common.util.PlayerUtil;
+import com.mcpvp.common.util.chat.C;
+import net.minecraft.server.v1_8_R3.EnumParticle;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ScoutKit extends BattleKit {
+
+    private static final Duration SWAPPER_COOLDOWN_OTHERS = Duration.seconds(10);
+    private static final Duration SWAPPER_COOLDOWN_OWN = Duration.seconds(0.75);
+    private static final Duration TAG_COOLDOWN = Duration.seconds(15);
+    private static final Map<Player, Expiration> COOLDOWN_MAP = new HashMap<>();
+
+    private final ScoutDeathTagManager globalScoutKit;
+    private KitItem swapper;
+    private DeathTagItem deathTagItem;
+
+    public ScoutKit(BattlePlugin plugin, Player player) {
+        super(plugin, player);
+        this.globalScoutKit = getBattle().getKitManager().getGlobalScoutKit();
+
+        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 0));
+    }
+
+    @Override
+    public String getName() {
+        return "Scout";
+    }
+
+    @Override
+    public ItemStack[] createArmor() {
+        return new ItemStack[]{
+            ItemBuilder.of(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).build(),
+            null,
+            null,
+            new ItemStack(Material.IRON_HELMET)
+        };
+    }
+
+    @Override
+    public Map<Integer, KitItem> createItems() {
+        return new KitInventoryBuilder()
+            .add(ItemBuilder.of(Material.STONE_SWORD)
+                .name("Scout Sword")
+                .unbreakable()
+                .enchant(Enchantment.DAMAGE_ALL, 2))
+            .addFood(2)
+            .add(swapper = new SwapperItem())
+            .add(deathTagItem = new DeathTagItem())
+            .addCompass(8)
+            .build();
+    }
+
+    @EventHandler
+    public void onFallDamage(EntityDamageEvent event) {
+        if (event.getEntity() == getPlayer() && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            event.setDamage(event.getDamage() * 0.3);
+        }
+    }
+
+    @EventHandler
+    public void onKillOtherPlayer(PlayerKilledByPlayerEvent event) {
+        if (event.getKiller() == getPlayer() && !globalScoutKit.isDeathTagged(event.getKilled())) {
+            deathTagItem.restore();
+        }
+    }
+
+    private void throwSwapperBall(PlayerInteractEvent event) {
+        swapper.setPlaceholder();
+
+        Snowball snowball = getPlayer().launchProjectile(Snowball.class);
+        double velocity = snowball.getVelocity().multiply(1.5).length();
+        snowball.setVelocity(getPlayer().getEyeLocation().getDirection().multiply(velocity));
+
+        attach(new InteractiveProjectile(getPlugin(), snowball)
+            .singleEventOnly()
+            .onDeath(swapper::restore)
+            .onHitPlayer(this::attemptSwap)
+        );
+    }
+
+    private void attemptSwap(Player player) {
+        if (!isEnemy(player)) {
+            return;
+        }
+
+        if (isOnSwapCooldown(player)) {
+            return;
+        }
+
+        swap(player);
+        swapper.restore();
+    }
+
+    private void swap(Player player) {
+        Location toKitPlayer = player.getLocation().setDirection(player.getEyeLocation().getDirection());
+        Location toSwappedPlayer = getPlayer().getLocation().setDirection(getPlayer().getEyeLocation().getDirection());
+
+        getPlayer().teleport(toKitPlayer);
+        player.teleport(toSwappedPlayer);
+
+        LocationUtil.trace(
+            getPlayer().getLocation(),
+            player.getLocation(),
+            (int) getPlayer().getLocation().distance(player.getLocation()) * 2
+        ).forEach(loc -> {
+            ParticlePacket.of(EnumParticle.SMOKE_NORMAL).at(loc).send();
+        });
+
+        getPlayer().playSound(getPlayer().getEyeLocation(), Sound.ENDERMAN_TELEPORT, 0.5f, 0.5f);
+        player.playSound(player.getEyeLocation(), Sound.ENDERMAN_TELEPORT, 0.5f, 0.5f);
+
+        PlayerUtil.setAbsorptionHearts(
+            getPlayer(), Math.min(PlayerUtil.getAbsorptionHearts(getPlayer()) + 4, 8)
+        );
+
+        startSwapCooldown(player);
+        sendSwapNotification(player);
+    }
+
+    private void sendSwapNotification(Player swapped) {
+        double distance = swapped.getLocation().distance(getPlayer().getLocation());
+        getPlayer().sendMessage("You swapped with " + C.hl(swapped.getName()) + " from " + distance + " blocks");
+        swapped.sendMessage(C.hl(getPlayer().getName()) + " swapped with you from " + distance + " blocks");
+
+        String nearby = getGame().findClosestCallout(swapped.getLocation()).map(callout ->
+            C.GRAY + " (near " + callout.getText() + C.GRAY + ")"
+        ).orElse("");
+
+        EntityUtil.getNearbyEntities(swapped.getLocation(), Player.class,20).forEach(player -> {
+            if (player != swapped) {
+                if (isTeammate(player)) {
+                    player.sendMessage(C.warn(C.GOLD) + "Your flag carrier was swapped!");
+                } else if (isEnemy(player)) {
+                    player.sendMessage(C.warn(C.GOLD) + "The enemy flag carrier was swapped! " + nearby);
+                } else {
+                    player.sendMessage(C.warn(C.GOLD) + "The "
+                        + getGame().getTeamManager().getTeam(swapped).getColoredName()
+                        + " flag carrier was swapped! " + nearby);
+                }
+            }
+        });
+    }
+
+    private boolean isOnSwapCooldown(Player player) {
+        return COOLDOWN_MAP.containsKey(player) && !COOLDOWN_MAP.get(player).isExpired();
+    }
+
+    private void startSwapCooldown(Player player) {
+        Expiration expiration = COOLDOWN_MAP.computeIfAbsent(player, p -> new Expiration());
+        expiration.expireIn(SWAPPER_COOLDOWN_OTHERS);
+
+        // This should not be attached to the kit, as it is a global cooldown
+        EasyTask.of(() -> {
+            player.sendMessage(C.info(C.AQUA) + "You can now be swapped again");
+        }).runTaskLater(getPlugin(), expiration.getRemaining().ticks());
+    }
+
+    private boolean attemptDeathTag(Player player) {
+        if (!isEnemy(player)) {
+            return false;
+        }
+
+        return deathTag(player);
+    }
+
+    private boolean deathTag(Player player) {
+        boolean tagged = globalScoutKit.setDeathTagged(player);
+        if (tagged) {
+            getPlayer().sendMessage(C.info(C.GOLD) + "You have death tagged " + C.hl(player.getName()));
+
+            getGame().getTeamManager().getTeams().stream()
+                .filter(bt -> bt.getFlag().getCarrier() == player)
+                .findAny()
+                .ifPresent(team -> sendCarrierDeathTagMessages(player, team));
+        }
+
+        return tagged;
+    }
+
+    private void sendCarrierDeathTagMessages(Player tagged, BattleTeam team) {
+        team.getPlayers().forEach(enemy ->
+            enemy.sendMessage(C.warn(C.GOLD) + "You flag carrier was death tagged!")
+        );
+
+        getTeammates().forEach(teammate ->
+            teammate.sendMessage(C.warn(C.GOLD) + "The enemy flag carrier was death tagged!")
+        );
+
+        getGame().getSpectators().forEach(spectator ->
+            spectator.sendMessage(C.warn(C.GOLD) + "The " + team.getColoredName() + " flag carrier was death tagged!")
+        );
+    }
+
+    class SwapperItem extends CooldownItem {
+
+        public SwapperItem() {
+            super(
+                ScoutKit.this,
+                ItemBuilder.of(Material.SLIME_BALL).name("Swapper").build(),
+                SWAPPER_COOLDOWN_OWN
+            );
+        }
+
+        @Override
+        protected void onUse(PlayerInteractEvent event) {
+            throwSwapperBall(event);
+        }
+
+    }
+
+    class DeathTagItem extends CooldownItem {
+
+        public DeathTagItem() {
+            super(
+                ScoutKit.this,
+                ItemBuilder.of(Material.NAME_TAG).name("Death Tag").build(),
+                TAG_COOLDOWN
+            );
+
+            onInteractEntity(event -> {
+                if (event.getRightClicked() instanceof Player hit) {
+                    if (attemptDeathTag(hit)) {
+                        startCooldown();
+                    }
+                }
+            });
+            onDamage(event -> {
+                if (event.getEntity() instanceof Player hit) {
+                    if (attemptDeathTag(hit)) {
+                        startCooldown();
+                    }
+                }
+            });
+        }
+
+        @Override
+        protected void onUse(PlayerInteractEvent event) {
+        }
+
+        @Override
+        protected boolean autoUse() {
+            return false;
+        }
+
+    }
+
+}

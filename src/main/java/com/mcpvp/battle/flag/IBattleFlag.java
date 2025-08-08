@@ -124,6 +124,11 @@ public interface IBattleFlag {
     Expiration getRestoreExpiration();
 
     /**
+     * @return Epoch timestamp that the flag was stolen at.
+     */
+    long getStolenAt();
+
+    /**
      * Called every tick to perform updates.
      *
      * @param tick The tick number.

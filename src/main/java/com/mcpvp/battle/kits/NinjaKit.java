@@ -109,6 +109,7 @@ public class NinjaKit extends BattleKit {
         }
     }
 
+    // TODO ninjas need to be impacted by projectiles while invisible
     private void enforceVisibility() {
         if (invisible) {
             // Hide the player for any enemies who can see them

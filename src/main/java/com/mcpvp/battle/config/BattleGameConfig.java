@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bukkit.Location;
 
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -33,5 +35,6 @@ public class BattleGameConfig {
     public BattleTeamConfig getTeamConfig(BattleTeam team) {
         return getTeamConfig(team.getId());
     }
+
 
 }

@@ -32,6 +32,8 @@ public abstract class CooldownItem extends KitItem {
         return false;
     }
 
+    protected boolean autoUse() { return true; }
+
     @Override
     public void restore() {
         super.restore();
@@ -55,6 +57,10 @@ public abstract class CooldownItem extends KitItem {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        if (!autoUse()) {
+            return;
+        }
+
         if (!isItem(event.getItem())) {
             return;
         }
@@ -71,6 +77,10 @@ public abstract class CooldownItem extends KitItem {
         }
 
         onUse(event);
+        startCooldown();
+    }
+
+    protected void startCooldown() {
         cooldown.expireIn(cooldownTime);
     }
 

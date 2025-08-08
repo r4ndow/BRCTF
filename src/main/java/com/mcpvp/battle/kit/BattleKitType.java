@@ -24,6 +24,7 @@ public enum BattleKitType implements KitDefinition {
     MEDIC("Medic", MedicKit::new),
     NINJA("Ninja", NinjaKit::new),
     PYRO("Pyro", PyroKit::new),
+    SCOUT("Scout", ScoutKit::new),
     SOLDIER("Soldier", SoldierKit::new),
     ;
 
