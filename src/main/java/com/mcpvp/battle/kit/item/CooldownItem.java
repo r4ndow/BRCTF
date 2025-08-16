@@ -21,7 +21,7 @@ public abstract class CooldownItem extends KitItem {
     }
 
     private float getRechargePercentage() {
-        return Math.min(1, 1 - ((float) cooldown.getRemaining().ticks() / cooldownTime.ticks()));
+        return cooldown.getCompletionPercent(cooldownTime);
     }
 
     protected boolean showExpRecharge() {

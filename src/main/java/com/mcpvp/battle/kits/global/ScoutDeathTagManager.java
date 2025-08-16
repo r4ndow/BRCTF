@@ -10,6 +10,7 @@ import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EffectUtil;
+import com.mcpvp.common.util.chat.C;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
@@ -45,7 +46,7 @@ public class ScoutDeathTagManager implements EasyListener {
         deathTagged.computeIfAbsent(player, p -> new Expiration()).expireIn(TAG_COOLDOWN);
 
         EffectUtil.sendBorderEffect(player);
-        player.sendMessage("You are now death tagged");
+        player.sendMessage(C.warn(C.GOLD) + "You are now death tagged for " + C.hl("" + TAG_DURATION.seconds()) + " seconds!");
 
         EasyTask.of(() -> removeDeathTag(player)).runTaskLater(getPlugin(), TAG_DURATION.ticks());
         return true;

@@ -7,6 +7,7 @@ import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.ParticlePacket;
 import com.mcpvp.common.ProjectileManager;
+import com.mcpvp.common.event.EasyEvent;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
@@ -20,6 +21,7 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
 import com.mcpvp.common.util.chat.C;
 import com.mcpvp.common.util.nms.ActionbarUtil;
+import lombok.Data;
 import lombok.NonNull;
 import org.bukkit.Color;
 import org.bukkit.EntityEffect;
@@ -58,11 +60,6 @@ public class MedicKit extends BattleKit {
 
     public MedicKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
-    }
-
-    @Override
-    protected void setup(@NonNull Player player) {
-        super.setup(player);
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 99999, 1));
         player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 1));
@@ -172,6 +169,8 @@ public class MedicKit extends BattleKit {
 
             // No healing for a while
             HEAL_COOLDOWNS.put(player, new Expiration().expireIn(RESTORE_PLAYER_COOLDOWN));
+
+            new HealEvent(player).call();
         } else {
             // Heal player
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 4));
@@ -288,6 +287,11 @@ public class MedicKit extends BattleKit {
             }
         }
 
+    }
+
+    @Data
+    public static class HealEvent extends EasyEvent {
+        private final Player healed;
     }
 
 }

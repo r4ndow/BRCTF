@@ -61,12 +61,12 @@ public class NinjaKit extends BattleKit {
     @Override
     public Map<Integer, KitItem> createItems() {
         sword = new KitItem(
-                this,
-                ItemBuilder.of(Material.GOLD_SWORD)
-                        .name("Ninja Sword")
-                        .enchant(Enchantment.DAMAGE_ALL, 5)
-                        .unbreakable()
-                        .build()
+            this,
+            ItemBuilder.of(Material.GOLD_SWORD)
+                .name("Ninja Sword")
+                .enchant(Enchantment.DAMAGE_ALL, 5)
+                .unbreakable()
+                .build()
         );
 
         return new KitInventoryBuilder()
@@ -116,18 +116,18 @@ public class NinjaKit extends BattleKit {
 
         if (invisible) {
             // Hide the player for any enemies who can see them
-//            getEnemies().stream()
-//                    .filter(player -> visibilityManager.canSee(player, getPlayer()))
-//                    .forEach(player -> visibilityManager.hide(player, getPlayer()));
+            getEnemies().stream()
+                .filter(player -> visibilityManager.canSee(player, getPlayer()))
+                .forEach(player -> visibilityManager.hide(player, getPlayer()));
 
             if (!getPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 99999, 0, true, false));
+                getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 99999, 0, false, false));
             }
         } else {
             // Show the player to any enemies who can't see them
-//            getEnemies().stream()
-//                    .filter(player -> !visibilityManager.canSee(player, getPlayer()))
-//                    .forEach(player -> visibilityManager.show(player, getPlayer()));
+            getEnemies().stream()
+                .filter(player -> !visibilityManager.canSee(player, getPlayer()))
+                .forEach(player -> visibilityManager.show(player, getPlayer()));
 
             if (getPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 getPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -135,9 +135,9 @@ public class NinjaKit extends BattleKit {
         }
 
         // Ensure players are always visible to teammates
-//        getTeammates().stream()
-//                .filter(player -> !visibilityManager.canSee(player, getPlayer()))
-//                .forEach(player -> visibilityManager.show(player, getPlayer()));
+        getTeammates().stream()
+            .filter(player -> !visibilityManager.canSee(player, getPlayer()))
+            .forEach(player -> visibilityManager.show(player, getPlayer()));
     }
 
     public void increaseEggMana() {
@@ -158,18 +158,18 @@ public class NinjaKit extends BattleKit {
             return;
         }
 
-        // Existing potion effects need to be removed to reset the time
-        player.removePotionEffect(PotionEffectType.CONFUSION);
-        player.removePotionEffect(PotionEffectType.SLOW);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, (direct ? 9 : 7) * 20, 1));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, (direct ? 9 : 7) * 20, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, (direct ? 9 : 7) * 20, 1), true);
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, (direct ? 9 : 7) * 20, 0), true);
     }
 
     @Override
     public void shutdown() {
         // Restore visibility to normal
         invisible = false;
-        enforceVisibility();
+
+        if (getPlayer().isOnline()) {
+            enforceVisibility();
+        }
 
         super.shutdown();
     }
@@ -178,12 +178,12 @@ public class NinjaKit extends BattleKit {
 
         public DustItem() {
             super(
-                    NinjaKit.this,
-                    ItemBuilder.of(Material.REDSTONE)
-                            .name("Invisibility Dust")
-                            .amount(64)
-                            .build(),
-                    true
+                NinjaKit.this,
+                ItemBuilder.of(Material.REDSTONE)
+                    .name("Invisibility Dust")
+                    .amount(64)
+                    .build(),
+                true
             );
         }
 
@@ -263,10 +263,10 @@ public class NinjaKit extends BattleKit {
 
         public PearlItem() {
             super(
-                    NinjaKit.this,
-                    ItemBuilder.of(Material.ENDER_PEARL)
-                            .name("Teleportation Sphere")
-                            .build()
+                NinjaKit.this,
+                ItemBuilder.of(Material.ENDER_PEARL)
+                    .name("Teleportation Sphere")
+                    .build()
             );
         }
 
@@ -285,8 +285,8 @@ public class NinjaKit extends BattleKit {
             EnderPearl ep = getPlayer().launchProjectile(EnderPearl.class);
 
             getBattle().getProjectileManager().register(ep)
-                    .onHit(pl -> this.restore())
-                    .onMiss(this::restore);
+                .onHit(pl -> this.restore())
+                .onMiss(this::restore);
 
             attach(ep);
         }
@@ -297,11 +297,11 @@ public class NinjaKit extends BattleKit {
 
         public EggItem() {
             super(
-                    NinjaKit.this,
-                    ItemBuilder.of(Material.EGG)
-                            .name("Flash Bomb")
-                            .amount(10)
-                            .build()
+                NinjaKit.this,
+                ItemBuilder.of(Material.EGG)
+                    .name("Flash Bomb")
+                    .amount(10)
+                    .build()
             );
         }
 
@@ -325,13 +325,13 @@ public class NinjaKit extends BattleKit {
             Egg e = getPlayer().launchProjectile(Egg.class);
 
             getBattle().getProjectileManager().register(e)
-                    .onHitEvent(hitEvent -> {
-                        if (hitEvent.getEntity() instanceof Player hit) {
-                            e.getLocation().getWorld().createExplosion(e.getLocation(), 0F, false);
-                            applyEggEffect(hit, true);
-                        }
-                    })
-                    .onCollideBlock(hitEvent -> applyEggEffectNearby(e));
+                .onHitEvent(hitEvent -> {
+                    if (hitEvent.getEntity() instanceof Player hit) {
+                        e.getLocation().getWorld().createExplosion(e.getLocation(), 0F, false);
+                        applyEggEffect(hit, true);
+                    }
+                })
+                .onCollideBlock(hitEvent -> applyEggEffectNearby(e));
 
             getPlayer().setExp(Math.max(getPlayer().getExp() - EGG_MANA_COST, 0f));
         }

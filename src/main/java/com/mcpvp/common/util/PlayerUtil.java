@@ -13,7 +13,7 @@ public class PlayerUtil {
         asCraftPlayer(player).setAbsorptionHearts(hearts);
     }
 
-    private static EntityPlayer asCraftPlayer(Player player) {
+    public static EntityPlayer asCraftPlayer(Player player) {
         return ((org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer) player).getHandle();
     }
 

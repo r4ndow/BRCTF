@@ -74,7 +74,8 @@ public class KitItem extends InteractiveItem {
      */
     public void increment(int max) {
         if (isPlaceholder()) {
-            modify(builder -> builder.type(original.getType()));
+            restore();
+            modify(builder -> builder.amount(1));
         } else if (getItem().getAmount() < max) {
             modify(builder -> builder.amount(getItem().getAmount() + 1));
         }

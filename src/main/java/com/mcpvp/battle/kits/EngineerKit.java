@@ -179,11 +179,10 @@ public class EngineerKit extends BattleKit {
             event.setYield(0f);
 
             // Remove nearby medic webs
-            List<Block> blocksInRadius = BlockUtil.getBlocksInRadius(event.getEntity().getLocation().getBlock(), EXPLOSION_RADIUS);
             getBattle().getStructureManager().getStructures().stream()
                 .filter(structure -> structure instanceof MedicKit.MedicWeb)
                 .filter(structure -> isEnemy(structure.getOwner()))
-                .filter(structure -> structure.getBlocks().stream().anyMatch(blocksInRadius::contains))
+                .filter(structure -> structure.distance(event.getEntity().getLocation()) <= EXPLOSION_RADIUS)
                 .forEach(Structure::remove);
         }
 

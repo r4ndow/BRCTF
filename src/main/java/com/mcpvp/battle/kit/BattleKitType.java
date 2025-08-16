@@ -22,6 +22,7 @@ public enum BattleKitType implements KitDefinition {
     HEAVY("Heavy", HeavyKit::new),
     MAGE("Mage", MageKit::new),
     MEDIC("Medic", MedicKit::new),
+    NECRO("Necro", NecroKit::new),
     NINJA("Ninja", NinjaKit::new),
     PYRO("Pyro", PyroKit::new),
     SCOUT("Scout", ScoutKit::new),

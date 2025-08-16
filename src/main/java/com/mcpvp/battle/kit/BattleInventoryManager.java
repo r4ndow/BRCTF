@@ -148,10 +148,6 @@ public class BattleInventoryManager {
                 if (ki.isItem(kit.getPlayer().getInventory().getItem(i))) {
                     keyToSlot.put(getKey(ki), i);
                 }
-//                ItemStack is = kit.getPlayer().getInventory().getItem(i);
-//                if (ki.query().matches(is)) {
-//                    keyToSlot.put(getKey(ki), i);
-//                }
             }
         });
 

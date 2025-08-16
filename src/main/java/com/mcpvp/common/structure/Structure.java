@@ -6,6 +6,7 @@ import com.mcpvp.common.time.Duration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -93,6 +94,10 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
      */
     protected void removeAfter(Duration duration) {
         attach(Bukkit.getScheduler().runTaskLater(getPlugin(), this::remove, duration.ticks()));
+    }
+
+    public double distance(Location location) {
+        return getCenter().getLocation().distance(location);
     }
 
 }

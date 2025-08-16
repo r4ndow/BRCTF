@@ -74,7 +74,8 @@ public class Battle {
     public void start() {
         this.projectileManager.register();
 
-        this.kitManager.getGlobalScoutKit().register();
+        this.kitManager.getScoutDeathTagManager().register();
+        this.kitManager.getNecroRevivalTagManager().register();
 
         if (getOptions().getMapTester().isEnabled()) {
             new BattleMapTester(objectMapper).run(getOptions().getMaps(), getOptions().getMapTester(), this.mapRepo);

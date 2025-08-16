@@ -19,6 +19,7 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
+import com.mcpvp.common.util.PlayerUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -155,13 +156,15 @@ public class BattleGame extends EasyLifecycle {
         // Players must be teleported immediately on death to avoid the death screen
         // But there needs to be a tick delay before equipping the kit due to inventory resets
         attach(Bukkit.getScheduler().runTask(plugin, () -> {
+            if (!player.isOnline()) {
+                return;
+            }
+
             battle.getKitManager().createSelected(player);
 
             // Velocity also carries over for some reason
             player.setVelocity(new Vector());
         }));
-
-        new GameRespawnEvent(player).call();
     }
 
     public void remove(Player player) {

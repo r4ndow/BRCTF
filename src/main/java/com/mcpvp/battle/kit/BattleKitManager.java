@@ -2,6 +2,7 @@ package com.mcpvp.battle.kit;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.kits.global.NecroRevivalTagManager;
 import com.mcpvp.battle.kits.global.ScoutDeathTagManager;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitManager;
@@ -20,12 +21,15 @@ public class BattleKitManager extends KitManager {
     private final Map<KitDefinition, Integer> limited = new HashMap<>();
 
     @Getter
-    private final ScoutDeathTagManager globalScoutKit;
+    private final ScoutDeathTagManager scoutDeathTagManager;
+    @Getter
+    private final NecroRevivalTagManager necroRevivalTagManager;
 
     public BattleKitManager(Plugin plugin, Battle battle) {
         super(plugin);
         this.battle = battle;
-        this.globalScoutKit = new ScoutDeathTagManager((BattlePlugin) plugin);
+        this.scoutDeathTagManager = new ScoutDeathTagManager((BattlePlugin) plugin);
+        this.necroRevivalTagManager = new NecroRevivalTagManager((BattlePlugin) plugin);
     }
 
     @Override

@@ -71,23 +71,25 @@ public class SoldierKit extends BattleKit {
         // Push the player away from any wall they are near
         // This prevents them from getting stuck
         Player player = getPlayer();
-        if (player.getLocation().add(0, 0, 0.35).getBlock().getType() != Material.AIR)
+        if (player.getLocation().add(0, 0, 0.35).getBlock().getType() != Material.AIR) {
             player.setVelocity(new Vector(0, 0, -1));
-        else if (player.getLocation().add(0, 0, -0.35).getBlock().getType() != Material.AIR)
+        } else if (player.getLocation().add(0, 0, -0.35).getBlock().getType() != Material.AIR) {
             player.setVelocity(new Vector(0, 0, 1));
-        else if (player.getLocation().add(0.35, 0, 0).getBlock().getType() != Material.AIR)
+        } else if (player.getLocation().add(0.35, 0, 0).getBlock().getType() != Material.AIR) {
             player.setVelocity(new Vector(-1, 0, 0));
-        else if (player.getLocation().add(-0.35, 0, 0).getBlock().getType() != Material.AIR)
+        } else if (player.getLocation().add(-0.35, 0, 0).getBlock().getType() != Material.AIR) {
             player.setVelocity(new Vector(1, 0, 0));
-        else
+        } else {
             delay = false;
+        }
 
-        if (delay)
+        if (delay) {
             attach(Bukkit.getScheduler().runTask(plugin, () -> {
                 player.setVelocity(new Vector(0, 1.0f, 0));
             }));
-        else
+        } else {
             player.setVelocity(new Vector(0, 1.0f, 0));
+        }
 
         player.setExp(player.getExp() - PER_CLIMB);
     }

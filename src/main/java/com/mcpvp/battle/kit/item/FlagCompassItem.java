@@ -7,16 +7,19 @@ import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 public class FlagCompassItem extends KitItem {
 
     private final BattleGame game;
+    private final Player player;
     private BattleTeam target;
 
     public FlagCompassItem(BattleGame game, Kit kit) {
         super(kit, ItemBuilder.of(Material.COMPASS).name("Pointing to ??? flag").build());
         this.game = game;
+        this.player = kit.getPlayer();
         this.target = game.getTeamManager().getTeam(kit.getPlayer());
         this.onInteract(ev -> this.toggle());
         this.toggle();
@@ -25,7 +28,12 @@ public class FlagCompassItem extends KitItem {
     public void toggle() {
         if (this.target != null) {
             target = game.getTeamManager().getNext(target);
-            modify(ib -> ib.name("Pointing to " + target.getColoredName() + " flag"));
+            if (target == game.getTeamManager().getTeam(player)) {
+                modify(ib -> ib.name("Pointing to " + target.getColoredName() + " flag").dummyEnchant());
+            } else {
+                modify(ib -> ib.name("Pointing to " + target.getColoredName() + " flag").removeDummyEnchant());
+            }
+
             update(kit.getPlayer().getInventory());
         }
     }

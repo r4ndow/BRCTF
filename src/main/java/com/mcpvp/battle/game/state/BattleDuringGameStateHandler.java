@@ -72,6 +72,23 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     }
 
     @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        event.setKeepInventory(false);
+        event.setKeepLevel(false);
+        event.setNewExp(0);
+        event.setNewLevel(0);
+        event.setDroppedExp(0);
+        event.getDrops().clear();
+        event.setDeathMessage(null);
+
+        if (new GameDeathEvent(event.getEntity(), event.getEntity().getLocation().clone(), event).call()) {
+            return;
+        }
+
+        game.respawn(event.getEntity(), true);
+    }
+
+    @EventHandler
     public void onJoinTeam(PlayerJoinTeamEvent event) {
         game.respawn(event.getPlayer(), false);
     }
@@ -84,19 +101,6 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onKitSelected(KitSelectedEvent event) {
         game.respawn(event.getPlayer(), false);
-    }
-
-    @EventHandler
-    public void onDeath(PlayerDeathEvent event) {
-        event.setKeepInventory(false);
-        event.setKeepLevel(false);
-        event.setNewExp(0);
-        event.setNewLevel(0);
-        event.setDroppedExp(0);
-        event.getDrops().clear();
-        event.setDeathMessage(null);
-
-        game.respawn(event.getEntity(), true);
     }
 
     @EventHandler

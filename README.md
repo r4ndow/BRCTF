@@ -58,6 +58,11 @@ documents/
 │  ├─ paper-1.8.8-445.jar
 ```
 
+## Known Issues
+
+- Ninjas cannot be damaged by projectiles while invisible
+- The flag item can be burned
+
 # Configuration
 
 The plugin will automatically create a config file for you, and it lives at `plugins/ctf/config.json`. This file provides many options for tweaking the plugin.

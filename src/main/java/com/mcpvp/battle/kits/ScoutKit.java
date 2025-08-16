@@ -4,6 +4,7 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.item.CooldownItem;
+import com.mcpvp.battle.kits.global.NecroRevivalTagManager;
 import com.mcpvp.battle.kits.global.ScoutDeathTagManager;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.InteractiveProjectile;
@@ -41,13 +42,15 @@ public class ScoutKit extends BattleKit {
     private static final Duration TAG_COOLDOWN = Duration.seconds(15);
     private static final Map<Player, Expiration> COOLDOWN_MAP = new HashMap<>();
 
-    private final ScoutDeathTagManager globalScoutKit;
+    private final ScoutDeathTagManager deathTagManager;
+    private final NecroRevivalTagManager revivalTagManager;
     private KitItem swapper;
     private DeathTagItem deathTagItem;
 
     public ScoutKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
-        this.globalScoutKit = getBattle().getKitManager().getGlobalScoutKit();
+        this.deathTagManager = getBattle().getKitManager().getScoutDeathTagManager();
+        this.revivalTagManager = getBattle().getKitManager().getNecroRevivalTagManager();
 
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 0));
     }
@@ -90,7 +93,7 @@ public class ScoutKit extends BattleKit {
 
     @EventHandler
     public void onKillOtherPlayer(PlayerKilledByPlayerEvent event) {
-        if (event.getKiller() == getPlayer() && !globalScoutKit.isDeathTagged(event.getKilled())) {
+        if (event.getKiller() == getPlayer() && !deathTagManager.isDeathTagged(event.getKilled())) {
             deathTagItem.restore();
         }
     }
@@ -195,20 +198,29 @@ public class ScoutKit extends BattleKit {
     }
 
     private boolean deathTag(Player player) {
-        boolean tagged = globalScoutKit.setDeathTagged(player);
+        if (revivalTagManager.isRevivalTagged(player)) {
+            revivalTagManager.clearRevivalTag(player);
+            player.sendMessage(C.info(C.GRAY) + "Your revival tag was removed by the death tag of " + C.hl(getPlayer().getName()));
+            getPlayer().sendMessage(C.warn(C.GOLD) + "You removed the revival tag on " + C.hl(player.getName()));
+            return false;
+        }
+
+        boolean tagged = deathTagManager.setDeathTagged(player);
         if (tagged) {
             getPlayer().sendMessage(C.info(C.GOLD) + "You have death tagged " + C.hl(player.getName()));
 
             getGame().getTeamManager().getTeams().stream()
                 .filter(bt -> bt.getFlag().getCarrier() == player)
                 .findAny()
-                .ifPresent(team -> sendCarrierDeathTagMessages(player, team));
+                .ifPresent(this::sendCarrierDeathTagMessages);
+        } else {
+            getPlayer().sendMessage(C.warn(C.GOLD) + C.hl(player.getName()) + " is already death tagged!");
         }
 
         return tagged;
     }
 
-    private void sendCarrierDeathTagMessages(Player tagged, BattleTeam team) {
+    private void sendCarrierDeathTagMessages(BattleTeam team) {
         team.getPlayers().forEach(enemy ->
             enemy.sendMessage(C.warn(C.GOLD) + "You flag carrier was death tagged!")
         );

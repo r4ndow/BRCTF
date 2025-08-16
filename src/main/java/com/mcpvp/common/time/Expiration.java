@@ -29,4 +29,12 @@ public class Expiration {
         return Duration.ms(expiration - System.currentTimeMillis());
     }
 
+    /**
+     * @param total The total amount of time that this Expiration is based on.
+     * @return The percent done from [0, 1.0].
+     */
+    public float getCompletionPercent(Duration total) {
+        return Math.min(1, 1 - ((float) getRemaining().ticks() / total.ticks()));
+    }
+
 }
