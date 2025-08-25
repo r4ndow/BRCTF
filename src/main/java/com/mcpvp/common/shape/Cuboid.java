@@ -3,7 +3,8 @@ package com.mcpvp.common.shape;
 import lombok.Getter;
 import org.bukkit.Location;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <code>

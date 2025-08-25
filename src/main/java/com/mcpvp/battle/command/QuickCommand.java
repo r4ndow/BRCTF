@@ -1,14 +1,10 @@
 package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.Battle;
-import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.common.util.chat.C;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 public class QuickCommand extends BattleCommand {
 

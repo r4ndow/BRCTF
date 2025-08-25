@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
 
 /**
  * A simple class for handling interact events on one item. Items are identified by an NBT tag,

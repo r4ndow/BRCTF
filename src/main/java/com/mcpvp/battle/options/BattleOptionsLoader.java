@@ -1,9 +1,6 @@
 package com.mcpvp.battle.options;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mcpvp.battle.BattlePlugin;
 import lombok.extern.log4j.Log4j2;
 

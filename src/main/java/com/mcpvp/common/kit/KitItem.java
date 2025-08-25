@@ -4,7 +4,6 @@ import com.mcpvp.common.item.InteractiveItem;
 import com.mcpvp.common.item.ItemBuilder;
 import lombok.Getter;
 import lombok.ToString;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
