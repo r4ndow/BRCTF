@@ -108,7 +108,7 @@ public class WoolFlag extends AbstractFlag {
 
     @Override
     protected ItemStack getItem() {
-        return ItemBuilder.of(BattleUtil.getColoredWool(getTeam().getColor().DYE))
+        return ItemBuilder.of(BattleUtil.getColoredWool(getTeam().getColor().getDye()))
                 .name(getTeam().getName() + " Flag")
                 .tag("flag", String.valueOf(getTeam().getId()))
                 .build();
@@ -137,7 +137,7 @@ public class WoolFlag extends AbstractFlag {
 
         // Spawn a visual indicator that the player is holding the flag.
         Location l = getCarrier().getEyeLocation().add(0, 0.5, 0);
-        Item i = getCarrier().getWorld().dropItem(l, BattleUtil.getColoredWool(getTeam().getColor().DYE));
+        Item i = getCarrier().getWorld().dropItem(l, BattleUtil.getColoredWool(getTeam().getColor().getDye()));
         i.setVelocity(i.getVelocity().multiply(new Vector(0.3, 2, 0.3)));
         visuals.add(i);
 

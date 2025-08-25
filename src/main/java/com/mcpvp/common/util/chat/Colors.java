@@ -36,10 +36,10 @@ public enum Colors {
 
     public static final Colors[] VALUES = values();
 
-    public final Color COLOR;
-    public final DyeColor DYE;
-    public final ChatColor CHAT;
-    public final String CHAT_STRING;
+    private final Color COLOR;
+    private final DyeColor DYE;
+    private final ChatColor CHAT;
+    private final String CHAT_STRING;
 
     Colors(DyeColor dye, ChatColor chat, String string) {
         COLOR = dye.getColor();
@@ -49,19 +49,19 @@ public enum Colors {
     }
 
     public static Colors find(Color col) {
-        return match(col, c -> c.COLOR);
+        return match(col, Colors::getColor);
     }
 
     public static Colors find(DyeColor col) {
-        return match(col, c -> c.DYE);
+        return match(col, Colors::getDye);
     }
 
     public static Colors find(ChatColor col) {
-        return match(col, c -> c.CHAT);
+        return match(col, Colors::getChat);
     }
 
     public static Colors find(String col) {
-        return match(col, c -> c.CHAT_STRING);
+        return match(col, Colors::getChatString);
     }
 
     private static <T> Colors match(T object, Function<Colors, T> func) {
@@ -70,15 +70,32 @@ public enum Colors {
 
     private static DyeColor getGray() {
         for (DyeColor dc : DyeColor.values()) {
-            if (dc.name().equalsIgnoreCase("gray") || dc.name().equalsIgnoreCase("silver"))
+            if (dc.name().equalsIgnoreCase("gray") || dc.name().equalsIgnoreCase("silver")) {
                 return dc;
+            }
         }
         return null;
     }
 
     @Override
     public String toString() {
-        return CHAT.toString();
+        return getChat().toString();
+    }
+
+    public Color getColor() {
+        return COLOR;
+    }
+
+    public DyeColor getDye() {
+        return DYE;
+    }
+
+    public ChatColor getChat() {
+        return CHAT;
+    }
+
+    public String getChatString() {
+        return CHAT_STRING;
     }
 
 }

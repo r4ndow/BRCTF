@@ -211,7 +211,7 @@ public class NecroKit extends BattleKit {
             );
 
             // Effects
-            attach(EffectUtil.colorTrail(witherSkull, getTeam().getColor().COLOR).runTaskTimer(getPlugin(), 0, 1));
+            attach(EffectUtil.colorTrail(witherSkull, getTeam().getColor().getColor()).runTaskTimer(getPlugin(), 0, 1));
             getPlayer().getWorld().playSound(getPlayer().getEyeLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
 
             // Item handling

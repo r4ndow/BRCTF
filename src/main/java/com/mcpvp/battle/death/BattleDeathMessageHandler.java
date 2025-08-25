@@ -29,11 +29,11 @@ public class BattleDeathMessageHandler implements EasyListener {
         BattleTeam killedTeam = plugin.getBattle().getGame().getTeamManager().getTeam(event.getKilled());
 
         StringBuilder message = new StringBuilder();
-        message.append(killedTeam.getColor().CHAT);
+        message.append(killedTeam.getColor().getChat());
         message.append(event.getKilled().getName());
         message.append(C.R);
         message.append(" was killed by ");
-        message.append(killerTeam.getColor().CHAT);
+        message.append(killerTeam.getColor().getChat());
         message.append(event.getKiller().getName());
 
         event.getDeathEvent().setDeathMessage(message.toString());

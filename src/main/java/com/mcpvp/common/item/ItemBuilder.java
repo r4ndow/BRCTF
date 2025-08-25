@@ -439,7 +439,7 @@ public class ItemBuilder implements Cloneable {
      * @see #color(Color, boolean)
      */
     public ItemBuilder color(Colors color) {
-        return color(color.DYE);
+        return color(color.getDye());
     }
 
     /**

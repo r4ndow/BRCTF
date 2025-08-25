@@ -13,7 +13,6 @@ import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureBuilder;
 import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
-import com.mcpvp.common.util.BlockUtil;
 import com.mcpvp.common.util.EffectUtil;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_8_R3.EnumParticle;
@@ -143,7 +142,7 @@ public class EngineerKit extends BattleKit {
             });
 
             // Visual effect
-            EffectUtil.colorTrail(tnt, getTeam().getColor().COLOR).runTaskTimer(getPlugin(), 0, 1);
+            EffectUtil.colorTrail(tnt, getTeam().getColor().getColor()).runTaskTimer(getPlugin(), 0, 1);
         }
 
         @EventHandler(ignoreCancelled = true)
@@ -337,7 +336,7 @@ public class EngineerKit extends BattleKit {
             for (int i = 0; i < locations.size(); i++) {
                 // Alternate white and team colored particles
                 if (i % 2 == 0) {
-                    ParticlePacket.colored(getTeam().getColor().COLOR).at(locations.get(i)).showFar().send();
+                    ParticlePacket.colored(getTeam().getColor().getColor()).at(locations.get(i)).showFar().send();
                 } else {
                     ParticlePacket.of(EnumParticle.FIREWORKS_SPARK).at(locations.get(i)).showFar().send();
                 }

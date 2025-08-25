@@ -123,7 +123,7 @@ public class MageKit extends BattleKit {
                     FireworkEffect effect = FireworkEffect.builder()
                         .with(FireworkEffect.Type.BALL)
                         .withColor(
-                            getGame().getTeamManager().getTeam(getPlayer()).getColor().COLOR, Color.PURPLE
+                            getGame().getTeamManager().getTeam(getPlayer()).getColor().getColor(), Color.PURPLE
                         )
                         .build();
 
@@ -152,7 +152,7 @@ public class MageKit extends BattleKit {
                     FireworkEffect effect = FireworkEffect.builder()
                         .with(FireworkEffect.Type.BALL)
                         .withColor(
-                            getGame().getTeamManager().getTeam(getPlayer()).getColor().COLOR, Color.PURPLE
+                            getGame().getTeamManager().getTeam(getPlayer()).getColor().getColor(), Color.PURPLE
                         ).build();
 
                     FireworkUtil.explodeInstantly(effect, arrow.getLocation());
