@@ -9,7 +9,6 @@ import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.flag.FlagMessageBroadcaster;
 import com.mcpvp.battle.flag.FlagStatsListener;
-import com.mcpvp.battle.game.listener.BattlePermanentGameListener;
 import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
 import com.mcpvp.battle.game.state.BattleGameStateHandler;
 import com.mcpvp.battle.game.state.BattleOutsideGameStateHandler;
@@ -59,7 +58,7 @@ public class BattleGame extends EasyLifecycle {
     public void setup() {
         log.info("Setup game on map " + map);
 
-        attach(new BattlePermanentGameListener(plugin, this));
+        attach(new BattleGameListener(plugin, this));
         attach(new BattleDeathMessageHandler(plugin));
         attach(new FlagListener(plugin, this));
         attach(new FlagMessageBroadcaster(plugin));

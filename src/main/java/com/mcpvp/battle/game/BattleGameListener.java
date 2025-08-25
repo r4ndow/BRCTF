@@ -1,11 +1,10 @@
-package com.mcpvp.battle.game.listener;
+package com.mcpvp.battle.game;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerEnterSpawnEvent;
 import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
-import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.battle.kit.BattleKitType;
 import com.mcpvp.battle.team.BattleTeam;
@@ -41,7 +40,7 @@ import java.util.Optional;
 @Log4j2
 @Getter
 @AllArgsConstructor
-public class BattlePermanentGameListener implements EasyListener {
+public class BattleGameListener implements EasyListener {
 
     private final BattlePlugin plugin;
     private final BattleGame game;
@@ -128,9 +127,9 @@ public class BattlePermanentGameListener implements EasyListener {
         }
     }
 
-    // ==============
-    // EVENT HANDLING
-    // ==============
+    // ================
+    //  EVENT HANDLING
+    // ================
 
     @EventHandler(priority = EventPriority.LOW)
     public void selectAutoTeam(PlayerParticipateEvent event) {
