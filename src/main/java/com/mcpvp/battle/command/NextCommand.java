@@ -7,7 +7,7 @@ import java.util.List;
 
 public class NextCommand extends BattleCommand {
 
-    private Battle battle;
+    private final Battle battle;
 
     public NextCommand(Battle battle) {
         super("next");

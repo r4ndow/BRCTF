@@ -120,9 +120,9 @@ public class BattlePermanentGameListener implements EasyListener {
         if (event.getEntity().getLastDamageCause() != null) {
             if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent edbee) {
                 if (edbee.getDamager() instanceof Player damager) {
-                    new PlayerKilledByPlayerEvent(event.getEntity(), damager).call();
+                    new PlayerKilledByPlayerEvent(event, event.getEntity(), damager).call();
                 } else if (edbee.getDamager() instanceof Projectile projectile && projectile.getShooter() instanceof Player shooter) {
-                    new PlayerKilledByPlayerEvent(event.getEntity(), shooter).call();
+                    new PlayerKilledByPlayerEvent(event, event.getEntity(), shooter).call();
                 }
             }
         }
@@ -150,7 +150,7 @@ public class BattlePermanentGameListener implements EasyListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onResign(PlayerResignEvent event) {
         game.remove(event.getPlayer());
     }

@@ -4,7 +4,7 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleGameConfig;
-import com.mcpvp.battle.event.GameRespawnEvent;
+import com.mcpvp.battle.death.BattleDeathMessageHandler;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.flag.FlagMessageBroadcaster;
@@ -19,7 +19,6 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
-import com.mcpvp.common.util.PlayerUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +60,7 @@ public class BattleGame extends EasyLifecycle {
         log.info("Setup game on map " + map);
 
         attach(new BattlePermanentGameListener(plugin, this));
+        attach(new BattleDeathMessageHandler(plugin));
         attach(new FlagListener(plugin, this));
         attach(new FlagMessageBroadcaster(plugin));
         attach(new FlagStatsListener(plugin, this));

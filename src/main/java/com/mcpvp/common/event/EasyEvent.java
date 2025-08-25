@@ -14,6 +14,7 @@ public class EasyEvent extends Event {
     }
 
     // Required by Bukkit
+    @SuppressWarnings("unused")
     public static HandlerList getHandlerList() {
         return handlers;
     }

@@ -16,12 +16,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityCombustEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.entity.ItemMergeEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 
@@ -73,7 +71,9 @@ public class FlagListener implements EasyListener {
             game.getTeamManager().getTeams().stream().map(BattleTeam::getFlag).forEach(flag -> {
                 if (flag.getCarrier() != null) {
                     if (!new FlagPoisonEvent(flag.getCarrier()).call()) {
-                        String message = "%s%s flag poisoned you!".formatted(C.warn(C.RED), flag.getTeam().getColoredName() + C.GRAY);
+                        String message = "%s%s flag poisoned you!".formatted(
+                            C.warn(C.RED), flag.getTeam().getColoredName() + C.GRAY
+                        );
                         flag.getCarrier().sendMessage(message);
                         flag.getCarrier().damage(3);
                     }
@@ -148,44 +148,6 @@ public class FlagListener implements EasyListener {
     }
 
     @EventHandler
-    public void onTakeLocked(FlagTakeEvent event) {
-        if (event.getFlag().isLocked()) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemMerge(ItemMergeEvent event) {
-        game.getTeamManager().getTeams().forEach(bt -> {
-            if (bt.getFlag().isItem(event.getEntity().getItemStack())) {
-                event.setCancelled(true);
-            }
-        });
-
-        // For the visuals
-        if (event.getEntity().getItemStack().getType() == Material.WOOL) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onPickupVisuals(PlayerPickupItemEvent event) {
-        // For the visuals
-        if (event.getItem().getItemStack().getType() == Material.WOOL) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemDespawn(ItemDespawnEvent event) {
-        game.getTeamManager().getTeams().forEach(bt -> {
-            if (bt.getFlag().isItem(event.getEntity().getItemStack())) {
-                event.setCancelled(true);
-            }
-        });
-    }
-
-    @EventHandler
     public void onResign(PlayerResignEvent event) {
         game.getTeamManager().getTeams().forEach(bt -> {
             if (bt.getFlag().getCarrier() == event.getPlayer()) {
@@ -195,28 +157,61 @@ public class FlagListener implements EasyListener {
     }
 
     @EventHandler
-    public void onItemCombust(EntityCombustEvent event) {
-        System.out.println("Entity combust! " + event.getEntity());
-        if (event.getEntity() instanceof Item item) {
-            game.getTeamManager().getTeams().forEach(bt -> {
-                if (bt.getFlag().isItem(item.getItemStack())) {
-                    System.out.println("Cancel combust");
-                    event.setCancelled(true);
-                    item.setFireTicks(0);
-                }
-            });
+    public void onTakeLocked(FlagTakeEvent event) {
+        if (event.getFlag().isLocked()) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onFlagDeath(EntityDeathEvent event) {
-        if (event.getEntity() instanceof Item item) {
-            game.getTeamManager().getTeams().forEach(bt -> {
-                if (bt.getFlag().isItem(item.getItemStack())) {
-                    System.out.println("Flag died :(");
-                }
-            });
+    public void onPickupVisuals(PlayerPickupItemEvent event) {
+        // For the visual stream of wool above the players head
+        if (event.getItem().getItemStack().getType() == Material.WOOL) {
+            event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onItemMerge(ItemMergeEvent event) {
+        if (isFlag(event.getEntity().getItemStack())) {
+            event.setCancelled(true);
+        }
+
+        // For the visual stream of wool above the players head
+        if (event.getEntity().getItemStack().getType() == Material.WOOL) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemDespawn(ItemDespawnEvent event) {
+        if (isFlag(event.getEntity().getItemStack())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemCombust(EntityCombustEvent event) {
+        if (event.getEntity() instanceof Item item && isFlag(item.getItemStack())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onFlagDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Item item && isFlag(item.getItemStack())) {
+            event.setCancelled(true);
+        }
+    }
+
+    private Optional<BattleTeam> getTeamForFlag(ItemStack itemStack) {
+        return game.getTeamManager().getTeams().stream()
+            .filter(bt -> bt.getFlag().isItem(itemStack))
+            .findAny();
+    }
+
+    private boolean isFlag(ItemStack itemStack) {
+        return getTeamForFlag(itemStack).isPresent();
     }
 
 }

@@ -79,9 +79,9 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         event.setNewLevel(0);
         event.setDroppedExp(0);
         event.getDrops().clear();
-        event.setDeathMessage(null);
 
         if (new GameDeathEvent(event.getEntity(), event.getEntity().getLocation().clone(), event).call()) {
+            event.setDeathMessage(null);
             return;
         }
 

@@ -34,7 +34,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NecroRevivalTagManager implements EasyListener {
 
-    public static final Duration TAG_DURATION = Duration.secs(10);
+    private static final Duration TAG_DURATION = Duration.secs(10);
 
     private final BattlePlugin plugin;
     private final List<Player> tagged = new ArrayList<>();

@@ -36,16 +36,12 @@ import java.util.Queue;
 
 public class NecroKit extends BattleKit {
 
-    // tag values
-    public static final Duration TAG_COOLDOWN = Duration.secs(15);
-    public static final Duration TAG_DURATION = Duration.secs(10);
+    private static final Duration TAG_COOLDOWN = Duration.secs(15);
+    private static final Duration TAG_DURATION = Duration.secs(10);
 
-    // skull values
-    public static final int SKULL_EFFECT_RADIUS = 4;
-    public static final Duration SKULL_ABSORPTION_DURATION = Duration.secs(30);
-    public static final Duration SKULL_REGENERATION_TIME = Duration.secs(20);
-    public static final PotionEffect SKULL_ENEMY_EFFECT = new PotionEffect(PotionEffectType.WITHER, Duration.secs(5).toTicks(), 2);
-    public static final PotionEffect SKULL_ZOMBIE_EFFECT = new PotionEffect(PotionEffectType.SPEED, Duration.secs(5).toTicks(), 1);
+    private static final int SKULL_EFFECT_RADIUS = 4;
+    private static final Duration SKULL_ABSORPTION_DURATION = Duration.secs(30);
+    private static final Duration SKULL_REGENERATION_TIME = Duration.secs(20);
 
     private final NecroRevivalTagManager revivalTagManager;
     private KitItem tag;

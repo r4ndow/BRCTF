@@ -61,7 +61,6 @@ documents/
 ## Known Issues
 
 - Ninjas cannot be damaged by projectiles while invisible
-- The flag item can be burned
 
 # Configuration
 

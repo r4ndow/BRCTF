@@ -33,13 +33,12 @@ public class WoolFlag extends AbstractFlag {
 
     @Override
     public void drop(Location location, @Nullable Item item) {
-        Player carrier = Objects.requireNonNull(getCarrier());
-
         if (item != null) {
             // Triggered by a player attempting to drop an item
             this.dropped = item;
         } else {
             // Triggered by something else, like a player logging out or dying
+            Player carrier = Objects.requireNonNull(getCarrier());
             this.dropped = carrier.getWorld().dropItem(carrier.getLocation().add(0, 1.5, 0), getItem());
             this.dropped.setVelocity(carrier.getEyeLocation().getDirection().normalize().multiply(0.35));
         }

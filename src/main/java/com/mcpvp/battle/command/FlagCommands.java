@@ -16,7 +16,10 @@ public class FlagCommands extends BattleCommandGroup {
     public FlagCommands(Battle battle) {
         super("flag");
         this.battle = battle;
-        addCommand(new FlagJumpCommand());
+        addCommand(new JumpCommand());
+        addCommand(new LockCommand());
+        addCommand(new UnlockCommand());
+        addCommand(new ResetCommand());
     }
 
     public List<String> matchTeam(String arg) {
@@ -32,9 +35,9 @@ public class FlagCommands extends BattleCommandGroup {
                 .findAny();
     }
 
-    public class FlagJumpCommand extends BattleCommand {
+    public class JumpCommand extends BattleCommand {
 
-        public FlagJumpCommand() {
+        public JumpCommand() {
             super("jump");
         }
 
@@ -50,6 +53,70 @@ public class FlagCommands extends BattleCommandGroup {
         public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
             return matchTeam(arg);
         }
+
+    }
+
+    public class LockCommand extends BattleCommand {
+
+        public LockCommand() {
+            super("lock");
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, String label, List<String> args) {
+            findTeam(args.get(0)).ifPresent(bt -> {
+                bt.getFlag().setLocked(true);
+            });
+            return true;
+        }
+
+        @Override
+        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
+            return matchTeam(arg);
+        }
+
+    }
+
+    public class UnlockCommand extends BattleCommand {
+
+        public UnlockCommand() {
+            super("unlock");
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, String label, List<String> args) {
+            findTeam(args.get(0)).ifPresent(bt -> {
+                bt.getFlag().setLocked(false);
+            });
+            return true;
+        }
+
+        @Override
+        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
+            return matchTeam(arg);
+        }
+
+    }
+
+    public class ResetCommand extends BattleCommand {
+
+        public ResetCommand() {
+            super("reset");
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, String label, List<String> args) {
+            findTeam(args.get(0)).ifPresent(bt -> {
+                bt.getFlag().reset();
+            });
+            return true;
+        }
+
+        @Override
+        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
+            return matchTeam(arg);
+        }
+
     }
 
 }
