@@ -7,9 +7,9 @@ public class CmdUtil {
 
     public static List<String> partialMatches(Collection<String> list, String query) {
         return list.stream()
-                .map(String::toLowerCase)
-                .filter(string -> string.startsWith(query.toLowerCase()))
-                .toList();
+            .map(String::toLowerCase)
+            .filter(string -> string.startsWith(query.toLowerCase()))
+            .toList();
     }
 
 }

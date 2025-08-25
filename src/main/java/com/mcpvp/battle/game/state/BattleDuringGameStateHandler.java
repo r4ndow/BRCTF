@@ -64,7 +64,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         } else {
             BattleTeam loser = game.getTeamManager().getNext(winner);
             summary.add("%sWinner: %s (%s - %s)".formatted(
-                    C.info(C.GOLD), winner.getColoredName(), winner.getColor().toString() + winner.getCaptures(), loser.getColor().toString() + loser.getCaptures()
+                C.info(C.GOLD), winner.getColoredName(), winner.getColor().toString() + winner.getCaptures(), loser.getColor().toString() + loser.getCaptures()
             ));
         }
 
@@ -174,8 +174,8 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     @EventHandler
     public void loseFlagInSpawn(PlayerEnterSpawnEvent event) {
         Optional<BattleTeam> carryingFlag = game.getTeamManager().getTeams().stream()
-                .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
-                .findAny();
+            .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
+            .findAny();
         carryingFlag.ifPresent(battleTeam -> battleTeam.getFlagManager().restore());
     }
 

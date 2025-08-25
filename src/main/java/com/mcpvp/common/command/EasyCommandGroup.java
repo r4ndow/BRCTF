@@ -43,7 +43,7 @@ public abstract class EasyCommandGroup extends EasyCommand {
         }
 
         // Match command based on args[0]
-        Optional<EasyCommand> found = findCommand(sender, args.get(0));
+        Optional<EasyCommand> found = findCommand(args.get(0));
 
         if (found.isPresent()) {
             return found.get().onCommand(sender, alias, args.subList(1, args.size()));
@@ -64,7 +64,7 @@ public abstract class EasyCommandGroup extends EasyCommand {
         }
 
         // Match command based on args[0]
-        Optional<EasyCommand> found = findCommand(sender, args.get(0));
+        Optional<EasyCommand> found = findCommand(args.get(0));
 
         if (found.isPresent()) {
             return found.get().onTabComplete(sender, alias, args.subList(1, args.size()));
@@ -73,12 +73,11 @@ public abstract class EasyCommandGroup extends EasyCommand {
         return super.onTabComplete(sender, alias, args);
     }
 
-    protected Optional<EasyCommand> findCommand(CommandSender sender, String arg) {
+    protected Optional<EasyCommand> findCommand(String arg) {
         return commands.stream()
-                .sorted((c1, c2) -> c2.getName().length() - c1.getName().length())
-                .filter(c -> c.getName().equalsIgnoreCase(arg) || c.getAliases().contains(arg.toLowerCase()))
-//			.filter(c -> c.canExecute(sender, arg, new String[0]))
-                .findFirst();
+            .sorted((c1, c2) -> c2.getName().length() - c1.getName().length())
+            .filter(c -> c.getName().equalsIgnoreCase(arg) || c.getAliases().contains(arg.toLowerCase()))
+            .findFirst();
     }
 
 }

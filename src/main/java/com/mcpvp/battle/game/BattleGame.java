@@ -56,7 +56,7 @@ public class BattleGame extends EasyLifecycle {
     private BattleGameStateHandler stateHandler;
 
     public void setup() {
-        log.info("Setup game on map " + map);
+        log.info("Setup game on map {}", map);
 
         attach(new BattleGameListener(plugin, this));
         attach(new BattleDeathMessageHandler(plugin));
@@ -84,7 +84,7 @@ public class BattleGame extends EasyLifecycle {
     public void setState(BattleGameState state) {
         if (this.state != state) {
             if (this.state != null) {
-                leaveState(this.state);
+                leaveState();
             }
 
             this.state = state;
@@ -105,7 +105,7 @@ public class BattleGame extends EasyLifecycle {
         fireParticipateEvents();
     }
 
-    private void leaveState(BattleGameState state) {
+    private void leaveState() {
         if (this.stateHandler != null) {
             this.stateHandler.leaveState();
         }
@@ -195,8 +195,8 @@ public class BattleGame extends EasyLifecycle {
 
     public Collection<? extends Player> getParticipants() {
         return Bukkit.getOnlinePlayers().stream()
-                .filter(this::isParticipant)
-                .toList();
+            .filter(this::isParticipant)
+            .toList();
     }
 
     public List<? extends Player> getSpectators() {
@@ -225,9 +225,9 @@ public class BattleGame extends EasyLifecycle {
     @Nullable
     public BattleTeam getWinner() {
         return teamManager.getTeams().stream()
-                .filter(t -> t.getCaptures() == config.getCaps())
-                .findFirst()
-                .orElse(null);
+            .filter(t -> t.getCaptures() == config.getCaps())
+            .findFirst()
+            .orElse(null);
     }
 
 }

@@ -24,15 +24,15 @@ public class FlagCommands extends BattleCommandGroup {
 
     public List<String> matchTeam(String arg) {
         return CmdUtil.partialMatches(
-                battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList(),
-                arg
+            battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList(),
+            arg
         );
     }
 
     public Optional<BattleTeam> findTeam(String arg) {
         return battle.getGame().getTeamManager().getTeams().stream()
-                .filter(bt -> bt.getName().toLowerCase().contains(arg))
-                .findAny();
+            .filter(bt -> bt.getName().toLowerCase().contains(arg))
+            .findAny();
     }
 
     public class JumpCommand extends BattleCommand {

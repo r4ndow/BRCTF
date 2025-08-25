@@ -18,12 +18,12 @@ public abstract class BattleGameStateHandler extends EasyLifecycle implements Ea
 
     public void enterState() {
         attach((EasyListener) this);
-        log.info("Entering state " + this);
+        log.info("Entering state {}", this);
     }
 
     public void leaveState() {
         shutdown();
-        log.info("Leaving state " + this);
+        log.info("Leaving state {}", this);
     }
 
 }

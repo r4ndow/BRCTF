@@ -45,15 +45,11 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
         player.getInventory().setArmorContents(createArmor());
 
         this.items.entrySet().stream()
-                .filter(e -> e.getValue() != null)
-                .forEach(e -> {
-                    attach(e.getValue());
-                    player.getInventory().setItem(e.getKey(), e.getValue().getItem());
-                });
-    }
-
-    protected boolean isPlayer(Player player) {
-        return player.equals(this.player);
+            .filter(e -> e.getValue() != null)
+            .forEach(e -> {
+                attach(e.getValue());
+                player.getInventory().setItem(e.getKey(), e.getValue().getItem());
+            });
     }
 
     protected boolean isPlayer(ProjectileSource source) {

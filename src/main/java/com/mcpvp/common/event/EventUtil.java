@@ -25,8 +25,8 @@ public class EventUtil {
      */
     public static void setDamage(EntityDamageEvent event, double damage) {
         Stream.of(EntityDamageEvent.DamageModifier.values())
-                .filter(event::isApplicable)
-                .forEach(mod -> event.setDamage(mod, 0));
+            .filter(event::isApplicable)
+            .forEach(mod -> event.setDamage(mod, 0));
 
         event.setDamage(EntityDamageEvent.DamageModifier.BASE, damage);
     }

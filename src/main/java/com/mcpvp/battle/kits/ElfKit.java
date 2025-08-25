@@ -185,7 +185,7 @@ public class ElfKit extends BattleKit {
         @EventHandler
         public void onHitEvent(EntityDamageByEntityEvent event) {
             if (event.getDamager() == getPlayer() && isItem(getPlayer().getItemInHand())) {
-                onPunch(event);
+                onPunch();
             }
         }
 
@@ -201,7 +201,7 @@ public class ElfKit extends BattleKit {
 
         }
 
-        public void onPunch(EntityDamageByEntityEvent event) {
+        public void onPunch() {
 
         }
 
@@ -345,7 +345,7 @@ public class ElfKit extends BattleKit {
             arrows.decrement(true);
             arrows.decrement(true);
 
-           attach(new CancelNextFallTask(getPlugin(), getPlayer()));
+            attach(new CancelNextFallTask(getPlugin(), getPlayer()));
         }
 
     }

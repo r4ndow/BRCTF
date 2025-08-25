@@ -23,20 +23,20 @@ public class HeavyKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-                new ItemStack(Material.DIAMOND_BOOTS),
-                new ItemStack(Material.DIAMOND_LEGGINGS),
-                new ItemStack(Material.DIAMOND_CHESTPLATE),
-                new ItemStack(Material.DIAMOND_HELMET)
+            new ItemStack(Material.DIAMOND_BOOTS),
+            new ItemStack(Material.DIAMOND_LEGGINGS),
+            new ItemStack(Material.DIAMOND_CHESTPLATE),
+            new ItemStack(Material.DIAMOND_HELMET)
         };
     }
 
     @Override
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-                .add(Material.DIAMOND_SWORD)
-                .addFood(3)
-                .addCompass(8)
-                .build();
+            .add(Material.DIAMOND_SWORD)
+            .addFood(3)
+            .addCompass(8)
+            .build();
     }
 
 }

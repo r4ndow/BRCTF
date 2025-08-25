@@ -16,9 +16,9 @@ public class KitCommand extends BattleCommand {
 
     public KitCommand(BattleKitManager kitManager) {
         super("kit", kitManager.getKitDefinitions().stream()
-                .map(KitInfo::getName)
-                .map(String::toLowerCase)
-                .toList()
+            .map(KitInfo::getName)
+            .map(String::toLowerCase)
+            .toList()
         );
         this.kitManager = kitManager;
     }

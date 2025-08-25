@@ -25,7 +25,7 @@ import java.util.Map;
 public class SoldierKit extends BattleKit {
 
     private static final List<Material> UNCLIMABLE = List.of(
-            Material.COAL_ORE, Material.BARRIER, Material.QUARTZ_ORE);
+        Material.COAL_ORE, Material.BARRIER, Material.QUARTZ_ORE);
     private static final float PER_CLIMB = 1.0f / 7;
     private static final Duration RESTORE_TIME = Duration.ofSeconds(10);
 
@@ -101,10 +101,10 @@ public class SoldierKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-                new ItemStack(Material.IRON_BOOTS),
-                new ItemStack(Material.IRON_LEGGINGS),
-                new ItemStack(Material.IRON_CHESTPLATE),
-                new ItemStack(Material.IRON_HELMET),
+            new ItemStack(Material.IRON_BOOTS),
+            new ItemStack(Material.IRON_LEGGINGS),
+            new ItemStack(Material.IRON_CHESTPLATE),
+            new ItemStack(Material.IRON_HELMET),
         };
     }
 
@@ -114,10 +114,10 @@ public class SoldierKit extends BattleKit {
         sword.onInteract(this::onClick);
 
         return new KitInventoryBuilder()
-                .add(sword)
-                .addFood(4)
-                .addCompass(8)
-                .build();
+            .add(sword)
+            .addFood(4)
+            .addCompass(8)
+            .build();
     }
 
 }

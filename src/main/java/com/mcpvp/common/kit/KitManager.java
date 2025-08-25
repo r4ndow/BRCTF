@@ -66,7 +66,7 @@ public class KitManager {
             return false;
         }
 
-        log.info("Creating selected " + selected + " for " + player.getName());
+        log.info("Creating selected {} for {}", selected, player.getName());
 
         // Remove the existing kit
         if (active.containsKey(player)) {

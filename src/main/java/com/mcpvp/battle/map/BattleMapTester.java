@@ -1,4 +1,5 @@
 package com.mcpvp.battle.map;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.config.BattleTeamConfig;
@@ -85,7 +86,7 @@ public class BattleMapTester {
 
         World world;
         try {
-             world = BattleWorldManager.create(
+            world = BattleWorldManager.create(
                 mapData,
                 mapsDirectory,
                 index

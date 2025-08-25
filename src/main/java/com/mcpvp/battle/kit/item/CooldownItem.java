@@ -32,7 +32,9 @@ public abstract class CooldownItem extends KitItem {
         return false;
     }
 
-    protected boolean autoUse() { return true; }
+    protected boolean autoUse() {
+        return true;
+    }
 
     @Override
     public void restore() {

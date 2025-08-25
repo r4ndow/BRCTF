@@ -98,7 +98,7 @@ public class ScoutKit extends BattleKit {
         }
     }
 
-    private void throwSwapperBall(PlayerInteractEvent event) {
+    private void throwSwapperBall() {
         swapper.setPlaceholder();
 
         Snowball snowball = getPlayer().launchProjectile(Snowball.class);
@@ -160,7 +160,7 @@ public class ScoutKit extends BattleKit {
             C.GRAY + " (near " + callout.getText() + C.GRAY + ")"
         ).orElse("");
 
-        EntityUtil.getNearbyEntities(swapped.getLocation(), Player.class,20).forEach(player -> {
+        EntityUtil.getNearbyEntities(swapped.getLocation(), Player.class, 20).forEach(player -> {
             if (player != swapped) {
                 if (isTeammate(player)) {
                     player.sendMessage(C.warn(C.GOLD) + "Your flag carrier was swapped!");
@@ -246,7 +246,7 @@ public class ScoutKit extends BattleKit {
 
         @Override
         protected void onUse(PlayerInteractEvent event) {
-            throwSwapperBall(event);
+            throwSwapperBall();
         }
 
     }

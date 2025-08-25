@@ -24,7 +24,7 @@ public class BattleTeam {
 
     private final int id;
     private final Set<Player> players = new HashSet<>();
-	private final BattleTeamConfig config;
+    private final BattleTeamConfig config;
     private String name;
     private Colors color;
     private IBattleFlag flag;
@@ -35,7 +35,7 @@ public class BattleTeam {
         this.id = id;
         this.name = name;
         this.color = color;
-		this.config = config;
+        this.config = config;
         this.flag = new WoolFlag(this, config.getFlag());
         this.flagManager = new FlagManager(flag);
     }
@@ -56,9 +56,9 @@ public class BattleTeam {
         captures++;
     }
 
-	public boolean isInSpawn(Player player) {
+    public boolean isInSpawn(Player player) {
         return isInSpawn(player.getLocation());
-	}
+    }
 
     public boolean isInSpawn(Location location) {
         Block underFeet = location.getBlock().getRelative(BlockFace.DOWN);

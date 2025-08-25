@@ -187,7 +187,6 @@ public abstract class BattleKit extends Kit {
         }
 
 
-
     }
 
 }

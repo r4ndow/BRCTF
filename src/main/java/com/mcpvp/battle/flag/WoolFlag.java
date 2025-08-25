@@ -22,7 +22,7 @@ public class WoolFlag extends AbstractFlag {
     private final Location spawn;
     private final List<Item> visuals = new ArrayList<>();
     @NonNull
-    private Item home;
+    private final Item home;
     private Item dropped;
 
     public WoolFlag(BattleTeam team, Location spawn) {
@@ -109,9 +109,9 @@ public class WoolFlag extends AbstractFlag {
     @Override
     protected ItemStack getItem() {
         return ItemBuilder.of(BattleUtil.getColoredWool(getTeam().getColor().getDye()))
-                .name(getTeam().getName() + " Flag")
-                .tag("flag", String.valueOf(getTeam().getId()))
-                .build();
+            .name(getTeam().getName() + " Flag")
+            .tag("flag", String.valueOf(getTeam().getId()))
+            .build();
     }
 
     @Override

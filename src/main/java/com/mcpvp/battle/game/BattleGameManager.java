@@ -35,7 +35,7 @@ public class BattleGameManager {
             World world = BattleWorldManager.create(map, new File(battle.getOptions().getMaps().getDir()), index);
             // Parse the config. Teams must already exist at this point
             BattleGameConfig config = parser.parse(map, world);
-            log.info("Parsed config: " + config);
+            log.info("Parsed config: {}", config);
 
             if (config.getTimeOfDay() != null) {
                 world.setTime(config.getTimeOfDay());
@@ -51,13 +51,13 @@ public class BattleGameManager {
             // Create game instance
             // This game is inactive until `setup` is called
             return new BattleGame(
-                    battle.getPlugin(),
-                    battle,
-                    map,
-                    world,
-                    config,
-                    teamManager,
-                    scoreboardManager
+                battle.getPlugin(),
+                battle,
+                map,
+                world,
+                config,
+                teamManager,
+                scoreboardManager
             );
         } catch (IOException e) {
             throw new RuntimeException(e);

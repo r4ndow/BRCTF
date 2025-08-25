@@ -12,6 +12,7 @@ import java.util.stream.Stream;
  *
  * @author NomNuggetNom
  */
+@SuppressWarnings("unused")
 public class C {
 
     public static final String BLACK = ChatColor.BLACK.toString();
@@ -74,13 +75,16 @@ public class C {
      */
     public static String mix(String... codes) {
         Set<ChatColor> colors = Stream.of(codes)
-                .map(ChatColor::getLastColors).map(s -> s.substring(1)).map(ChatColor::getByChar).collect(Collectors.toSet());
+            .map(ChatColor::getLastColors)
+            .map(s -> s.substring(1))
+            .map(ChatColor::getByChar)
+            .collect(Collectors.toSet());
         StringBuilder sb = new StringBuilder();
 
         // Add colors first.
-        colors.stream().filter(c -> c.isColor()).forEach(sb::append);
+        colors.stream().filter(ChatColor::isColor).forEach(sb::append);
         // Then formatters.
-        colors.stream().filter(c -> c.isFormat()).forEach(sb::append);
+        colors.stream().filter(ChatColor::isFormat).forEach(sb::append);
 
         return sb.toString();
     }

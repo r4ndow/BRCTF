@@ -51,9 +51,9 @@ public class EasyLifecycle {
      *
      * @param entity The entity to attach.
      */
-   protected void attach(Entity entity) {
+    protected void attach(Entity entity) {
         this.entities.add(entity);
-   }
+    }
 
     /**
      * End this lifecycle, such as unregistering all listeners.

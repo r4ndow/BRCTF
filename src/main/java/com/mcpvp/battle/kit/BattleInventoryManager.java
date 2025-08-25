@@ -46,7 +46,7 @@ public class BattleInventoryManager {
                 });
                 liveData.putAll(saved);
 
-                log.debug("Loaded existing data: " + saved);
+                log.debug("Loaded existing data: {}", saved);
             } catch (IOException e) {
                 throw new RuntimeException("Existing inventory_layouts.json file could not be read. Try deleting it and restarting. Location: " + dataFile.getAbsolutePath(), e);
             }
@@ -63,7 +63,7 @@ public class BattleInventoryManager {
 
     public void save(BattleKit kit) {
         InventoryLayoutData data = load(kit.getPlayer()).orElse(new InventoryLayoutData());
-        log.debug("While saving, loaded data for " + data);
+        log.debug("While saving, loaded data for {}", data);
 
         Map<String, Integer> keyToSlot = getKeyToSlot(kit);
         if (keyToSlot.isEmpty()) {
@@ -75,7 +75,7 @@ public class BattleInventoryManager {
         data.keyToSlot.put(kit.getName(), keyToSlot);
         save(kit.getPlayer(), data);
 
-        log.debug("Saved " + kit.getPlayer().getName() + " data for " + kit.getName() + ": " + data);
+        log.debug("Saved {} data for {}: {}", kit.getPlayer().getName(), kit.getName(), data);
     }
 
     public Optional<InventoryLayoutData> load(Player player) {
@@ -90,7 +90,7 @@ public class BattleInventoryManager {
      * Applies any saved layouts for the given Kit to the given map, returning a new
      * re-ordered map with correctly associated slots.
      *
-     * @param kit The kit to load data for.
+     * @param kit   The kit to load data for.
      * @param items A list of the default kit item arrangement.
      * @return A reordered map of inventory slot to kit item.
      */
@@ -103,7 +103,7 @@ public class BattleInventoryManager {
             Map<String, Integer> savedItemMap = inventoryLayoutData.getKeyToSlot().get(kit.getName());
             Map<Integer, KitItem> reordered = new HashMap<>();
 
-            log.debug("Existing data: " + savedItemMap);
+            log.debug("Existing data: {}", savedItemMap);
 
             // For all the items in that were saved, find the corresponding KitItem instance
             // Associate the proper slot
@@ -125,7 +125,7 @@ public class BattleInventoryManager {
                 }
             }
 
-            log.debug("Reordered: " + reordered);
+            log.debug("Reordered: {}", reordered);
 
             return reordered;
         }

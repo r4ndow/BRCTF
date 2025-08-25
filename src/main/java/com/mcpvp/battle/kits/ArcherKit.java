@@ -35,23 +35,23 @@ public class ArcherKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-                new ItemStack(Material.CHAINMAIL_BOOTS),
-                new ItemStack(Material.CHAINMAIL_LEGGINGS),
-                new ItemStack(Material.CHAINMAIL_CHESTPLATE),
-                new ItemStack(Material.CHAINMAIL_HELMET)
+            new ItemStack(Material.CHAINMAIL_BOOTS),
+            new ItemStack(Material.CHAINMAIL_LEGGINGS),
+            new ItemStack(Material.CHAINMAIL_CHESTPLATE),
+            new ItemStack(Material.CHAINMAIL_HELMET)
         };
     }
 
     @Override
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-                .add(ItemBuilder.of(Material.STONE_SWORD).name("Archer Sword").unbreakable())
-                .addFood(4)
-                .add(ItemBuilder.of(Material.BOW).enchant(Enchantment.ARROW_KNOCKBACK, 1))
-                .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #1"))
-                .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #2"))
-                .addCompass(8)
-                .build();
+            .add(ItemBuilder.of(Material.STONE_SWORD).name("Archer Sword").unbreakable())
+            .addFood(4)
+            .add(ItemBuilder.of(Material.BOW).enchant(Enchantment.ARROW_KNOCKBACK, 1))
+            .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #1"))
+            .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #2"))
+            .addCompass(8)
+            .build();
     }
 
     @EventHandler

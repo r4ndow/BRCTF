@@ -54,7 +54,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * Updates the team of the given player on all scoreboards.
      *
      * @param player The player to set the team for.
-     * @param team The team to assign the player.
+     * @param team   The team to assign the player.
      */
     public void setTeam(Player player, BattleTeam team) {
         for (Scoreboard sb : getAllScoreboards()) {
@@ -109,7 +109,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * Retrieves the equivalent Scoreboard team representation for the given battle team.
      *
      * @param scoreboard The scoreboard to get the team on.
-     * @param bt The battle team to get the equivalent team for.
+     * @param bt         The battle team to get the equivalent team for.
      * @return The equivalent team, or null if not found.
      */
     private Team getScoreboardTeam(Scoreboard scoreboard, BattleTeam bt) {
@@ -198,7 +198,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * Team specific scores.
      *
      * @param player The player who will see the scores. Needed to show the current team.
-     * @param team The team to generate scores for.
+     * @param team   The team to generate scores for.
      * @return A list of the team specific scores, customized for the given player.
      */
     private List<String> getScoresForTeam(Player player, BattleTeam team) {
@@ -311,8 +311,8 @@ public class BattleScoreboardManager extends EasyLifecycle {
 
     private String formatDuration(Duration duration) {
         return String.format("%02d:%02d",
-                duration.toMinutesPart(),
-                duration.toSecondsPart()
+            duration.toMinutesPart(),
+            duration.toSecondsPart()
         );
     }
 

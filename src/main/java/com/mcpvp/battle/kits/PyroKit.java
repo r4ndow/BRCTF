@@ -64,10 +64,10 @@ public class PyroKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-                ItemBuilder.of(Material.LEATHER_BOOTS).color(Color.fromRGB(0x993333)).build(),
-                ItemBuilder.of(Material.LEATHER_LEGGINGS).color(Color.fromRGB(0x592626)).build(),
-                ItemBuilder.of(Material.IRON_CHESTPLATE).build(),
-                ItemBuilder.of(Material.LEATHER_HELMET).color(Color.fromRGB(0x592626)).build()
+            ItemBuilder.of(Material.LEATHER_BOOTS).color(Color.fromRGB(0x993333)).build(),
+            ItemBuilder.of(Material.LEATHER_LEGGINGS).color(Color.fromRGB(0x592626)).build(),
+            ItemBuilder.of(Material.IRON_CHESTPLATE).build(),
+            ItemBuilder.of(Material.LEATHER_HELMET).color(Color.fromRGB(0x592626)).build()
         };
     }
 
@@ -80,13 +80,13 @@ public class PyroKit extends BattleKit {
         flint.onInteract(this::onFlint);
 
         return new KitInventoryBuilder()
-                .add(axe)
-                .addFood(4)
-                .add(flint)
-                .add(ItemBuilder.of(Material.BOW).name("Pyro Bow").unbreakable())
-                .add(ItemBuilder.of(Material.ARROW).name("Pyro Arrow").amount(25), true)
-                .addCompass(8)
-                .build();
+            .add(axe)
+            .addFood(4)
+            .add(flint)
+            .add(ItemBuilder.of(Material.BOW).name("Pyro Bow").unbreakable())
+            .add(ItemBuilder.of(Material.ARROW).name("Pyro Arrow").amount(25), true)
+            .addCompass(8)
+            .build();
     }
 
     @EventHandler
@@ -96,7 +96,7 @@ public class PyroKit extends BattleKit {
         }
 
         getBattle().getProjectileManager().register((Projectile) event.getProjectile())
-                .onCollideBlock(ev -> explode((Arrow) ev.getEntity()));
+            .onCollideBlock(ev -> explode((Arrow) ev.getEntity()));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -127,7 +127,7 @@ public class PyroKit extends BattleKit {
         } else {
             // Charge up XP for frenzy mode
             getPlayer().setExp(Math.min(getPlayer().getExp() + XP_PER_HIT, 1f));
-            updateExp(true);
+            updateExp();
         }
     }
 
@@ -179,10 +179,10 @@ public class PyroKit extends BattleKit {
 
         // Ignite nearby enemies
         EntityUtil.getNearbyEntities(arrow.getLocation(), Player.class, EXPLOSION_RADIUS).stream()
-                .filter(p -> !getBattle().getGame().getTeamManager().isSameTeam(shooter, p))
-                .forEach(enemy -> {
-                    enemy.setFireTicks(Duration.seconds(3.5).ticks());
-                });
+            .filter(p -> !getBattle().getGame().getTeamManager().isSameTeam(shooter, p))
+            .forEach(enemy -> {
+                enemy.setFireTicks(Duration.seconds(3.5).ticks());
+            });
 
         // Visual effect
         arrow.getWorld().createExplosion(arrow.getLocation(), 0f, false);
@@ -196,10 +196,10 @@ public class PyroKit extends BattleKit {
 
         // Light nearby enemies on fire
         EntityUtil.getNearbyEntities(getPlayer().getLocation(), Player.class, FRENZY_RADIUS).stream()
-                .filter(p -> !getBattle().getGame().getTeamManager().isSameTeam(getPlayer(), p))
-                .forEach(enemy -> {
-                    enemy.setFireTicks(60);
-                });
+            .filter(p -> !getBattle().getGame().getTeamManager().isSameTeam(getPlayer(), p))
+            .forEach(enemy -> {
+                enemy.setFireTicks(60);
+            });
 
         attach(Bukkit.getScheduler().runTaskLater(getPlugin(), this::exitFrenzy, FRENZY_LENGTH.ticks()));
     }
@@ -217,13 +217,10 @@ public class PyroKit extends BattleKit {
         getPlayer().getWorld().playSound(getPlayer().getLocation(), Sound.BLAZE_DEATH, 0.5f, 1.0f);
     }
 
-    private void updateExp(boolean sendMessage) {
+    private void updateExp() {
         if (getPlayer().getExp() == 1) {
             axe.modify(ItemBuilder::dummyEnchant);
-
-            if (sendMessage) {
-                getPlayer().sendMessage(C.info(C.RED) + "Right click axe to enter " + C.hl("frenzy mode") + "!");
-            }
+            getPlayer().sendMessage(C.info(C.RED) + "Right click axe to enter " + C.hl("frenzy mode") + "!");
         } else {
             axe.modify(ItemBuilder::removeDummyEnchant);
         }

@@ -2,6 +2,7 @@ package com.mcpvp.common;
 
 import com.mcpvp.common.util.nms.PacketUtil;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.apache.commons.lang3.Validate;
@@ -10,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 /**
  * Represents a single particle packet that can be sent to the client.
@@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
 public class ParticlePacket {
 
     private EnumParticle particle;
+    @Setter
     private int[] dataArray = null;
     private float x;
     private float y;
@@ -84,30 +85,6 @@ public class ParticlePacket {
         y = (float) location.getY();
         z = (float) location.getZ();
         world = location.getWorld();
-        return this;
-    }
-
-    /**
-     * @param x The X location to spawn at.
-     */
-    public ParticlePacket atX(Number x) {
-        this.x = x.floatValue();
-        return this;
-    }
-
-    /**
-     * @param y The Y location to spawn at.
-     */
-    public ParticlePacket atY(Number y) {
-        this.y = y.floatValue();
-        return this;
-    }
-
-    /**
-     * @param z The Z location to spawn at.
-     */
-    public ParticlePacket atZ(Number z) {
-        this.z = z.floatValue();
         return this;
     }
 
@@ -181,13 +158,6 @@ public class ParticlePacket {
     }
 
     /**
-     * @param offset The offset to make the particle.
-     */
-    public ParticlePacket spread(Vector offset) {
-        return offset((float) offset.getX(), (float) offset.getY(), (float) offset.getZ());
-    }
-
-    /**
      * Usually causes the particle to spread out more. For "reddust" it sets the
      * color.
      */
@@ -202,14 +172,6 @@ public class ParticlePacket {
      */
     public ParticlePacket data(float data) {
         return setData(data);
-    }
-
-    /**
-     * Secondary data field, used for things like brock break, where you'd
-     * supply: int[block id, block data].
-     */
-    public void setDataArray(int[] data) {
-        dataArray = data;
     }
 
     public ParticlePacket setShowFar(boolean showFar) {
@@ -275,12 +237,12 @@ public class ParticlePacket {
 
     public PacketPlayOutWorldParticles create() {
         return new PacketPlayOutWorldParticles(EnumParticle.valueOf(EnumParticle.class, getParticleName()),
-                showFar,
-                x, y, z,
-                offX, offY, offZ,
-                data,
-                count,
-                dataArray
+            showFar,
+            x, y, z,
+            offX, offY, offZ,
+            data,
+            count,
+            dataArray
         );
     }
 

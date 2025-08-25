@@ -74,18 +74,18 @@ public class MedicKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-                new ItemStack(Material.GOLD_BOOTS),
-                new ItemStack(Material.GOLD_LEGGINGS),
-                new ItemStack(Material.GOLD_CHESTPLATE),
-                new ItemStack(Material.GOLD_HELMET)
+            new ItemStack(Material.GOLD_BOOTS),
+            new ItemStack(Material.GOLD_LEGGINGS),
+            new ItemStack(Material.GOLD_CHESTPLATE),
+            new ItemStack(Material.GOLD_HELMET)
         };
     }
 
     @Override
     public Map<Integer, KitItem> createItems() {
         KitItem sword = new KitItem(
-                this,
-                ItemBuilder.of(Material.GOLD_SWORD).name("Medic Sword").enchant(Enchantment.DAMAGE_ALL, 1).unbreakable().build()
+            this,
+            ItemBuilder.of(Material.GOLD_SWORD).name("Medic Sword").enchant(Enchantment.DAMAGE_ALL, 1).unbreakable().build()
         );
 
         sword.onDamage(ev -> {
@@ -100,11 +100,11 @@ public class MedicKit extends BattleKit {
         });
 
         return new KitInventoryBuilder()
-                .add(sword)
-                .addFood(6)
-                .add(new MedicWebItem(ItemBuilder.of(Material.SNOW_BALL).name("Medic Web").amount(MAX_WEBS).build()))
-                .addCompass(8)
-                .build();
+            .add(sword)
+            .addFood(6)
+            .add(new MedicWebItem(ItemBuilder.of(Material.SNOW_BALL).name("Medic Web").amount(MAX_WEBS).build()))
+            .addCompass(8)
+            .build();
     }
 
     @EventHandler
@@ -163,8 +163,8 @@ public class MedicKit extends BattleKit {
         if (player.getHealth() == player.getMaxHealth()) {
             // Restore items
             kit.getAllItems().stream()
-                    .filter(KitItem::isRestorable)
-                    .forEach(KitItem::restore);
+                .filter(KitItem::isRestorable)
+                .forEach(KitItem::restore);
 
             // No healing for a while
             HEAL_COOLDOWNS.put(player, new Expiration().expireIn(RESTORE_PLAYER_COOLDOWN));
@@ -202,8 +202,8 @@ public class MedicKit extends BattleKit {
 
             Snowball ent = kit.getPlayer().launchProjectile(Snowball.class);
             projectileManager.register(ent)
-                    .onHitEvent(this::onHitEvent)
-                    .onCollideBlock(e -> this.placeWeb(ent.getLocation()));
+                .onHitEvent(this::onHitEvent)
+                .onCollideBlock(e -> this.placeWeb(ent.getLocation()));
         }
 
         private void onHitEvent(EntityDamageByEntityEvent event) {
@@ -227,20 +227,20 @@ public class MedicKit extends BattleKit {
             Block target = location.getBlock();
 
             ParticlePacket.colored(Color.RED)
-                    .at(location)
-                    .count(5)
-                    .send();
+                .at(location)
+                .count(5)
+                .send();
 
             Optional<Block> nearestAir = BlockUtil.getBlocksInRadius(target, 2).stream()
-                    .filter(b -> {
-                        return !Stream.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN).allMatch(bf -> {
-                            return b.getRelative(bf).getType() == Material.AIR;
-                        });
-                    })
-                    .filter(b -> b.getType() == Material.AIR || b.getType().isTransparent())
-                    .min(Comparator.comparingDouble(b -> {
-                        return b.getLocation().add(0.5, 0.5, 0.5).distanceSquared(location);
-                    }));
+                .filter(b -> {
+                    return !Stream.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN).allMatch(bf -> {
+                        return b.getRelative(bf).getType() == Material.AIR;
+                    });
+                })
+                .filter(b -> b.getType() == Material.AIR || b.getType().isTransparent())
+                .min(Comparator.comparingDouble(b -> {
+                    return b.getLocation().add(0.5, 0.5, 0.5).distanceSquared(location);
+                }));
 
             if (nearestAir.isPresent()) {
                 target = nearestAir.get();

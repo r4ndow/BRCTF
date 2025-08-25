@@ -19,7 +19,7 @@ public class StructureBlock {
 
     @SuppressWarnings("deprecation")
     public void restore() {
-        log.debug("Restoring " + block.getLocation() + " to " + original.getType());
+        log.debug("Restoring {} to {}", block.getLocation(), original.getType());
         block.setType(original.getType());
         block.setData(original.getData().getData());
     }

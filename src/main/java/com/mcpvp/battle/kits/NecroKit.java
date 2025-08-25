@@ -70,9 +70,9 @@ public class NecroKit extends BattleKit {
     public Map<Integer, KitItem> createItems() {
         tag = new KitItem(this, ItemBuilder.of(Material.NAME_TAG).name("Revival Tag").build());
         tag.onInteractEntity(event -> {
-           if (event.getRightClicked() instanceof Player clicked) {
-               this.attemptRevivalTag(clicked);
-           }
+            if (event.getRightClicked() instanceof Player clicked) {
+                this.attemptRevivalTag(clicked);
+            }
         });
 
         return new KitInventoryBuilder()

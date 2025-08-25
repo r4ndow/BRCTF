@@ -101,9 +101,9 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         chunks.forEach(cs -> this.highlightChunk(cs, world));
         List<MapSign> signs = this.getAllMapSigns(chunks);
         Optional<MapSign> spawnBox = signs
-                .stream()
-                .filter(ms -> ms instanceof SimpleMapSign sms && sms.getText().equals("spawn_box"))
-                .findAny();
+            .stream()
+            .filter(ms -> ms instanceof SimpleMapSign sms && sms.getText().equals("spawn_box"))
+            .findAny();
         Location foundCenter = spawnBox.map(ms -> ms.getBlock().getLocation()).orElse(assumedCenter);
         boolean spawnChanged = foundCenter.getBlockX() != assumedCenter.getBlockX() || foundCenter.getBlockZ() != assumedCenter.getBlockZ();
 
@@ -121,7 +121,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
     }
 
     private void loadSignsIntoConfig(
-            BattleGameConfig builder, List<MapSign> signs
+        BattleGameConfig builder, List<MapSign> signs
     ) {
         for (MapSign sign : signs) {
             if (sign instanceof TeamMapSign teamSign) {
@@ -140,7 +140,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         switch (sign.getText()) {
             case "restrict" -> builder.getRestricted().add(sign.getBlock().getLocation());
             case "spawn_box" -> builder.setSpawn(sign.getBlock().getLocation());
-            default -> log.warn("Unknown simple config given: " + sign);
+            default -> log.warn("Unknown simple config given: {}", sign);
         }
     }
 
@@ -148,7 +148,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
         switch (sign.getKey()) {
             case "caps" -> builder.setCaps(Integer.parseInt(sign.getValue()));
             case "time" -> builder.setTime(Integer.parseInt(sign.getValue()));
-            default -> log.warn("Unknown value config given: " + sign);
+            default -> log.warn("Unknown value config given: {}", sign);
         }
     }
 
@@ -165,7 +165,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
                 teamConfig.setFlag(center(loc));
                 builder.getCallouts().add(new BattleCallout(center(loc), teamConfig, "flag"));
             }
-            default -> log.warn("Unknown team config given: " + sign);
+            default -> log.warn("Unknown team config given: {}", sign);
         }
     }
 
@@ -183,7 +183,7 @@ public class BattleMapLoaderSignImpl implements BattleMapLoader {
             if (!(b.getState() instanceof Sign sign)) {
                 return Stream.empty();
             }
-            log.info("Found sign to parse at " + b.getLocation() + " with text: " + Arrays.toString(sign.getLines()));
+            log.info("Found sign to parse at {} with text: {}", b.getLocation(), Arrays.toString(sign.getLines()));
             return parseMapSign(b, sign).stream();
         }).toList();
     }

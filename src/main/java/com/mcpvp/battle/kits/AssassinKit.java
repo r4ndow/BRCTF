@@ -57,10 +57,10 @@ public class AssassinKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-                new ItemStack(Material.GOLD_BOOTS),
-                null,
-                null,
-                null
+            new ItemStack(Material.GOLD_BOOTS),
+            null,
+            null,
+            null
         };
     }
 
@@ -71,9 +71,9 @@ public class AssassinKit extends BattleKit {
         sugar = new KitItem(this, ItemBuilder.of(Material.SUGAR).name("Speed Boost").amount(SUGAR_AMOUNT).build());
 
         redstone.onInteract(event -> {
-           if (EventUtil.isRightClick(event)) {
-               activateStrength();
-           }
+            if (EventUtil.isRightClick(event)) {
+                activateStrength();
+            }
         });
 
         sugar.onInteract(event -> {
@@ -83,11 +83,11 @@ public class AssassinKit extends BattleKit {
         });
 
         return new KitInventoryBuilder()
-                .add(sword)
-                .add(redstone)
-                .add(sugar)
-                .addCompass(8)
-                .build();
+            .add(sword)
+            .add(redstone)
+            .add(sugar)
+            .addCompass(8)
+            .build();
     }
 
     private void activateStrength() {
@@ -143,11 +143,11 @@ public class AssassinKit extends BattleKit {
 
     private void giveAbsorption() {
         int tier = getPlayer().getActivePotionEffects().stream()
-                .filter(potionEffect -> potionEffect.getType() == PotionEffectType.ABSORPTION)
-                .findFirst()
-                .map(PotionEffect::getAmplifier)
-                .map(i -> i + 1)
-                .orElse(0);
+            .filter(potionEffect -> potionEffect.getType() == PotionEffectType.ABSORPTION)
+            .findFirst()
+            .map(PotionEffect::getAmplifier)
+            .map(i -> i + 1)
+            .orElse(0);
 
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, STRONG_RESTORE.ticks(), tier));
     }

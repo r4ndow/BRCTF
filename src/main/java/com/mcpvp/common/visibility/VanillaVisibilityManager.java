@@ -18,5 +18,5 @@ public class VanillaVisibilityManager implements VisibilityManager {
     public boolean canSee(Player observer, Player target) {
         return observer.canSee(target);
     }
-    
+
 }

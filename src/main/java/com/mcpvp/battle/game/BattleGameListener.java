@@ -196,7 +196,7 @@ public class BattleGameListener implements EasyListener {
     public void onDrop(PlayerDropItemEvent event) {
         // FlagListener will handle the flag being dropped
         if (game.getTeamManager().getTeams().stream().noneMatch(bt ->
-                bt.getFlag().isItem(event.getItemDrop().getItemStack())
+            bt.getFlag().isItem(event.getItemDrop().getItemStack())
         )) {
             event.setCancelled(true);
         }

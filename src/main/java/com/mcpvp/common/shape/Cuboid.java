@@ -9,10 +9,10 @@ import java.util.Set;
 /**
  * <code>
  * c1 - - - +<br>
- *  |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
- *  |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
- *  + - - - c2<br>
- *  </code>
+ * |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+ * |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+ * + - - - c2<br>
+ * </code>
  */
 @Getter
 public class Cuboid extends Shape {
@@ -71,7 +71,7 @@ public class Cuboid extends Shape {
         int z1 = corner1.getBlockZ();
         int z2 = corner2.getBlockZ();
 
-        return new Location(corner1.getWorld(), (x1 + x2) / 2, (y1+y2) / 2, (z1+z2) / 2);
+        return new Location(corner1.getWorld(), (x1 + x2) / 2, (y1 + y2) / 2, (z1 + z2) / 2);
     }
 
     @Override

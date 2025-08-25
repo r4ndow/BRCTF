@@ -36,8 +36,8 @@ public class LocalMapRepo implements MapRepo {
 
         try {
             this.mapData.addAll(mapper.readValue(
-                    mapsJson, new TypeReference<List<BattleMapData>>() {
-                    }
+                mapsJson, new TypeReference<List<BattleMapData>>() {
+                }
             ));
         } catch (IOException e) {
             throw new RuntimeException("Failed to read maps.json", e);
@@ -55,16 +55,19 @@ public class LocalMapRepo implements MapRepo {
             try {
                 return Objects.requireNonNull(FileUtils.readFileToString(configured));
             } catch (IOException e) {
-                log.warn("Failed to read custom maps.json at " + mapOptions.getMapsJson(), e);
+                log.warn("Failed to read custom maps.json at {}", mapOptions.getMapsJson(), e);
             }
         }
 
         // Otherwise, use the included maps.json
-        InputStream included = this.getClass().getResourceAsStream("/maps.json");
-        try {
-            json = IOUtils.toString(included, Charset.defaultCharset());
+        try (InputStream included = this.getClass().getResourceAsStream("/maps.json")) {
+            try {
+                json = IOUtils.toString(Objects.requireNonNull(included), Charset.defaultCharset());
+            } catch (IOException e) {
+                log.warn("Failed to read included maps.json", e);
+            }
         } catch (IOException e) {
-            log.warn("Failed to read included maps.json", e);
+            throw new RuntimeException(e);
         }
 
         if (json == null) {
@@ -86,7 +89,7 @@ public class LocalMapRepo implements MapRepo {
             File mapData = new File(mapOptions.getDir(), data.getFile());
 
             if (!mapData.exists()) {
-                log.warn("Map file was not found. Expected at: " + mapData);
+                log.warn("Map file was not found. Expected at: {}", mapData);
                 data.setFunctional(false);
             }
         });
@@ -105,9 +108,9 @@ public class LocalMapRepo implements MapRepo {
     @Override
     public List<BattleMapData> getEnabled() {
         return getFunctional().stream().filter(m ->
-                mapOptions.getCategories().getOrDefault(m.getCategory(), true)
+            mapOptions.getCategories().getOrDefault(m.getCategory(), true)
         ).filter(m ->
-                !mapOptions.getDisable().contains(m.getId())
+            !mapOptions.getDisable().contains(m.getId())
         ).toList();
     }
 }

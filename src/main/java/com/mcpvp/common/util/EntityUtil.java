@@ -10,19 +10,19 @@ public class EntityUtil {
     public static final double GRAVITY = -0.0784000015258789;
 
     public static <T extends Entity> List<T> getNearbyEntities(
-            Location location, Class<T> type, double distance
+        Location location, Class<T> type, double distance
     ) {
         return getNearbyEntities(location, type, distance, distance, distance);
     }
 
     public static <T extends Entity> List<T> getNearbyEntities(
-            Location location, Class<T> type, double x, double y, double z
+        Location location, Class<T> type, double x, double y, double z
     ) {
         //noinspection unchecked
         return location.getWorld().getNearbyEntities(location, x, y, z).stream()
-                .filter(e -> type.isAssignableFrom(e.getClass()))
-                .map(e -> (T) e)
-                .toList();
+            .filter(e -> type.isAssignableFrom(e.getClass()))
+            .map(e -> (T) e)
+            .toList();
     }
 
     public static boolean isOnGround(Entity entity) {

@@ -49,9 +49,9 @@ public class KitManagerCommands extends BattleCommandGroup {
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
             List<KitDefinition> disabled = kitManager.getKitDefinitions().stream().filter(kitManager::isDisabled).toList();
             List<KitDefinition> limited = kitManager.getKitDefinitions().stream()
-                    .filter(kit -> kitManager.getLimit(kit).isPresent())
-                    .sorted(Comparator.comparingInt(kit -> -kitManager.getLimit(kit).orElse(0)))
-                    .toList();
+                .filter(kit -> kitManager.getLimit(kit).isPresent())
+                .sorted(Comparator.comparingInt(kit -> -kitManager.getLimit(kit).orElse(0)))
+                .toList();
 
             sender.sendMessage(C.BOLD + "Class Management Summary");
 
@@ -62,7 +62,7 @@ public class KitManagerCommands extends BattleCommandGroup {
             sender.sendMessage(C.info(C.RED) + "Disabled: " + disabledText);
 
             String limitedText = limited.stream().map(kit ->
-                    C.R + kit.getName() + C.GRAY + " × " + C.R + kitManager.getLimit(kit).map(Object::toString).orElse("none")
+                C.R + kit.getName() + C.GRAY + " × " + C.R + kitManager.getLimit(kit).map(Object::toString).orElse("none")
             ).collect(Collectors.joining(C.GRAY + ", "));
             if (limitedText.isBlank()) {
                 limitedText = C.R + "none";
@@ -155,8 +155,8 @@ public class KitManagerCommands extends BattleCommandGroup {
                     kitManager.setLimit(kit, Integer.parseInt(args.get(1)));
                 });
                 sender.sendMessage(C.cmdPass() + "Limited " + C.R + kits.stream()
-                        .map(KitDefinition::getName)
-                        .collect(Collectors.joining(C.GRAY + ", " + C.R))
+                    .map(KitDefinition::getName)
+                    .collect(Collectors.joining(C.GRAY + ", " + C.R))
                 );
 
                 return true;
@@ -187,8 +187,8 @@ public class KitManagerCommands extends BattleCommandGroup {
 
                 kits.forEach(kitManager::removeLimit);
                 sender.sendMessage(C.cmdPass() + "Removed limit on " + C.R + kits.stream()
-                        .map(KitDefinition::getName)
-                        .collect(Collectors.joining(C.GRAY + ", " + C.R))
+                    .map(KitDefinition::getName)
+                    .collect(Collectors.joining(C.GRAY + ", " + C.R))
                 );
 
                 return true;

@@ -30,20 +30,20 @@ public class BattleMatchListener implements EasyListener {
             // Global message
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.sendMessage(formatMessage(
-                        true,
-                        event.getMessage(),
-                        event.getPlayer().getName(),
-                        senderTeam.map(BattleTeam::getColor).map(Colors::toString).orElse(C.WHITE)
+                    true,
+                    event.getMessage(),
+                    event.getPlayer().getName(),
+                    senderTeam.map(BattleTeam::getColor).map(Colors::toString).orElse(C.WHITE)
                 ));
             });
         } else {
             // Team message
             senderTeam.get().getPlayers().forEach(player -> {
                 player.sendMessage(formatMessage(
-                        false,
-                        event.getMessage(),
-                        event.getPlayer().getName(),
-                        senderTeam.map(BattleTeam::getColor).map(Colors::toString).orElse(C.WHITE)
+                    false,
+                    event.getMessage(),
+                    event.getPlayer().getName(),
+                    senderTeam.map(BattleTeam::getColor).map(Colors::toString).orElse(C.WHITE)
                 ));
             });
         }
@@ -51,14 +51,14 @@ public class BattleMatchListener implements EasyListener {
 
     private String formatMessage(boolean global, String message, String author, String teamColor) {
         return new StringBuilder()
-                .append(author)
-                .append(teamColor)
-                .append(">")
-                .append(" ")
-                .append(global ? C.GOLD + "/a " : "")
-                .append(C.R)
-                .append(global && message.startsWith("!") ? message.substring(1) : message)
-                .toString();
+            .append(author)
+            .append(teamColor)
+            .append(">")
+            .append(" ")
+            .append(global ? C.GOLD + "/a " : "")
+            .append(C.R)
+            .append(global && message.startsWith("!") ? message.substring(1) : message)
+            .toString();
     }
 
 }

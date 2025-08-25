@@ -25,7 +25,7 @@ public class BattleWorldManager {
     private static final String WORLD_PREFIX = "ctf_game_world_";
 
     public static World create(
-            BattleMapData map, File mapsDir, int index
+        BattleMapData map, File mapsDir, int index
     ) throws IOException {
         String worldName = WORLD_PREFIX + index;
 
@@ -46,11 +46,11 @@ public class BattleWorldManager {
 
         // Create the world
         World world = new WorldCreator(worldName)
-                .generateStructures(false)
-                .generator(new EmptyGenerator())
-                .environment(World.Environment.NORMAL)
-                .type(WorldType.FLAT)
-                .createWorld();
+            .generateStructures(false)
+            .generator(new EmptyGenerator())
+            .environment(World.Environment.NORMAL)
+            .type(WorldType.FLAT)
+            .createWorld();
 
         // Apply some rules
         initializeWorld(world);

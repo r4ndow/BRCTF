@@ -38,7 +38,7 @@ public class BattleMatchManager {
             return maps;
         }
 
-		return mapManager.loadMaps(plugin.getBattle().getOptions().getMatch().getGames());
+        return mapManager.loadMaps(plugin.getBattle().getOptions().getMatch().getGames());
     }
 
 }

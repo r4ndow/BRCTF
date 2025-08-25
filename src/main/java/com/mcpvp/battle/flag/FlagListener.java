@@ -117,14 +117,14 @@ public class FlagListener implements EasyListener {
     @EventHandler
     public void onCapture(PlayerPickupItemEvent event) {
         if (game.getTeamManager().getTeams().stream()
-                .noneMatch(bt -> bt.getFlag().isItem(event.getItem().getItemStack()))) {
+            .noneMatch(bt -> bt.getFlag().isItem(event.getItem().getItemStack()))) {
             return;
         }
 
         BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
         Optional<BattleTeam> carried = game.getTeamManager().getTeams().stream()
-                .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
-                .findFirst();
+            .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
+            .findFirst();
 
         if (!team.getFlag().isItem(event.getItem().getItemStack())) {
             return;

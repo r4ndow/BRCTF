@@ -37,7 +37,7 @@ public abstract class Shape {
 
     /**
      * @return All the "faces" of the Shape. If the shape were a glass tank of
-     *         water, this would return the glass.
+     * water, this would return the glass.
      */
     public abstract Iterable<Location> getFaces();
 

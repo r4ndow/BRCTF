@@ -22,18 +22,16 @@ public class BattleTeamManager {
 
     @Getter
     private final List<BattleTeam> teams = new ArrayList<>();
-    private BattleTeam red;
-    private BattleTeam blue;
 
     public void createDefaultTeams(Set<BattleTeamConfig> configs) {
         // The IDs are very important! They are used for map parsing
         // eg a sign `{{flag 1}}` specifies the red flag
         Map<Integer, BattleTeamConfig> configById = configs.stream().collect(
-                Collectors.toMap(BattleTeamConfig::getId, e -> e)
+            Collectors.toMap(BattleTeamConfig::getId, e -> e)
         );
 
-        this.red = new BattleTeam(1, "Red", Colors.RED, configById.get(1));
-        this.blue = new BattleTeam(2, "Blue", Colors.BLUE, configById.get(2));
+        BattleTeam red = new BattleTeam(1, "Red", Colors.RED, configById.get(1));
+        BattleTeam blue = new BattleTeam(2, "Blue", Colors.BLUE, configById.get(2));
         this.teams.add(red);
         this.teams.add(blue);
     }
@@ -59,9 +57,9 @@ public class BattleTeamManager {
     }
 
     public BattleTeam getTeam(int id) {
-        return getTeams().stream().filter(bt -> bt.getId() == id).findFirst().orElseThrow(() -> {
-            return new IllegalStateException("No team found for id " + id);
-        });
+        return getTeams().stream().filter(bt -> bt.getId() == id).findFirst().orElseThrow(() ->
+            new IllegalStateException("No team found for id " + id)
+        );
     }
 
     public BattleTeam selectAutoTeam() {
@@ -71,8 +69,8 @@ public class BattleTeamManager {
         } else {
             // Find the team with the fewest players
             return getTeams().stream()
-                    .min(Comparator.comparingInt(t -> t.getPlayers().size()))
-                    .orElse(getTeams().get(RANDOM.nextInt(getTeams().size())));
+                .min(Comparator.comparingInt(t -> t.getPlayers().size()))
+                .orElse(getTeams().get(RANDOM.nextInt(getTeams().size())));
         }
     }
 

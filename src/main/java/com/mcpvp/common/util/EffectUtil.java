@@ -20,7 +20,7 @@ public class EffectUtil {
         Block block = world.getHighestBlockAt(location.getBlockX(), location.getBlockZ());
         if (block != null) {
             location = location.clone();
-            location.setY(Math.min(world.getMaxHeight(), block.getY() ));
+            location.setY(Math.min(world.getMaxHeight(), block.getY()));
             world.strikeLightningEffect(location);
         }
     }

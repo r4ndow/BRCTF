@@ -70,7 +70,8 @@ public class LocalMapManager implements MapManager {
             return Collections.emptyList();
         }
         try {
-            List<Integer> ids = new ObjectMapper().readValue(file, new TypeReference<>() {});
+            List<Integer> ids = new ObjectMapper().readValue(file, new TypeReference<>() {
+            });
             return ids.stream().map(this::loadMap).toList();
         } catch (IOException e) {
             throw new RuntimeException(e);
