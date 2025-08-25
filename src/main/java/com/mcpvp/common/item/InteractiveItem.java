@@ -28,6 +28,7 @@ import java.util.function.Consumer;
  *
  * @author NomNuggetNom
  */
+@SuppressWarnings("unused")
 @EqualsAndHashCode(of = "id")
 public class InteractiveItem implements EasyListener {
 

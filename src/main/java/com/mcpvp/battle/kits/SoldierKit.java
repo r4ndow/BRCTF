@@ -83,9 +83,9 @@ public class SoldierKit extends BattleKit {
         }
 
         if (delay) {
-            attach(Bukkit.getScheduler().runTask(plugin, () -> {
-                player.setVelocity(new Vector(0, 1.0f, 0));
-            }));
+            attach(Bukkit.getScheduler().runTask(plugin, () ->
+                player.setVelocity(new Vector(0, 1.0f, 0)))
+            );
         } else {
             player.setVelocity(new Vector(0, 1.0f, 0));
         }

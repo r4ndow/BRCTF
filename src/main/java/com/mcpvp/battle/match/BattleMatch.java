@@ -62,9 +62,7 @@ public class BattleMatch {
             // Move everyone to their proper teams
             playerMap.forEach((oldTeam, players) -> {
                 BattleTeam nextTeam = next.getTeamManager().getTeam(oldTeam.getId());
-                players.forEach(player -> {
-                    next.getTeamManager().setTeam(player, nextTeam);
-                });
+                players.forEach(player -> next.getTeamManager().setTeam(player, nextTeam));
             });
         }
     }

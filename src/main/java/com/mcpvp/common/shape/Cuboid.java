@@ -17,10 +17,8 @@ import java.util.Set;
 @Getter
 public class Cuboid extends Shape {
 
-    private Location corner1 = null;
-    private Location corner2 = null;
-    public static final int FIRST_VERTEX = 0;
-    public static final int SECOND_VERTEX = 1;
+    private final Location corner1;
+    private final Location corner2;
 
     public Cuboid(Location corner1, Location corner2) {
         if (corner1.getWorld() != corner2.getWorld())
@@ -78,7 +76,7 @@ public class Cuboid extends Shape {
 
     @Override
     public Set<Location> getFaces() {
-        Set<Location> faceLocations = new HashSet<Location>();
+        Set<Location> faceLocations = new HashSet<>();
         if (corner1 == null)
             throw new NullPointerException("corner1 can't be null");
         if (corner2 == null) {
