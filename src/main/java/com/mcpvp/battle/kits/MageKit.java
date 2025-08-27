@@ -3,6 +3,7 @@ package com.mcpvp.battle.kits;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.item.CooldownItem;
+import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.event.EasyEvent;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.item.ItemBuilder;
@@ -118,8 +119,9 @@ public class MageKit extends BattleKit {
                 }
             }).runTaskTimer(getPlugin(), 0, 1));
 
-            getBattle().getProjectileManager().register(arrow)
-                .onMiss(() -> {
+            attach(new InteractiveProjectile(getPlugin(), arrow)
+                .singleEventOnly()
+                .onDeath(() -> {
                     FireworkEffect effect = FireworkEffect.builder()
                         .with(FireworkEffect.Type.BALL)
                         .withColor(
@@ -129,7 +131,7 @@ public class MageKit extends BattleKit {
 
                     FireworkUtil.explodeInstantly(effect, arrow.getLocation());
                 })
-                .onHitEvent(ev -> {
+                .onDamageEvent(ev -> {
                     // The arrow hitting the player actually deals the damage.
                     if (!(ev.getEntity() instanceof Player hit)) {
                         return;
@@ -143,7 +145,7 @@ public class MageKit extends BattleKit {
                     // 7 should be base damage, then do 2 more
                     ev.setDamage(DAMAGE_ARROW_DAMAGE * mult);
                 })
-                .onHit(player -> {
+                .onHitPlayer(player -> {
                     // The arrow hitting the player actually deals the damage.
                     if (isTeammate(player)) {
                         return;
@@ -156,7 +158,8 @@ public class MageKit extends BattleKit {
                         ).build();
 
                     FireworkUtil.explodeInstantly(effect, arrow.getLocation());
-                });
+                })
+            );
         }
 
     }
@@ -185,8 +188,11 @@ public class MageKit extends BattleKit {
 
             event.getPlayer().getWorld().playEffect(event.getPlayer().getEyeLocation(), Effect.BLAZE_SHOOT, 0);
 
-            getBattle().getProjectileManager().register(pearl)
-                .onHit(player -> {
+
+            attach(new InteractiveProjectile(getPlugin(), pearl)
+                .singleEventOnly()
+                .onDeath(pearl::remove)
+                .onHitPlayer(player -> {
                     if (isTeammate(player)) {
                         return;
                     }
@@ -195,7 +201,7 @@ public class MageKit extends BattleKit {
                     player.setFireTicks(FIRE_DURATION.toTicks());
                     pearl.remove();
                 })
-                .onMiss(pearl::remove);
+            );
         }
 
     }
@@ -229,11 +235,10 @@ public class MageKit extends BattleKit {
                 // This will trigger the `onMiss` hook of the ProjectileManager
                 attach(EasyTask.of(egg::remove).runTaskLater(getPlugin(), 3));
 
-                getBattle().getProjectileManager().register(egg)
-                    .onMiss(() -> strike(egg.getLocation()))
-                    .onHit((pl) -> {
-                        strike(pl.getLocation());
-                    });
+                attach(new InteractiveProjectile(getPlugin(), egg)
+                    .onDeath(() -> strike(egg.getLocation()))
+                    .onHitPlayer(player -> strike(player.getLocation()))
+                );
             }
         }
 
@@ -292,8 +297,8 @@ public class MageKit extends BattleKit {
 
             getGame().getWorld().playSound(getPlayer().getEyeLocation(), Sound.SHOOT_ARROW, 1f, 0.5f);
 
-            getBattle().getProjectileManager().register(snowball)
-                .onHit(player -> {
+            attach(new InteractiveProjectile(getPlugin(), snowball)
+                .onHitPlayer(player -> {
                     if (isTeammate(player)) {
                         return;
                     }
@@ -305,7 +310,8 @@ public class MageKit extends BattleKit {
                     centerPlayer(player);
                     IceBoxStructure iceBox = new IceBoxStructure(player);
                     placeStructure(iceBox, player.getLocation().getBlock());
-                });
+                })
+            );
         }
 
         private void centerPlayer(Player player) {

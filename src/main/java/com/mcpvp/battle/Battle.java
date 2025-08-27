@@ -20,7 +20,6 @@ import com.mcpvp.battle.match.BattleMatch;
 import com.mcpvp.battle.match.BattleMatchManager;
 import com.mcpvp.battle.options.BattleOptions;
 import com.mcpvp.battle.options.BattleOptionsLoader;
-import com.mcpvp.common.ProjectileManager;
 import com.mcpvp.common.structure.StructureManager;
 import com.mcpvp.common.visibility.VanillaVisibilityManager;
 import com.mcpvp.common.visibility.VisibilityManager;
@@ -49,7 +48,6 @@ public class Battle {
     private BattleMatchManager matchManager;
     private BattleKitManager kitManager;
     private BattleMatch match;
-    private ProjectileManager projectileManager;
     private StructureManager structureManager;
     private BattleInventoryManager inventoryManager;
     private VisibilityManager visibilityManager;
@@ -62,7 +60,6 @@ public class Battle {
         this.gameManager = new BattleGameManager(this);
         this.matchManager = new BattleMatchManager(plugin, this, this.gameManager, this.mapManager);
         this.kitManager = new BattleKitManager(plugin, this);
-        this.projectileManager = new ProjectileManager(plugin);
         this.structureManager = new StructureManager();
         this.inventoryManager = new BattleInventoryManager(plugin);
         this.inventoryManager.loadAll();
@@ -72,8 +69,6 @@ public class Battle {
     }
 
     public void start() {
-        this.projectileManager.register();
-
         this.kitManager.getScoutDeathTagManager().register();
         this.kitManager.getNecroRevivalTagManager().register();
 

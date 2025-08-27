@@ -4,6 +4,7 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.BattleKitType;
 import com.mcpvp.battle.match.BattleMatchStructureRestrictions;
+import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.ParticlePacket;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
@@ -95,8 +96,9 @@ public class PyroKit extends BattleKit {
             return;
         }
 
-        getBattle().getProjectileManager().register((Projectile) event.getProjectile())
-            .onCollideBlock(ev -> explode((Arrow) ev.getEntity()));
+        attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
+            .onHitEvent(ev -> explode((Arrow) ev.getEntity()))
+        );
     }
 
     @EventHandler(ignoreCancelled = true)

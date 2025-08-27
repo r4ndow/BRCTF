@@ -53,7 +53,7 @@ public class InteractiveProjectile implements EasyListener {
     }
 
     @EventHandler
-    public void onEntityDamageByProjectile(EntityDamageByEntityEvent event) {
+    private void onEntityDamageByProjectile(EntityDamageByEntityEvent event) {
         if (event.getDamager() == projectile) {
             if (event.getEntity() instanceof Player hit && hitPlayerConsumer != null) {
                 hitPlayerConsumer.accept(hit);
@@ -68,7 +68,7 @@ public class InteractiveProjectile implements EasyListener {
     }
 
     @EventHandler
-    public void onProjectileHitEvent(ProjectileHitEvent event) {
+    private void onProjectileHitEvent(ProjectileHitEvent event) {
         if (event.getEntity() == projectile && hitEventConsumer != null) {
             hitEventConsumer.accept(event);
 
@@ -79,7 +79,7 @@ public class InteractiveProjectile implements EasyListener {
     }
 
     @EventHandler
-    public void onDeath(EntityDeathEvent event) {
+    private void onDeath(EntityDeathEvent event) {
         if (event.getEntity() == projectile) {
             deathRunnable.run();
             unregister();
@@ -87,7 +87,7 @@ public class InteractiveProjectile implements EasyListener {
     }
 
     @EventHandler
-    public void onTick(TickEvent event) {
+    private void onTick(TickEvent event) {
         if (projectile.isDead() || !projectile.isValid()) {
             if (deathRunnable != null) {
                 deathRunnable.run();

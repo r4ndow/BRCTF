@@ -2,6 +2,7 @@ package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
@@ -284,9 +285,11 @@ public class NinjaKit extends BattleKit {
             this.setPlaceholder();
             EnderPearl ep = getPlayer().launchProjectile(EnderPearl.class);
 
-            getBattle().getProjectileManager().register(ep)
-                .onHit(pl -> this.restore())
-                .onMiss(this::restore);
+            attach(new InteractiveProjectile(getPlugin(), ep)
+                .singleEventOnly()
+                .onHitPlayer(player -> this.restore())
+                .onDeath(this::restore)
+            );
 
             attach(ep);
         }
@@ -324,14 +327,16 @@ public class NinjaKit extends BattleKit {
             this.decrement(true);
             Egg e = getPlayer().launchProjectile(Egg.class);
 
-            getBattle().getProjectileManager().register(e)
-                .onHitEvent(hitEvent -> {
-                    if (hitEvent.getEntity() instanceof Player hit) {
+            attach(new InteractiveProjectile(getPlugin(), e)
+                .singleEventOnly()
+                .onDamageEvent(damageEvent -> {
+                    if (damageEvent.getEntity() instanceof Player hit) {
                         e.getLocation().getWorld().createExplosion(e.getLocation(), 0F, false);
                         applyEggEffect(hit, true);
                     }
                 })
-                .onCollideBlock(hitEvent -> applyEggEffectNearby(e));
+                .onHitEvent(hitEvent -> applyEggEffectNearby(e))
+            );
 
             getPlayer().setExp(Math.max(getPlayer().getExp() - EGG_MANA_COST, 0f));
         }

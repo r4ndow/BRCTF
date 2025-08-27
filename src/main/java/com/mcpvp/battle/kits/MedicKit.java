@@ -5,8 +5,8 @@ import com.mcpvp.battle.event.FlagPoisonEvent;
 import com.mcpvp.battle.hud.impl.HealthHeadIndicator;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.ParticlePacket;
-import com.mcpvp.common.ProjectileManager;
 import com.mcpvp.common.event.EasyEvent;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
@@ -179,11 +179,8 @@ public class MedicKit extends BattleKit {
 
     public class MedicWebItem extends KitItem {
 
-        private final ProjectileManager projectileManager;
-
         public MedicWebItem(ItemStack itemStack) {
             super(MedicKit.this, itemStack, true);
-            this.projectileManager = MedicKit.this.getBattle().getProjectileManager();
             this.onInteract(this::throwWeb);
         }
 
@@ -200,10 +197,12 @@ public class MedicKit extends BattleKit {
 
             decrement(true);
 
-            Snowball ent = kit.getPlayer().launchProjectile(Snowball.class);
-            projectileManager.register(ent)
-                .onHitEvent(this::onHitEvent)
-                .onCollideBlock(e -> this.placeWeb(ent.getLocation()));
+            Snowball snowball = kit.getPlayer().launchProjectile(Snowball.class);
+            attach(new InteractiveProjectile(getPlugin(), snowball)
+                .singleEventOnly()
+                .onDamageEvent(this::onHitEvent)
+                .onHitEvent(e -> this.placeWeb(snowball.getLocation()))
+            );
         }
 
         private void onHitEvent(EntityDamageByEntityEvent event) {
