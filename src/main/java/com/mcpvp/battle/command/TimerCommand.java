@@ -13,14 +13,15 @@ public class TimerCommand extends BattleCommandGroup {
         super("timer");
         this.battle = battle;
 
-        addCommand(new TimerSetCommand());
-        addCommand(new TimerLockCommand());
-        addCommand(new TimerUnlockCommand());
+        addCommand(new SetCommand());
+        addCommand(new LockCommand());
+        addCommand(new UnlockCommand());
+        addCommand(new SkipCommand());
     }
 
-    public class TimerSetCommand extends BattleCommand {
+    public class SetCommand extends BattleCommand {
 
-        public TimerSetCommand() {
+        public SetCommand() {
             super("set");
         }
 
@@ -41,9 +42,9 @@ public class TimerCommand extends BattleCommandGroup {
 
     }
 
-    public class TimerLockCommand extends BattleCommand {
+    public class LockCommand extends BattleCommand {
 
-        public TimerLockCommand() {
+        public LockCommand() {
             super("lock");
         }
 
@@ -55,15 +56,30 @@ public class TimerCommand extends BattleCommandGroup {
 
     }
 
-    public class TimerUnlockCommand extends BattleCommand {
+    public class UnlockCommand extends BattleCommand {
 
-        public TimerUnlockCommand() {
+        public UnlockCommand() {
             super("unlock");
         }
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
             battle.getMatch().getTimer().setPaused(false);
+            return true;
+        }
+
+    }
+
+
+    public class SkipCommand extends BattleCommand {
+
+        public SkipCommand() {
+            super("skip");
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, String label, List<String> args) {
+            battle.getMatch().advanceStateOrGame();
             return true;
         }
 

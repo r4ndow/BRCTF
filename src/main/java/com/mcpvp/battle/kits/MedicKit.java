@@ -85,7 +85,7 @@ public class MedicKit extends BattleKit {
     public Map<Integer, KitItem> createItems() {
         KitItem sword = new KitItem(
             this,
-            ItemBuilder.of(Material.GOLD_SWORD).name("Medic Sword").enchant(Enchantment.DAMAGE_ALL, 1).unbreakable().build()
+            ItemBuilder.of(Material.GOLD_SWORD).name("Medic Sword").enchant(Enchantment.DAMAGE_ALL, 2).unbreakable().build()
         );
 
         sword.onDamage(ev -> {

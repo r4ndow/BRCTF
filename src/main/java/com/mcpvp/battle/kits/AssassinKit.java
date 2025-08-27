@@ -12,6 +12,7 @@ import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.util.chat.C;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -66,7 +67,12 @@ public class AssassinKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        KitItem sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).name("Assassin Sword").unbreakable().build());
+        KitItem sword = new KitItem(this, ItemBuilder.of(Material.GOLD_SWORD)
+            .name("Assassin Sword")
+            .enchant(Enchantment.DAMAGE_ALL, 2)
+            .unbreakable()
+            .build()
+        );
         redstone = new KitItem(this, ItemBuilder.of(Material.REDSTONE).name("Assassinate").build());
         sugar = new KitItem(this, ItemBuilder.of(Material.SUGAR).name("Speed Boost").amount(SUGAR_AMOUNT).build());
 
@@ -154,6 +160,7 @@ public class AssassinKit extends BattleKit {
 
     private void giveAdrenaline() {
         getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, STRENGTH_II_TIME.ticks(), 0));
+        getPlayer().sendMessage(C.info(C.RED) + "Adrenaline courses through your body");
 
         if (adrenalineFadeMessageTask != null) {
             adrenalineFadeMessageTask.cancel();

@@ -2,8 +2,10 @@ package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,7 +35,7 @@ public class HeavyKit extends BattleKit {
     @Override
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-            .add(Material.DIAMOND_SWORD)
+            .add(ItemBuilder.of(Material.DIAMOND_SWORD).enchant(Enchantment.DAMAGE_ALL, 1).name("Heavy Sword").unbreakable())
             .addFood(3)
             .addCompass(8)
             .build();

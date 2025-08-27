@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class ArcherKit extends BattleKit {
 
-    private static final int HEADSHOT_DIST = 30;
+    private static final int HEADSHOT_DIST = 35;
 
     public ArcherKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
@@ -46,7 +46,7 @@ public class ArcherKit extends BattleKit {
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
             .add(ItemBuilder.of(Material.STONE_SWORD).name("Archer Sword").unbreakable())
-            .addFood(4)
+            .addFood(2)
             .add(ItemBuilder.of(Material.BOW).enchant(Enchantment.ARROW_KNOCKBACK, 1))
             .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #1"))
             .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #2"))

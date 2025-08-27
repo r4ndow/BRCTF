@@ -256,7 +256,7 @@ public class EngineerKit extends BattleKit {
         private static final Duration ANIMATION_INTERVAL = Duration.seconds(0.5);
         private static final Duration DEPLOY_TIME = Duration.seconds(10);
         private static final int SPEED_TIER = 2;
-        private static final Duration SPEED_TIME = Duration.seconds(6);
+        private static final Duration SPEED_TIME = Duration.seconds(4.5);
         private static final double AURA_HEIGHT = 10.0;
 
         private final KitItem item;
