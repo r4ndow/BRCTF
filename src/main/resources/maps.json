@@ -20,7 +20,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -44,7 +47,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -57,7 +63,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -70,7 +79,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -83,7 +95,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -107,7 +122,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -153,7 +171,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -166,7 +187,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -201,7 +225,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -236,7 +263,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -271,7 +301,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -295,7 +328,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -363,7 +399,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -376,7 +415,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -411,7 +453,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -446,7 +491,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -514,10 +562,8 @@
     "metadata": null,
     "category": "VARIATION",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 spawn region",
-      "Blue§7 spawn",
-      "Blue§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -530,7 +576,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -543,7 +592,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -556,7 +608,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -624,7 +679,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -648,7 +706,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -683,7 +744,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -696,7 +760,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -709,7 +776,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -722,7 +792,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -735,7 +808,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -759,7 +835,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -772,7 +851,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -785,7 +867,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -831,7 +916,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -844,7 +932,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -868,7 +959,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -925,7 +1019,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -938,7 +1035,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -973,7 +1073,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -986,7 +1089,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1010,7 +1116,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1034,7 +1143,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1047,7 +1159,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1093,7 +1208,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1150,7 +1268,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1174,7 +1295,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1187,7 +1311,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1211,7 +1338,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1246,7 +1376,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1281,7 +1414,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1294,7 +1430,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1318,7 +1457,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1331,7 +1473,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1355,7 +1500,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1368,7 +1516,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1414,7 +1565,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1449,7 +1603,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1484,7 +1641,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1497,7 +1657,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1521,7 +1684,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1545,7 +1711,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1558,7 +1727,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1571,7 +1743,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1584,7 +1759,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1597,7 +1775,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1621,7 +1802,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1634,7 +1818,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1658,7 +1845,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1781,8 +1971,7 @@
     "metadata": "#Red team:\nRed.Respawn=-400,85,220\nRed.Chest=\nRed.Color=Red\nRed.Flag=87\nRed.Face=e\n \n#Blue team:\nBlue.Respawn=\nBlue.Chest=\nBlue.Color=Blue\nBlue.Flag=22\nBlue.Face=w\n \n#CTF Properties\nCTF.CapturesToWin=3\nCTF.Author=DeceptiveCrEeD & Angelkitty8889\nCTF.Spawn=-354,153,142\nCTF.Time=\nCTF.MapName=Highrise IV\t\n",
     "category": "VARIATION",
     "errors": [
-      "Blue§7 flag",
-      "Red§7 flag"
+      "parser_error"
     ]
   },
   {
@@ -1795,7 +1984,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1808,7 +2000,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1821,7 +2016,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1834,7 +2032,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1847,7 +2048,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1871,7 +2075,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1895,7 +2102,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1908,7 +2118,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1921,7 +2134,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1934,7 +2150,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1958,7 +2177,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -1971,7 +2193,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2006,7 +2231,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2030,7 +2258,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2065,7 +2296,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2078,7 +2312,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2102,7 +2339,10 @@
     "metadata": null,
     "category": "CHRISTMAS",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2126,7 +2366,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2150,12 +2393,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2168,7 +2409,10 @@
     "metadata": null,
     "category": "CHRISTMAS",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2181,7 +2425,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2194,7 +2441,10 @@
     "metadata": null,
     "category": "CHRISTMAS",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2207,7 +2457,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2220,7 +2473,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2233,7 +2489,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2246,7 +2505,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2259,7 +2521,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2272,7 +2537,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2285,7 +2553,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2309,7 +2580,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2344,7 +2618,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2357,7 +2634,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2370,7 +2650,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2422,11 +2705,13 @@
     "name": "Quartz Kingdom",
     "author": "Deblob167",
     "created": "2020-08-18T02:44:24",
-    "functional": true,
+    "functional": false,
     "file": "17731 - Quartz Kingdom",
     "metadata": "#Red team:\nRed.Respawn=92,34,90\nRed.Chest=-118,21,119\nRed.Color=Red\nRed.Flag=Netherrack\n\n#Blue team:\nBlue.Respawn=-91,34,-89 \nBlue.Chest=119,21,-118\nBlue.Color=Blue\nBlue.Flag=LAPIS_BLOCK\n\n#CTF Properties\nCTF.CapturesToWin=3\nCTF.Author=Deblob167 \nCTF.Spawn=0,45,0\nCTF.Time=0\nCTF.MapName=Quartz Kingdom",
     "category": "VAULT",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 17732,
@@ -2477,11 +2762,13 @@
     "name": "Arena",
     "author": "Nohox",
     "created": "2022-08-27T16:30:36",
-    "functional": true,
+    "functional": false,
     "file": "177776 - Arena",
     "metadata": "#Red team:\nRed.Respawn=-80,58,57\nRed.Chest=-4,56,118\nRed.Color=Red\nRed.Flag=87\nRed.Face=e\n\n#Blue team:\nBlue.Respawn=73,58,57\nBlue.Chest=-4,56,-4\nBlue.Color=Blue\nBlue.Flag=22\nBlue.Face=w\n\n#CTF Properties\nCTF.CapturesToWin=3\nCTF.Author=Nohox\nCTF.Spawn=-4,62,57\nCTF.Time=6000 \nCTF.MapName=Arena\nCTF.TimeLimit=10",
     "category": "SPECIAL",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 177873,
@@ -2493,7 +2780,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2528,7 +2818,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2552,7 +2845,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2565,7 +2861,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2589,7 +2888,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2602,7 +2904,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2615,7 +2920,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2683,7 +2991,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2696,8 +3007,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 spawn region"
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -2732,7 +3042,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2745,7 +3058,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2758,7 +3074,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn"
     ]
   },
   {
@@ -2782,7 +3098,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2795,7 +3114,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2808,7 +3130,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2821,7 +3146,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2829,13 +3157,11 @@
     "name": "Oil Rig",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "1875 - Oil Rig",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 189425,
@@ -2847,7 +3173,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2860,7 +3189,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2873,7 +3205,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2886,7 +3221,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2899,7 +3237,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2923,7 +3264,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2936,7 +3280,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2960,7 +3307,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2973,7 +3323,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2986,7 +3339,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -2999,12 +3355,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3017,7 +3371,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3030,7 +3387,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3043,7 +3403,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3056,7 +3419,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3069,7 +3435,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3093,7 +3462,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3128,7 +3500,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3163,7 +3538,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3176,7 +3554,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3184,11 +3565,13 @@
     "name": "Crossfire",
     "author": "studmuffin713",
     "created": "2020-08-18T12:55:12",
-    "functional": true,
+    "functional": false,
     "file": "19854 - Crossfire",
     "metadata": "#Red team:\nRed.Respawn=-68,61,-30\nRed.Chest=-57,61,-15\nRed.Color=Red\nRed.Flag=152\n\n#Blue team:\nBlue.Respawn=69,61,31\nBlue.Chest= 57,61,15\nBlue.Color=Blue\nBlue.Flag=22\n\n#CTF Properties\nCTF.CapturesToWin=3\nCTF.Author=studmuffin713\nCTF.Spawn=0.5,137,0.5\nCTF.Time=6000\nCTF.MapName=Crossfire",
     "category": "MLG",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 198833,
@@ -3222,7 +3605,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3235,7 +3621,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3248,7 +3637,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3261,7 +3653,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3285,7 +3680,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3298,7 +3696,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3344,7 +3745,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3357,7 +3761,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3370,7 +3777,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3383,7 +3793,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3396,7 +3809,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3409,7 +3825,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3422,7 +3841,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3435,7 +3857,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3448,7 +3873,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3483,7 +3911,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3496,7 +3927,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3509,7 +3943,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3522,7 +3959,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3535,7 +3975,7 @@
     "metadata": null,
     "category": "WAVE10TEST",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -3559,7 +3999,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3572,7 +4015,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3585,7 +4031,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3598,7 +4047,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3633,7 +4085,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3657,7 +4112,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3670,7 +4128,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3683,7 +4144,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3696,7 +4160,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3709,12 +4176,7 @@
     "metadata": "{\n  \"FORCEFIELD_RADIUS\": 126.0,\n  \"FORCEFIELD_HEIGHT\": 56.0,\n  \"BASE_RANGE\": 40,\n  \"NEXUS_RADIUS\": 8,\n  \"TURRET_RADIUS\": 5,\n  \"HAS_RIVER\": true,\n  \"CENTER\": {\n    \"X\": 0,\n    \"Y\": 60,\n    \"Z\": 0\n  },\n  \"RED_NEXUS\": {\n    \"X\": -88.5,\n    \"Y\": 45.5,\n    \"Z\": -88.5\n  },\n  \"BLUE_NEXUS\": {\n    \"X\": 88.5,\n    \"Y\": 45.5,\n    \"Z\": 88.5\n  },\n  \"RED_SPAWN\": {\n    \"X\": -114.0,\n    \"Y\": 46.0,\n    \"Z\": -114.0\n  },\n  \"BLUE_SPAWN\": {\n    \"X\": 114.0,\n    \"Y\": 46.0,\n    \"Z\": 114.0\n  },\n  \"RED_MERCHANT\": {\n    \"X\": -121.0,\n    \"Y\": 46.0,\n    \"Z\": -121.0\n  },\n  \"BLUE_MERCHANT\": {\n    \"X\": 121.0,\n    \"Y\": 46.0,\n    \"Z\": 121.0\n  },\n  \"RED_SWORD_TURRET\": {\n    \"X\": 5.5,\n    \"Y\": 44.5,\n    \"Z\": -92.5\n  },\n  \"BLUE_SWORD_TURRET\": {\n    \"X\": 92.5,\n    \"Y\": 44.5,\n    \"Z\": -5.5\n  },\n  \"RED_SHIELD_TURRET\": {\n    \"X\": -92.5,\n    \"Y\": 44.5,\n    \"Z\": 5.5\n  },\n  \"BLUE_SHIELD_TURRET\": {\n    \"X\": -5.5,\n    \"Y\": 44.5,\n    \"Z\": 92.5\n  },\n  \"SWORD_TOWER_QUARTZ\": {\n    \"X\": 60.5,\n    \"Y\": 59.0,\n    \"Z\": -60.5\n  },\n  \"SWORD_TOWER_QUARTZ_RADIUS\": 14,\n  \"SHIELD_TOWER_QUARTZ\": {\n    \"X\": -60.5,\n    \"Y\": 58.0,\n    \"Z\": 60.5\n  },\n  \"SHIELD_TOWER_QUARTZ_RADIUS\": 12,\n  \"SWORD_TOWER\": {\n    \"X\": 60.5,\n    \"Y\": 39.5,\n    \"Z\": -60.5\n  },\n  \"SWORD_CAPTURE_RANGE\": 9,\n  \"SHIELD_TOWER\": {\n    \"X\": -60.5,\n    \"Y\": 39.5,\n    \"Z\": 60.5\n  },\n  \"SHIELD_CAPTURE_RANGE\": 8\n}",
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region",
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "parser_error"
     ]
   },
   {
@@ -3738,7 +4200,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3751,7 +4216,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3764,7 +4232,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3777,7 +4248,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3801,9 +4275,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag"
     ]
   },
   {
@@ -3838,7 +4311,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3851,7 +4327,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3897,7 +4376,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3910,12 +4392,7 @@
     "metadata": "{\n\"FORCEFIELD_RADIUS\": 124.0,\n\"FORCEFIELD_HEIGHT\": 86.0,\n\"BASE_RANGE\": 40,\n\"NEXUS_RADIUS\": 8,\n\"TURRET_RADIUS\": 5,\n\"HAS_RIVER\": false,\n\"CENTER\": {\n\"X\": 0,\n\"Y\": 80,\n\"Z\": 0\n},\n\"RED_NEXUS\": {\n\"X\": 88.5,\n\"Y\": 69.5,\n\"Z\": 88.5\n},\n\"BLUE_NEXUS\": {\n\"X\": -88.5,\n\"Y\": 69.5,\n\"Z\": -88.5\n},\n\"RED_SPAWN\": {\n\"X\": 114.0,\n\"Y\": 67.0,\n\"Z\": 114.0\n},\n\"BLUE_SPAWN\": {\n\"X\": -114.0,\n\"Y\": 67.0,\n\"Z\": -114.0\n},\n\"RED_MERCHANT\": {\n\"X\": 121.0,\n\"Y\": 67.0,\n\"Z\": 121.0\n},\n\"BLUE_MERCHANT\": {\n\"X\": -121.0,\n\"Y\": 67.0,\n\"Z\": -121.0\n},\n\"RED_SWORD_TURRET\": {\n\"X\": -25.5,\n\"Y\": 68.5,\n\"Z\": 106.5\n},\n\"BLUE_SWORD_TURRET\": {\n\"X\": -106.5,\n\"Y\": 68.5,\n\"Z\": 25.5\n},\n\"RED_SHIELD_TURRET\": {\n\"X\": 106.5,\n\"Y\": 68.5,\n\"Z\": -25.5\n},\n\"BLUE_SHIELD_TURRET\": {\n\"X\": 25.5,\n\"Y\": 68.5,\n\"Z\": -106.5\n},\n\"SWORD_TOWER_QUARTZ\": {\n\"X\": -62.5,\n\"Y\": 86.0,\n\"Z\": 62.5\n},\n\"SWORD_TOWER_QUARTZ_RADIUS\": 14,\n\"SHIELD_TOWER_QUARTZ\": {\n\"X\": 62.5,\n\"Y\": 86.0,\n\"Z\": -62.5\n},\n\"SHIELD_TOWER_QUARTZ_RADIUS\": 12,\n\"SWORD_TOWER\": {\n\"X\": -62.5,\n\"Y\": 47.5,\n\"Z\": 62.5\n},\n\"SWORD_CAPTURE_RANGE\": 9,\n\"SHIELD_TOWER\": {\n\"X\": 62.5,\n\"Y\": 47.5,\n\"Z\": -62.5\n},\n\"SHIELD_CAPTURE_RANGE\": 9,\n\"TUTORIAL_TOWER_HEIGHT\": 60,\n\"TUTORIAL_TOWER_RADIUS\": 30\n}\n",
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region",
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "parser_error"
     ]
   },
   {
@@ -3928,7 +4405,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3941,7 +4421,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3954,7 +4437,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3967,7 +4453,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -3980,7 +4469,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4004,7 +4496,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4017,7 +4512,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4030,7 +4528,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4043,7 +4544,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4067,7 +4571,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4080,7 +4587,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "parser_error"
     ]
   },
   {
@@ -4093,7 +4600,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4106,7 +4616,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4130,11 +4643,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region",
-      "Blue§7 spawn",
-      "Blue§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -4147,7 +4658,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4171,7 +4685,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4184,7 +4701,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4197,7 +4717,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4210,7 +4733,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4223,7 +4749,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4258,7 +4787,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4271,7 +4803,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4295,7 +4830,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4319,7 +4857,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4332,7 +4873,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4378,7 +4922,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4391,7 +4938,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4404,7 +4954,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4417,7 +4970,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4441,7 +4997,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4454,7 +5013,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4467,7 +5029,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4480,7 +5045,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4493,7 +5061,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4506,7 +5077,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4519,7 +5093,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4565,7 +5142,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4578,7 +5158,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4591,7 +5174,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4615,7 +5201,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4628,7 +5217,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4641,7 +5233,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4654,7 +5249,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4667,7 +5265,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4680,7 +5281,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4693,7 +5297,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4706,7 +5313,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4719,7 +5329,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4732,7 +5345,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4745,7 +5361,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4758,7 +5377,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4782,7 +5404,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -4795,7 +5417,10 @@
     "metadata": null,
     "category": "WAVE4",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4808,7 +5433,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4821,7 +5449,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4834,7 +5465,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4869,7 +5503,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4893,7 +5530,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4917,7 +5557,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4941,7 +5584,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4954,7 +5600,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4967,7 +5616,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4980,7 +5632,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -4993,7 +5648,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5017,7 +5675,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5030,7 +5691,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5065,7 +5729,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5078,7 +5745,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5091,7 +5761,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5126,7 +5799,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5139,7 +5815,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5152,9 +5831,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5178,7 +5856,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5213,7 +5894,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5226,7 +5910,7 @@
     "metadata": null,
     "category": "WAVE11TEST",
     "errors": [
-      "Blue§7 flag"
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5250,7 +5934,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5285,7 +5972,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5342,7 +6032,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -5366,7 +6056,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5379,7 +6072,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5392,7 +6088,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5405,7 +6104,10 @@
     "metadata": null,
     "category": "CHRISTMAS",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5451,7 +6153,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5464,7 +6169,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5477,7 +6185,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5490,7 +6201,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5503,7 +6217,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5538,7 +6255,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5562,7 +6282,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5575,7 +6298,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5599,7 +6325,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5618,13 +6347,11 @@
     "name": "Arx Novena",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "292075 - Arx Novena",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 294038,
@@ -5636,7 +6363,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5660,7 +6390,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5673,7 +6406,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5686,7 +6422,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5710,7 +6449,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5723,7 +6465,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5736,7 +6481,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5760,7 +6508,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5795,7 +6546,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5825,13 +6579,11 @@
     "name": "Quicksand",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "306301 - Quicksand",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 306331,
@@ -5854,7 +6606,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5878,7 +6633,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5886,11 +6644,13 @@
     "name": "Giant Furnaces",
     "author": "Billhelm",
     "created": "2019-05-30T16:55:28",
-    "functional": true,
+    "functional": false,
     "file": "30802 - Giant Furnaces",
     "metadata": "#Red team:\nRed.Respawn=0,27,190\nRed.Chest=0,15,78\nRed.Color=Red\nRed.Flag=Netherrack\n\n#Blue team:\nBlue.Respawn=1,27,-189\nBlue.Chest=1,15,-78\nBlue.Color=Blue\nBlue.Flag=LAPIS_BLOCK\n\n#CTF Properties\nCTF.CapturesToWin=3\nCTF.Author=Billhelm\nCTF.Spawn=0,30,0\nCTF.Time=5000\nCTF.MapName=Giant Furnaces",
     "category": "DEFAULT",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 309801,
@@ -5902,7 +6662,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5915,7 +6678,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5928,7 +6694,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5941,7 +6710,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5954,7 +6726,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5967,7 +6742,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5980,7 +6758,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -5993,7 +6774,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6017,7 +6801,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6041,7 +6828,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6054,7 +6844,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6067,7 +6860,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6080,7 +6876,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6115,7 +6914,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6128,7 +6930,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6141,7 +6946,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6154,7 +6962,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6178,7 +6989,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6202,7 +7016,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6237,7 +7054,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6250,7 +7070,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6263,7 +7086,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6287,7 +7113,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6311,7 +7140,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6324,7 +7156,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6348,7 +7183,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6383,7 +7221,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6396,7 +7237,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6420,7 +7264,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6488,7 +7335,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6501,7 +7351,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6525,7 +7378,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -6538,7 +7391,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6573,7 +7429,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6630,7 +7489,10 @@
     "metadata": null,
     "category": "WAVE13TEST",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6742,7 +7604,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6755,7 +7620,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6768,7 +7636,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_flag",
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -6803,7 +7672,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6827,7 +7699,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6851,7 +7726,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6886,7 +7764,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6910,7 +7791,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6923,7 +7807,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6936,7 +7823,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -6988,13 +7878,11 @@
     "name": "Amerish",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "341034 - Amerish",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 341643,
@@ -7034,13 +7922,11 @@
     "name": "Tanks II",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "345063 - Tanks II",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 345222,
@@ -7124,13 +8010,11 @@
     "name": "Valorport",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "347752 - Valorport",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 348075,
@@ -7142,7 +8026,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7155,12 +8042,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region",
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7195,7 +8080,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7219,10 +8107,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 spawn region",
-      "Blue§7 spawn",
-      "Blue§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -7235,7 +8121,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7248,7 +8137,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7261,7 +8153,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7274,7 +8169,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7298,7 +8196,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7311,9 +8212,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag"
     ]
   },
   {
@@ -7326,7 +8226,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7339,7 +8242,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7352,7 +8258,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7442,12 +8351,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7471,11 +8378,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7488,7 +8393,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7534,7 +8442,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7558,12 +8469,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7576,7 +8485,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7589,7 +8501,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7608,13 +8523,11 @@
     "name": "Crossfire",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "362340 - Crossfire",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 362626,
@@ -7632,13 +8545,11 @@
     "name": "Endor",
     "author": "Cryosphere & MrNomNom111",
     "created": "2021-05-05T14:20:26",
-    "functional": false,
+    "functional": true,
     "file": "362718 - Endor",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 363018,
@@ -7650,7 +8561,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7691,13 +8605,11 @@
     "name": "Station 09",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "364205 - Station 09",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 364843,
@@ -7775,7 +8687,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7788,7 +8703,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -7801,7 +8716,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7825,9 +8743,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag"
     ]
   },
   {
@@ -7851,7 +8768,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -7875,7 +8795,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8020,7 +8943,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8044,12 +8970,10 @@
     "metadata": null,
     "category": "WAVE13TEST",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8057,13 +8981,11 @@
     "name": "Nepal Village",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "372627 - Nepal Village",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 373585,
@@ -8075,7 +8997,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8088,7 +9013,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8101,7 +9029,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -8114,7 +9042,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -8149,12 +9077,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region",
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8200,7 +9126,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8230,11 +9159,13 @@
     "name": "Skyrise",
     "author": "unknown",
     "created": null,
-    "functional": true,
+    "functional": false,
     "file": "378780 - Skyrise",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 378813,
@@ -8252,13 +9183,11 @@
     "name": "Flood Canal",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "378897 - Flood Canal",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 379035,
@@ -8270,7 +9199,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8283,7 +9215,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8291,11 +9226,13 @@
     "name": "[4T] Woodcastle Arena",
     "author": "DeZilla",
     "created": "2020-08-18T03:12:51",
-    "functional": true,
+    "functional": false,
     "file": "379508 - [4T] Woodcastle Arena",
     "metadata": null,
     "category": "FOURTEAMS",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 380235,
@@ -8335,13 +9272,11 @@
     "name": "Forest of Rivals II",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "380421 - Forest of Rivals II",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 380956,
@@ -8364,7 +9299,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8399,7 +9337,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8423,11 +9364,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8473,9 +9412,8 @@
     "metadata": null,
     "category": "WAVE17TEST",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8499,7 +9437,7 @@
     "metadata": null,
     "category": "WAVE13TEST",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -8523,7 +9461,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8564,13 +9505,11 @@
     "name": "Hangar",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "384591 - Hangar",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 385382,
@@ -8582,7 +9521,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8606,7 +9548,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8619,9 +9564,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag"
     ]
   },
   {
@@ -8667,7 +9611,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8713,7 +9660,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8732,13 +9681,11 @@
     "name": "Farmhouse Fight",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "389724 - Farmhouse Fight",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 390153,
@@ -8838,7 +9785,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8884,7 +9834,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_flag",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8930,7 +9881,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8943,7 +9897,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8956,7 +9913,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -8969,7 +9929,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9015,12 +9978,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9055,7 +10016,10 @@
     "metadata": null,
     "category": "SPOOKY",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9079,7 +10043,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9125,7 +10092,7 @@
     "metadata": null,
     "category": "WAVE14TEST",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -9182,7 +10149,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9195,7 +10165,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 flag"
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9208,7 +10178,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9232,12 +10205,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9272,8 +10243,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 spawn region"
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -9319,7 +10289,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9332,7 +10305,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9378,9 +10354,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9448,7 +10425,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9571,10 +10551,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -9620,7 +10598,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9677,12 +10656,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "parser_error"
     ]
   },
   {
@@ -9728,7 +10702,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9763,7 +10740,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9776,7 +10756,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -9800,7 +10781,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9813,7 +10797,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9848,7 +10835,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9883,9 +10872,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag"
     ]
   },
   {
@@ -9920,7 +10908,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9944,7 +10935,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -9952,11 +10946,13 @@
     "name": "Finals Desert Strike II",
     "author": "Pavocado",
     "created": "2019-05-30T16:55:28",
-    "functional": true,
+    "functional": false,
     "file": "412371 - Finals Desert Strike II",
     "metadata": "#Red team:\r\nRed.Respawn=78,63,-1\r\nRed.Chest=63,76,-1\r\nRed.Color=Red\r\nRed.Flag=Netherrack\r\nRed.Face=w\r\n\r\n#Blue team:\r\nBlue.Respawn=-80,63,-1\r\nBlue.Chest=-65,76,-1\r\nBlue.Color=Blue\r\nBlue.Flag=LAPIS_BLOCK\r\nBlue.Face=e\r\n\r\n#CTF Properties\r\nCTF.CapturesToWin=3\r\nCTF.Author=Flyguy23ndm\r\nCTF.Spawn=0,165,0\r\nCTF.Time=14000\r\nCTF.MapName=Desert Strike",
     "category": "DEFAULT",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 412373,
@@ -9974,11 +10970,13 @@
     "name": "Finals Forest of Rivals",
     "author": "PolarizedHam9000",
     "created": "2019-05-30T16:55:28",
-    "functional": true,
+    "functional": false,
     "file": "412374 - Finals Forest of Rivals",
     "metadata": "#Red team:\r\nRed.Respawn=-1,75,40\r\nRed.Chest=-1,84,40\r\nRed.Color=Red\r\nRed.Flag=152\r\nRed.Face=s\r\n \r\n#Blue team:\r\nBlue.Respawn=-1,75,-76\r\nBlue.Chest=-1,84,-76\r\nBlue.Color=Blue\r\nBlue.Flag=22\r\nBlue.Face=n\r\n \r\n#CTF Properties\r\nCTF.CapturesToWin=5\r\nCTF.Author=PolarizedHam9000\r\nCTF.Spawn=-1,205,-18\r\nCTF.Time=6000\r\nCTF.MapName=Forest of Rivals II",
     "category": "DEFAULT",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 412735,
@@ -9990,7 +10988,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10003,7 +11004,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10093,10 +11097,7 @@
     "metadata": null,
     "category": "WAVE15TEST",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 flag"
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -10131,9 +11132,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10146,7 +11147,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10214,7 +11218,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -10238,7 +11242,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10317,7 +11324,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10352,7 +11362,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10365,7 +11378,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10378,10 +11394,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region",
-      "Blue§7 flag"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10471,7 +11486,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10517,10 +11535,9 @@
     "metadata": null,
     "category": "WAVE15TEST",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region",
-      "Blue§7 flag"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10555,7 +11572,7 @@
     "metadata": null,
     "category": "WAVE15TEST",
     "errors": [
-      "Blue§7 flag"
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10568,7 +11585,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10581,7 +11601,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10671,7 +11694,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10739,7 +11765,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10851,7 +11880,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10930,7 +11962,8 @@
     "metadata": null,
     "category": "WAVE16TEST",
     "errors": [
-      "no_map_data"
+      "missing_team_1_flag",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -10976,11 +12009,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region",
-      "Blue§7 spawn",
-      "Blue§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -11103,7 +12134,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -11226,7 +12260,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -11316,7 +12352,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -11329,7 +12368,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -11381,11 +12423,13 @@
     "name": "[4T] Blackout",
     "author": "xxxxdead",
     "created": "2020-08-18T03:12:51",
-    "functional": true,
+    "functional": false,
     "file": "434091 - [4T] Blackout",
     "metadata": null,
     "category": "FOURTEAMS",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 434115,
@@ -11529,7 +12573,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -11542,8 +12586,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 spawn region"
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -11567,7 +12610,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -11602,9 +12648,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -11634,13 +12679,11 @@
     "name": "Reforgedout",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "436425 - Reforgedout",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 436429,
@@ -11669,11 +12712,13 @@
     "name": "[4T] Solar System",
     "author": "xxxxdead",
     "created": "2020-08-18T03:12:51",
-    "functional": true,
+    "functional": false,
     "file": "436676 - [4T] Solar System",
     "metadata": null,
     "category": "FOURTEAMS",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 436677,
@@ -11696,7 +12741,7 @@
     "metadata": null,
     "category": "WAVE17TEST",
     "errors": [
-      "Red§7 flag"
+      "missing_team_1_flag"
     ]
   },
   {
@@ -11819,7 +12864,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -11838,26 +12886,22 @@
     "name": "White House Invasion",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "437769 - White House Invasion",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 437948,
     "name": "Mini Giant Furnaces",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "437948 - Mini Giant Furnaces",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 438030,
@@ -11913,8 +12957,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 spawn region"
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -11922,22 +12965,26 @@
     "name": "[4T] Lowrise",
     "author": "unknown",
     "created": null,
-    "functional": true,
+    "functional": false,
     "file": "438622 - [4T] Lowrise",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 438657,
     "name": "[4T] Giant Chests I",
     "author": "DeZilla",
     "created": "2020-08-18T03:12:51",
-    "functional": true,
+    "functional": false,
     "file": "438657 - [4T] Giant Chests I",
     "metadata": null,
     "category": "FOURTEAMS",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 438820,
@@ -11960,7 +13007,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -11973,9 +13023,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12043,7 +13092,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12056,12 +13108,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12206,7 +13256,7 @@
     "metadata": null,
     "category": "MEME",
     "errors": [
-      "Blue§7 flag"
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12318,7 +13368,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12381,13 +13434,11 @@
     "name": "Stalsk",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "443386 - Stalsk-12",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 443660,
@@ -12410,12 +13461,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12428,7 +13477,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12480,13 +13532,11 @@
     "name": "Veryhighrise",
     "author": "DeZilla",
     "created": "2021-03-25T01:29:01",
-    "functional": false,
+    "functional": true,
     "file": "444210 - Veryhighrise",
     "metadata": null,
     "category": "MEME",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 444314,
@@ -12509,7 +13559,7 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 flag"
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12566,10 +13616,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 flag"
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12582,7 +13631,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12606,7 +13658,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12625,13 +13680,11 @@
     "name": "Veryhighrise bridges",
     "author": "DeZilla",
     "created": "2020-09-13T00:18:51",
-    "functional": false,
+    "functional": true,
     "file": "445763 - Veryhighrise bridges",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 446254,
@@ -12775,12 +13828,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12804,7 +13855,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -12872,7 +13926,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13006,7 +14063,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13058,11 +14118,13 @@
     "name": "Pagodas VII",
     "author": "unknown",
     "created": null,
-    "functional": true,
+    "functional": false,
     "file": "455428 - Pagodas VII",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": []
+    "errors": [
+      "missing_team_2_flag"
+    ]
   },
   {
     "id": 455430,
@@ -13096,9 +14158,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 flag",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_1_flag"
     ]
   },
   {
@@ -13243,11 +14304,9 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region",
-      "Red§7 spawn",
-      "Red§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13293,7 +14352,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13312,13 +14374,11 @@
     "name": "Quartz Village",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "458419 - Quartz Village",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 458440,
@@ -13391,11 +14451,15 @@
     "name": "Mini American Fort I",
     "author": "ItalianPenguin",
     "created": "2022-06-08T00:07:36",
-    "functional": true,
+    "functional": false,
     "file": "458591 - Mini American Fort I",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": []
+    "errors": [
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
+    ]
   },
   {
     "id": 458610,
@@ -13418,7 +14482,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13492,13 +14557,11 @@
     "name": "Spawnbox",
     "author": "unknown",
     "created": null,
-    "functional": false,
+    "functional": true,
     "file": "462763 - Spawnbox",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": [
-      "no_map_data"
-    ]
+    "errors": []
   },
   {
     "id": 462781,
@@ -13532,9 +14595,8 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "Blue§7 spawn",
-      "Blue§7 flag",
-      "Blue§7 spawn region"
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13542,11 +14604,13 @@
     "name": "Mine Biomedout",
     "author": "dady100",
     "created": "2022-07-31T07:35:46",
-    "functional": true,
+    "functional": false,
     "file": "463120 - Mine Biomedout",
     "metadata": null,
     "category": "DEFAULT",
-    "errors": []
+    "errors": [
+      "missing_team_2_flag"
+    ]
   },
   {
     "id": 464,
@@ -13558,7 +14622,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13637,7 +14704,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13694,7 +14764,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13707,7 +14780,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13720,7 +14796,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13755,7 +14834,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13789,7 +14871,9 @@
     "file": "532 - Wonderland",
     "metadata": "{\n  \"TimeLimit\": 1200,\n  \"Teams\": [\n    {\"Color\": \"Red\",\n      \"SpawnLocation\": {\"X\": -44.0,\"Y\": 45.0,\"Z\": -47.0}},\n    {\"Color\": \"Blue\",\n      \"SpawnLocation\": {\"X\": 49.0,\"Y\": 45.0,\"Z\": -47.0}}\n  ],\n\"Zones\": [\n    {\"Size\": 150, \"Location\": {\"X\": 0, \"Y\": 28, \"Z\": -14.0}},\n    {\"Size\": 150, \"Location\": {\"X\": -32, \"Y\": 34, \"Z\": 37}},\n    {\"Size\": 150, \"Location\": {\"X\": 32, \"Y\": 34, \"Z\": 37}}\n  ]\n}",
     "category": "DEFAULT",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 541,
@@ -13856,7 +14940,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13869,10 +14956,8 @@
     "metadata": null,
     "category": "VARIATION",
     "errors": [
-      "Red§7 spawn",
-      "Red§7 spawn region",
-      "Blue§7 spawn",
-      "Blue§7 spawn region"
+      "missing_team_1_spawn",
+      "missing_team_2_spawn"
     ]
   },
   {
@@ -13884,7 +14969,9 @@
     "file": "601 - Lighthouse III",
     "metadata": "#Red team:\nRed.Respawn=-148,32,8\nRed.Chest=-79,13,2\nRed.Color=Red\nRed.Flag=87\nRed.Face=e\n \n#Blue team:\nBlue.Respawn=149,32,8\nBlue.Chest=79,14,3\nBlue.Color=Blue\nBlue.Flag=22\nBlue.Face=w\n \n#CTF Properties\nCTF.CapturesToWin=3\nCTF.Author=Saixos & studmuffin713\nCTF.Spawn=0,177,0\nCTF.Time=0000\nCTF.MapName=Lighthouse III",
     "category": "VARIATION",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 605,
@@ -13918,7 +15005,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -13986,7 +15076,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14010,7 +15103,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14067,7 +15163,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14102,7 +15201,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14137,7 +15239,10 @@
     "metadata": null,
     "category": "ORIGINAL",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14150,7 +15255,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14229,7 +15337,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14264,7 +15375,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14320,7 +15434,9 @@
     "file": "831 - Forgotten Civilization",
     "metadata": "#Red team:\nRed.Respawn=0,57,132\nRed.Chest=0,68,55\nRed.Color=Red\nRed.Flag=netherrack\nRed.SpawnDirection=N\n\n#Blue team:\nBlue.Respawn=0,57,-233\nBlue.Chest=0,68,-156\nBlue.Color=Blue\nBlue.Flag=LAPIS_BLOCK\nBlue.SpawnDirection=S\n\n#CTF Properties\nCTF.CapturesToWin=3\nCTF.Author=MisterAwesome07\nCTF.Spawn=0,100,-50\nCTF.MapName=Forgotten Civilization",
     "category": "WAVE5",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 852,
@@ -14343,7 +15459,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14400,7 +15519,10 @@
     "metadata": null,
     "category": "CHRISTMAS",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14479,7 +15601,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14492,7 +15617,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14505,7 +15633,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14562,7 +15693,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14575,7 +15709,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14588,7 +15725,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14601,7 +15741,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14625,7 +15768,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14715,7 +15861,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14728,7 +15877,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14752,7 +15904,10 @@
     "metadata": null,
     "category": "DEFAULT",
     "errors": [
-      "no_map_data"
+      "missing_team_1_spawn",
+      "missing_team_1_flag",
+      "missing_team_2_spawn",
+      "missing_team_2_flag"
     ]
   },
   {
@@ -14760,21 +15915,25 @@
     "name": "Lighthouse",
     "author": "xxxxdead",
     "created": "2020-08-18T12:56:31",
-    "functional": true,
+    "functional": false,
     "file": "989 - Lighthouse",
     "metadata": "#Red team:\nRed.Respawn=-148,32,8\nRed.Chest=-78,13,2\nRed.Color=Red\nRed.Flag=87\nRed.Face=e\n \n#Blue team:\nBlue.Respawn=149,32,8\nBlue.Chest=78,14,3\nBlue.Color=Blue\nBlue.Flag=22\nBlue.Face=w\n \n#CTF Properties\nCTF.CapturesToWin=3\nCTF.Author=xxxxdead\nCTF.Spawn=0,177,0\nCTF.Time=18000\nCTF.MapName=Lighthouse Original",
     "category": "ORIGINAL",
-    "errors": []
+    "errors": [
+      "parser_error"
+    ]
   },
   {
     "id": 437867,
     "name": "HMini Aquarium",
     "author": "_Puppa",
     "created": "2023-09-20T20:00:00",
-    "functional": true,
+    "functional": false,
     "file": "437867 - Bobey Aquarium",
     "metadata": null,
     "category": "MEME",
-    "errors": []
+    "errors": [
+      "no_map_file"
+    ]
   }
 ]
