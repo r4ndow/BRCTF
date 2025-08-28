@@ -188,7 +188,6 @@ public class MageKit extends BattleKit {
 
             event.getPlayer().getWorld().playEffect(event.getPlayer().getEyeLocation(), Effect.BLAZE_SHOOT, 0);
 
-
             attach(new InteractiveProjectile(getPlugin(), pearl)
                 .singleEventOnly()
                 .onDeath(pearl::remove)

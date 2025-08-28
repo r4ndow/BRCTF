@@ -90,4 +90,5 @@ This will compile the code and build a new plugin JAR. The JAR will automaticall
 # Credits
 
 - ryguy1 and redslime for their help in modernizing
-- wintergreen3, without whose testing and help, this project would have never been completed
+- Miskey, f1brown, and Ninsanity for help with balancing and testing
+- wintergreen3 and Dave01, without whose testing and help, this project would have never been completed

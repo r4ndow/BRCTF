@@ -71,6 +71,7 @@ public class Battle {
     public void start() {
         this.kitManager.getScoutDeathTagManager().register();
         this.kitManager.getNecroRevivalTagManager().register();
+        this.visibilityManager.init();
 
         if (getOptions().getMapTester().isEnabled()) {
             new BattleMapTester(objectMapper).run(getOptions().getMaps(), getOptions().getMapTester(), this.mapRepo);

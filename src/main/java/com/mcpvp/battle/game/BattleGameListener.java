@@ -88,7 +88,7 @@ public class BattleGameListener implements EasyListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onMoveIntoSpawn(PlayerMoveEvent event) {
         if (!game.isParticipant(event.getPlayer())) {
             return;
@@ -101,7 +101,7 @@ public class BattleGameListener implements EasyListener {
         });
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onTeleportIntoSpawn(PlayerTeleportEvent event) {
         if (!game.isParticipant(event.getPlayer())) {
             return;

@@ -57,12 +57,14 @@ public class InteractiveProjectile implements EasyListener {
         if (event.getDamager() == projectile) {
             if (event.getEntity() instanceof Player hit && hitPlayerConsumer != null) {
                 hitPlayerConsumer.accept(hit);
+                if (singleEventOnly) {
+                    unregister();
+                }
             } else if (damageEventConsumer != null) {
                 damageEventConsumer.accept(event);
-            }
-
-            if (singleEventOnly) {
-                unregister();
+                if (singleEventOnly) {
+                    unregister();
+                }
             }
         }
     }

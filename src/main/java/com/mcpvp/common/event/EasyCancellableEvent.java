@@ -17,6 +17,7 @@ public class EasyCancellableEvent extends Event implements Cancellable {
     }
 
     // Required by Bukkit
+    @SuppressWarnings("unused")
     public static HandlerList getHandlerList() {
         return handlers;
     }

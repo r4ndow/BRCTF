@@ -8,13 +8,10 @@ import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.util.chat.C;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
@@ -22,6 +19,9 @@ import java.util.Map;
 public class ArcherKit extends BattleKit {
 
     private static final int HEADSHOT_DIST = 35;
+
+    private KitItem arrows1;
+    private KitItem arrows2;
 
     public ArcherKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
@@ -48,20 +48,29 @@ public class ArcherKit extends BattleKit {
             .add(ItemBuilder.of(Material.STONE_SWORD).name("Archer Sword").unbreakable())
             .addFood(2)
             .add(ItemBuilder.of(Material.BOW).enchant(Enchantment.ARROW_KNOCKBACK, 1))
-            .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #1"))
-            .add(ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #2"))
+            .add(arrows1 = new KitItem(this,
+                ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #1").build()))
+            .add(arrows2 = new KitItem(this,
+                ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #2").build()))
             .addCompass(8)
             .build();
     }
 
     @EventHandler
-    public void onFireArrow(ProjectileLaunchEvent event) {
-        if (isPlayer(event.getEntity().getShooter())) {
-            attach(new InteractiveProjectile(getPlugin(), event.getEntity())
+    public void onFireArrow(EntityShootBowEvent event) {
+        if (isPlayer(event.getEntity())) {
+            attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
                 .singleEventOnly()
                 .onDamageEvent(this::onHit)
             );
             attach(event.getEntity());
+
+            if (arrows1.getItem().getAmount() == 1) {
+                arrows1.setPlaceholder();
+            }
+            if (arrows2.getItem().getAmount() == 1) {
+                arrows2.setPlaceholder();
+            }
         }
     }
 

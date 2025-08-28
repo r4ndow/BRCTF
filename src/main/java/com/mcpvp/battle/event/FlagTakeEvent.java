@@ -6,6 +6,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;
 
+/**
+ * An event for when a player takes or steals a flag.
+ *
+ * @see FlagTakeEvent
+ * @see FlagPickupEvent
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class FlagTakeEvent extends EasyCancellableEvent {
