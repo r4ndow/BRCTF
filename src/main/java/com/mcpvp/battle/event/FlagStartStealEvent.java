@@ -2,21 +2,19 @@ package com.mcpvp.battle.event;
 
 import com.mcpvp.battle.flag.IBattleFlag;
 import com.mcpvp.common.event.EasyCancellableEvent;
+import com.mcpvp.common.time.Duration;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;
 
-/**
- * An event for when a player takes or steals a flag.
- *
- * @see FlagStealEvent
- * @see FlagPickupEvent
- */
 @Data
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class FlagTakeEvent extends EasyCancellableEvent {
+public class FlagStartStealEvent extends EasyCancellableEvent {
 
     private final Player player;
     private final IBattleFlag flag;
+    private Duration requiredStealTime;
 
 }

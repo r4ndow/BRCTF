@@ -1,6 +1,7 @@
 package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.FlagStartStealEvent;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.event.EventUtil;
@@ -99,6 +100,21 @@ public class NinjaKit extends BattleKit {
     public void onTick(TickEvent event) {
         increaseEggMana();
         attemptHeal(event);
+
+        if (invisible) {
+            getGame().getTeamManager().getTeams().forEach(
+                team -> team.getFlagManager().stopStealAttempt(getPlayer())
+            );
+        }
+    }
+
+    @EventHandler
+    public void onStartFlagSteal(FlagStartStealEvent flagStartStealEvent) {
+        if (invisible) {
+            flagStartStealEvent.setCancelled(true);
+        } else {
+            flagStartStealEvent.setRequiredStealTime(Duration.seconds(1.5));
+        }
     }
 
     public void attemptHeal(TickEvent event) {

@@ -31,9 +31,15 @@ public class FlagManager {
      * @param player The player attempting to steal.
      */
     public void attemptSteal(Player player) {
+        // Ensure the player is allowed to even *try* to steal
+        FlagStartStealEvent startStealEvent = new FlagStartStealEvent(player, flag, FLAG_STEAL_TIMER);
+        if (startStealEvent.call()) {
+            return;
+        }
+
         if (!stealTimers.containsKey(player)) {
             // The player has just approached the flag. Set up the initial timer.
-            stealTimers.put(player, new Expiration().expireIn(FLAG_STEAL_TIMER));
+            stealTimers.put(player, new Expiration().expireIn(startStealEvent.getRequiredStealTime()));
         } else if (stealTimers.get(player).isExpired()) {
             steal(player);
         }
