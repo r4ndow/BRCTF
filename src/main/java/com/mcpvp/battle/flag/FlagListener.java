@@ -64,7 +64,7 @@ public class FlagListener implements EasyListener {
 
                 if (player.getLocation().distance(bt.getFlag().getLocation()) > FLAG_DIST) {
                     // If they've strayed from the flag, make sure they're not considered to be stealing
-                    bt.getFlagManager().stopStealAttempt(player);
+                    bt.getFlagManager().resetStealTimer(player);
                 }
             }
         }

@@ -103,7 +103,7 @@ public class NinjaKit extends BattleKit {
 
         if (invisible) {
             getGame().getTeamManager().getTeams().forEach(
-                team -> team.getFlagManager().stopStealAttempt(getPlayer())
+                team -> team.getFlagManager().resetStealTimer(getPlayer())
             );
         }
     }

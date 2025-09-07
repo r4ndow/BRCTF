@@ -46,11 +46,12 @@ public class FlagManager {
     }
 
     /**
-     * Needs to be called when a player is no longer near the flag.
+     * Needs to be called when a player is no longer near the flag, or should otherwise
+     * have their steal timer reset.
      *
-     * @param player The player who can no longer steal.
+     * @param player The player who needs to restart stealing.
      */
-    public void stopStealAttempt(Player player) {
+    public void resetStealTimer(Player player) {
         stealTimers.remove(player);
     }
 
@@ -66,21 +67,22 @@ public class FlagManager {
     }
 
     /**
-     * Restores the flag, such as when the flag has been sitting on the ground too long.
-     */
-    public void restore() {
-        flag.reset();
-        new FlagRestoreEvent(flag).call();
-    }
-
-    /**
      * Used when a player picks up their own team's flag from the ground.
      *
      * @param player The player who picked up the flag.
      */
     public void pickup(Player player) {
-        flag.pickup(player);
-        new FlagPickupEvent(player, flag).call();
+        if (new FlagPickupEvent(player, flag).call()) {
+            flag.pickup(player);
+        }
+    }
+
+    /**
+     * Restores the flag, such as when the flag has been sitting on the ground too long.
+     */
+    public void restore() {
+        flag.reset();
+        new FlagRestoreEvent(flag).call();
     }
 
     /**
