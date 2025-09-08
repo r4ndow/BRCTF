@@ -22,8 +22,8 @@ import java.util.Objects;
 public class LocalMapRepo implements MapRepo {
 
     private final ObjectMapper mapper;
+    private final BattleOptionsInput.CentralMapSourceOptions mapOptions;
     private final List<BattleMapData> mapData = new ArrayList<>();
-    private final BattleOptionsInput.MapOptions mapOptions;
 
     @Override
     public void init() {
@@ -50,12 +50,12 @@ public class LocalMapRepo implements MapRepo {
         String json = null;
 
         // Try to read the configuration supplied file first
-        File configured = new File(mapOptions.getMapsJson());
+        File configured = new File(mapOptions.getJson());
         if (configured.exists()) {
             try {
                 return Objects.requireNonNull(FileUtils.readFileToString(configured));
             } catch (IOException e) {
-                log.warn("Failed to read custom maps.json at {}", mapOptions.getMapsJson(), e);
+                log.warn("Failed to read custom maps.json at {}", mapOptions.getJson(), e);
             }
         }
 
@@ -101,16 +101,8 @@ public class LocalMapRepo implements MapRepo {
     }
 
     @Override
-    public List<BattleMapData> getFunctional() {
-        return mapData.stream().filter(BattleMapData::isFunctional).toList();
+    public File getWorldData(BattleMapData map) {
+        return new File(mapOptions.getDir(), map.getFile());
     }
 
-    @Override
-    public List<BattleMapData> getEnabled() {
-        return getFunctional().stream().filter(m ->
-            mapOptions.getCategories().getOrDefault(m.getCategory(), true)
-        ).filter(m ->
-            !mapOptions.getDisable().contains(m.getId())
-        ).toList();
-    }
 }

@@ -3,6 +3,7 @@ package com.mcpvp.battle.map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.config.BattleTeamConfig;
+import com.mcpvp.battle.map.manager.MapManager;
 import com.mcpvp.battle.map.parser.BattleMapLoader;
 import com.mcpvp.battle.map.parser.BattleMapLoaderMetadataImpl;
 import com.mcpvp.battle.map.parser.BattleMapLoaderSignImpl;
@@ -33,7 +34,8 @@ public class BattleMapTester {
     public void run(
         BattleOptionsInput.MapOptions mapOptions,
         BattleOptionsInput.MapTesterOptions testOptions,
-        MapRepo mapRepo
+        MapRepo mapRepo,
+        MapManager mapManager
     ) {
         File testOutputDir = new File(testOptions.getOutputDir());
         File testOutputFile = new File(testOutputDir, "test_progress_" + testOptions.getRunId() + ".json");
@@ -59,7 +61,7 @@ public class BattleMapTester {
             try {
                 log.info("Processing map {}", battleMapData);
                 List<String> errors = test(
-                    new File(mapOptions.getDir()),
+                    mapManager.getWorldData(battleMapData),
                     battleMapData,
                     i
                 );
@@ -87,7 +89,6 @@ public class BattleMapTester {
         World world;
         try {
             world = BattleWorldManager.create(
-                mapData,
                 mapsDirectory,
                 index
             );

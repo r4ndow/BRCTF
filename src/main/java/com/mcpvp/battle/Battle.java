@@ -14,7 +14,6 @@ import com.mcpvp.battle.map.BattleMapTester;
 import com.mcpvp.battle.map.BattleWorldManager;
 import com.mcpvp.battle.map.manager.LocalMapManager;
 import com.mcpvp.battle.map.manager.MapManager;
-import com.mcpvp.battle.map.repo.LocalMapRepo;
 import com.mcpvp.battle.map.repo.MapRepo;
 import com.mcpvp.battle.match.BattleMatch;
 import com.mcpvp.battle.match.BattleMatchManager;
@@ -27,6 +26,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -42,7 +42,6 @@ public class Battle {
         .findAndRegisterModules();
 
     private BattleOptions options;
-    private MapRepo mapRepo;
     private MapManager mapManager;
     private BattleGameManager gameManager;
     private BattleMatchManager matchManager;
@@ -54,9 +53,7 @@ public class Battle {
 
     public void load() throws IOException {
         this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin, objectMapper));
-        this.mapRepo = new LocalMapRepo(this.objectMapper, this.options.getMaps());
-        this.mapRepo.init();
-        this.mapManager = new LocalMapManager(this.plugin, this.mapRepo);
+        this.mapManager = new LocalMapManager(this.plugin, options.getMaps(), loadMapRepos(this.options));
         this.gameManager = new BattleGameManager(this);
         this.matchManager = new BattleMatchManager(plugin, this, this.gameManager, this.mapManager);
         this.kitManager = new BattleKitManager(plugin, this);
@@ -68,13 +65,25 @@ public class Battle {
         BattleWorldManager.cleanUpWorlds();
     }
 
+    private List<MapRepo> loadMapRepos(BattleOptions options) {
+        return options.getMaps().getSources().stream()
+            .map(source -> MapRepo.from(objectMapper, source))
+            .peek(MapRepo::init)
+            .toList();
+    }
+
     public void start() {
         this.kitManager.getScoutDeathTagManager().register();
         this.kitManager.getNecroRevivalTagManager().register();
         this.visibilityManager.init();
 
         if (getOptions().getMapTester().isEnabled()) {
-            new BattleMapTester(objectMapper).run(getOptions().getMaps(), getOptions().getMapTester(), this.mapRepo);
+            new BattleMapTester(objectMapper).run(
+                getOptions().getMaps(),
+                getOptions().getMapTester(),
+                MapRepo.from(objectMapper, getOptions().getMapTester().getMapSource()),
+                getMapManager()
+            );
             return;
         }
 

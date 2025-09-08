@@ -1,5 +1,7 @@
 package com.mcpvp.battle.options;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.mcpvp.battle.map.BattleMapCategory;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
@@ -81,9 +83,11 @@ public class BattleOptionsInput {
     public static class MapOptions {
 
         @Builder.Default
-        private final String dir = "plugins/mcctf/maps";
-        @Builder.Default
-        private final String mapsJson = "plugins/mcctf/maps.json";
+        private final List<MapSource> sources = new ArrayList<>() {
+            {
+                add(CentralMapSourceOptions.builder().build());
+            }
+        };
         @Builder.Default
         private final Map<BattleMapCategory, Boolean> categories = new LinkedHashMap<>() {
             {
@@ -104,6 +108,36 @@ public class BattleOptionsInput {
 
     }
 
+    @JsonSubTypes(value = {
+        @JsonSubTypes.Type(value = CentralMapSourceOptions.class, name = "central"),
+        @JsonSubTypes.Type(value = CustomMapSourceOptions.class, name = "custom")
+    })
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+    public sealed interface MapSource permits CentralMapSourceOptions, CustomMapSourceOptions {
+
+    }
+
+    @Data
+    @Builder
+    @Jacksonized
+    public static final class CentralMapSourceOptions implements MapSource {
+
+        @Builder.Default
+        private final String dir = "plugins/mcctf/maps";
+        @Builder.Default
+        private final String json = "plugins/mcctf/maps.json";
+
+    }
+
+    @Data
+    @Builder
+    @Jacksonized
+    public static final class CustomMapSourceOptions implements MapSource {
+
+        private final String dir;
+
+    }
+
     @Data
     @Builder
     @Jacksonized
@@ -111,6 +145,8 @@ public class BattleOptionsInput {
 
         @Builder.Default
         private final boolean enabled = false;
+        @Builder.Default
+        private final MapSource mapSource = CentralMapSourceOptions.builder().build();
         @Builder.Default
         private final String outputDir = "plugins/mcctf/maps_testing";
         @Builder.Default

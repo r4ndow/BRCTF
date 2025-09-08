@@ -86,7 +86,9 @@ public class BattleMatch {
 
     public void insertNextGame(int map) {
         BattleMapData battleMapData = battle.getMapManager().loadMap(map);
-        BattleGame game = battle.getGameManager().create(battleMapData, games.size() + 1);
+        BattleGame game = battle.getGameManager().create(
+            battleMapData, battle.getMapManager().getWorldData(battleMapData), games.size() + 1
+        );
         games.add(currentGameIndex + 1, game);
     }
 

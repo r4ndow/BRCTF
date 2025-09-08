@@ -22,7 +22,7 @@ public class BattleGameManager {
 
     private final Battle battle;
 
-    public BattleGame create(BattleMapData map, int index) {
+    public BattleGame create(BattleMapData map, File mapDir, int index) {
         BattleMapLoader parser;
         if (map.getMetadata() != null) {
             parser = new BattleMapLoaderMetadataImpl();
@@ -32,7 +32,7 @@ public class BattleGameManager {
 
         try {
             // Extract map and create a world from it
-            World world = BattleWorldManager.create(map, new File(battle.getOptions().getMaps().getDir()), index);
+            World world = BattleWorldManager.create(mapDir, index);
             // Parse the config. Teams must already exist at this point
             BattleGameConfig config = parser.parse(map, world);
             log.info("Parsed config: {}", config);

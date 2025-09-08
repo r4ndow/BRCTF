@@ -2,12 +2,20 @@ package com.mcpvp.battle.map.manager;
 
 import com.mcpvp.battle.map.BattleMapData;
 
+import java.io.File;
 import java.util.List;
 
 /**
  * Picks maps based on what's available in {@link com.mcpvp.battle.map.repo.MapRepo}.
  */
 public interface MapManager {
+
+    /**
+     * Retrieves a list of maps which are enabled.
+     *
+     * @return All enabled and functional maps.
+     */
+    List<BattleMapData> getEnabled();
 
     /**
      * Checks if the given ID is a known map ID.
@@ -41,6 +49,14 @@ public interface MapManager {
      * @return A list of loaded maps.
      */
     List<BattleMapData> loadMaps(int games);
+
+    /**
+     * Locates the folder that contains the Minecraft world data for the given map ID.
+     *
+     * @param map The map.
+     * @return The folder containing the Minecraft world data.
+     */
+    File getWorldData(BattleMapData map);
 
     /**
      * Specifies a list of IDs which should be played next time the server is booted.

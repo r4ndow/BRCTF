@@ -23,7 +23,7 @@ public class BattleMatchManager {
         List<BattleGame> games = new ArrayList<>();
         List<BattleMapData> maps = selectMaps();
         for (int i = 0; i < maps.size(); i++) {
-            games.add(gameLoader.create(maps.get(i), i));
+            games.add(gameLoader.create(maps.get(i), mapManager.getWorldData(maps.get(i)), i));
         }
 
         return new BattleMatch(plugin, battle, games);

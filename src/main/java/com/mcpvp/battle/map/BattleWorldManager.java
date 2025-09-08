@@ -25,7 +25,7 @@ public class BattleWorldManager {
     private static final String WORLD_PREFIX = "ctf_game_world_";
 
     public static World create(
-        BattleMapData map, File mapsDir, int index
+        File mapDir, int index
     ) throws IOException {
         String worldName = WORLD_PREFIX + index;
 
@@ -36,7 +36,6 @@ public class BattleWorldManager {
         }
 
         // Find the map directory that needs to be copied
-        File mapDir = new File(mapsDir, map.getFile());
         if (!mapDir.exists()) {
             throw new FileNotFoundException("Map file doesn't exist: " + mapDir);
         }
