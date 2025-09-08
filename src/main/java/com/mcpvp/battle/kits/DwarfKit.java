@@ -15,7 +15,7 @@ import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
 import com.mcpvp.common.util.EntityUtil;
-import com.mcpvp.common.util.movement.CancelNextFallTask;
+import com.mcpvp.common.movement.CancelNextFallTask;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_8_R3.EnumParticle;

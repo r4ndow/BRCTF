@@ -12,7 +12,7 @@ import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.KitAttemptSelectEvent;
 import com.mcpvp.common.kit.KitDefinition;
-import com.mcpvp.common.util.movement.SpongeUtil;
+import com.mcpvp.common.movement.SpongeUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;

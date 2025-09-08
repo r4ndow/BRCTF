@@ -9,7 +9,7 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.time.Duration;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;

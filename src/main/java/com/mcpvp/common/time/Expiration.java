@@ -4,22 +4,37 @@ public class Expiration {
 
     private long expiration = 0;
 
-    public Expiration expireIn(long milliseconds) {
-        expiration = System.currentTimeMillis() + milliseconds;
+    /**
+     * Constructs a new Expiration that expires after the given Duration.
+     *
+     * @param duration The duration after which to expire this.
+     * @return The new Expiration.
+     */
+    public static Expiration after(Duration duration) {
+        return new Expiration().expireIn(duration);
+    }
+
+    /**
+     * @param duration The duration after which to expire this.
+     * @return This same Expiration.
+     */
+    public Expiration expireIn(Duration duration) {
+        expiration = System.currentTimeMillis() + duration.toMilliseconds();
         return this;
     }
 
-    public Expiration expireIn(Duration duration) {
-        return expireIn(duration.toMilliseconds());
-    }
-
+    /**
+     * @return If this has expired, eg the expiration timestamp has passed.
+     */
     public boolean isExpired() {
         return System.currentTimeMillis() >= expiration;
     }
 
-    public Expiration expireNow() {
+    /**
+     * Expire this immediately such that {@link #isExpired()} returns true.
+     */
+    public void expireNow() {
         expiration = 0;
-        return this;
     }
 
     /**

@@ -2,7 +2,7 @@ package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.team.BattleTeam;
-import com.mcpvp.battle.util.cmd.CmdUtil;
+import com.mcpvp.common.command.CommandUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,7 +23,7 @@ public class FlagCommands extends BattleCommandGroup {
     }
 
     public List<String> matchTeam(String arg) {
-        return CmdUtil.partialMatches(
+        return CommandUtil.partialMatches(
             battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList(),
             arg
         );

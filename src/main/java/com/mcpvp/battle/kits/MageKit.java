@@ -13,8 +13,8 @@ import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureBuilder;
 import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
+import com.mcpvp.common.util.EffectUtil;
 import com.mcpvp.common.util.EntityUtil;
-import com.mcpvp.common.util.FireworkUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
@@ -129,7 +129,7 @@ public class MageKit extends BattleKit {
                         )
                         .build();
 
-                    FireworkUtil.explodeInstantly(effect, arrow.getLocation());
+                    EffectUtil.sendInstantFirework(effect, arrow.getLocation());
                 })
                 .onDamageEvent(ev -> {
                     // The arrow hitting the player actually deals the damage.
@@ -157,7 +157,7 @@ public class MageKit extends BattleKit {
                             getGame().getTeamManager().getTeam(getPlayer()).getColor().getColor(), Color.PURPLE
                         ).build();
 
-                    FireworkUtil.explodeInstantly(effect, arrow.getLocation());
+                    EffectUtil.sendInstantFirework(effect, arrow.getLocation());
                 })
             );
         }

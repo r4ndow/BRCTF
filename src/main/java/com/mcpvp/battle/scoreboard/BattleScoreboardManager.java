@@ -8,7 +8,7 @@ import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.util.ScoreboardUtil;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
@@ -70,9 +70,10 @@ public class BattleScoreboardManager extends EasyLifecycle {
      */
     public void refresh(Player player) {
         List<String> scores = getScores(player);
+        Objective objective = player.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
         ScoreboardUtil.resetChanged(player.getScoreboard(), scores);
-        ScoreboardUtil.addLargeScores(player.getScoreboard(), player.getScoreboard().getObjective(DisplaySlot.SIDEBAR), scores);
-        player.getScoreboard().getObjective(DisplaySlot.SIDEBAR).setDisplayName(getTitle());
+        ScoreboardUtil.addLargeScores(player.getScoreboard(), objective, scores);
+        objective.setDisplayName(getTitle());
     }
 
     /**
@@ -131,7 +132,6 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * @return A list of all the entries to show on the sidebar for the player.
      */
     private List<String> getScores(Player player) {
-        ScoreboardUtil.setMaxLength(48);
         List<String> scores = new ArrayList<>();
 
         BattleGameState state = battle.getGame().getState();

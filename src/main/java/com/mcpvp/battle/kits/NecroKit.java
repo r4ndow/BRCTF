@@ -16,7 +16,7 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EffectUtil;
 import com.mcpvp.common.util.EntityUtil;
 import com.mcpvp.common.util.PlayerUtil;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EntityWitherSkull;
 import org.bukkit.Material;
@@ -217,7 +217,7 @@ public class NecroKit extends BattleKit {
             // Item handling
             decrement(true);
 
-            Expiration expiration = new Expiration().expireIn(SKULL_REGENERATION_TIME);
+            Expiration expiration = Expiration.after(SKULL_REGENERATION_TIME);
             restores.add(expiration);
             attach(EasyTask.of(this::regenerate).runTaskLater(getPlugin(), SKULL_REGENERATION_TIME.ticks()));
         }

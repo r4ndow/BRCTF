@@ -15,6 +15,6 @@ public interface StructureViolationChecker {
      * @param block The block to check.
      * @return An Optional violation.
      */
-    public Optional<StructureViolation> check(Block block);
+    Optional<StructureViolation> check(Block block);
 
 }

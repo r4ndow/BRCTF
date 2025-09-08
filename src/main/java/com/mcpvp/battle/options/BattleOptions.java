@@ -18,7 +18,6 @@ public class BattleOptions {
     private final BattleOptionsInput input;
     private final BattlePlugin plugin;
 
-
     /**
      * @param plugin The plugin which is creating the options.
      * @param input  The input, read directly from the file.

@@ -8,7 +8,7 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitSelectedEvent;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;

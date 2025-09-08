@@ -165,7 +165,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    public void onInteractEvent(PlayerInteractEvent event) {
+    private void onInteractEvent(PlayerInteractEvent event) {
         if (event.isCancelled() && ignoreCancelled) {
             return;
         }
@@ -184,7 +184,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    public void onInteractEvent(PlayerInteractEntityEvent event) {
+    private void onInteractEvent(PlayerInteractEntityEvent event) {
         if (event.isCancelled() && ignoreCancelled) {
             return;
         }
@@ -199,7 +199,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    public void onBlockPlaceEvent(BlockPlaceEvent event) {
+    private void onBlockPlaceEvent(BlockPlaceEvent event) {
         if (event.isCancelled() && ignoreCancelled) {
             return;
         }
@@ -211,7 +211,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    public void onClickEvent(InventoryClickEvent event) {
+    private void onClickEvent(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
@@ -228,7 +228,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageByEntityEvent event) {
+    private void onEntityDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player damager)) {
             return;
         }
@@ -243,7 +243,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    public void onInteractEntity(PlayerInteractEntityEvent event) {
+    private void onInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
 
         if (player.getItemInHand() == null) {
@@ -256,7 +256,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    public void onDrop(PlayerDropItemEvent event) {
+    private void onDrop(PlayerDropItemEvent event) {
         if (isItem(event.getItemDrop())) {
             dropHandlers.forEach(h -> h.accept(event));
         }
@@ -276,13 +276,6 @@ public class InteractiveItem implements EasyListener {
      */
     public boolean isItem(Item item) {
         return isItem(item.getItemStack());
-    }
-
-    /**
-     * @return An ItemQuery that will match this item.
-     */
-    public ItemQuery query() {
-        return new ItemQuery().nbt(NBT_KEY, String.valueOf(this.id));
     }
 
     /**

@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 public class StructureViolation {
 
     /**
-     * @return A unique key to identify this type of structure violation, e.g. `STRUCTURE_ALREADY_PRESENT`
+     * A unique key to identify this type of structure violation, e.g. `STRUCTURE_ALREADY_PRESENT`
      */
     private final String key;
 
     /**
-     * @return A message that can be shown to the user.
+     * A message that can be shown to the user.
      */
     private final String message;
 

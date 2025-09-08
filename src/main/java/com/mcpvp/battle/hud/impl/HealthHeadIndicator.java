@@ -1,7 +1,7 @@
 package com.mcpvp.battle.hud.impl;
 
 import com.mcpvp.battle.hud.HeadIndicator;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 

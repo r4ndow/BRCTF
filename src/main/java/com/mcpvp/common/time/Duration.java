@@ -110,8 +110,9 @@ public class Duration implements Serializable {
         List<String> strings = new LinkedList<>();
 
         for (int i = Unit.values().length - 1; i != -1 && ms > 0; i--) {
-            if (smallest != null && i < smallest.ordinal())
+            if (smallest != null && i < smallest.ordinal()) {
                 continue;
+            }
 
             Unit u = Unit.values()[i];
             long v = ms(ms).getValue(u);
@@ -256,8 +257,9 @@ public class Duration implements Serializable {
      */
     public static Duration since(LocalDateTime time) {
         long t = time.toInstant(ZoneOffset.UTC).toEpochMilli();
-        if (t > System.currentTimeMillis())
+        if (t > System.currentTimeMillis()) {
             return ms(t - System.currentTimeMillis());
+        }
 
         return ms(System.currentTimeMillis() - t);
     }
@@ -284,8 +286,9 @@ public class Duration implements Serializable {
         for (Unit u : Unit.values()) {
             Matcher m = u.pattern.matcher(str);
 
-            while (m.find())
+            while (m.find()) {
                 dur = dur.add(new Duration(Integer.valueOf(m.group().replaceAll(m.pattern().pattern(), "$1").trim()), u));
+            }
         }
 
         return dur;

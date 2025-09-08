@@ -6,7 +6,7 @@ import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.time.Duration;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;

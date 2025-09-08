@@ -1,6 +1,5 @@
 package com.mcpvp.common.command;
 
-import com.mcpvp.battle.util.cmd.CmdUtil;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public abstract class EasyCommandGroup extends EasyCommand {
     @Override
     public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
         if (args.size() == 1) {
-            return CmdUtil.partialMatches(commands.stream().map(c -> {
+            return CommandUtil.partialMatches(commands.stream().map(c -> {
                 if (c.getName().contains(" ") && !c.getAliases().isEmpty()) {
                     return c.getAliases().get(0);
                 }

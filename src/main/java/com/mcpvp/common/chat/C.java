@@ -1,8 +1,10 @@
-package com.mcpvp.common.util.chat;
+package com.mcpvp.common.chat;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -272,10 +274,55 @@ public class C {
     /**
      * Checks if is if this code is a format code as opposed to a color code.
      *
-     * @return the if this code is a format code as opposed to a color code
+     * @return if this code is a format code as opposed to a color code
      */
     public static boolean isFormatting(String str) {
         return str.equals(R) || str.equals(B) || str.equals(S) || str.equals(U) || str.equals(I);
     }
 
+    /**
+     * Wraps the given String, but avoids cutting color characters off.
+     *
+     * @param string     The String to wrap.
+     * @param lineLength The length of each line.
+     * @return A list of wrapped text.
+     */
+    public static List<String> wrapWithColor(String string, int lineLength) {
+        int length = translateLength(string, lineLength);
+        List<String> lines;
+        if (length == string.length()) {
+            lines = new ArrayList<>();
+            lines.add(string);
+        } else {
+            int lastSpace = string.lastIndexOf(' ', length);
+            length = lastSpace == -1 ? length : lastSpace + 1;
+            String line = string.substring(0, length).trim();
+            lines = wrapWithColor(ChatColor.getLastColors(line) + string.substring(length).trim(), lineLength);
+            lines.add(0, line);
+        }
+        return lines;
+    }
+
+    /**
+     * @deprecated Unknown what the purpose of this is. It would be just as easy
+     * to strip color codes and find the length (?)
+     */
+    @Deprecated
+    public static int translateLength(String string, int length) {
+        int nonColorCharCount = 0;
+        boolean previousWasColorChar = false;
+        for (int i = 0; i < string.length(); i++) {
+            if (previousWasColorChar) {
+                previousWasColorChar = false;
+            } else if (string.charAt(i) == ChatColor.COLOR_CHAR) {
+                previousWasColorChar = true;
+            } else {
+                nonColorCharCount++;
+                if (nonColorCharCount == length) {
+                    return i + 1;
+                }
+            }
+        }
+        return string.length();
+    }
 }

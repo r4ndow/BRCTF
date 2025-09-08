@@ -5,7 +5,7 @@ import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;

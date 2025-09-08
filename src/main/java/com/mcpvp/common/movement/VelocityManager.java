@@ -1,4 +1,4 @@
-package com.mcpvp.common.util.movement;
+package com.mcpvp.common.movement;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -12,7 +12,7 @@ import org.bukkit.util.Vector;
  */
 public class VelocityManager implements Runnable {
 
-    public static boolean smooth = false;
+    private static final boolean smooth = false;
 
     public static final double X_INTENSITY = 3;
     public static final double Y_INTENSITY = 1;
@@ -39,13 +39,15 @@ public class VelocityManager implements Runnable {
         int y = vector.getBlockY();
         int z = vector.getBlockZ();
         if (x == 0 && y == 0 && z == 0) {
-            if (!smooth)
+            if (!smooth) {
                 player.setVelocity(new Vector(0, 0, 0));
+            }
 
             task.cancel();
 
-            if (afterLaunch != null)
+            if (afterLaunch != null) {
                 afterLaunch.run();
+            }
 
             return;
         }

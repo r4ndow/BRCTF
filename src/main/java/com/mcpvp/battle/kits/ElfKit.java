@@ -16,9 +16,9 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
 import com.mcpvp.common.util.EffectUtil;
 import com.mcpvp.common.util.EntityUtil;
-import com.mcpvp.common.util.chat.C;
-import com.mcpvp.common.util.movement.CancelNextFallTask;
-import com.mcpvp.common.util.nms.ActionbarUtil;
+import com.mcpvp.common.chat.C;
+import com.mcpvp.common.movement.CancelNextFallTask;
+import com.mcpvp.common.nms.ActionbarUtil;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
@@ -373,7 +373,7 @@ public class ElfKit extends BattleKit {
             Runnable extinguishRunnable = getExtinguishRunnable(landed, shootEvent);
 
             if (shootEvent.getForce() == 1) {
-                final Expiration expiration = new Expiration().expireIn(Duration.seconds(8));
+                final Expiration expiration = Expiration.after(Duration.seconds(8));
                 EasyTask.of(task -> {
                     if (expiration.isExpired()) {
                         task.cancel();

@@ -17,7 +17,7 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EntityUtil;
 import com.mcpvp.common.util.LocationUtil;
 import com.mcpvp.common.util.PlayerUtil;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -21,38 +21,47 @@ public class Cuboid extends Shape {
     private final Location corner2;
 
     public Cuboid(Location corner1, Location corner2) {
-        if (corner1.getWorld() != corner2.getWorld())
+        if (corner1.getWorld() != corner2.getWorld()) {
             throw new IllegalArgumentException("corners must be in the same world");
+        }
         this.corner1 = corner1;
         this.corner2 = corner2;
     }
 
     @Override
     public boolean contains(Location location) {
-        if (location == null)
+        if (location == null) {
             throw new IllegalArgumentException("location can't be null");
-        if (corner1 == null)
+        }
+        if (corner1 == null) {
             throw new NullPointerException("corner1 can't be null");
-        if (location.getWorld() != corner1.getWorld())
+        }
+        if (location.getWorld() != corner1.getWorld()) {
             return false;
+        }
         // compare using the first corner only
         if (corner2 == null) {
-            if (corner1.getBlockX() != location.getBlockX())
+            if (corner1.getBlockX() != location.getBlockX()) {
                 return false;
-            if (corner1.getBlockY() != location.getBlockY())
+            }
+            if (corner1.getBlockY() != location.getBlockY()) {
                 return false;
+            }
             return corner1.getBlockZ() == location.getBlockZ();
         }
-        if (!isWithinCoords(corner1.getBlockX(), corner2.getBlockX(), location.getBlockX()))
+        if (!isWithinCoords(corner1.getBlockX(), corner2.getBlockX(), location.getBlockX())) {
             return false;
-        if (!isWithinCoords(corner1.getBlockY(), corner2.getBlockY(), location.getBlockY()))
+        }
+        if (!isWithinCoords(corner1.getBlockY(), corner2.getBlockY(), location.getBlockY())) {
             return false;
+        }
         return isWithinCoords(corner1.getBlockZ(), corner2.getBlockZ(), location.getBlockZ());
     }
 
     private boolean isWithinCoords(double coord1, double coord2, double value) {
-        if (coord1 > coord2)
+        if (coord1 > coord2) {
             return (value <= coord1 && value >= coord2);
+        }
         return (value <= coord2 && value >= coord1);
     }
 
@@ -77,8 +86,9 @@ public class Cuboid extends Shape {
     @Override
     public Set<Location> getFaces() {
         Set<Location> faceLocations = new HashSet<>();
-        if (corner1 == null)
+        if (corner1 == null) {
             throw new NullPointerException("corner1 can't be null");
+        }
         if (corner2 == null) {
             faceLocations.add(corner1);
             return faceLocations;
@@ -89,27 +99,30 @@ public class Cuboid extends Shape {
         int maxY = Math.max(corner1.getBlockY(), corner2.getBlockY());
         int minZ = Math.min(corner1.getBlockZ(), corner2.getBlockZ());
         int maxZ = Math.max(corner1.getBlockZ(), corner2.getBlockZ());
-        for (int x = minX; x <= maxX; x++)
+        for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 Location minZFace = new Location(corner1.getWorld(), x, y, minZ);
                 Location maxZFace = new Location(corner2.getWorld(), x, y, maxZ);
                 faceLocations.add(minZFace);
                 faceLocations.add(maxZFace);
             }
-        for (int z = minZ; z <= maxZ; z++)
+        }
+        for (int z = minZ; z <= maxZ; z++) {
             for (int y = minY; y <= maxY; y++) {
                 Location minXFace = new Location(corner1.getWorld(), minX, y, z);
                 Location maxXFace = new Location(corner1.getWorld(), maxX, y, z);
                 faceLocations.add(minXFace);
                 faceLocations.add(maxXFace);
             }
-        for (int x = minX; x <= maxX; x++)
+        }
+        for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
                 Location minYFace = new Location(corner1.getWorld(), x, minY, z);
                 Location maxYFace = new Location(corner1.getWorld(), x, maxY, z);
                 faceLocations.add(minYFace);
                 faceLocations.add(maxYFace);
             }
+        }
         return faceLocations;
     }
 

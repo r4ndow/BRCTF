@@ -2,7 +2,7 @@ package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.map.BattleMapData;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

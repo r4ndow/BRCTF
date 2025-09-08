@@ -4,13 +4,20 @@ import com.mcpvp.common.ParticlePacket;
 import com.mcpvp.common.task.EasyTask;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder;
 import net.minecraft.server.v1_8_R3.WorldBorder;
+import net.minecraft.server.v1_8_R3.WorldServer;
 import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftFirework;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class EffectUtil {
@@ -68,4 +75,14 @@ public class EffectUtil {
         );
     }
 
+    public static void sendInstantFirework(FireworkEffect effect, Location location) {
+        Firework firework = location.getWorld().spawn(location, Firework.class);
+        FireworkMeta meta = firework.getFireworkMeta();
+        meta.clearEffects();
+        meta.addEffect(effect);
+        firework.setFireworkMeta(meta);
+        ((CraftFirework) firework).getHandle().expectedLifespan = 1;
+        WorldServer w = ((CraftWorld) location.getWorld()).getHandle();
+        w.broadcastEntityEffect(((CraftEntity) firework).getHandle(), (byte) 17);
+    }
 }

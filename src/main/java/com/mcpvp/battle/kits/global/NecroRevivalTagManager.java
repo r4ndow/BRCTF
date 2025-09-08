@@ -11,7 +11,7 @@ import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_8_R3.EnumParticle;
@@ -47,7 +47,7 @@ public class NecroRevivalTagManager implements EasyListener {
 
         tagged.add(player);
 
-        final Expiration expiration = new Expiration().expireIn(TAG_DURATION);
+        final Expiration expiration = Expiration.after(TAG_DURATION);
         EasyTask.of(holder -> {
             if (!player.isOnline() || !isRevivalTagged(player)) {
                 holder.cancel();

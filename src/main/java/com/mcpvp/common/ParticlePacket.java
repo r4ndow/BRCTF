@@ -1,6 +1,6 @@
 package com.mcpvp.common;
 
-import com.mcpvp.common.util.nms.PacketUtil;
+import com.mcpvp.common.nms.PacketUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.server.v1_8_R3.EnumParticle;

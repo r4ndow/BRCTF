@@ -6,7 +6,7 @@ import com.mcpvp.battle.kits.global.NecroRevivalTagManager;
 import com.mcpvp.battle.kits.global.ScoutDeathTagManager;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitManager;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;

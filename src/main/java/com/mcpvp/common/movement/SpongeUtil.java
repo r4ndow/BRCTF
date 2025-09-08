@@ -1,4 +1,4 @@
-package com.mcpvp.common.util.movement;
+package com.mcpvp.common.movement;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,8 +30,9 @@ public final class SpongeUtil {
         int depth = 0;
         while (block.getType() == Material.SPONGE) {
             depth++;
-            if (block.getY() == 0 || depth > 10)
+            if (block.getY() == 0 || depth > 10) {
                 break;
+            }
             block = block.getRelative(BlockFace.DOWN);
         }
         return depth;

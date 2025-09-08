@@ -19,8 +19,8 @@ import com.mcpvp.common.structure.StructureManager;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
-import com.mcpvp.common.util.chat.C;
-import com.mcpvp.common.util.nms.ActionbarUtil;
+import com.mcpvp.common.chat.C;
+import com.mcpvp.common.nms.ActionbarUtil;
 import lombok.Data;
 import org.bukkit.Color;
 import org.bukkit.EntityEffect;
@@ -167,7 +167,7 @@ public class MedicKit extends BattleKit {
                 .forEach(KitItem::restore);
 
             // No healing for a while
-            HEAL_COOLDOWNS.put(player, new Expiration().expireIn(RESTORE_PLAYER_COOLDOWN));
+            HEAL_COOLDOWNS.put(player, Expiration.after(RESTORE_PLAYER_COOLDOWN));
 
             new HealEvent(player).call();
         } else {

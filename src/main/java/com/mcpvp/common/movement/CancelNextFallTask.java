@@ -1,4 +1,4 @@
-package com.mcpvp.common.util.movement;
+package com.mcpvp.common.movement;
 
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;

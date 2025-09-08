@@ -1,10 +1,10 @@
 package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.kit.BattleKitManager;
-import com.mcpvp.battle.util.cmd.CmdUtil;
+import com.mcpvp.common.command.CommandUtil;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitInfo;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class KitManagerCommands extends BattleCommandGroup {
         List<String> kits = new ArrayList<>();
         kits.add("all");
         kits.addAll(kitManager.getKitDefinitions().stream().map(KitInfo::getName).toList());
-        return CmdUtil.partialMatches(kits, arg);
+        return CommandUtil.partialMatches(kits, arg);
     }
 
     private List<KitDefinition> findKit(String arg) {

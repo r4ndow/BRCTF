@@ -1,4 +1,4 @@
-package com.mcpvp.common.util.nms;
+package com.mcpvp.common.nms;
 
 import net.minecraft.server.v1_8_R3.Packet;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;

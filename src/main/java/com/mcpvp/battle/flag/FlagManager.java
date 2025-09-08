@@ -39,7 +39,7 @@ public class FlagManager {
 
         if (!stealTimers.containsKey(player)) {
             // The player has just approached the flag. Set up the initial timer.
-            stealTimers.put(player, new Expiration().expireIn(startStealEvent.getRequiredStealTime()));
+            stealTimers.put(player, Expiration.after(startStealEvent.getRequiredStealTime()));
         } else if (stealTimers.get(player).isExpired()) {
             steal(player);
         }

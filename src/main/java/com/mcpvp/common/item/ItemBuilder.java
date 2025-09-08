@@ -1,7 +1,8 @@
 package com.mcpvp.common.item;
 
 import com.mcpvp.common.time.Duration;
-import com.mcpvp.common.util.chat.Colors;
+import com.mcpvp.common.chat.C;
+import com.mcpvp.common.chat.Colors;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
@@ -13,7 +14,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -148,10 +148,12 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder safeAmount(int quantity) {
-        if (quantity > 64)
+        if (quantity > 64) {
             return amount(64);
-        if (quantity < 1)
+        }
+        if (quantity < 1) {
             return amount(1);
+        }
         return amount(quantity);
     }
 
@@ -219,10 +221,10 @@ public class ItemBuilder implements Cloneable {
      *
      * @param charsPerLine - the number of characters before wrapping the line.
      * @return this builder instance, for chaining.
-     * @see ItemUtil#wrapWithColor(String, int)
+     * @see C#wrapWithColor(String, int)
      */
     public ItemBuilder lore(String lore, int charsPerLine) {
-        return lore(ItemUtil.wrapWithColor(lore, charsPerLine));
+        return lore(C.wrapWithColor(lore, charsPerLine));
     }
 
     /**
@@ -237,52 +239,15 @@ public class ItemBuilder implements Cloneable {
     }
 
     /**
-     * Collects the given lines into a List and uses {@code #setDesc(List)}.
-     *
-     * @param desc - the array of lines that pass onto {@link #desc(List)}.
-     * @return this builder instance, for chaining.
-     */
-    public ItemBuilder desc(String... desc) {
-        return desc(Arrays.asList(desc));
-    }
-
-    /**
-     * Adds the given lines to the existing lore.
-     *
-     * @param desc - the array of lines that pass onto {@link #desc(List)}.
-     * @return this builder instance, for chaining.
-     */
-    public ItemBuilder addDesc(String... desc) {
-        List<String> lore = ItemUtil.getLore(item);
-        if (lore == null)
-            lore = new ArrayList<>();
-        lore.addAll(Arrays.asList(desc));
-        return desc(lore);
-    }
-
-    /**
-     * Adds the given lines to the existing lore.
-     *
-     * @param desc - the list of lines that pass onto {@link #desc(List)}.
-     * @return this builder instance, for chaining.
-     */
-    public ItemBuilder addDesc(List<String> desc) {
-        List<String> lore = ItemUtil.getLore(item);
-        if (lore == null) lore = new ArrayList<>();
-        lore.addAll(desc);
-        return desc(lore);
-    }
-
-    /**
      * Sets the lore given a specified string and a character limit<br>
      * for wrapping lines. Intended for 'prettier' item lores.
      *
      * @param charsPerLine - the number of characters before wrapping the line.
      * @return this builder instance, for chaining.
-     * @see ItemUtil#wrapWithColor(String, int)
+     * @see C#wrapWithColor(String, int)
      */
     public ItemBuilder desc(String desc, int charsPerLine) {
-        return desc(ItemUtil.wrapWithColor(desc, charsPerLine));
+        return desc(C.wrapWithColor(desc, charsPerLine));
     }
 
     /**
@@ -311,14 +276,13 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder enchantBook(Enchantment enchantment, Integer level, boolean force) {
-        if (item.getType() != Material.ENCHANTED_BOOK)
+        if (item.getType() != Material.ENCHANTED_BOOK) {
             return this;
+        }
 
         editMeta(meta -> {
-
             EnchantmentStorageMeta eMeta = (EnchantmentStorageMeta) meta;
             eMeta.addStoredEnchant(enchantment, level, force);
-
         });
 
         return this;
@@ -336,10 +300,12 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder enchant(Enchantment enchantment, int level, boolean force) {
-        if (force)
+        if (force) {
             item.addUnsafeEnchantment(enchantment, level);
-        else
+        } else {
             item.addEnchantment(enchantment, level);
+        }
+
         return this;
     }
 
@@ -426,7 +392,7 @@ public class ItemBuilder implements Cloneable {
             case THIN_GLASS:
                 return type(Material.STAINED_GLASS_PANE).color(color);
             default:
-                new Exception("Attempted to color a non-colorable item").printStackTrace();
+                throw new IllegalArgumentException("Attempted to color a non-colorable item");
         }
         return this;
     }
@@ -466,14 +432,15 @@ public class ItemBuilder implements Cloneable {
      *                               leather armor piece.
      */
     public ItemBuilder color(Color color, boolean mix) {
-        if (!(item.getItemMeta() instanceof LeatherArmorMeta))
+        if (!(item.getItemMeta() instanceof LeatherArmorMeta meta)) {
             throw new IllegalStateException("Only leather items can be dyed!");
+        }
 
-        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
-        if (mix)
+        if (mix) {
             meta.setColor(color.mixColors(Bukkit.getItemFactory().getDefaultLeatherColor(), color));
-        else
+        } else {
             meta.setColor(color);
+        }
         item.setItemMeta(meta);
         return this;
     }
@@ -613,8 +580,9 @@ public class ItemBuilder implements Cloneable {
          * @return this builder instance, for chaining.
          */
         public PotionBuilder effect(PotionEffectType type, Duration duration, int amplifier) {
-            if (this.potion == null)
+            if (this.potion == null) {
                 this.potion = new Potion(getType(type));
+            }
             editMeta(m -> m.addCustomEffect(new PotionEffect(type, duration.ticks(), amplifier), true));
             return this;
         }
@@ -709,9 +677,12 @@ public class ItemBuilder implements Cloneable {
         }
 
         private PotionType getType(PotionEffectType effect) {
-            for (PotionType pt : PotionType.values())
-                if (pt.getEffectType() == effect)
+            for (PotionType pt : PotionType.values()) {
+                if (pt.getEffectType() == effect) {
                     return pt;
+                }
+            }
+
             return null;
         }
 

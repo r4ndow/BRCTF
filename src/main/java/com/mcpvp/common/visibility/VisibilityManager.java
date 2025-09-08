@@ -4,7 +4,8 @@ import org.bukkit.entity.Player;
 
 public interface VisibilityManager {
 
-    default void init() {}
+    default void init() {
+    }
 
     /**
      * Make it so the observer cannot see the target player.

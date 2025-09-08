@@ -1,4 +1,4 @@
-package com.mcpvp.common.util.chat;
+package com.mcpvp.common.chat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;

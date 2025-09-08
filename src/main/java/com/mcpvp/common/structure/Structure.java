@@ -69,7 +69,7 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
      * @return A list of all blocks impacted by this Structure.
      */
     public List<Block> getBlocks() {
-        return blocks.stream().map(sb -> sb.getBlock()).toList();
+        return blocks.stream().map(StructureBlock::getBlock).toList();
     }
 
     /**

@@ -1,13 +1,10 @@
 package com.mcpvp.common.util;
 
-import com.mcpvp.common.item.ItemUtil;
-import com.mcpvp.common.util.chat.C;
+import com.mcpvp.common.chat.C;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,12 +15,7 @@ import java.util.List;
  */
 public class ScoreboardUtil {
 
-    public static final String SPACER = "{s}";
-    private static int maxLength = 16;
-
-    public static void setMaxLength(int max) {
-        maxLength = max;
-    }
+    private static final int MAX_LENGTH = 48;
 
     /**
      * Truncates the given entry name instead of truncating the entry value.
@@ -36,9 +28,11 @@ public class ScoreboardUtil {
      */
     public static String autoSize(String entryName, Object entryValue) {
         int valLength = (" " + entryValue).length();
-        if (maxLength - valLength < 0)
+        if (MAX_LENGTH - valLength < 0) {
             return entryValue.toString();
-        entryName = entryName.substring(0, Math.min(maxLength - valLength, entryName.length()));
+        }
+        entryName = entryName.substring(0, Math.min(MAX_LENGTH - valLength, entryName.length()));
+
         return entryName + " " + entryValue;
     }
 
@@ -55,35 +49,15 @@ public class ScoreboardUtil {
      * @return A String that can be displayed on a Scoreboard
      */
     public static String autoSize(String entryName, Object entryValue, String... fallbacks) {
-        if ((entryName + " " + entryValue).length() > maxLength)
-            for (String newName : fallbacks)
-                if ((newName + " " + entryValue).length() <= maxLength)
+        if ((entryName + " " + entryValue).length() > MAX_LENGTH) {
+            for (String newName : fallbacks) {
+                if ((newName + " " + entryValue).length() <= MAX_LENGTH) {
                     return newName + " " + entryValue;
-        return autoSize(entryName, entryValue);
-    }
-
-    /**
-     * Adds all the given entries to the given Objective in order, where the
-     * first argument is the top of the Scoreboard and the last argument is the
-     * bottom of the Scoreboard.
-     */
-    public static void addScores(Objective objective, String... entries) {
-        addScores(objective, new ArrayList<>(Arrays.asList(entries)));
-    }
-
-    /**
-     * Adds all the given entries to the given Objective in order, where the
-     * first argument is the top of the Scoreboard and the last argument is the
-     * bottom of the Scoreboard.
-     */
-    public static void addScores(Objective objective, List<String> entries) {
-        String lastSpace = "";
-        for (int i = 0; i < entries.size(); i++) {
-            String entry = entries.get(i);
-            if (entry.equals(SPACER))
-                entry = (lastSpace += " ");
-            objective.getScore(entry).setScore(entries.size() - i);
+                }
+            }
         }
+
+        return autoSize(entryName, entryValue);
     }
 
     /**
@@ -108,8 +82,9 @@ public class ScoreboardUtil {
                     entrie = entry.substring(16, 32);
                     suffix = entry.substring(32);
                 }
-                if (board.getTeam(prefix) != null)
+                if (board.getTeam(prefix) != null) {
                     board.getTeam(prefix).unregister();
+                }
                 Team t = board.registerNewTeam(prefix);
                 t.setPrefix(prefix);
                 t.setSuffix(suffix);
@@ -124,51 +99,11 @@ public class ScoreboardUtil {
     }
 
     /**
-     * Splits the given value to a new line if necessary, without truncating the
-     * name.
-     *
-     * @param entryName  The name of the entry.
-     * @param entryValue The "value" of the entry, which is displayed next to or
-     *                   below the name.
-     * @return A list of all the lines necessary to display the entry.
-     */
-    public static List<String> wrap(String entryName, String entryValue) {
-        return wrap(entryName, entryValue, false);
-    }
-
-    /**
-     * Splits the given value to a new line if necessary, without truncating the
-     * name.
-     *
-     * @param entryName  The name of the entry
-     * @param entryValue The "value" of the entry, which is displayed next to or
-     *                   below the name.
-     * @param indent     Whether or not to indent any subsequent wrapped lines that
-     *                   follow the entryName.
-     * @return A list of all the lines necessary to display the entry.
-     */
-    public static List<String> wrap(String entryName, String entryValue, boolean indent) {
-        if ((entryName + " " + entryValue).length() < maxLength)
-            return Arrays.asList(entryName + " " + entryValue);
-        ArrayList<String> wrapped = new ArrayList<>();
-        wrapped.add(entryName);
-        for (String entry : wrap(entryValue))
-            if (indent && (" " + entry).length() < maxLength)
-                wrapped.add(" " + entry);
-            else
-                wrapped.add(entry);
-        return wrapped;
-    }
-
-    /**
-     * Convenience method that calls {@link Util#cutStringAtLastWord(int, String)}
-     * with a length of 16.
-     *
      * @param entry The entry to display.
      * @return A list of all the lines necessary to display the entry.
      */
     public static List<String> wrap(String entry) {
-        return ItemUtil.wrapWithColor(entry, maxLength);
+        return C.wrapWithColor(entry, MAX_LENGTH);
     }
 
     /**
@@ -178,55 +113,11 @@ public class ScoreboardUtil {
      * @param scores     The entries to keep.
      */
     public static void resetChanged(Scoreboard scoreboard, List<String> scores) {
-        for (String entry : scoreboard.getEntries())
-            if (!scores.contains(entry))
+        for (String entry : scoreboard.getEntries()) {
+            if (!scores.contains(entry)) {
                 scoreboard.resetScores(entry);
+            }
+        }
     }
 
-    /**
-     * Resets any entries in the Objective that are not present in the given scores.
-     *
-     * @param objective The Objective to reset entries in.
-     * @param scores    The entries to keep.
-     */
-    public static void resetChanged(Objective objective, List<String> scores) {
-        for (String entry : getScores(objective))
-            if (!scores.contains(entry))
-                objective.getScoreboard().resetScores(entry);
-    }
-
-    /**
-     * @param objective The objective to get the scores for.
-     * @return A list of scores that are registered for the objective.
-     */
-    public static List<String> getScores(Objective objective) {
-        List<String> scores = new ArrayList<>();
-
-        for (String s : objective.getScoreboard().getEntries())
-            if (objective.getScore(s).isScoreSet())
-                scores.add(s);
-
-        return scores;
-    }
-
-    /**
-     * Resets the score of every entry in the given Scoreboard.
-     */
-    public static void resetScores(Scoreboard scoreboard) {
-        scoreboard.getEntries().forEach(scoreboard::resetScores);
-    }
-
-    /**
-     * Resets all objectives in the given Scoreboard.
-     */
-    public static void resetObjectives(Scoreboard scoreboard) {
-        scoreboard.getObjectives().forEach(Objective::unregister);
-    }
-
-    /**
-     * Unregisters all teams in the given Scoreboard.
-     */
-    public static void resetTeams(Scoreboard scoreboard) {
-        scoreboard.getTeams().forEach(Team::unregister);
-    }
 }
