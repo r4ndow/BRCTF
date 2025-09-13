@@ -97,7 +97,7 @@ public class BattleGame extends EasyLifecycle {
 
     private void enterState(BattleGameState state) {
         this.stateHandler = switch (state) {
-            case BEFORE, AFTER -> new BattleOutsideGameStateHandler(plugin, this);
+            case BEFORE, AFTER -> new BattleOutsideGameStateHandler(plugin, this, state);
             case DURING -> new BattleDuringGameStateHandler(plugin, this);
         };
         this.stateHandler.enterState();

@@ -18,7 +18,6 @@ dependencies {
     // These JARs are so old that they aren't on any repository, so include them locally
     compileOnly(files("libs/spigot-1.8.8.jar"))
     compileOnly(files("libs/craftbukkit-1.8.8.jar"))
-//    compileOnly(files("libs/ProtocolLib-4.7.0.jar"))
 
     // JSON dependencies
     implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.map.BattleMapData;
-import com.mcpvp.battle.map.repo.MapRepo;
+import com.mcpvp.battle.map.repo.BattleMapSource;
 import com.mcpvp.battle.options.BattleOptionsInput;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.FileUtils;
@@ -16,11 +16,11 @@ import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
-public class LocalMapManager implements MapManager {
+public class MergingMapManager implements BattleMapManager {
 
     private final BattlePlugin plugin;
     private final BattleOptionsInput.MapOptions mapOptions;
-    private final List<MapRepo> repos;
+    private final List<BattleMapSource> repos;
 
     @Override
     public List<BattleMapData> getEnabled() {
@@ -80,13 +80,15 @@ public class LocalMapManager implements MapManager {
         try {
             FileUtils.write(file, new ObjectMapper().writeValueAsString(ids));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unable to create map override", e);
         }
     }
 
     @Override
     public void clearOverride() {
-        new File(plugin.getDataFolder(), "override_maps.json").delete();
+        if (!new File(plugin.getDataFolder(), "override_maps.json").delete()) {
+            throw new RuntimeException("Failed to remove the override_maps.json");
+        }
     }
 
     @Override
@@ -100,7 +102,7 @@ public class LocalMapManager implements MapManager {
             });
             return ids.stream().map(this::loadMap).toList();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to read the override_maps.json file", e);
         }
     }
 

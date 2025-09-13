@@ -29,27 +29,13 @@ public class BattleOptionsInput {
     @Builder.Default
     private int version = 1;
     @Builder.Default
-    private boolean testMode = false;
-    //	@Builder.Default
-//	private FlagType flagType = FlagType.WOOL;
-    @Builder.Default
-    private String defaultKit = "heavy";
-    @Builder.Default
-    private boolean weather = false;
-    @Builder.Default
-    private Integer ninjaCapLimit = null;
-    @Builder.Default
-    private boolean ghostCapping = true;
-    @Builder.Default
-    private boolean overtime = false;
-    @Builder.Default
-    private final MapTesterOptions mapTester = MapTesterOptions.builder().build();
-    @Builder.Default
-    private final MapOptions maps = MapOptions.builder().build();
-    @Builder.Default
     private final MatchOptions match = MatchOptions.builder().build();
     @Builder.Default
     private final GameOptions game = GameOptions.builder().build();
+    @Builder.Default
+    private final MapOptions maps = MapOptions.builder().build();
+    @Builder.Default
+    private final MapTesterOptions mapTester = MapTesterOptions.builder().build();
 
     @Data
     @Builder
@@ -58,8 +44,6 @@ public class BattleOptionsInput {
 
         @Builder.Default
         private final int games = 3;
-        @Builder.Default
-        private final boolean allowUnevenSwitch = true;
 
     }
 
@@ -72,8 +56,6 @@ public class BattleOptionsInput {
         private int secondsBeforeGame = 30;
         @Builder.Default
         private int secondsAfterGame = 15;
-        @Builder.Default
-        private int minimumPlayerCount = 4;
 
     }
 
@@ -83,7 +65,7 @@ public class BattleOptionsInput {
     public static class MapOptions {
 
         @Builder.Default
-        private final List<MapSource> sources = new ArrayList<>() {
+        private final List<MapSourceOptions> sources = new ArrayList<>() {
             {
                 add(CentralMapSourceOptions.builder().build());
             }
@@ -113,14 +95,14 @@ public class BattleOptionsInput {
         @JsonSubTypes.Type(value = CustomMapSourceOptions.class, name = "custom")
     })
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-    public sealed interface MapSource permits CentralMapSourceOptions, CustomMapSourceOptions {
+    public sealed interface MapSourceOptions permits CentralMapSourceOptions, CustomMapSourceOptions {
 
     }
 
     @Data
     @Builder
     @Jacksonized
-    public static final class CentralMapSourceOptions implements MapSource {
+    public static final class CentralMapSourceOptions implements MapSourceOptions {
 
         @Builder.Default
         private final String dir = "plugins/mcctf/maps";
@@ -132,7 +114,7 @@ public class BattleOptionsInput {
     @Data
     @Builder
     @Jacksonized
-    public static final class CustomMapSourceOptions implements MapSource {
+    public static final class CustomMapSourceOptions implements MapSourceOptions {
 
         private final String dir;
 
@@ -146,7 +128,7 @@ public class BattleOptionsInput {
         @Builder.Default
         private final boolean enabled = false;
         @Builder.Default
-        private final MapSource mapSource = CentralMapSourceOptions.builder().build();
+        private final MapSourceOptions mapSource = CentralMapSourceOptions.builder().build();
         @Builder.Default
         private final String outputDir = "plugins/mcctf/maps_testing";
         @Builder.Default

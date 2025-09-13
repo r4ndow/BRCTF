@@ -5,7 +5,7 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameManager;
 import com.mcpvp.battle.map.BattleMapData;
-import com.mcpvp.battle.map.manager.MapManager;
+import com.mcpvp.battle.map.manager.BattleMapManager;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class BattleMatchManager {
     private final BattlePlugin plugin;
     private final Battle battle;
     private final BattleGameManager gameLoader;
-    private final MapManager mapManager;
+    private final BattleMapManager mapManager;
 
     public BattleMatch create() {
         List<BattleGame> games = new ArrayList<>();

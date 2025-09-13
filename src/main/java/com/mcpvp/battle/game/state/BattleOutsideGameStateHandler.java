@@ -3,6 +3,7 @@ package com.mcpvp.battle.game.state;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.game.BattleGame;
+import com.mcpvp.battle.game.BattleGameState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -15,15 +16,23 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
 
-    public BattleOutsideGameStateHandler(BattlePlugin plugin, BattleGame game) {
+    private final BattleGameState state;
+
+    public BattleOutsideGameStateHandler(BattlePlugin plugin, BattleGame game, BattleGameState state) {
         super(plugin, game);
+        this.state = state;
     }
 
     @Override
     public void enterState() {
         super.enterState();
 
-        plugin.getBattle().getMatch().getTimer().setSeconds(15);
+        int seconds = switch (state) {
+            case BEFORE -> plugin.getBattle().getOptions().getGame().getSecondsBeforeGame();
+            case AFTER -> plugin.getBattle().getOptions().getGame().getSecondsAfterGame();
+            default -> 15;
+        };
+        plugin.getBattle().getMatch().getTimer().setSeconds(seconds);
 
         setupFlags();
     }

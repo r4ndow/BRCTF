@@ -3,11 +3,11 @@ package com.mcpvp.battle.map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.config.BattleTeamConfig;
-import com.mcpvp.battle.map.manager.MapManager;
+import com.mcpvp.battle.map.manager.BattleMapManager;
 import com.mcpvp.battle.map.parser.BattleMapLoader;
-import com.mcpvp.battle.map.parser.BattleMapLoaderMetadataImpl;
-import com.mcpvp.battle.map.parser.BattleMapLoaderSignImpl;
-import com.mcpvp.battle.map.repo.MapRepo;
+import com.mcpvp.battle.map.parser.BattleMapMetadataLoader;
+import com.mcpvp.battle.map.parser.BattleMapSignLoader;
+import com.mcpvp.battle.map.repo.BattleMapSource;
 import com.mcpvp.battle.options.BattleOptionsInput;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -32,17 +32,16 @@ public class BattleMapTester {
 
     @SneakyThrows
     public void run(
-        BattleOptionsInput.MapOptions mapOptions,
         BattleOptionsInput.MapTesterOptions testOptions,
-        MapRepo mapRepo,
-        MapManager mapManager
+        BattleMapSource mapSource,
+        BattleMapManager mapManager
     ) {
         File testOutputDir = new File(testOptions.getOutputDir());
         File testOutputFile = new File(testOutputDir, "test_progress_" + testOptions.getRunId() + ".json");
 
         MapTestResults results = loadExistingResults(testOutputFile);
 
-        List<BattleMapData> untested = mapRepo.getAll().stream()
+        List<BattleMapData> untested = mapSource.getAll().stream()
             .filter(data -> !results.errors.containsKey(data.getId()))
             .toList();
         log.info("Found {} untested maps. Testing will begin in ten seconds...", untested.size());
@@ -73,7 +72,7 @@ public class BattleMapTester {
 
         log.info("Map testing complete!");
         saveResults(testOutputFile, results);
-        generateMapsJson(mapRepo, results, testOptions);
+        generateMapsJson(mapSource, results, testOptions);
 
         Bukkit.shutdown();
     }
@@ -81,9 +80,9 @@ public class BattleMapTester {
     private List<String> test(File mapsDirectory, BattleMapData mapData, int index) throws IOException {
         BattleMapLoader parser;
         if (mapData.getMetadata() != null) {
-            parser = new BattleMapLoaderMetadataImpl();
+            parser = new BattleMapMetadataLoader();
         } else {
-            parser = new BattleMapLoaderSignImpl();
+            parser = new BattleMapSignLoader();
         }
 
         World world;
@@ -140,7 +139,7 @@ public class BattleMapTester {
         log.info("Saved testing results to {}", outputFile.getAbsoluteFile());
     }
 
-    private void generateMapsJson(MapRepo repo, MapTestResults results, BattleOptionsInput.MapTesterOptions testerOptions) throws IOException {
+    private void generateMapsJson(BattleMapSource repo, MapTestResults results, BattleOptionsInput.MapTesterOptions testerOptions) throws IOException {
         List<BattleMapData> maps = repo.getAll();
         for (BattleMapData map : maps) {
             List<String> errors = results.getErrors().get(map.getId());

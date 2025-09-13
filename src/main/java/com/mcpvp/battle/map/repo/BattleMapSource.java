@@ -10,16 +10,16 @@ import java.util.List;
 /**
  * Determines maps that are available to be played.
  */
-public interface MapRepo {
+public interface BattleMapSource {
 
-    static MapRepo from(
+    static BattleMapSource from(
         ObjectMapper objectMapper,
-        BattleOptionsInput.MapSource source
+        BattleOptionsInput.MapSourceOptions source
     ) {
         if (source instanceof BattleOptionsInput.CentralMapSourceOptions cms) {
-            return new LocalMapRepo(objectMapper, cms);
+            return new CentralMapSource(objectMapper, cms);
         } else if (source instanceof BattleOptionsInput.CustomMapSourceOptions cms) {
-            return new CustomMapRepo(objectMapper, cms);
+            return new CustomMapSource(objectMapper, cms);
         } else {
             throw new IllegalArgumentException();
         }
@@ -37,6 +37,12 @@ public interface MapRepo {
      */
     List<BattleMapData> getAll();
 
+    /**
+     * Retrieves the relevant directory with map data for the given map.
+     *
+     * @param map The map to get a file from.
+     * @return The directory containing the world data for the map.
+     */
     File getWorldData(BattleMapData map);
 
     /**

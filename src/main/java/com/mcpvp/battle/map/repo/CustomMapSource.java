@@ -17,7 +17,7 @@ import java.util.Objects;
  * a "ctf.json" file for configuration.
  */
 @RequiredArgsConstructor
-public class CustomMapRepo implements MapRepo {
+public class CustomMapSource implements BattleMapSource {
 
     private final ObjectMapper mapper;
     private final BattleOptionsInput.CustomMapSourceOptions options;

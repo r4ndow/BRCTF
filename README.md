@@ -20,9 +20,6 @@ The JAR file can be found in the releases tab. This is a standalone plugin that 
 2. PaperMC 1.8.8 (build 445) is recommended. Head over to their [build explorer](https://papermc.io/downloads/all) and click 1.8.8 on the left. This [direct link](https://api.papermc.io/v2/projects/paper/versions/1.8.8/builds/445/downloads/paper-1.8.8-445.jar) might work too.
 3. Download a compatible Java version. I use [Temurin 17](https://adoptium.net/temurin/releases/). You need to be able to run `java` from your command prompt to start the server - you can follow the [installation instructions here](https://adoptium.net/installation/).
     - For advanced users, consider using [sdkman](https://sdkman.io/install) to install `17.0.3-tem`.
-4. You'll also need a few more plugins:
-    - [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/). Tested with v4.7.0.
-    - [ViaVersion](https://www.spigotmc.org/resources/viaversion.19254/) for allowing newer clients - this is optional.
 
 ## Running
 
@@ -34,12 +31,11 @@ java -jar paper-1.8.8-455.jar
 
 To stop the server, type `stop` into the console. Within the folder that you made, you should now have a folder called `plugins`. If so, you can proceed:
 
-- Open that folder and place the mcctf JAR as well as all the other plugin JARs into that folder
+- Open that folder and place the mcctf JAR as well as all the other plugin JARs into that folder.
 - Create a new folder called `ctf`, then a folder called `maps` in that directory.
 - Unzip the map archive into that maps folder. See below for an example.
 - Start the server and hope everything works.
-
-- Make sure to turn off spawn protection
+- Make sure to turn off spawn protection in the Minecraft server settings.
 
 ### Example File Layout
 
@@ -48,8 +44,6 @@ documents/
 ├─ ctf_server/
 │  ├─ plugins/
 │  │  ├─ mcctf.jar
-│  │  ├─ LuckPerms-Bukkit.jar
-│  │  ├─ ProtocolLib.jar
 │  │  ├─ ctf/
 │  │  │  ├─ maps/
 │  │  │  │  ├─ 60 - Lighthouse V1/
@@ -65,6 +59,37 @@ documents/
 # Configuration
 
 The plugin will automatically create a config file for you, and it lives at `plugins/ctf/config.json`. This file provides many options for tweaking the plugin.
+
+## Map Sources
+
+Maps can be pulled from a "map source", configured in the `maps.sources` array in the `config.json`. There are two types of map sources: `central` and `custom`. Central map sources have a single JSON configuration file. For example, the default map source for the CTF map archive:
+
+```json
+{
+    "type": "central",
+    "dir": "plugins/mcctf/maps",
+    "json": "plugins/mcctf/maps.json"
+}
+```
+
+The second type of map source, is where each map file has its own `ctf.json` configuration. For example:
+
+```
+custom_maps_here/
+├─ 100 - Halo V3/
+│  ├─ data/
+│  ├─ region/
+│  ├─ level.dat
+│  ├─ ctf.json
+```
+
+A source for this folder could be added as such:
+```json
+{
+    "type": "custom",
+    "dir": "custom_maps_here/"
+}
+```
 
 # Development
 
@@ -89,6 +114,5 @@ This will compile the code and build a new plugin JAR. The JAR will automaticall
 
 # Credits
 
-- ryguy1 and redslime for their help in modernizing
-- Miskey, f1brown, and Ninsanity for help with balancing and testing
 - wintergreen3 and Dave01, without whose testing and help, this project would have never been completed
+- Miskey, f1brown, and Ninsanity for help with balancing and testing

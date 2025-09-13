@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class BattleMapLoaderMetadataImpl implements BattleMapLoader {
+public class BattleMapMetadataLoader implements BattleMapLoader {
 
     public BattleGameConfig parse(BattleMapData map, World world) {
         BattleGameConfig builder = new BattleGameConfig();

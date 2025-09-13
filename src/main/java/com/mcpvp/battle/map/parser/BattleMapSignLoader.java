@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 @Log4j2
-public class BattleMapLoaderSignImpl implements BattleMapLoader {
+public class BattleMapSignLoader implements BattleMapLoader {
 
     private static final String RE_SIGN = Pattern.quote("{{") + "(.*)" + Pattern.quote("}}");
     private static final String RE_VAL_SIGN = Pattern.quote("{{") + "(.*)=(.*)" + Pattern.quote("}}");

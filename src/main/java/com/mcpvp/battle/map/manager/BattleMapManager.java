@@ -1,14 +1,15 @@
 package com.mcpvp.battle.map.manager;
 
 import com.mcpvp.battle.map.BattleMapData;
+import com.mcpvp.battle.map.repo.BattleMapSource;
 
 import java.io.File;
 import java.util.List;
 
 /**
- * Picks maps based on what's available in {@link com.mcpvp.battle.map.repo.MapRepo}.
+ * Picks maps based on what's available in {@link BattleMapSource}.
  */
-public interface MapManager {
+public interface BattleMapManager {
 
     /**
      * Retrieves a list of maps which are enabled.

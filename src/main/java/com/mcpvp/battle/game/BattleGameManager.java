@@ -5,8 +5,8 @@ import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.map.BattleWorldManager;
 import com.mcpvp.battle.map.parser.BattleMapLoader;
-import com.mcpvp.battle.map.parser.BattleMapLoaderMetadataImpl;
-import com.mcpvp.battle.map.parser.BattleMapLoaderSignImpl;
+import com.mcpvp.battle.map.parser.BattleMapMetadataLoader;
+import com.mcpvp.battle.map.parser.BattleMapSignLoader;
 import com.mcpvp.battle.scoreboard.BattleScoreboardManager;
 import com.mcpvp.battle.team.BattleTeamManager;
 import lombok.AllArgsConstructor;
@@ -25,9 +25,9 @@ public class BattleGameManager {
     public BattleGame create(BattleMapData map, File mapDir, int index) {
         BattleMapLoader parser;
         if (map.getMetadata() != null) {
-            parser = new BattleMapLoaderMetadataImpl();
+            parser = new BattleMapMetadataLoader();
         } else {
-            parser = new BattleMapLoaderSignImpl();
+            parser = new BattleMapSignLoader();
         }
 
         try {

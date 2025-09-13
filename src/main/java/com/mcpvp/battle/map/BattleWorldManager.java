@@ -24,9 +24,7 @@ public class BattleWorldManager {
 
     private static final String WORLD_PREFIX = "ctf_game_world_";
 
-    public static World create(
-        File mapDir, int index
-    ) throws IOException {
+    public static World create(File mapDir, int index) throws IOException {
         String worldName = WORLD_PREFIX + index;
 
         // Ensure no weird issues when a new map is extracted

@@ -19,7 +19,7 @@ import java.util.Objects;
 
 @Log4j2
 @RequiredArgsConstructor
-public class LocalMapRepo implements MapRepo {
+public class CentralMapSource implements BattleMapSource {
 
     private final ObjectMapper mapper;
     private final BattleOptionsInput.CentralMapSourceOptions mapOptions;
