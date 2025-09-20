@@ -65,11 +65,7 @@ public class BattleOptionsInput {
     public static class MapOptions {
 
         @Builder.Default
-        private final List<MapSourceOptions> sources = new ArrayList<>() {
-            {
-                add(CentralMapSourceOptions.builder().build());
-            }
-        };
+        private final List<MapSourceOptions> sources = List.of(CentralMapSourceOptions.builder().build());
         @Builder.Default
         private final Map<BattleMapCategory, Boolean> categories = new LinkedHashMap<>() {
             {

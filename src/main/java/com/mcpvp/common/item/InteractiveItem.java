@@ -165,7 +165,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    private void onInteractEvent(PlayerInteractEvent event) {
+    public void onInteractEvent(PlayerInteractEvent event) {
         if (event.isCancelled() && ignoreCancelled) {
             return;
         }
@@ -184,7 +184,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    private void onInteractEvent(PlayerInteractEntityEvent event) {
+    public void onInteractEvent(PlayerInteractEntityEvent event) {
         if (event.isCancelled() && ignoreCancelled) {
             return;
         }
@@ -199,7 +199,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    private void onBlockPlaceEvent(BlockPlaceEvent event) {
+    public void onBlockPlaceEvent(BlockPlaceEvent event) {
         if (event.isCancelled() && ignoreCancelled) {
             return;
         }
@@ -211,7 +211,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    private void onClickEvent(InventoryClickEvent event) {
+    public void onClickEvent(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
@@ -228,7 +228,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    private void onEntityDamage(EntityDamageByEntityEvent event) {
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player damager)) {
             return;
         }
@@ -243,7 +243,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    private void onInteractEntity(PlayerInteractEntityEvent event) {
+    public void onInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
 
         if (player.getItemInHand() == null) {
@@ -256,7 +256,7 @@ public class InteractiveItem implements EasyListener {
     }
 
     @EventHandler
-    private void onDrop(PlayerDropItemEvent event) {
+    public void onDrop(PlayerDropItemEvent event) {
         if (isItem(event.getItemDrop())) {
             dropHandlers.forEach(h -> h.accept(event));
         }

@@ -24,11 +24,13 @@ import com.mcpvp.common.visibility.VanillaVisibilityManager;
 import com.mcpvp.common.visibility.VisibilityManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.util.List;
 
 @Getter
+@Log4j2
 @RequiredArgsConstructor
 public class Battle {
 
@@ -52,7 +54,7 @@ public class Battle {
     private VisibilityManager visibilityManager;
 
     public void load() throws IOException {
-        this.options = new BattleOptions(plugin, BattleOptionsLoader.getInput(plugin, objectMapper));
+        this.options = new BattleOptions(BattleOptionsLoader.getInput(plugin, objectMapper), plugin);
         this.mapManager = new MergingMapManager(this.plugin, options.getMaps(), loadMapRepos(this.options));
         this.gameManager = new BattleGameManager(this);
         this.matchManager = new BattleMatchManager(plugin, this, this.gameManager, this.mapManager);
@@ -88,6 +90,8 @@ public class Battle {
 
         this.match = this.matchManager.create();
         this.match.start();
+
+        log.info("Battle match starting now!");
     }
 
     public BattleGame getGame() {
