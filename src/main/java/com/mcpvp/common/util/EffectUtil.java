@@ -20,6 +20,9 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EffectUtil {
 
     public static void fakeLightning(Location location) {
@@ -85,4 +88,40 @@ public class EffectUtil {
         WorldServer w = ((CraftWorld) location.getWorld()).getHandle();
         w.broadcastEntityEffect(((CraftEntity) firework).getHandle(), (byte) 17);
     }
+
+    public static List<Location> getParticleRing(Location center, int count, double radius) {
+        List<Location> locations = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            // Get the location of the point along the edge of the circle
+            Location loc = center.clone().add(
+                radius * Math.cos(2 * Math.PI / count * i) + 0.5,
+                1.25,
+                radius * Math.sin(2 * Math.PI / count * i) + 0.5
+            );
+            locations.add(loc);
+        }
+        return locations;
+    }
+
+    public static List<Location> getParticleSphere(Location center, int count, double radius) {
+        double phi = Math.PI * (Math.sqrt(5) - 1);
+        List<Location> locations = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            double y = 1.0 - (i / (count - 1.0)) * 2.0;
+            double r = Math.sqrt(1 - y * y);
+            double theta = phi * i;
+
+            double x = Math.cos(theta) * r;
+            double z = Math.sin(theta) * r;
+
+            // Get the location of the point along the edge of the sphere
+            Location loc = center.clone().add(
+                x * radius, y * radius, z * radius
+            );
+            locations.add(loc);
+        }
+        return locations;
+    }
+
 }

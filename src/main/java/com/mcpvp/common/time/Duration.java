@@ -102,7 +102,7 @@ public class Duration implements Serializable {
     }
 
     public String formatText() {
-        return formatText(Unit.MILLISECOND);
+        return formatText(Unit.SECOND);
     }
 
     public String formatText(Unit smallest) {

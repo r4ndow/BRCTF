@@ -16,7 +16,7 @@ public class FlagCompassItem extends KitItem {
     private final Player player;
     private BattleTeam target;
 
-    public FlagCompassItem(BattleGame game, Kit kit) {
+    public FlagCompassItem(Kit kit, BattleGame game) {
         super(kit, ItemBuilder.of(Material.COMPASS).name("Pointing to ??? flag").build());
         this.game = game;
         this.player = kit.getPlayer();

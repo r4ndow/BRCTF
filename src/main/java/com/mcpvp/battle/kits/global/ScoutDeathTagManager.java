@@ -57,7 +57,7 @@ public class ScoutDeathTagManager implements EasyListener {
 
         EffectUtil.resetBorderEffect(player);
 
-        player.sendMessage("You are no longer death tagged");
+        player.sendMessage(C.warn(C.GOLD) + "You are no longer death tagged");
     }
 
     public boolean isDeathTagged(Player player) {

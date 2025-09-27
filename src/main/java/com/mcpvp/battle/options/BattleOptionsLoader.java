@@ -36,7 +36,7 @@ public class BattleOptionsLoader {
         try {
             return mapper.readValue(config, BattleOptionsInput.class);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to read config located at " + config + ". If this persists, you delete this file to have it regenerated for you.", e);
+            throw new RuntimeException("Failed to read config located at " + config + ". If this persists, you can delete this file to have it regenerated for you.", e);
         }
     }
 

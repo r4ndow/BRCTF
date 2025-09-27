@@ -74,10 +74,21 @@ public class PyroKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        axe = new KitItem(this, ItemBuilder.of(Material.DIAMOND_AXE).name("Pyro Axe").unbreakable().build());
+        axe = new KitItem(
+            this,
+            ItemBuilder.of(Material.DIAMOND_AXE)
+                .name("Pyro Axe")
+                .unbreakable()
+                .build()
+        );
         axe.onInteract(this::onUseAxe);
 
-        flint = new KitItem(this, ItemBuilder.of(Material.FLINT_AND_STEEL).name("Pyro Flint and Steel").build());
+        flint = new KitItem(
+            this,
+            ItemBuilder.of(Material.FLINT_AND_STEEL)
+                .name("Pyro Flint and Steel")
+                .build()
+        );
         flint.onInteract(this::onFlint);
 
         return new KitInventoryBuilder()
@@ -217,6 +228,7 @@ public class PyroKit extends BattleKit {
         getPlayer().sendMessage(C.warn(C.AQUA) + "Your frenzy fades...");
         ParticlePacket.of(EnumParticle.SMOKE_LARGE).at(getPlayer().getLocation()).count(25).offset(0.5f, 1f, 0.5f).send();
         getPlayer().getWorld().playSound(getPlayer().getLocation(), Sound.BLAZE_DEATH, 0.5f, 1.0f);
+        updateExp();
     }
 
     private void updateExp() {
@@ -228,7 +240,6 @@ public class PyroKit extends BattleKit {
         }
     }
 
-    // TODO remove player in the way restriction
     public class PyroFire extends Structure {
 
         private Block center;

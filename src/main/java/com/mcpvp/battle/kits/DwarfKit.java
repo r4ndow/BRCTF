@@ -89,8 +89,8 @@ public class DwarfKit extends BattleKit {
     public Map<Integer, KitItem> createItems() {
         sword = new KitItem(this,
             ItemBuilder.of(Material.WOOD_SWORD)
-                .enchant(Enchantment.DAMAGE_ALL, 2)
                 .name("Dwarf Weapon")
+                .enchant(Enchantment.DAMAGE_ALL, 2)
                 .unbreakable()
                 .build()
         );

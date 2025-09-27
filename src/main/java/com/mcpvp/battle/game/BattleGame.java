@@ -4,7 +4,7 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleGameConfig;
-import com.mcpvp.battle.death.BattleDeathMessageHandler;
+import com.mcpvp.battle.chat.BattleDeathMessageHandler;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.flag.FlagMessageBroadcaster;
@@ -150,7 +150,7 @@ public class BattleGame extends EasyLifecycle {
         // Teleport to spawn
         BattleTeam team = getTeamManager().getTeam(player);
         Location spawn = getConfig().getTeamConfig(team).getSpawn();
-        player.teleport(spawn);
+        player.teleport(spawn.clone().add(0, 0.1, 0));
 
         // Players must be teleported immediately on death to avoid the death screen
         // But there needs to be a tick delay before equipping the kit due to inventory resets

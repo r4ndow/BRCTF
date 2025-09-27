@@ -73,7 +73,7 @@ public class FlagListener implements EasyListener {
         if (event.isInterval(Duration.seconds(15))) {
             game.getTeamManager().getTeams().stream().map(BattleTeam::getFlag).forEach(flag -> {
                 if (flag.getCarrier() != null) {
-                    if (!new FlagPoisonEvent(flag.getCarrier()).call()) {
+                    if (!new FlagPoisonEvent(flag.getCarrier()).callIsCancelled()) {
                         String message = "%s%s flag poisoned you!".formatted(
                             C.warn(C.RED), flag.getTeam().getColoredName() + C.GRAY
                         );
@@ -87,58 +87,93 @@ public class FlagListener implements EasyListener {
 
     @EventHandler
     public void onPickup(PlayerPickupItemEvent event) {
-        BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
-        game.getTeamManager().getTeams().forEach(bt -> {
-            if (!bt.getFlag().isItem(event.getItem().getItemStack())) {
-                return;
-            }
+        BattleTeam playerTeam = game.getTeamManager().getTeam(event.getPlayer());
 
-            // Always cancel picking up the item for simplicity
-            event.setCancelled(true);
+        // Make sure there is a relevant team and that the involved flag isn't the ghost/placeholder
+        BattleTeam flagTeam = getTeamForFlag(event.getItem().getItemStack())
+            .filter(bt -> !bt.getFlag().isGhostFlag(event.getItem().getItemStack()))
+            .orElse(null);
 
-            if (bt.getFlag().getCarrier() != null) {
-                return;
-            }
-
-            if (bt != team) {
-                if (bt.getFlag().isHome()) {
-                    bt.getFlagManager().attemptSteal(event.getPlayer());
-                } else {
-                    if (bt.getFlag().getPickupExpiration().isExpired() && !bt.getFlag().isGhostFlag(event.getItem().getItemStack())) {
-                        bt.getFlagManager().pickup(event.getPlayer());
-                    }
-                }
-            } else if (!bt.getFlag().isHome()) {
-                bt.getFlagManager().recover(event.getPlayer());
-            }
-        });
-    }
-
-    @EventHandler
-    public void onCapture(PlayerPickupItemEvent event) {
-        if (game.getTeamManager().getTeams().stream()
-            .noneMatch(bt -> bt.getFlag().isItem(event.getItem().getItemStack()))) {
+        if (flagTeam == null) {
             return;
         }
 
-        BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
+        IBattleFlag flag = flagTeam.getFlag();
+
+        // Always cancel picking up the item for simplicity
+        event.setCancelled(true);
+
+        if (flagTeam != playerTeam) {
+            if (flag.isHome()) {
+                flagTeam.getFlagManager().attemptSteal(event.getPlayer());
+            } else if (flag.getPickupExpiration().isExpired()) {
+                flagTeam.getFlagManager().pickup(event.getPlayer());
+            }
+        } else {
+            if (!flag.isHome()) {
+                flagTeam.getFlagManager().recover(event.getPlayer());
+            } else {
+                game.getTeamManager().getTeams().stream()
+                    .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
+                    .forEach(bt -> {
+                        bt.getFlagManager().capture(event.getPlayer(), playerTeam);
+                    });
+            }
+        }
+
+//        game.getTeamManager().getTeams().forEach(bt -> {
+//            if (!bt.getFlag().isItem(event.getItem().getItemStack())) {
+//                return;
+//            }
+//
+//            // Always cancel picking up the item for simplicity
+//            event.setCancelled(true);
+//
+//            if (bt.getFlag().getCarrier() != null) {
+//                return;
+//            }
+//
+//            if (bt != playerTeam) {
+//                if (bt.getFlag().isHome()) {
+//                    bt.getFlagManager().attemptSteal(event.getPlayer());
+//                } else {
+//                    if (bt.getFlag().getPickupExpiration().isExpired() && !bt.getFlag().isGhostFlag(event.getItem().getItemStack())) {
+//                        bt.getFlagManager().pickup(event.getPlayer());
+//                    }
+//                }
+//            } else if (!bt.getFlag().isHome()) {
+//                bt.getFlagManager().recover(event.getPlayer());
+//            }
+//        });
+    }
+
+//    @EventHandler
+    public void onCapture(PlayerPickupItemEvent event) {
+        if (!isFlag(event.getItem().getItemStack())) {
+            return;
+        }
+
+        // Ensure the player is carrying a flag
         Optional<BattleTeam> carried = game.getTeamManager().getTeams().stream()
             .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
             .findFirst();
-
-        if (!team.getFlag().isItem(event.getItem().getItemStack())) {
-            return;
-        }
 
         if (carried.isEmpty()) {
             return;
         }
 
-        if (!team.getFlag().isHome()) {
+        // Ensure the player's flag is home
+        BattleTeam playerTeam = game.getTeamManager().getTeam(event.getPlayer());
+
+        if (!playerTeam.getFlag().isHome()) {
             return;
         }
 
-        carried.get().getFlagManager().capture(event.getPlayer(), team);
+        if (!playerTeam.getFlag().isItem(event.getItem().getItemStack())) {
+            return;
+        }
+
+        carried.get().getFlagManager().capture(event.getPlayer(), playerTeam);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -205,6 +240,14 @@ public class FlagListener implements EasyListener {
         if (event.getEntity() instanceof Item item && isFlag(item.getItemStack())) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onFlagInVoid(TickEvent event) {
+        game.getTeamManager().getTeams().stream()
+            .map(BattleTeam::getFlag)
+            .filter(flag -> flag.getLocation().getY() <= 0)
+            .forEach(flag -> flag.getTeam().getFlagManager().restore());
     }
 
     private Optional<BattleTeam> getTeamForFlag(ItemStack itemStack) {

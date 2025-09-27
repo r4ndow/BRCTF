@@ -4,12 +4,15 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.function.Predicate;
 
 /**
  * A state handler for outside the game, i.e. before and after but not during.
@@ -34,6 +37,16 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
         };
         plugin.getBattle().getMatch().getTimer().setSeconds(seconds);
 
+        // Pause the timer before any players are on
+        if (game.getParticipants().isEmpty()) {
+            plugin.getBattle().getMatch().getTimer().setPaused(true);
+        }
+
+        // Since spectators won't get a PlayerParticipateEvent fired, teleport them manually
+        Bukkit.getOnlinePlayers().stream()
+            .filter(Predicate.not(game::isParticipant))
+            .forEach(spectator -> spectator.teleport(game.getConfig().getSpawn()));
+
         setupFlags();
     }
 
@@ -51,6 +64,10 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
         event.getPlayer().getInventory().setArmorContents(new ItemStack[4]);
         event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
         event.getPlayer().setExp(0);
+
+        if (!game.getParticipants().isEmpty() && plugin.getBattle().getMatch().getTimer().isPaused()) {
+            plugin.getBattle().getMatch().getTimer().setPaused(false);
+        }
     }
 
     @EventHandler

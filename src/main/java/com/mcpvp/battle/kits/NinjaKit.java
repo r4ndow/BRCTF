@@ -110,6 +110,10 @@ public class NinjaKit extends BattleKit {
 
     @EventHandler
     public void onStartFlagSteal(FlagStartStealEvent flagStartStealEvent) {
+        if (!isPlayer(flagStartStealEvent.getPlayer())) {
+            return;
+        }
+
         if (invisible) {
             flagStartStealEvent.setCancelled(true);
         } else {
@@ -293,11 +297,12 @@ public class NinjaKit extends BattleKit {
                 return;
             }
 
+            event.setCancelled(true);
+
             if (this.isPlaceholder()) {
                 return;
             }
 
-            event.setCancelled(true);
             this.setPlaceholder();
             EnderPearl ep = getPlayer().launchProjectile(EnderPearl.class);
 
@@ -330,6 +335,8 @@ public class NinjaKit extends BattleKit {
                 return;
             }
 
+            event.setCancelled(true);
+
             if (this.isPlaceholder()) {
                 return;
             }
@@ -339,7 +346,6 @@ public class NinjaKit extends BattleKit {
                 return;
             }
 
-            event.setCancelled(true);
             this.decrement(true);
             Egg e = getPlayer().launchProjectile(Egg.class);
 

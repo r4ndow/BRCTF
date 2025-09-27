@@ -177,7 +177,7 @@ public class InteractiveItem implements EasyListener {
         if (isItem(event.getItem())) {
             // Re-assign the ItemStack instance, which improves syncing with the client
             // Without doing this, a call to `update()` would be required
-            this.setItem(event.getItem());
+//            this.setItem(event.getItem());
             interactHandlers.forEach(ih -> ih.accept(event));
             anyHandler.accept(event.getPlayer());
         }
@@ -287,6 +287,20 @@ public class InteractiveItem implements EasyListener {
         for (int i = 0; i < inv.getContents().length; i++) {
             if (isItem(inv.getItem(i))) {
                 inv.setItem(i, getItem());
+            }
+        }
+    }
+
+    /**
+     * The inverse of {@link #update(Inventory)}, finds any items in the given inventory which are an instance of
+     * this InteractiveItem and ensures that this instance matches the item in the inventory.
+     *
+     * @param inv The Inventory to update this item from.
+     */
+    public void refresh(Inventory inv) {
+        for (int i = 0; i < inv.getContents().length; i++) {
+            if (isItem(inv.getItem(i))) {
+                this.setItem(inv.getItem(i));
             }
         }
     }

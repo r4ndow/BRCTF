@@ -46,9 +46,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.*;
+
 public class MedicKit extends BattleKit {
 
-    private static final Duration WEB_RESTORE_TIMER = Duration.seconds(15);
+    private static final Duration WEB_RESTORE_TIMER = Duration.seconds(5);
     private static final Duration RESTORE_HEALTH_TIMER = Duration.seconds(1);
     private static final Duration RESTORE_PLAYER_COOLDOWN = Duration.seconds(15);
     private static final Duration COMBAT_COOLDOWN = Duration.seconds(5);
@@ -85,7 +87,11 @@ public class MedicKit extends BattleKit {
     public Map<Integer, KitItem> createItems() {
         KitItem sword = new KitItem(
             this,
-            ItemBuilder.of(Material.GOLD_SWORD).name("Medic Sword").enchant(Enchantment.DAMAGE_ALL, 2).unbreakable().build()
+            ItemBuilder.of(Material.GOLD_SWORD)
+                .name("Medic Sword")
+                .enchant(Enchantment.DAMAGE_ALL, 2)
+                .unbreakable()
+                .build()
         );
 
         sword.onDamage(ev -> {
@@ -102,18 +108,41 @@ public class MedicKit extends BattleKit {
         return new KitInventoryBuilder()
             .add(sword)
             .addFood(6)
-            .add(new MedicWebItem(ItemBuilder.of(Material.SNOW_BALL).name("Medic Web").amount(MAX_WEBS).build()))
+            .add(new MedicWebItem(ItemBuilder.of(Material.SNOW_BALL)
+                .name("Medic Web")
+                .amount(MAX_WEBS)
+                .build()))
             .addCompass(8)
             .build();
     }
 
     @EventHandler
-    public void regenerateHealth(TickEvent event) {
+    public void onTick(TickEvent event) {
         if (event.isInterval(RESTORE_HEALTH_TIMER)) {
             getPlayer().setHealth(Math.min(getPlayer().getMaxHealth(), getPlayer().getHealth() + 1));
         }
-
         getPlayer().setFireTicks(0);
+
+        if (event.isInterval(Duration.seconds(0.5))) {
+            getTeammates().stream()
+                .filter(teammate -> teammate.getLocation().distance(getPlayer().getLocation()) <= 10)
+                .forEach(teammate -> {
+                    Color color;
+                    if (teammate.hasPotionEffect(PotionEffectType.REGENERATION)) {
+                        // Probably being healed
+                        color = Color.ORANGE;
+                    } else if (needsItems(teammate)) {
+                        color = Color.RED;
+                    } else {
+                        color = Color.GREEN;
+                    }
+
+                    ParticlePacket.colored(color)
+                        .at(teammate.getLocation().add(0, 2.02, 0))
+                        .setShowFar(false)
+                        .send(getPlayer());
+                });
+        }
     }
 
     @EventHandler
@@ -175,6 +204,27 @@ public class MedicKit extends BattleKit {
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 4));
             player.setFireTicks(0);
         }
+    }
+
+    private boolean needsItems(Player player) {
+        BattleKit kit = getBattle().getKitManager().get(player);
+        if (kit == null) {
+            return false;
+        }
+
+        for (KitItem kitItem : kit.getAllItems()) {
+            if (!kitItem.isRestorable()) {
+                continue;
+            }
+
+            for (ItemStack content : player.getInventory().getContents()) {
+                if (kitItem.isItem(content) && !kitItem.getOriginal().equals(content)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public class MedicWebItem extends KitItem {
@@ -264,11 +314,14 @@ public class MedicKit extends BattleKit {
 
         public MedicWeb(StructureManager manager) {
             super(manager, getPlayer());
-            removeAfter(Duration.seconds(2));
+            removeAfter(Duration.seconds(3));
         }
 
         @Override
         public void build(Block center, StructureBuilder builder) {
+            builder.ignoreRestrictions(
+                NEAR_SPAWN, NEAR_RESTRICTED, NEAR_PLAYER
+            );
             builder.setBlock(center, Material.WEB);
         }
 

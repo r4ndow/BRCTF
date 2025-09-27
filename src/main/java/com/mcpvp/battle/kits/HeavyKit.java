@@ -35,7 +35,10 @@ public class HeavyKit extends BattleKit {
     @Override
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-            .add(ItemBuilder.of(Material.DIAMOND_SWORD).enchant(Enchantment.DAMAGE_ALL, 1).name("Heavy Sword").unbreakable())
+            .add(ItemBuilder.of(Material.DIAMOND_SWORD)
+                .name("Heavy Sword")
+                .enchant(Enchantment.DAMAGE_ALL, 1)
+                .unbreakable())
             .addFood(3)
             .addCompass(8)
             .build();

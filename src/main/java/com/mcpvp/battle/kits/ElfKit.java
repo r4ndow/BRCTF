@@ -19,6 +19,7 @@ import com.mcpvp.common.util.EntityUtil;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.movement.CancelNextFallTask;
 import com.mcpvp.common.nms.ActionbarUtil;
+import lombok.extern.log4j.Log4j2;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
@@ -36,6 +37,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
+@Log4j2
 public class ElfKit extends BattleKit {
 
     private static final int ARROW_COUNT = 16;
@@ -82,13 +84,20 @@ public class ElfKit extends BattleKit {
         sword = new KitItem(
             this,
             ItemBuilder.of(Material.WOOD_SWORD)
-                .unbreakable()
                 .name("Elf Sword")
+                .unbreakable()
                 .enchant(Enchantment.DAMAGE_ALL, 3, false)
                 .enchant(Enchantment.DURABILITY, 10, true)
                 .build()
         );
-        arrows = new KitItem(this, ItemBuilder.of(Material.ARROW).name("Elf Arrow").amount(ARROW_COUNT).build(), true);
+        arrows = new KitItem(
+            this,
+            ItemBuilder.of(Material.ARROW)
+                .name("Elf Arrow")
+                .amount(ARROW_COUNT)
+                .build(),
+            true
+        );
 
         return new KitInventoryBuilder()
             .add(sword)
@@ -164,18 +173,23 @@ public class ElfKit extends BattleKit {
 
         @EventHandler
         public void onShootEvent(EntityShootBowEvent event) {
-            if (isItem(event.getBow())) {
-                onShoot(event);
-                attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
-                    .singleEventOnly()
-                    .onHitEvent(ev -> this.onLand(ev.getEntity().getLocation(), event))
-                    .onDeath(() -> this.onLand(event.getProjectile().getLocation(), event))
-                    .onDamageEvent(ev -> {
-                        if (ev.getEntity() instanceof Player hit) {
-                            this.onHit(hit, event, ev);
-                        }
-                    }));
+            if (!isItem(event.getBow())) {
+                return;
             }
+
+            onShoot(event);
+            attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
+                .singleEventOnly()
+                .onHitEvent(ev -> this.onLand(ev.getEntity().getLocation(), event))
+                .onDeath(() -> this.onLand(event.getProjectile().getLocation(), event))
+                .onDamageEvent(ev -> {
+                    if (ev.getEntity() instanceof Player hit) {
+                        this.onHit(hit, event, ev);
+                    }
+                }));
+
+            // The arrow item gets out of sync, not exactly sure why
+            arrows.refresh(getPlayer().getInventory());
 
             if (arrows.getItem().getAmount() == 1) {
                 arrows.setPlaceholder();
@@ -306,6 +320,8 @@ public class ElfKit extends BattleKit {
                     push.setY(y);
                     enemy.setVelocity(push.multiply(strength));
 
+                    log.info("WindElement set velocity of {} to {}", enemy.getName(), push.multiply(strength));
+
                     new CancelNextFallTask(getPlugin(), enemy);
 
                     new ParticlePacket(EnumParticle.CLOUD).at(landed).count(10).setData(0.05f).send();
@@ -395,12 +411,10 @@ public class ElfKit extends BattleKit {
                     .filter(ElfKit.this::isTeammate)
                     .forEach(player -> {
                         if (shootEvent.getForce() == 1) {
-                            player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
                             player.addPotionEffect(
                                 new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Duration.seconds(5).ticks(), 0)
                             );
 
-                            player.removePotionEffect(PotionEffectType.REGENERATION);
                             player.addPotionEffect(
                                 new PotionEffect(PotionEffectType.REGENERATION, Duration.seconds(5).ticks(), 2)
                             );
@@ -438,7 +452,7 @@ public class ElfKit extends BattleKit {
         public ProjectileShield() {
             attach((EasyListener) this);
             attach(EasyTask.of(() -> {
-                getParticleSphere(
+                EffectUtil.getParticleSphere(
                     getPlayer().getLocation().add(0, 1, 0), 100, SHIELD_RADIUS
                 ).forEach(location -> {
                     new ParticlePacket(EnumParticle.VILLAGER_HAPPY).at(location).setShowFar(true).send();
@@ -543,25 +557,5 @@ public class ElfKit extends BattleKit {
 
     }
 
-    private List<Location> getParticleSphere(Location center, int count, double radius) {
-        double phi = Math.PI * (Math.sqrt(5) - 1);
-        List<Location> locations = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-            double y = 1.0 - (i / (count - 1.0)) * 2.0;
-            double r = Math.sqrt(1 - y * y);
-            double theta = phi * i;
-
-            double x = Math.cos(theta) * r;
-            double z = Math.sin(theta) * r;
-
-            // Get the location of the point along the edge of the sphere
-            Location loc = center.clone().add(
-                x * radius, y * radius, z * radius
-            );
-            locations.add(loc);
-        }
-        return locations;
-    }
 
 }

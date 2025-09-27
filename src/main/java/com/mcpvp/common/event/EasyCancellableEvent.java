@@ -22,7 +22,7 @@ public class EasyCancellableEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public boolean call() {
+    public boolean callIsCancelled() {
         Bukkit.getPluginManager().callEvent(this);
         return isCancelled();
     }

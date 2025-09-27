@@ -1,4 +1,4 @@
-package com.mcpvp.battle.match;
+package com.mcpvp.battle.chat;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
@@ -9,13 +9,15 @@ import com.mcpvp.common.chat.Colors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class BattleMatchListener implements EasyListener {
+public class BattleChatMessageHandler implements EasyListener {
 
     @Getter
     private final BattlePlugin plugin;
@@ -26,30 +28,20 @@ public class BattleMatchListener implements EasyListener {
         event.setCancelled(true);
         Optional<BattleTeam> senderTeam = Optional.ofNullable(battle.getGame().getTeamManager().getTeam(event.getPlayer()));
 
-        if (event.getMessage().startsWith("!") || senderTeam.isEmpty()) {
-            // Global message
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                player.sendMessage(formatMessage(
-                    true,
-                    event.getMessage(),
-                    event.getPlayer().getName(),
-                    senderTeam.map(BattleTeam::getColor).map(Colors::toString).orElse(C.WHITE)
-                ));
-            });
-        } else {
-            // Team message
-            senderTeam.get().getPlayers().forEach(player -> {
-                player.sendMessage(formatMessage(
-                    false,
-                    event.getMessage(),
-                    event.getPlayer().getName(),
-                    senderTeam.map(BattleTeam::getColor).map(Colors::toString).orElse(C.WHITE)
-                ));
-            });
-        }
+        boolean global = event.getMessage().startsWith("!") || senderTeam.isEmpty();
+        Collection<? extends Player> recipients = global ? Bukkit.getOnlinePlayers() : senderTeam.get().getPlayers();
+        String message = formatMessage(
+            global,
+            event.getMessage(),
+            event.getPlayer().getName(),
+            senderTeam.map(BattleTeam::getColor).map(Colors::getChatString).orElse(C.WHITE)
+        );
+
+        recipients.forEach(player -> player.sendMessage(message));
     }
 
     private String formatMessage(boolean global, String message, String author, String teamColor) {
+        //noinspection StringBufferReplaceableByString
         return new StringBuilder()
             .append(author)
             .append(teamColor)

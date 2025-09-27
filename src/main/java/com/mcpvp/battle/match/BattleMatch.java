@@ -2,6 +2,7 @@ package com.mcpvp.battle.match;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.chat.BattleChatMessageHandler;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.map.BattleMapData;
@@ -32,7 +33,7 @@ public class BattleMatch {
     }
 
     public void start() {
-        new BattleMatchListener(plugin, battle).register();
+        new BattleChatMessageHandler(plugin, battle).register();
         BattleMatchStructureRestrictions.register(this, battle.getStructureManager());
 
         Bukkit.getScheduler().runTaskTimer(plugin, getTimerTask(), 0, 20);

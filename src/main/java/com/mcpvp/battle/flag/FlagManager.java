@@ -33,7 +33,7 @@ public class FlagManager {
     public void attemptSteal(Player player) {
         // Ensure the player is allowed to even *try* to steal
         FlagStartStealEvent startStealEvent = new FlagStartStealEvent(player, flag, FLAG_STEAL_TIMER);
-        if (startStealEvent.call()) {
+        if (startStealEvent.callIsCancelled()) {
             return;
         }
 
@@ -61,7 +61,7 @@ public class FlagManager {
      * @param player The player stealing.
      */
     private void steal(Player player) {
-        if (!new FlagStealEvent(player, flag).call()) {
+        if (!new FlagStealEvent(player, flag).callIsCancelled()) {
             flag.steal(player);
         }
     }
@@ -72,7 +72,7 @@ public class FlagManager {
      * @param player The player who picked up the flag.
      */
     public void pickup(Player player) {
-        if (new FlagPickupEvent(player, flag).call()) {
+        if (!new FlagPickupEvent(player, flag).callIsCancelled()) {
             flag.pickup(player);
         }
     }

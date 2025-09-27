@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class BattleMatchTimer {
 
     private int seconds = 60;
-    private boolean paused = true;
+    private boolean paused = false;
 
 }

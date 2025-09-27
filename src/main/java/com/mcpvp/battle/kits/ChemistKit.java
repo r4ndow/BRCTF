@@ -55,7 +55,10 @@ public class ChemistKit extends BattleKit {
     @Override
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-            .add(ItemBuilder.of(Material.IRON_SWORD).name("Chemist Sword").enchant(Enchantment.DAMAGE_ALL, 1).unbreakable())
+            .add(ItemBuilder.of(Material.IRON_SWORD)
+                .name("Chemist Sword")
+                .enchant(Enchantment.DAMAGE_ALL, 1)
+                .unbreakable())
             .add(new PotionItem(
                 ItemBuilder.potion()
                     .effect(PotionType.INSTANT_DAMAGE)

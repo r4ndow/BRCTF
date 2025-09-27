@@ -2,6 +2,7 @@ package com.mcpvp.battle.kits.global;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.GameDeathEvent;
+import com.mcpvp.battle.event.GameRespawnEvent;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.item.FoodItem;
 import com.mcpvp.battle.kits.MedicKit;
@@ -56,6 +57,7 @@ public class NecroRevivalTagManager implements EasyListener {
 
             if (expiration.isExpired()) {
                 player.sendMessage(C.info(C.AQUA) + "Your revival tag has expired!");
+                holder.cancel();
             }
         }).runTaskTimer(getPlugin(), 0, 1);
     }
@@ -81,7 +83,13 @@ public class NecroRevivalTagManager implements EasyListener {
             event.getDeathEvent().setKeepLevel(true);
 
             revive(event);
+            clearRevivalTag(event.getPlayer());
         }
+    }
+
+    @EventHandler
+    public void onRespawn(GameRespawnEvent event) {
+        clearRevivalTag(event.getPlayer());
     }
 
     @EventHandler
@@ -111,7 +119,7 @@ public class NecroRevivalTagManager implements EasyListener {
         // Effects
         ParticlePacket.of(EnumParticle.SMOKE_LARGE).at(player.getLocation()).spread(1.5).count(15).send();
         player.getWorld().playSound(player.getLocation(), Sound.ZOMBIE_REMEDY, 1.0f, 1.0f);
-        player.sendMessage("Revived");
+        player.sendMessage(C.info(C.RED) + "You have been saved from death!");
     }
 
     private void zombify(Player player) {
@@ -137,6 +145,7 @@ public class NecroRevivalTagManager implements EasyListener {
                 kitItem.modify(item -> item.type(kitItem.getOriginal().getType()));
             }
         });
+
         player.getInventory().setHelmet(kit.createArmor()[3]);
         player.removePotionEffect(PotionEffectType.WEAKNESS);
         player.removePotionEffect(PotionEffectType.WITHER);

@@ -39,12 +39,20 @@ public class KitManager {
         return getKitDefinitions().stream().filter(k -> k.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
-    public KitAttemptSelectEvent setSelected(Player player, KitDefinition definition, boolean force) {
+    public KitAttemptSelectEvent setSelected(
+        Player player, KitDefinition definition, boolean force
+    ) {
+        return setSelected(player, definition, force, true);
+    }
+
+    public KitAttemptSelectEvent setSelected(
+        Player player, KitDefinition definition, boolean force, boolean respawn
+    ) {
         // Allow the kit selection event to be rejected to enforce limits and restrictions.
         KitAttemptSelectEvent kitAttemptSelectEvent = new KitAttemptSelectEvent(player, definition);
-        if (!kitAttemptSelectEvent.call() || force) {
+        if (!kitAttemptSelectEvent.callIsCancelled() || force) {
             selected.put(player, definition);
-            new KitSelectedEvent(player, definition).call();
+            new KitSelectedEvent(player, definition, respawn).call();
             return kitAttemptSelectEvent;
         }
 

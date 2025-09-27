@@ -75,8 +75,8 @@ public class ScoutKit extends BattleKit {
         return new KitInventoryBuilder()
             .add(ItemBuilder.of(Material.STONE_SWORD)
                 .name("Scout Sword")
-                .unbreakable()
-                .enchant(Enchantment.DAMAGE_ALL, 2))
+                .enchant(Enchantment.DAMAGE_ALL, 2)
+                .unbreakable())
             .addFood(2)
             .add(swapper = new SwapperItem())
             .add(deathTagItem = new DeathTagItem())
@@ -126,8 +126,8 @@ public class ScoutKit extends BattleKit {
     }
 
     private void swap(Player player) {
-        Location toKitPlayer = player.getLocation().setDirection(player.getEyeLocation().getDirection());
-        Location toSwappedPlayer = getPlayer().getLocation().setDirection(getPlayer().getEyeLocation().getDirection());
+        Location toKitPlayer = player.getLocation();
+        Location toSwappedPlayer = getPlayer().getLocation();
 
         getPlayer().teleport(toKitPlayer);
         player.teleport(toSwappedPlayer);
@@ -152,7 +152,7 @@ public class ScoutKit extends BattleKit {
     }
 
     private void sendSwapNotification(Player swapped) {
-        double distance = swapped.getLocation().distance(getPlayer().getLocation());
+        int distance = (int) swapped.getLocation().distance(getPlayer().getLocation());
         getPlayer().sendMessage("You swapped with " + C.hl(swapped.getName()) + " from " + distance + " blocks");
         swapped.sendMessage(C.hl(getPlayer().getName()) + " swapped with you from " + distance + " blocks");
 
@@ -162,9 +162,9 @@ public class ScoutKit extends BattleKit {
 
         EntityUtil.getNearbyEntities(swapped.getLocation(), Player.class, 20).forEach(player -> {
             if (player != swapped) {
-                if (isTeammate(player)) {
+                if (isTeammate(swapped)) {
                     player.sendMessage(C.warn(C.GOLD) + "Your flag carrier was swapped!");
-                } else if (isEnemy(player)) {
+                } else if (isEnemy(swapped)) {
                     player.sendMessage(C.warn(C.GOLD) + "The enemy flag carrier was swapped! " + nearby);
                 } else {
                     player.sendMessage(C.warn(C.GOLD) + "The "
@@ -264,6 +264,7 @@ public class ScoutKit extends BattleKit {
                 if (event.getRightClicked() instanceof Player hit) {
                     if (attemptDeathTag(hit)) {
                         startCooldown();
+                        setPlaceholder();
                     }
                 }
             });
@@ -271,6 +272,7 @@ public class ScoutKit extends BattleKit {
                 if (event.getEntity() instanceof Player hit) {
                     if (attemptDeathTag(hit)) {
                         startCooldown();
+                        setPlaceholder();
                     }
                 }
             });

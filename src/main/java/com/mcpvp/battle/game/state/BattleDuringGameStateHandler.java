@@ -80,7 +80,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         event.setDroppedExp(0);
         event.getDrops().clear();
 
-        if (new GameDeathEvent(event.getEntity(), event.getEntity().getLocation().clone(), event).call()) {
+        if (new GameDeathEvent(event.getEntity(), event.getEntity().getLocation().clone(), event).callIsCancelled()) {
             event.setDeathMessage(null);
             return;
         }
@@ -100,7 +100,9 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onKitSelected(KitSelectedEvent event) {
-        game.respawn(event.getPlayer(), false);
+        if (event.isRespawn()) {
+            game.respawn(event.getPlayer(), false);
+        }
     }
 
     @EventHandler

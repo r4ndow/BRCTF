@@ -67,18 +67,31 @@ public class AssassinKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        KitItem sword = new KitItem(this, ItemBuilder.of(Material.GOLD_SWORD)
-            .name("Assassin Sword")
-            .enchant(Enchantment.DAMAGE_ALL, 2)
-            .unbreakable()
-            .build()
+        KitItem sword = new KitItem(
+            this,
+            ItemBuilder.of(Material.GOLD_SWORD)
+                .name("Assassin Sword")
+                .enchant(Enchantment.DAMAGE_ALL, 2)
+                .unbreakable()
+                .build()
         );
-        redstone = new KitItem(this, ItemBuilder.of(Material.REDSTONE).name("Assassinate").build());
-        sugar = new KitItem(this, ItemBuilder.of(Material.SUGAR).name("Speed Boost").amount(SUGAR_AMOUNT).build());
+        redstone = new KitItem(
+            this,
+            ItemBuilder.of(Material.REDSTONE)
+                .name("Assassinate")
+                .build()
+        );
+        sugar = new KitItem(
+            this,
+            ItemBuilder.of(Material.SUGAR)
+                .name("Speed Boost")
+                .amount(SUGAR_AMOUNT)
+                .build()
+        );
 
         redstone.onInteract(event -> {
             if (EventUtil.isRightClick(event)) {
-                activateStrength();
+                activateStrength(sword);
             }
         });
 
@@ -96,9 +109,9 @@ public class AssassinKit extends BattleKit {
             .build();
     }
 
-    private void activateStrength() {
+    private void activateStrength(KitItem sword) {
         // Swap to the sword slot
-        int slot = getPlayer().getInventory().first(Material.IRON_SWORD);
+        int slot = getPlayer().getInventory().first(sword.getItem());
         if (slot < 9 && slot > -1) {
             getPlayer().getInventory().setHeldItemSlot(slot);
         }

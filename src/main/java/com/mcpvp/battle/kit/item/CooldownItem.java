@@ -10,6 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * A single-use item with a fixed recharge time.
+ */
 public abstract class CooldownItem extends KitItem {
 
     private final Expiration cooldown = new Expiration();

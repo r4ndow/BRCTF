@@ -24,6 +24,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -135,7 +136,7 @@ public abstract class BattleKit extends Kit {
         }
 
         public KitInventoryBuilder add(ItemBuilder builder) {
-            items[currentSlot++] = autoAdjust(builder);
+            items[currentSlot++] = autoAdjust(builder, false);
             return this;
         }
 
@@ -150,30 +151,26 @@ public abstract class BattleKit extends Kit {
         }
 
         public KitInventoryBuilder addFood(int count) {
-            FoodItem food = new FoodItem(BattleKit.this, ItemBuilder.of(Material.COOKED_BEEF).name("Food").amount(count).build());
+            FoodItem food = new FoodItem(
+                BattleKit.this,
+                ItemBuilder.of(Material.COOKED_BEEF).name("Food").amount(count).build()
+            );
             foodItem = food;
             items[currentSlot++] = food;
             return this;
         }
 
         public KitInventoryBuilder addCompass(int slot) {
-            items[slot] = new FlagCompassItem(getBattle().getGame(), BattleKit.this);
+            items[slot] = new FlagCompassItem(BattleKit.this, getBattle().getGame());
             return this;
         }
 
-        private KitItem autoAdjust(ItemBuilder itemBuilder) {
-            return autoAdjust(itemBuilder, false);
-        }
-
         private KitItem autoAdjust(ItemBuilder itemBuilder, boolean restorable) {
-            boolean customName = !ItemUtil.getName(new ItemStack(itemBuilder.build().getType())).equals(ItemUtil.getName(itemBuilder.build()));
-
-            if (!customName) {
-                String typeName = WordUtils.capitalize(itemBuilder.build().getType().name().replace("_", " ").toLowerCase());
-                itemBuilder.name(getName() + " " + typeName);
-            }
-
-            return new KitItem(BattleKit.this, itemBuilder.unbreakable().build(), restorable);
+            return new KitItem(
+                BattleKit.this,
+                itemBuilder.unbreakable().flag(ItemFlag.HIDE_UNBREAKABLE).build(),
+                restorable
+            );
         }
 
         public Map<Integer, KitItem> build() {

@@ -1,6 +1,7 @@
-package com.mcpvp.battle.death;
+package com.mcpvp.battle.chat;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.GameDeathEvent;
 import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyListener;
@@ -19,6 +20,7 @@ public class BattleDeathMessageHandler implements EasyListener {
     private final BattlePlugin plugin;
 
     @EventHandler(ignoreCancelled = true, priority = HIGHEST)
+    @SuppressWarnings("StringBufferReplaceableByString")
     public void onDeath(PlayerKilledByPlayerEvent event) {
         EntityDamageEvent lastDamageCause = event.getKilled().getLastDamageCause();
         if (lastDamageCause == null) {
@@ -37,6 +39,20 @@ public class BattleDeathMessageHandler implements EasyListener {
         message.append(event.getKiller().getName());
 
         event.getDeathEvent().setDeathMessage(message.toString());
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = HIGHEST)
+    public void onDeath(GameDeathEvent event) {
+        BattleTeam team = plugin.getBattle().getGame().getTeamManager().getTeam(event.getPlayer());
+        if (team != null) {
+            // A weird and probably incorrect way of coloring the name of the player who died
+            event.getDeathEvent().setDeathMessage(
+                event.getDeathEvent().getDeathMessage().replace(
+                    event.getPlayer().getName(),
+                    team.getColor().getChatString() + event.getPlayer().getName() + C.R
+                )
+            );
+        }
     }
 
 }

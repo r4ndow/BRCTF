@@ -5,14 +5,17 @@ import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.item.CooldownItem;
 import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.ParticlePacket;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
+import com.mcpvp.common.nms.ActionbarUtil;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureBuilder;
 import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
+import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EffectUtil;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_8_R3.EnumParticle;
@@ -38,14 +41,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class EngineerKit extends BattleKit {
+
+    private static final Map<Player, Expiration> HEAL_COOLDOWNS = new HashMap<>();
+    private static final Duration HEALING_COOLDOWN = Duration.seconds(5);
 
     public EngineerKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
@@ -69,7 +72,10 @@ public class EngineerKit extends BattleKit {
     @Override
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-            .add(ItemBuilder.of(Material.STONE_SWORD).name("Engineer Sword").unbreakable().enchant(Enchantment.DAMAGE_ALL, 1))
+            .add(ItemBuilder.of(Material.STONE_SWORD)
+                .name("Engineer Sword")
+                .enchant(Enchantment.DAMAGE_ALL, 1)
+                .unbreakable())
             .addFood(4)
             .add(new GrenadeLauncher())
             .add(new HealingAuraPlacer())
@@ -114,10 +120,6 @@ public class EngineerKit extends BattleKit {
         }
 
         public void launchGrenade(PlayerInteractEvent event) {
-            if (!EventUtil.isRightClick(event) || inSpawn()) {
-                return;
-            }
-
             event.setCancelled(true);
 
             // Launch the grenade
@@ -332,7 +334,7 @@ public class EngineerKit extends BattleKit {
         }
 
         private void animateParticleRing() {
-            List<Location> locations = getParticleRing(getCenter().getLocation(), 20, AURA_RADIUS);
+            List<Location> locations = EffectUtil.getParticleRing(getCenter().getLocation(), 20, AURA_RADIUS);
             for (int i = 0; i < locations.size(); i++) {
                 // Alternate white and team colored particles
                 if (i % 2 == 0) {
@@ -393,16 +395,16 @@ public class EngineerKit extends BattleKit {
 
     class HealingAuraPlacer extends CooldownItem {
 
-        private static final Duration HEALING_COOLDOWN = Duration.seconds(5);
-        private static final int HEAL_RADIUS = 4;
+        private static final Duration ITEM_COOLDOWN = Duration.seconds(8);
         private static final Duration HEALING_DURATION = Duration.seconds(5);
+        private static final int HEAL_RADIUS = 4;
         private static final int HEALING_REGEN_TIER = 3;
 
         public HealingAuraPlacer() {
             super(
                 EngineerKit.this,
                 ItemBuilder.of(Material.CAKE).name("Healing Aura").build(),
-                HEALING_COOLDOWN
+                ITEM_COOLDOWN
             );
         }
 
@@ -418,12 +420,22 @@ public class EngineerKit extends BattleKit {
         protected void doHealPulse() {
             getTeammates().stream()
                 .filter(teammate -> teammate.getLocation().distance(getPlayer().getLocation()) <= HEAL_RADIUS)
+                .filter(teammate -> {
+                    if (HEAL_COOLDOWNS.containsKey(teammate) && !HEAL_COOLDOWNS.get(teammate).isExpired()) {
+                        String duration = HEAL_COOLDOWNS.get(teammate).getRemaining().formatText();
+                        ActionbarUtil.send(teammate, "%sYou can't be healed for %s second(s)".formatted(C.GRAY, C.hl(duration)));
+                        return false;
+                    }
+
+                    return true;
+                })
                 .forEach(teammate -> {
                     PotionEffect effect = new PotionEffect(
                         PotionEffectType.REGENERATION, HEALING_DURATION.ticks(), HEALING_REGEN_TIER - 1
                     );
-                    teammate.removePotionEffect(PotionEffectType.REGENERATION);
-                    teammate.addPotionEffect(effect);
+                    teammate.addPotionEffect(effect, true);
+
+                    HEAL_COOLDOWNS.put(teammate, Expiration.after(HEALING_COOLDOWN));
 
                     getBattle().getKitManager().get(teammate).restoreFoodItem();
                 });
@@ -436,7 +448,7 @@ public class EngineerKit extends BattleKit {
             while (radius < HEAL_RADIUS) {
                 final double r = radius;
                 attach(EasyTask.of(() -> {
-                    getParticleRing(getPlayer().getLocation(), (int) (points * r), r).forEach(location -> {
+                    EffectUtil.getParticleRing(getPlayer().getLocation(), (int) (points * r), r).forEach(location -> {
                         ParticlePacket.of(EnumParticle.HEART).at(location).send();
                     });
                 }).runTaskLater(getPlugin(), (long) r));
@@ -446,18 +458,5 @@ public class EngineerKit extends BattleKit {
 
     }
 
-    private List<Location> getParticleRing(Location center, int count, double radius) {
-        List<Location> locations = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            // Get the location of the point along the edge of the circle
-            Location loc = center.clone().add(
-                radius * Math.cos(2 * Math.PI / count * i) + 0.5,
-                1.25,
-                radius * Math.sin(2 * Math.PI / count * i) + 0.5
-            );
-            locations.add(loc);
-        }
-        return locations;
-    }
 
 }

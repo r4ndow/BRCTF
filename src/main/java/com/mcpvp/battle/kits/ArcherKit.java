@@ -14,6 +14,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Map;
 
 public class ArcherKit extends BattleKit {
@@ -45,32 +46,52 @@ public class ArcherKit extends BattleKit {
     @Override
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-            .add(ItemBuilder.of(Material.STONE_SWORD).name("Archer Sword").unbreakable())
+            .add(ItemBuilder.of(Material.STONE_SWORD)
+                .name("Archer Sword")
+                .unbreakable())
             .addFood(2)
-            .add(ItemBuilder.of(Material.BOW).enchant(Enchantment.ARROW_KNOCKBACK, 1))
-            .add(arrows1 = new KitItem(this,
-                ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #1").build()))
-            .add(arrows2 = new KitItem(this,
-                ItemBuilder.of(Material.ARROW).amount(64).name("Archer Arrows #2").build()))
+            .add(ItemBuilder.of(Material.BOW)
+                .name("Archer Bow")
+                .enchant(Enchantment.ARROW_KNOCKBACK, 1)
+                .unbreakable())
+            .add(arrows1 = new KitItem(
+                this,
+                ItemBuilder.of(Material.ARROW)
+                    .name("Archer Arrows #1")
+                    .amount(64)
+                    .build()))
+            .add(arrows2 = new KitItem(
+                this,
+                ItemBuilder.of(Material.ARROW)
+                    .name("Archer Arrows #2")
+                    .amount(64)
+                    .build()))
             .addCompass(8)
             .build();
     }
 
     @EventHandler
     public void onFireArrow(EntityShootBowEvent event) {
-        if (isPlayer(event.getEntity())) {
-            attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
-                .singleEventOnly()
-                .onDamageEvent(this::onHit)
-            );
-            attach(event.getEntity());
+        if (!isPlayer(event.getEntity())) {
+            return;
+        }
 
-            if (arrows1.getItem().getAmount() == 1) {
-                arrows1.setPlaceholder();
-            }
-            if (arrows2.getItem().getAmount() == 1) {
-                arrows2.setPlaceholder();
-            }
+        attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
+            .singleEventOnly()
+            .onDamageEvent(this::onHit)
+        );
+        attach(event.getEntity());
+
+        // Keep the arrow stacks in sync
+        List.of(arrows1, arrows2).forEach(kitItem -> {
+            kitItem.refresh(getPlayer().getInventory());
+        });
+
+        if (arrows1.getItem().getAmount() == 1) {
+            arrows1.setPlaceholder();
+        }
+        if (arrows2.getItem().getAmount() == 1) {
+            arrows2.setPlaceholder();
         }
     }
 

@@ -24,7 +24,7 @@ import java.util.Map;
 @Log4j2
 public class SoldierKit extends BattleKit {
 
-    private static final List<Material> UNCLIMABLE = List.of(
+    private static final List<Material> UNCLIMBABLE = List.of(
         Material.COAL_ORE, Material.BARRIER, Material.QUARTZ_ORE);
     private static final float PER_CLIMB = 1.0f / 7;
     private static final Duration RESTORE_TIME = Duration.ofSeconds(10);
@@ -32,6 +32,39 @@ public class SoldierKit extends BattleKit {
     public SoldierKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
         player.setExp(1.0f);
+    }
+
+    @Override
+    public String getName() {
+        return "Soldier";
+    }
+
+    @Override
+    public ItemStack[] createArmor() {
+        return new ItemStack[]{
+            new ItemStack(Material.IRON_BOOTS),
+            new ItemStack(Material.IRON_LEGGINGS),
+            new ItemStack(Material.IRON_CHESTPLATE),
+            new ItemStack(Material.IRON_HELMET),
+        };
+    }
+
+    @Override
+    public Map<Integer, KitItem> createItems() {
+        KitItem sword = new KitItem(
+            this,
+            ItemBuilder.of(Material.IRON_SWORD)
+                .name("Wall Climbing Sword")
+                .unbreakable()
+                .build()
+        );
+        sword.onInteract(this::onClick);
+
+        return new KitInventoryBuilder()
+            .add(sword)
+            .addFood(4)
+            .addCompass(8)
+            .build();
     }
 
     @EventHandler
@@ -57,7 +90,7 @@ public class SoldierKit extends BattleKit {
             return;
         }
 
-        if (UNCLIMABLE.contains(e.getClickedBlock().getType())) {
+        if (UNCLIMBABLE.contains(e.getClickedBlock().getType())) {
             return;
         }
 
@@ -91,33 +124,6 @@ public class SoldierKit extends BattleKit {
         }
 
         player.setExp(player.getExp() - PER_CLIMB);
-    }
-
-    @Override
-    public String getName() {
-        return "Soldier";
-    }
-
-    @Override
-    public ItemStack[] createArmor() {
-        return new ItemStack[]{
-            new ItemStack(Material.IRON_BOOTS),
-            new ItemStack(Material.IRON_LEGGINGS),
-            new ItemStack(Material.IRON_CHESTPLATE),
-            new ItemStack(Material.IRON_HELMET),
-        };
-    }
-
-    @Override
-    public Map<Integer, KitItem> createItems() {
-        KitItem sword = new KitItem(this, ItemBuilder.of(Material.IRON_SWORD).name("Wall Climbing Sword").build());
-        sword.onInteract(this::onClick);
-
-        return new KitInventoryBuilder()
-            .add(sword)
-            .addFood(4)
-            .addCompass(8)
-            .build();
     }
 
 }

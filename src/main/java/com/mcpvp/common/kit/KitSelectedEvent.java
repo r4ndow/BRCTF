@@ -16,5 +16,6 @@ public class KitSelectedEvent extends EasyEvent {
 
     private final Player player;
     private final KitDefinition kitDefinition;
+    private final boolean respawn;
 
 }

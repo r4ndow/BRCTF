@@ -65,7 +65,7 @@ public class StructureBuilder {
      * @param material The type to make the block.
      */
     public void setBlock(Block block, Material material) {
-        setBlock(block, b -> b.setType(material));
+        setBlock(block, b -> b.setType(material, false));
     }
 
     /**
@@ -78,12 +78,21 @@ public class StructureBuilder {
     }
 
     /**
+     * Sets a restriction to be ignored when setting blocks.
+     *
+     * @param keys The keys of the restriction, e.g. "IN_SPAWN"
+     */
+    public void ignoreRestrictions(String... keys) {
+        ignoredRestrictions.addAll(Arrays.asList(keys));
+    }
+
+    /**
      * Builds the structure by executing all the queued changes.
      * Ensure {@link #getViolations()} is empty before calling this.
      */
     public void complete() {
         if (!this.violations.isEmpty()) {
-            throw new IllegalStateException("Attempted to place structure with violations");
+            throw new IllegalStateException("Attempted to place structure with violations: " + this.violations);
         }
 
         queued.forEach((block, placer) -> {

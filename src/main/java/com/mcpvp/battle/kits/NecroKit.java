@@ -76,7 +76,10 @@ public class NecroKit extends BattleKit {
         });
 
         return new KitInventoryBuilder()
-            .add(ItemBuilder.of(Material.GOLD_SWORD).name("Necro Sword").enchant(Enchantment.DAMAGE_ALL, 2).unbreakable())
+            .add(ItemBuilder.of(Material.GOLD_SWORD)
+                .name("Necro Sword")
+                .enchant(Enchantment.DAMAGE_ALL, 2)
+                .unbreakable())
             .addFood(4)
             .add(tag)
             .add(new CrypticSkull())
@@ -105,6 +108,7 @@ public class NecroKit extends BattleKit {
                 + " has revival tagged you. You are safe for the next "
                 + C.hl("" + TAG_DURATION.seconds()) + " seconds!");
 
+        tag.setPlaceholder();
         attach(EasyTask.of(() -> tag.restore()).runTaskLater(getPlugin(), TAG_COOLDOWN.ticks()));
     }
 

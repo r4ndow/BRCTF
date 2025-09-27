@@ -38,6 +38,8 @@ import org.bukkit.util.Vector;
 
 import java.util.Map;
 
+import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.*;
+
 public class MageKit extends BattleKit {
 
     public static final int DAMAGE_ARROW_DIST = 15;
@@ -61,9 +63,18 @@ public class MageKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-            ItemBuilder.of(Material.LEATHER_BOOTS).color(DyeColor.BLUE.getColor(), true).enchant(Enchantment.PROTECTION_FALL, 1).build(),
-            ItemBuilder.of(Material.LEATHER_LEGGINGS).color(DyeColor.BLUE.getColor(), true).enchant(Enchantment.PROTECTION_FIRE, 1).build(),
-            ItemBuilder.of(Material.LEATHER_CHESTPLATE).color(DyeColor.BLUE.getColor(), true).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).build(),
+            ItemBuilder.of(Material.LEATHER_BOOTS)
+                .color(DyeColor.BLUE.getColor(), true)
+                .enchant(Enchantment.PROTECTION_FALL, 1)
+                .build(),
+            ItemBuilder.of(Material.LEATHER_LEGGINGS)
+                .color(DyeColor.BLUE.getColor(), true)
+                .enchant(Enchantment.PROTECTION_FIRE, 1)
+                .build(),
+            ItemBuilder.of(Material.LEATHER_CHESTPLATE)
+                .color(DyeColor.BLUE.getColor(), true)
+                .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
+                .build(),
             null,
         };
     }
@@ -335,6 +346,10 @@ public class MageKit extends BattleKit {
 
         @Override
         protected void build(Block center, StructureBuilder builder) {
+            builder.ignoreRestrictions(
+                NEAR_SPAWN, NEAR_RESTRICTED, NEAR_PLAYER
+            );
+
             // Expand the bounding box around the target by one block.
             AxisAlignedBB bb = ((CraftLivingEntity) target).getHandle().getBoundingBox().grow(1, 1, 1);
             // Form the cube that will surround the target.

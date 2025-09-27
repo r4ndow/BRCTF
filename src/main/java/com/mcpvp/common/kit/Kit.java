@@ -2,6 +2,7 @@ package com.mcpvp.common.kit;
 
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.item.ItemBuilder;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -42,7 +44,14 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
         attach((EasyListener) this);
 
         player.getInventory().clear();
-        player.getInventory().setArmorContents(createArmor());
+        ItemStack[] armor = new ItemStack[4];
+        ItemStack[] createdArmor = createArmor();
+        for (int i = 0; i < createdArmor.length; i++) {
+            if (createdArmor[i] != null) {
+                armor[i] = ItemBuilder.of(createdArmor[i]).unbreakable().build();
+            }
+        }
+        player.getInventory().setArmorContents(armor);
 
         this.items.entrySet().stream()
             .filter(e -> e.getValue() != null)

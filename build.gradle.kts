@@ -35,7 +35,7 @@ dependencies {
     implementation("com.github.zafarkhaja:java-semver:0.9.0")
 }
 
-val pluginVersion = "3.0.0"
+val pluginVersion = "3.1.0"
 
 group = "com.mcctf"
 version = pluginVersion
