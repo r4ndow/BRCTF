@@ -22,7 +22,7 @@ public abstract class Shape {
      * @return True if the player is inside the shape.
      */
     public boolean contains(Entity entity) {
-        return contains(entity.getLocation());
+        return this.contains(entity.getLocation());
     }
 
     /**
@@ -32,7 +32,7 @@ public abstract class Shape {
      * @return True if the block is inside the shape.
      */
     public boolean contains(Block block) {
-        return contains(block.getLocation());
+        return this.contains(block.getLocation());
     }
 
     /**

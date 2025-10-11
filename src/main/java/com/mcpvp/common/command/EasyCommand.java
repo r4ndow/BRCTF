@@ -33,7 +33,7 @@ public abstract class EasyCommand extends Command {
      */
     public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
         if (!args.isEmpty()) {
-            return onTabComplete(sender, alias, args.get(args.size() - 1));
+            return this.onTabComplete(sender, alias, args.get(args.size() - 1));
         }
         return Collections.emptyList();
     }
@@ -54,17 +54,17 @@ public abstract class EasyCommand extends Command {
     }
 
     public void register() {
-        CommandUtil.getCommandMap().register(getFallbackPrefix(), this);
+        CommandUtil.getCommandMap().register(this.getFallbackPrefix(), this);
     }
 
     @Override // Overrides Command
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        return onCommand(sender, commandLabel, Arrays.asList(args));
+        return this.onCommand(sender, commandLabel, Arrays.asList(args));
     }
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        return onTabComplete(sender, alias, Arrays.asList(args));
+        return this.onTabComplete(sender, alias, Arrays.asList(args));
     }
 
     protected Player asPlayer(CommandSender sender) {

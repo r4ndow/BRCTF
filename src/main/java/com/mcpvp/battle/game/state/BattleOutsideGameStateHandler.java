@@ -30,28 +30,28 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
     public void enterState() {
         super.enterState();
 
-        int seconds = switch (state) {
-            case BEFORE -> plugin.getBattle().getOptions().getGame().getSecondsBeforeGame();
-            case AFTER -> plugin.getBattle().getOptions().getGame().getSecondsAfterGame();
+        int seconds = switch (this.state) {
+            case BEFORE -> this.plugin.getBattle().getOptions().getGame().getSecondsBeforeGame();
+            case AFTER -> this.plugin.getBattle().getOptions().getGame().getSecondsAfterGame();
             default -> 15;
         };
-        plugin.getBattle().getMatch().getTimer().setSeconds(seconds);
+        this.plugin.getBattle().getMatch().getTimer().setSeconds(seconds);
 
         // Pause the timer before any players are on
-        if (game.getParticipants().isEmpty()) {
-            plugin.getBattle().getMatch().getTimer().setPaused(true);
+        if (this.game.getParticipants().isEmpty()) {
+            this.plugin.getBattle().getMatch().getTimer().setPaused(true);
         }
 
         // Since spectators won't get a PlayerParticipateEvent fired, teleport them manually
         Bukkit.getOnlinePlayers().stream()
-            .filter(Predicate.not(game::isParticipant))
-            .forEach(spectator -> spectator.teleport(game.getConfig().getSpawn()));
+            .filter(Predicate.not(this.game::isParticipant))
+            .forEach(spectator -> spectator.teleport(this.game.getConfig().getSpawn()));
 
-        setupFlags();
+        this.setupFlags();
     }
 
     private void setupFlags() {
-        game.getTeamManager().getTeams().forEach(bt -> {
+        this.game.getTeamManager().getTeams().forEach(bt -> {
             bt.getFlag().reset();
             bt.getFlag().setLocked(true);
         });
@@ -59,27 +59,27 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler
     public void onParticipate(PlayerParticipateEvent event) {
-        event.getPlayer().teleport(game.getConfig().getSpawn());
+        event.getPlayer().teleport(this.game.getConfig().getSpawn());
         event.getPlayer().getInventory().clear();
         event.getPlayer().getInventory().setArmorContents(new ItemStack[4]);
         event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
         event.getPlayer().setExp(0);
 
-        if (!game.getParticipants().isEmpty() && plugin.getBattle().getMatch().getTimer().isPaused()) {
-            plugin.getBattle().getMatch().getTimer().setPaused(false);
+        if (!this.game.getParticipants().isEmpty() && this.plugin.getBattle().getMatch().getTimer().isPaused()) {
+            this.plugin.getBattle().getMatch().getTimer().setPaused(false);
         }
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         // For when players fall into the void
-        event.getEntity().teleport(game.getConfig().getSpawn());
+        event.getEntity().teleport(this.game.getConfig().getSpawn());
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         // For when players fall into the void
-        event.setRespawnLocation(game.getConfig().getSpawn());
+        event.setRespawnLocation(this.game.getConfig().getSpawn());
     }
 
     @EventHandler
@@ -90,7 +90,7 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         if (event.getTo().getY() < 0) {
-            event.getPlayer().teleport(game.getConfig().getSpawn());
+            event.getPlayer().teleport(this.game.getConfig().getSpawn());
         }
     }
 

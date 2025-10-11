@@ -36,21 +36,21 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
      * one of the violations caused the placing to be stopped, in which case nothing has been changed.
      */
     public List<StructureViolation> place(Block center) {
-        StructureBuilder builder = new StructureBuilder(manager);
-        build(center, builder);
+        StructureBuilder builder = new StructureBuilder(this.manager);
+        this.build(center, builder);
 
         if (!builder.getViolations().isEmpty()) {
             // Calling shutdown here is useful in case any other type of set up was performed
             // For example, the build method might try to add decorative entities which should be removed
-            shutdown();
+            this.shutdown();
             return builder.getViolations();
         }
 
         // Actually builds the structure
         builder.complete();
         this.blocks.addAll(builder.getBuilt());
-        manager.onBuild(this);
-        attach((EasyListener) this);
+        this.manager.onBuild(this);
+        this.attach((EasyListener) this);
         this.center = center;
 
         return Collections.emptyList();
@@ -69,7 +69,7 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
      * @return A list of all blocks impacted by this Structure.
      */
     public List<Block> getBlocks() {
-        return blocks.stream().map(StructureBlock::getBlock).toList();
+        return this.blocks.stream().map(StructureBlock::getBlock).toList();
     }
 
     /**
@@ -82,8 +82,8 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
     @Override
     public void shutdown() {
         super.shutdown();
-        blocks.forEach(StructureBlock::restore);
-        manager.onRemove(this);
+        this.blocks.forEach(StructureBlock::restore);
+        this.manager.onRemove(this);
     }
 
     /**
@@ -93,11 +93,11 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
      * @param duration The time to wait before removing this structure.
      */
     protected void removeAfter(Duration duration) {
-        attach(Bukkit.getScheduler().runTaskLater(getPlugin(), this::remove, duration.ticks()));
+        this.attach(Bukkit.getScheduler().runTaskLater(this.getPlugin(), this::remove, duration.ticks()));
     }
 
     public double distance(Location location) {
-        return getCenter().getLocation().distance(location);
+        return this.getCenter().getLocation().distance(location);
     }
 
 }

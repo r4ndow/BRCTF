@@ -11,22 +11,22 @@ public class FoodItem extends KitItem {
         super(kit, itemStack, true);
         this.onInteract(ev -> {
             if (EventUtil.isRightClick(ev)) {
-                consume();
+                this.consume();
             }
         });
     }
 
     protected void consume() {
-        if (isPlaceholder()) {
+        if (this.isPlaceholder()) {
             return;
         }
 
-        if (kit.getPlayer().getHealth() == kit.getPlayer().getMaxHealth()) {
+        if (this.kit.getPlayer().getHealth() == this.kit.getPlayer().getMaxHealth()) {
             return;
         }
 
-        kit.getPlayer().setHealth(Math.min(kit.getPlayer().getHealth() + 8, kit.getPlayer().getMaxHealth()));
-        decrement(true);
+        this.kit.getPlayer().setHealth(Math.min(this.kit.getPlayer().getHealth() + 8, this.kit.getPlayer().getMaxHealth()));
+        this.decrement(true);
     }
 
 }

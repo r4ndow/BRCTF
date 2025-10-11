@@ -23,17 +23,17 @@ public class BattleScoreboardListener implements EasyListener {
     // Need to have a scoreboard for other join events
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().setScoreboard(scoreboardManager.create());
+        event.getPlayer().setScoreboard(this.scoreboardManager.create());
     }
 
     @EventHandler
     public void onJoinTeam(PlayerJoinTeamEvent event) {
-        scoreboardManager.setTeam(event.getPlayer(), event.getTeam());
+        this.scoreboardManager.setTeam(event.getPlayer(), event.getTeam());
     }
 
     @EventHandler
     public void onTick(TickEvent event) {
-        Bukkit.getOnlinePlayers().forEach(scoreboardManager::refresh);
+        Bukkit.getOnlinePlayers().forEach(this.scoreboardManager::refresh);
     }
 
 }

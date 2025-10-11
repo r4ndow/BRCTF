@@ -65,7 +65,7 @@ public class MedicKit extends BattleKit {
         player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 99999, 1));
         player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 1));
 
-        attach(new HealthHeadIndicator(plugin, player));
+        this.attach(new HealthHeadIndicator(plugin, player));
     }
 
     @Override
@@ -96,11 +96,11 @@ public class MedicKit extends BattleKit {
 
         sword.onDamage(ev -> {
             if (ev.getEntity() instanceof Player damaged) {
-                BattleTeam damagedTeam = getBattle().getGame().getTeamManager().getTeam(damaged);
-                BattleTeam playerTeam = getBattle().getGame().getTeamManager().getTeam(getPlayer());
+                BattleTeam damagedTeam = this.getBattle().getGame().getTeamManager().getTeam(damaged);
+                BattleTeam playerTeam = this.getBattle().getGame().getTeamManager().getTeam(this.getPlayer());
 
                 if (damagedTeam == playerTeam) {
-                    heal(damaged);
+                    this.heal(damaged);
                 }
             }
         });
@@ -119,19 +119,19 @@ public class MedicKit extends BattleKit {
     @EventHandler
     public void onTick(TickEvent event) {
         if (event.isInterval(RESTORE_HEALTH_TIMER)) {
-            getPlayer().setHealth(Math.min(getPlayer().getMaxHealth(), getPlayer().getHealth() + 1));
+            this.getPlayer().setHealth(Math.min(this.getPlayer().getMaxHealth(), this.getPlayer().getHealth() + 1));
         }
-        getPlayer().setFireTicks(0);
+        this.getPlayer().setFireTicks(0);
 
         if (event.isInterval(Duration.seconds(0.5))) {
-            getTeammates().stream()
-                .filter(teammate -> teammate.getLocation().distance(getPlayer().getLocation()) <= 10)
+            this.getTeammates().stream()
+                .filter(teammate -> teammate.getLocation().distance(this.getPlayer().getLocation()) <= 10)
                 .forEach(teammate -> {
                     Color color;
                     if (teammate.hasPotionEffect(PotionEffectType.REGENERATION)) {
                         // Probably being healed
                         color = Color.ORANGE;
-                    } else if (needsItems(teammate)) {
+                    } else if (this.needsItems(teammate)) {
                         color = Color.RED;
                     } else {
                         color = Color.GREEN;
@@ -140,27 +140,27 @@ public class MedicKit extends BattleKit {
                     ParticlePacket.colored(color)
                         .at(teammate.getLocation().add(0, 2.02, 0))
                         .setShowFar(false)
-                        .send(getPlayer());
+                        .send(this.getPlayer());
                 });
         }
     }
 
     @EventHandler
     public void preventFlagPoison(FlagPoisonEvent event) {
-        if (event.getPlayer() == getPlayer()) {
+        if (event.getPlayer() == this.getPlayer()) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(ignoreCancelled = true) // friendly fire events will be cancelled
     public void triggerCombatCooldown(EntityDamageByEntityEvent event) {
-        if (event.getEntity().equals(getPlayer()) && event.getDamager() instanceof Player) {
-            combatCooldown.expireIn(COMBAT_COOLDOWN);
+        if (event.getEntity().equals(this.getPlayer()) && event.getDamager() instanceof Player) {
+            this.combatCooldown.expireIn(COMBAT_COOLDOWN);
         }
     }
 
     public void heal(Player player) {
-        Kit kit = getBattle().getKitManager().get(player);
+        Kit kit = this.getBattle().getKitManager().get(player);
         if (kit == null) {
             return;
         }
@@ -168,20 +168,20 @@ public class MedicKit extends BattleKit {
         // Enforce a global cooldown per player
         if (HEAL_COOLDOWNS.containsKey(player) && !HEAL_COOLDOWNS.get(player).isExpired()) {
             String duration = HEAL_COOLDOWNS.get(player).getRemaining().formatText();
-            ActionbarUtil.send(getPlayer(), "%s can't be healed for %s second(s)".formatted(C.hl(player.getName()), C.hl(duration)));
+            ActionbarUtil.send(this.getPlayer(), "%s can't be healed for %s second(s)".formatted(C.hl(player.getName()), C.hl(duration)));
             ActionbarUtil.send(player, "%sYou can't be healed for %s second(s)".formatted(C.GRAY, C.hl(duration)));
             return;
         }
 
         // Enforce a cooldown specifically on other medics
         if (kit instanceof MedicKit otherMedic) {
-            if (!combatCooldown.isExpired()) {
-                ActionbarUtil.send(getPlayer(), "%sYou can't heal another medic for %s seconds(s)".formatted(C.GRAY, C.hl(combatCooldown.getRemaining().formatText())));
+            if (!this.combatCooldown.isExpired()) {
+                ActionbarUtil.send(this.getPlayer(), "%sYou can't heal another medic for %s seconds(s)".formatted(C.GRAY, C.hl(this.combatCooldown.getRemaining().formatText())));
                 return;
             }
 
             if (!otherMedic.combatCooldown.isExpired()) {
-                ActionbarUtil.send(getPlayer(), "%s can't be healed by another medic for %s seconds(s)".formatted(C.hl(player.getName()), C.hl(combatCooldown.getRemaining().formatText())));
+                ActionbarUtil.send(this.getPlayer(), "%s can't be healed by another medic for %s seconds(s)".formatted(C.hl(player.getName()), C.hl(this.combatCooldown.getRemaining().formatText())));
                 return;
             }
         }
@@ -207,7 +207,7 @@ public class MedicKit extends BattleKit {
     }
 
     private boolean needsItems(Player player) {
-        BattleKit kit = getBattle().getKitManager().get(player);
+        BattleKit kit = this.getBattle().getKitManager().get(player);
         if (kit == null) {
             return false;
         }
@@ -241,14 +241,14 @@ public class MedicKit extends BattleKit {
 
             event.setCancelled(true);
 
-            if (isPlaceholder()) {
+            if (this.isPlaceholder()) {
                 return;
             }
 
-            decrement(true);
+            this.decrement(true);
 
-            Snowball snowball = kit.getPlayer().launchProjectile(Snowball.class);
-            attach(new InteractiveProjectile(getPlugin(), snowball)
+            Snowball snowball = this.kit.getPlayer().launchProjectile(Snowball.class);
+            MedicKit.this.attach(new InteractiveProjectile(this.getPlugin(), snowball)
                 .singleEventOnly()
                 .onDamageEvent(this::onHitEvent)
                 .onHitEvent(e -> this.placeWeb(snowball.getLocation()))
@@ -264,10 +264,10 @@ public class MedicKit extends BattleKit {
                 return;
             }
 
-            if (getGame().getTeamManager().isSameTeam(hit, shooter)) {
+            if (MedicKit.this.getGame().getTeamManager().isSameTeam(hit, shooter)) {
                 event.setCancelled(true);
             } else {
-                placeWeb(hit.getLocation());
+                this.placeWeb(hit.getLocation());
             }
         }
 
@@ -297,14 +297,14 @@ public class MedicKit extends BattleKit {
                 return;
             }
 
-            MedicWeb web = new MedicWeb(getBattle().getStructureManager());
-            placeStructure(web, target);
+            MedicWeb web = new MedicWeb(MedicKit.this.getBattle().getStructureManager());
+            MedicKit.this.placeStructure(web, target);
         }
 
         @EventHandler
         public void restorePassively(TickEvent event) {
             if (event.isInterval(WEB_RESTORE_TIMER)) {
-                increment(getOriginal().getAmount());
+                this.increment(this.getOriginal().getAmount());
             }
         }
 
@@ -313,8 +313,8 @@ public class MedicKit extends BattleKit {
     public class MedicWeb extends Structure {
 
         public MedicWeb(StructureManager manager) {
-            super(manager, getPlayer());
-            removeAfter(Duration.seconds(3));
+            super(manager, MedicKit.this.getPlayer());
+            this.removeAfter(Duration.seconds(3));
         }
 
         @Override
@@ -332,8 +332,8 @@ public class MedicKit extends BattleKit {
 
         @EventHandler
         public void onInteract(PlayerInteractEvent event) {
-            boolean sameTeam = getBattle().getGame().getTeamManager().getTeam(event.getPlayer()).contains(getPlayer());
-            if (getBlocks().contains(event.getClickedBlock()) && sameTeam && !EventUtil.isRightClick(event)) {
+            boolean sameTeam = MedicKit.this.getBattle().getGame().getTeamManager().getTeam(event.getPlayer()).contains(MedicKit.this.getPlayer());
+            if (this.getBlocks().contains(event.getClickedBlock()) && sameTeam && !EventUtil.isRightClick(event)) {
                 this.remove();
             }
         }

@@ -74,27 +74,27 @@ public class PyroKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        axe = new KitItem(
+        this.axe = new KitItem(
             this,
             ItemBuilder.of(Material.DIAMOND_AXE)
                 .name("Pyro Axe")
                 .unbreakable()
                 .build()
         );
-        axe.onInteract(this::onUseAxe);
+        this.axe.onInteract(this::onUseAxe);
 
-        flint = new KitItem(
+        this.flint = new KitItem(
             this,
             ItemBuilder.of(Material.FLINT_AND_STEEL)
                 .name("Pyro Flint and Steel")
                 .build()
         );
-        flint.onInteract(this::onFlint);
+        this.flint.onInteract(this::onFlint);
 
         return new KitInventoryBuilder()
-            .add(axe)
+            .add(this.axe)
             .addFood(4)
-            .add(flint)
+            .add(this.flint)
             .add(ItemBuilder.of(Material.BOW).name("Pyro Bow").unbreakable())
             .add(ItemBuilder.of(Material.ARROW).name("Pyro Arrow").amount(25), true)
             .addCompass(8)
@@ -103,64 +103,64 @@ public class PyroKit extends BattleKit {
 
     @EventHandler
     public void onShoot(EntityShootBowEvent event) {
-        if (event.getEntity() != getPlayer() || event.getForce() < 0.99) {
+        if (event.getEntity() != this.getPlayer() || event.getForce() < 0.99) {
             return;
         }
 
-        attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
-            .onHitEvent(ev -> explode((Arrow) ev.getEntity()))
+        this.attach(new InteractiveProjectile(this.getPlugin(), (Projectile) event.getProjectile())
+            .onHitEvent(ev -> this.explode((Arrow) ev.getEntity()))
         );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onDamageWithAxe(EntityDamageByEntityEvent event) {
-        if (event.getDamager() != getPlayer() || !(event.getEntity() instanceof Player damaged)) {
+        if (event.getDamager() != this.getPlayer() || !(event.getEntity() instanceof Player damaged)) {
             return;
         }
 
-        if (!axe.isItem(getPlayer().getItemInHand())) {
+        if (!this.axe.isItem(this.getPlayer().getItemInHand())) {
             return;
         }
 
         // Deal "true" damage to enemies who are on fire and not playing medic
-        if (damaged.getFireTicks() > 0 && !getBattle().getKitManager().isSelected(damaged, BattleKitType.MEDIC)) {
-            EventUtil.setDamage(event, frenzy ? TRUE_DAMAGE * 2 : TRUE_DAMAGE);
+        if (damaged.getFireTicks() > 0 && !this.getBattle().getKitManager().isSelected(damaged, BattleKitType.MEDIC)) {
+            EventUtil.setDamage(event, this.frenzy ? TRUE_DAMAGE * 2 : TRUE_DAMAGE);
         }
 
         // Deal extra damage if the kit owner is on fire
-        if (getPlayer().getFireTicks() > 0) {
+        if (this.getPlayer().getFireTicks() > 0) {
             event.setDamage(event.getDamage() + 0.5);
         }
 
-        if (frenzy) {
+        if (this.frenzy) {
             // Buff when the player is on fire during frenzy
-            if (getPlayer().getFireTicks() > 0) {
+            if (this.getPlayer().getFireTicks() > 0) {
                 event.setDamage(event.getDamage() + 0.5);
             }
         } else {
             // Charge up XP for frenzy mode
-            getPlayer().setExp(Math.min(getPlayer().getExp() + XP_PER_HIT, 1f));
-            updateExp();
+            this.getPlayer().setExp(Math.min(this.getPlayer().getExp() + XP_PER_HIT, 1f));
+            this.updateExp();
         }
     }
 
     @EventHandler
     public void onTick(TickEvent event) {
-        float durability = ItemUtil.getItemDurability(flint.getItem());
+        float durability = ItemUtil.getItemDurability(this.flint.getItem());
         final float newDurability = durability + (1f / FS_RESTORE.ticks());
-        flint.modify(builder -> builder.durabilityPercent(newDurability));
+        this.flint.modify(builder -> builder.durabilityPercent(newDurability));
 
         if (event.getTick() % 5 == 0) {
-            attemptFrenzyParticles();
+            this.attemptFrenzyParticles();
         }
     }
 
     private void onUseAxe(PlayerInteractEvent event) {
-        if (!EventUtil.isRightClick(event) || frenzy || getPlayer().getExp() != 1) {
+        if (!EventUtil.isRightClick(event) || this.frenzy || this.getPlayer().getExp() != 1) {
             return;
         }
 
-        enterFrenzy();
+        this.enterFrenzy();
     }
 
     private void onFlint(PlayerInteractEvent event) {
@@ -170,17 +170,17 @@ public class PyroKit extends BattleKit {
 
         final float segment = 1f / FS_USAGE;
         float current;
-        if ((current = ItemUtil.getItemDurability(flint.getItem())) >= segment) {
+        if ((current = ItemUtil.getItemDurability(this.flint.getItem())) >= segment) {
             // Enough durability to use it, decrement
-            flint.modify(ib -> ib.durabilityPercent(current - segment));
+            this.flint.modify(ib -> ib.durabilityPercent(current - segment));
 
             Block block = event.getClickedBlock().getRelative(event.getBlockFace());
-            PyroFire fire = new PyroFire(getBattle().getStructureManager());
-            placeStructure(fire, block);
+            PyroFire fire = new PyroFire(this.getBattle().getStructureManager());
+            this.placeStructure(fire, block);
         } else {
             // No durability!
             event.setCancelled(true);
-            ActionbarUtil.send(getPlayer(), C.warn(C.RED) + "Your flint and steel is on cooldown!");
+            ActionbarUtil.send(this.getPlayer(), C.warn(C.RED) + "Your flint and steel is on cooldown!");
         }
     }
 
@@ -192,7 +192,7 @@ public class PyroKit extends BattleKit {
 
         // Ignite nearby enemies
         EntityUtil.getNearbyEntities(arrow.getLocation(), Player.class, EXPLOSION_RADIUS).stream()
-            .filter(p -> !getBattle().getGame().getTeamManager().isSameTeam(shooter, p))
+            .filter(p -> !this.getBattle().getGame().getTeamManager().isSameTeam(shooter, p))
             .forEach(enemy -> {
                 enemy.setFireTicks(Duration.seconds(3.5).ticks());
             });
@@ -202,41 +202,41 @@ public class PyroKit extends BattleKit {
     }
 
     private void enterFrenzy() {
-        frenzy = true;
-        ParticlePacket.of(EnumParticle.FLAME).at(getPlayer().getLocation().add(0, 0.5, 0)).count(100).spread(0.09f).send();
-        getPlayer().getWorld().playSound(getPlayer().getLocation(), Sound.EXPLODE, 0.5f, 0.5f);
-        getPlayer().setExp(0);
+        this.frenzy = true;
+        ParticlePacket.of(EnumParticle.FLAME).at(this.getPlayer().getLocation().add(0, 0.5, 0)).count(100).spread(0.09f).send();
+        this.getPlayer().getWorld().playSound(this.getPlayer().getLocation(), Sound.EXPLODE, 0.5f, 0.5f);
+        this.getPlayer().setExp(0);
 
         // Light nearby enemies on fire
-        EntityUtil.getNearbyEntities(getPlayer().getLocation(), Player.class, FRENZY_RADIUS).stream()
-            .filter(p -> !getBattle().getGame().getTeamManager().isSameTeam(getPlayer(), p))
+        EntityUtil.getNearbyEntities(this.getPlayer().getLocation(), Player.class, FRENZY_RADIUS).stream()
+            .filter(p -> !this.getBattle().getGame().getTeamManager().isSameTeam(this.getPlayer(), p))
             .forEach(enemy -> {
                 enemy.setFireTicks(60);
             });
 
-        attach(Bukkit.getScheduler().runTaskLater(getPlugin(), this::exitFrenzy, FRENZY_LENGTH.ticks()));
+        this.attach(Bukkit.getScheduler().runTaskLater(this.getPlugin(), this::exitFrenzy, FRENZY_LENGTH.ticks()));
     }
 
     private void attemptFrenzyParticles() {
-        if (frenzy) {
-            ParticlePacket.of(EnumParticle.FLAME).at(getPlayer().getLocation()).count(15).offset(0.3f, 1f, 0.3f).send();
+        if (this.frenzy) {
+            ParticlePacket.of(EnumParticle.FLAME).at(this.getPlayer().getLocation()).count(15).offset(0.3f, 1f, 0.3f).send();
         }
     }
 
     private void exitFrenzy() {
-        frenzy = false;
-        getPlayer().sendMessage(C.warn(C.AQUA) + "Your frenzy fades...");
-        ParticlePacket.of(EnumParticle.SMOKE_LARGE).at(getPlayer().getLocation()).count(25).offset(0.5f, 1f, 0.5f).send();
-        getPlayer().getWorld().playSound(getPlayer().getLocation(), Sound.BLAZE_DEATH, 0.5f, 1.0f);
-        updateExp();
+        this.frenzy = false;
+        this.getPlayer().sendMessage(C.warn(C.AQUA) + "Your frenzy fades...");
+        ParticlePacket.of(EnumParticle.SMOKE_LARGE).at(this.getPlayer().getLocation()).count(25).offset(0.5f, 1f, 0.5f).send();
+        this.getPlayer().getWorld().playSound(this.getPlayer().getLocation(), Sound.BLAZE_DEATH, 0.5f, 1.0f);
+        this.updateExp();
     }
 
     private void updateExp() {
-        if (getPlayer().getExp() == 1) {
-            axe.modify(ItemBuilder::dummyEnchant);
-            getPlayer().sendMessage(C.info(C.RED) + "Right click axe to enter " + C.hl("frenzy mode") + "!");
+        if (this.getPlayer().getExp() == 1) {
+            this.axe.modify(ItemBuilder::dummyEnchant);
+            this.getPlayer().sendMessage(C.info(C.RED) + "Right click axe to enter " + C.hl("frenzy mode") + "!");
         } else {
-            axe.modify(ItemBuilder::removeDummyEnchant);
+            this.axe.modify(ItemBuilder::removeDummyEnchant);
         }
     }
 
@@ -245,8 +245,8 @@ public class PyroKit extends BattleKit {
         private Block center;
 
         public PyroFire(StructureManager manager) {
-            super(manager, getPlayer());
-            removeAfter(FIRE_DELAY);
+            super(manager, PyroKit.this.getPlayer());
+            this.removeAfter(FIRE_DELAY);
         }
 
         @Override
@@ -268,7 +268,7 @@ public class PyroKit extends BattleKit {
 
         @EventHandler
         public void onInteract(PlayerInteractEvent event) {
-            if (getBlocks().contains(event.getClickedBlock())) {
+            if (this.getBlocks().contains(event.getClickedBlock())) {
                 this.remove();
             }
         }
@@ -283,11 +283,11 @@ public class PyroKit extends BattleKit {
                 return;
             }
 
-            if (!getBattle().getGame().getTeamManager().isSameTeam(getPlayer(), damaged)) {
+            if (!PyroKit.this.getBattle().getGame().getTeamManager().isSameTeam(PyroKit.this.getPlayer(), damaged)) {
                 return;
             }
 
-            if (damaged.getLocation().distance(center.getLocation().add(0.5, 0, 0.5)) > 1.25) {
+            if (damaged.getLocation().distance(this.center.getLocation().add(0.5, 0, 0.5)) > 1.25) {
                 return;
             }
 
@@ -296,7 +296,7 @@ public class PyroKit extends BattleKit {
 
             // Without this call, the damaged player would remain on fire when the structure disappears
             // Note that `attach` is not used to prevent it from being cancelled on removal
-            Bukkit.getScheduler().runTaskLater(getPlugin(), () -> damaged.setFireTicks(0), 1);
+            Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> damaged.setFireTicks(0), 1);
         }
 
     }

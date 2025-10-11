@@ -32,16 +32,16 @@ public class FlagManager {
      */
     public void attemptSteal(Player player) {
         // Ensure the player is allowed to even *try* to steal
-        FlagStartStealEvent startStealEvent = new FlagStartStealEvent(player, flag, FLAG_STEAL_TIMER);
+        FlagStartStealEvent startStealEvent = new FlagStartStealEvent(player, this.flag, FLAG_STEAL_TIMER);
         if (startStealEvent.callIsCancelled()) {
             return;
         }
 
-        if (!stealTimers.containsKey(player)) {
+        if (!this.stealTimers.containsKey(player)) {
             // The player has just approached the flag. Set up the initial timer.
-            stealTimers.put(player, Expiration.after(startStealEvent.getRequiredStealTime()));
-        } else if (stealTimers.get(player).isExpired()) {
-            steal(player);
+            this.stealTimers.put(player, Expiration.after(startStealEvent.getRequiredStealTime()));
+        } else if (this.stealTimers.get(player).isExpired()) {
+            this.steal(player);
         }
     }
 
@@ -52,7 +52,7 @@ public class FlagManager {
      * @param player The player who needs to restart stealing.
      */
     public void resetStealTimer(Player player) {
-        stealTimers.remove(player);
+        this.stealTimers.remove(player);
     }
 
     /**
@@ -61,8 +61,8 @@ public class FlagManager {
      * @param player The player stealing.
      */
     private void steal(Player player) {
-        if (!new FlagStealEvent(player, flag).callIsCancelled()) {
-            flag.steal(player);
+        if (!new FlagStealEvent(player, this.flag).callIsCancelled()) {
+            this.flag.steal(player);
         }
     }
 
@@ -72,8 +72,8 @@ public class FlagManager {
      * @param player The player who picked up the flag.
      */
     public void pickup(Player player) {
-        if (!new FlagPickupEvent(player, flag).callIsCancelled()) {
-            flag.pickup(player);
+        if (!new FlagPickupEvent(player, this.flag).callIsCancelled()) {
+            this.flag.pickup(player);
         }
     }
 
@@ -81,8 +81,8 @@ public class FlagManager {
      * Restores the flag, such as when the flag has been sitting on the ground too long.
      */
     public void restore() {
-        flag.reset();
-        new FlagRestoreEvent(flag).call();
+        this.flag.reset();
+        new FlagRestoreEvent(this.flag).call();
     }
 
     /**
@@ -91,8 +91,8 @@ public class FlagManager {
      * @param player The player who recovered the flag.
      */
     public void recover(Player player) {
-        flag.reset();
-        new FlagRecoverEvent(player, flag).call();
+        this.flag.reset();
+        new FlagRecoverEvent(player, this.flag).call();
     }
 
     /**
@@ -102,9 +102,9 @@ public class FlagManager {
      * @param scored  The team that the player is on, which should be rewarded points.
      */
     public void capture(Player carrier, BattleTeam scored) {
-        flag.capture();
+        this.flag.capture();
         scored.onCapture();
-        new FlagCaptureEvent(carrier, scored, flag).call();
+        new FlagCaptureEvent(carrier, scored, this.flag).call();
     }
 
     /**
@@ -114,8 +114,8 @@ public class FlagManager {
      * @param item   The item they dropped, optionally.
      */
     public void drop(Player player, @Nullable Item item) {
-        flag.drop(player.getEyeLocation(), item);
-        new FlagDropEvent(player, flag, item).call();
+        this.flag.drop(player.getEyeLocation(), item);
+        new FlagDropEvent(player, this.flag, item).call();
     }
 
 }

@@ -46,8 +46,8 @@ public class NinjaKit extends BattleKit {
     public NinjaKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
 
-        getPlayer().setExp(1f);
-        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1));
+        this.getPlayer().setExp(1f);
+        this.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 1));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class NinjaKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        sword = new KitItem(
+        this.sword = new KitItem(
             this,
             ItemBuilder.of(Material.GOLD_SWORD)
                 .name("Ninja Sword")
@@ -72,7 +72,7 @@ public class NinjaKit extends BattleKit {
         );
 
         return new KitInventoryBuilder()
-            .add(sword)
+            .add(this.sword)
             .add(new PearlItem())
             .add(new EggItem())
             .add(new DustItem())
@@ -82,7 +82,7 @@ public class NinjaKit extends BattleKit {
 
     @EventHandler
     public void cancelFallDamage(EntityDamageByEntityEvent event) {
-        if (event.getEntity() == getPlayer() && event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getDamage() == 5) {
+        if (event.getEntity() == this.getPlayer() && event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getDamage() == 5) {
             event.setDamage(4);
             // This event is cancelled because it's effectively friendly fire
             event.setCancelled(false);
@@ -91,30 +91,30 @@ public class NinjaKit extends BattleKit {
 
     @EventHandler(ignoreCancelled = true)
     public void onDamageDealtByPlayer(EntityDamageByEntityEvent event) {
-        if (event.getDamager() == getPlayer() && event.getEntity() instanceof Player) {
-            combatCooldown.expireIn(Duration.seconds(1.5));
+        if (event.getDamager() == this.getPlayer() && event.getEntity() instanceof Player) {
+            this.combatCooldown.expireIn(Duration.seconds(1.5));
         }
     }
 
     @EventHandler
     public void onTick(TickEvent event) {
-        increaseEggMana();
-        attemptHeal(event);
+        this.increaseEggMana();
+        this.attemptHeal(event);
 
-        if (invisible) {
-            getGame().getTeamManager().getTeams().forEach(
-                team -> team.getFlagManager().resetStealTimer(getPlayer())
+        if (this.invisible) {
+            this.getGame().getTeamManager().getTeams().forEach(
+                team -> team.getFlagManager().resetStealTimer(this.getPlayer())
             );
         }
     }
 
     @EventHandler
     public void onStartFlagSteal(FlagStartStealEvent flagStartStealEvent) {
-        if (!isPlayer(flagStartStealEvent.getPlayer())) {
+        if (!this.isPlayer(flagStartStealEvent.getPlayer())) {
             return;
         }
 
-        if (invisible) {
+        if (this.invisible) {
             flagStartStealEvent.setCancelled(true);
         } else {
             flagStartStealEvent.setRequiredStealTime(Duration.seconds(1.5));
@@ -122,48 +122,48 @@ public class NinjaKit extends BattleKit {
     }
 
     public void attemptHeal(TickEvent event) {
-        boolean canHeal = sword.isItem(getPlayer().getItemInHand()) && getPlayer().isSneaking();
-        boolean withFlagHeal = hasFlag() && event.isInterval(HEAL_WITH_FLAG_TIME);
-        boolean withoutFlagHeal = !hasFlag() && event.isInterval(HEAL_WITHOUT_FLAG_TIME);
+        boolean canHeal = this.sword.isItem(this.getPlayer().getItemInHand()) && this.getPlayer().isSneaking();
+        boolean withFlagHeal = this.hasFlag() && event.isInterval(HEAL_WITH_FLAG_TIME);
+        boolean withoutFlagHeal = !this.hasFlag() && event.isInterval(HEAL_WITHOUT_FLAG_TIME);
 
         if (canHeal && (withFlagHeal || withoutFlagHeal)) {
-            getPlayer().setHealth(Math.min(getPlayer().getMaxHealth(), getPlayer().getHealth() + 1));
+            this.getPlayer().setHealth(Math.min(this.getPlayer().getMaxHealth(), this.getPlayer().getHealth() + 1));
         }
     }
 
     // TODO ninjas need to be impacted by projectiles while invisible
     private void enforceVisibility() {
-        VisibilityManager visibilityManager = getBattle().getVisibilityManager();
+        VisibilityManager visibilityManager = this.getBattle().getVisibilityManager();
 
-        if (invisible) {
+        if (this.invisible) {
             // Hide the player for any enemies who can see them
-            getEnemies().stream()
-                .filter(player -> visibilityManager.canSee(player, getPlayer()))
-                .forEach(player -> visibilityManager.hide(player, getPlayer()));
+            this.getEnemies().stream()
+                .filter(player -> visibilityManager.canSee(player, this.getPlayer()))
+                .forEach(player -> visibilityManager.hide(player, this.getPlayer()));
 
-            if (!getPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 99999, 0, false, false));
+            if (!this.getPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+                this.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 99999, 0, false, false));
             }
         } else {
             // Show the player to any enemies who can't see them
-            getEnemies().stream()
-                .filter(player -> !visibilityManager.canSee(player, getPlayer()))
-                .forEach(player -> visibilityManager.show(player, getPlayer()));
+            this.getEnemies().stream()
+                .filter(player -> !visibilityManager.canSee(player, this.getPlayer()))
+                .forEach(player -> visibilityManager.show(player, this.getPlayer()));
 
-            if (getPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                getPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
+            if (this.getPlayer().hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+                this.getPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
             }
         }
 
         // Ensure players are always visible to teammates
-        getTeammates().stream()
-            .filter(player -> !visibilityManager.canSee(player, getPlayer()))
-            .forEach(player -> visibilityManager.show(player, getPlayer()));
+        this.getTeammates().stream()
+            .filter(player -> !visibilityManager.canSee(player, this.getPlayer()))
+            .forEach(player -> visibilityManager.show(player, this.getPlayer()));
     }
 
     public void increaseEggMana() {
-        if (!invisible) {
-            getPlayer().setExp(Math.min(getPlayer().getExp() + 1f / REFILL_TIME.ticks(), 1.0f));
+        if (!this.invisible) {
+            this.getPlayer().setExp(Math.min(this.getPlayer().getExp() + 1f / REFILL_TIME.ticks(), 1.0f));
         }
     }
 
@@ -175,7 +175,7 @@ public class NinjaKit extends BattleKit {
     }
 
     private void applyEggEffect(Player player, boolean direct) {
-        if (isTeammate(player)) {
+        if (this.isTeammate(player)) {
             return;
         }
 
@@ -186,10 +186,10 @@ public class NinjaKit extends BattleKit {
     @Override
     public void shutdown() {
         // Restore visibility to normal
-        invisible = false;
+        this.invisible = false;
 
-        if (getPlayer().isOnline()) {
-            enforceVisibility();
+        if (this.getPlayer().isOnline()) {
+            this.enforceVisibility();
         }
 
         super.shutdown();
@@ -211,51 +211,51 @@ public class NinjaKit extends BattleKit {
         @EventHandler
         public void onTick(TickEvent event) {
             if (event.isInterval(DUST_CHECK_INTERVAL)) {
-                adjustRedstoneAmount();
+                this.adjustRedstoneAmount();
             }
 
-            enforceDust();
+            this.enforceDust();
         }
 
         @EventHandler(priority = EventPriority.LOW)
         public void onDamageWithDust(EntityDamageByEntityEvent event) {
-            if (event.getDamager() != getPlayer()) {
+            if (event.getDamager() != NinjaKit.this.getPlayer()) {
                 return;
             }
 
-            if (this.isItem(getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE) {
+            if (this.isItem(NinjaKit.this.getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE) {
                 event.setCancelled(true);
             }
         }
 
         private void enforceDust() {
-            boolean redstoneAllowed = !hasFlag() && combatCooldown.isExpired();
+            boolean redstoneAllowed = !NinjaKit.this.hasFlag() && NinjaKit.this.combatCooldown.isExpired();
 
             if (!redstoneAllowed && this.getItem().getType() == Material.REDSTONE) {
-                switchToGlowstone();
+                this.switchToGlowstone();
             }
 
             if (redstoneAllowed && this.getItem().getType() != Material.REDSTONE && !this.isPlaceholder()) {
-                switchToRedstone();
+                this.switchToRedstone();
             }
 
-            invisible = this.isItem(getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE;
-            enforceVisibility();
+            NinjaKit.this.invisible = this.isItem(NinjaKit.this.getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE;
+            NinjaKit.this.enforceVisibility();
         }
 
         private void adjustRedstoneAmount() {
-            if (!this.isItem(getPlayer().getItemInHand()) || this.getItem().getType() != Material.REDSTONE) {
+            if (!this.isItem(NinjaKit.this.getPlayer().getItemInHand()) || this.getItem().getType() != Material.REDSTONE) {
                 return;
             }
 
-            if (inSpawn()) {
+            if (NinjaKit.this.inSpawn()) {
                 return;
             }
 
             int amount = this.getItem().getAmount();
-            if (getPlayer().isSprinting()) {
+            if (NinjaKit.this.getPlayer().isSprinting()) {
                 amount -= 6;
-            } else if (getPlayer().isSneaking()) {
+            } else if (NinjaKit.this.getPlayer().isSneaking()) {
                 amount -= 1;
             } else {
                 amount -= 2;
@@ -304,15 +304,15 @@ public class NinjaKit extends BattleKit {
             }
 
             this.setPlaceholder();
-            EnderPearl ep = getPlayer().launchProjectile(EnderPearl.class);
+            EnderPearl ep = NinjaKit.this.getPlayer().launchProjectile(EnderPearl.class);
 
-            attach(new InteractiveProjectile(getPlugin(), ep)
+            NinjaKit.this.attach(new InteractiveProjectile(this.getPlugin(), ep)
                 .singleEventOnly()
                 .onHitPlayer(player -> this.restore())
                 .onDeath(this::restore)
             );
 
-            attach(ep);
+            NinjaKit.this.attach(ep);
         }
 
     }
@@ -341,26 +341,26 @@ public class NinjaKit extends BattleKit {
                 return;
             }
 
-            if (getPlayer().getExp() < EGG_MANA_COST) {
-                ActionbarUtil.send(getPlayer(), C.cmdFail() + "Not enough mana!");
+            if (NinjaKit.this.getPlayer().getExp() < EGG_MANA_COST) {
+                ActionbarUtil.send(NinjaKit.this.getPlayer(), C.cmdFail() + "Not enough mana!");
                 return;
             }
 
             this.decrement(true);
-            Egg e = getPlayer().launchProjectile(Egg.class);
+            Egg e = NinjaKit.this.getPlayer().launchProjectile(Egg.class);
 
-            attach(new InteractiveProjectile(getPlugin(), e)
+            NinjaKit.this.attach(new InteractiveProjectile(this.getPlugin(), e)
                 .singleEventOnly()
                 .onDamageEvent(damageEvent -> {
                     if (damageEvent.getEntity() instanceof Player hit) {
                         e.getLocation().getWorld().createExplosion(e.getLocation(), 0F, false);
-                        applyEggEffect(hit, true);
+                        NinjaKit.this.applyEggEffect(hit, true);
                     }
                 })
-                .onHitEvent(hitEvent -> applyEggEffectNearby(e))
+                .onHitEvent(hitEvent -> NinjaKit.this.applyEggEffectNearby(e))
             );
 
-            getPlayer().setExp(Math.max(getPlayer().getExp() - EGG_MANA_COST, 0f));
+            NinjaKit.this.getPlayer().setExp(Math.max(NinjaKit.this.getPlayer().getExp() - EGG_MANA_COST, 0f));
         }
 
     }

@@ -54,25 +54,25 @@ public class BattleGameListener implements EasyListener {
     public void onJoin(PlayerJoinEvent event) {
         // Ensure that every join results in either a participate or resign event
         if (event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
-            new PlayerParticipateEvent(event.getPlayer(), game).call();
+            new PlayerParticipateEvent(event.getPlayer(), this.game).call();
         } else {
-            new PlayerResignEvent(event.getPlayer(), game).call();
+            new PlayerResignEvent(event.getPlayer(), this.game).call();
         }
 
         // No matter what, they should be in the world of the current game
-        if (event.getPlayer().getWorld() != game.getWorld()) {
-            event.getPlayer().teleport(game.getConfig().getSpawn());
+        if (event.getPlayer().getWorld() != this.game.getWorld()) {
+            event.getPlayer().teleport(this.game.getConfig().getSpawn());
         }
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        new PlayerResignEvent(event.getPlayer(), game).call();
+        new PlayerResignEvent(event.getPlayer(), this.game).call();
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent event) {
-        new PlayerResignEvent(event.getPlayer(), game).call();
+        new PlayerResignEvent(event.getPlayer(), this.game).call();
     }
 
     @EventHandler
@@ -82,20 +82,20 @@ public class BattleGameListener implements EasyListener {
 
         if (prev == GameMode.SURVIVAL) {
             // Switching out of survival, probably to spectate
-            new PlayerResignEvent(event.getPlayer(), game).call();
+            new PlayerResignEvent(event.getPlayer(), this.game).call();
         } else if (next == GameMode.SURVIVAL) {
             // Switching into survival, probably to play
-            new PlayerParticipateEvent(event.getPlayer(), game).call();
+            new PlayerParticipateEvent(event.getPlayer(), this.game).call();
         }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onMoveIntoSpawn(PlayerMoveEvent event) {
-        if (!game.isParticipant(event.getPlayer())) {
+        if (!this.game.isParticipant(event.getPlayer())) {
             return;
         }
 
-        game.getTeamManager().getTeams().forEach(bt -> {
+        this.game.getTeamManager().getTeams().forEach(bt -> {
             if (!bt.isInSpawn(event.getFrom()) && bt.isInSpawn(event.getTo())) {
                 new PlayerEnterSpawnEvent(event.getPlayer(), bt, event).call();
             }
@@ -104,11 +104,11 @@ public class BattleGameListener implements EasyListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onTeleportIntoSpawn(PlayerTeleportEvent event) {
-        if (!game.isParticipant(event.getPlayer())) {
+        if (!this.game.isParticipant(event.getPlayer())) {
             return;
         }
 
-        game.getTeamManager().getTeams().forEach(bt -> {
+        this.game.getTeamManager().getTeams().forEach(bt -> {
             if (!bt.isInSpawn(event.getFrom()) && bt.isInSpawn(event.getTo())) {
                 new PlayerEnterSpawnEvent(event.getPlayer(), bt, event).call();
             }
@@ -134,9 +134,9 @@ public class BattleGameListener implements EasyListener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void selectAutoTeam(PlayerParticipateEvent event) {
-        if (game.getTeamManager().getTeam(event.getPlayer()) == null) {
-            BattleTeam toJoin = game.getTeamManager().selectAutoTeam();
-            game.getTeamManager().setTeam(event.getPlayer(), toJoin);
+        if (this.game.getTeamManager().getTeam(event.getPlayer()) == null) {
+            BattleTeam toJoin = this.game.getTeamManager().selectAutoTeam();
+            this.game.getTeamManager().setTeam(event.getPlayer(), toJoin);
         }
     }
 
@@ -144,29 +144,29 @@ public class BattleGameListener implements EasyListener {
     public void selectDefaultKit(PlayerParticipateEvent event) {
         // For players who join without a kit selected, make sure they have one before they are respawned
         // The kit creation/equipping will be handled by the game
-        KitDefinition selected = game.getBattle().getKitManager().getSelected(event.getPlayer());
+        KitDefinition selected = this.game.getBattle().getKitManager().getSelected(event.getPlayer());
         if (selected == null) {
-            game.getBattle().getKitManager().setSelected(event.getPlayer(), BattleKitType.HEAVY, true);
+            this.game.getBattle().getKitManager().setSelected(event.getPlayer(), BattleKitType.HEAVY, true);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onResign(PlayerResignEvent event) {
-        game.remove(event.getPlayer());
+        this.game.remove(event.getPlayer());
     }
 
     @EventHandler
     public void onKitSelectAttempt(KitAttemptSelectEvent event) {
-        BattleKitManager kitManager = game.getBattle().getKitManager();
+        BattleKitManager kitManager = this.game.getBattle().getKitManager();
         if (kitManager.isDisabled(event.getKitDefinition())) {
             event.deny("This class is disabled");
         }
 
         Optional<Integer> limit = kitManager.getLimit(event.getKitDefinition());
         if (limit.isPresent()) {
-            BattleTeam team = game.getTeamManager().getTeam(event.getPlayer());
+            BattleTeam team = this.game.getTeamManager().getTeam(event.getPlayer());
             long selected = team.getPlayers().stream().filter(player -> {
-                return game.getBattle().getKitManager().isSelected(player, event.getKitDefinition());
+                return this.game.getBattle().getKitManager().isSelected(player, event.getKitDefinition());
             }).count();
 
             if (selected >= limit.get()) {
@@ -180,7 +180,7 @@ public class BattleGameListener implements EasyListener {
         Bukkit.getOnlinePlayers().forEach(player -> {
             Block under = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             if (under.getType() == Material.SPONGE) {
-                SpongeUtil.launch(plugin, player, under);
+                SpongeUtil.launch(this.plugin, player, under);
             }
         });
     }
@@ -196,7 +196,7 @@ public class BattleGameListener implements EasyListener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
         // FlagListener will handle the flag being dropped
-        if (game.getTeamManager().getTeams().stream().noneMatch(bt ->
+        if (this.game.getTeamManager().getTeams().stream().noneMatch(bt ->
             bt.getFlag().isItem(event.getItemDrop().getItemStack())
         )) {
             event.setCancelled(true);
@@ -205,14 +205,14 @@ public class BattleGameListener implements EasyListener {
 
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
-        if (game.isParticipant(event.getPlayer())) {
+        if (this.game.isParticipant(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
-        if (game.isParticipant(event.getPlayer()) && event.getBlockPlaced() != null) {
+        if (this.game.isParticipant(event.getPlayer()) && event.getBlockPlaced() != null) {
             event.setCancelled(true);
         }
     }
@@ -239,7 +239,7 @@ public class BattleGameListener implements EasyListener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if (event.getPlayer() instanceof Player p && game.isParticipant(p)) {
+        if (event.getPlayer() instanceof Player p && this.game.isParticipant(p)) {
             event.setCancelled(true);
         }
     }
@@ -258,7 +258,7 @@ public class BattleGameListener implements EasyListener {
 
     @EventHandler
     public void onServerListPing(ServerListPingEvent event) {
-        event.setMotd(plugin.getBattle().getMatch().getMotd());
+        event.setMotd(this.plugin.getBattle().getMatch().getMotd());
     }
 
 }

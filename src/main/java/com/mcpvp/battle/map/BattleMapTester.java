@@ -39,7 +39,7 @@ public class BattleMapTester {
         File testOutputDir = new File(testOptions.getOutputDir());
         File testOutputFile = new File(testOutputDir, "test_progress_" + testOptions.getRunId() + ".json");
 
-        MapTestResults results = loadExistingResults(testOutputFile);
+        MapTestResults results = this.loadExistingResults(testOutputFile);
 
         List<BattleMapData> untested = mapSource.getAll().stream()
             .filter(data -> !results.errors.containsKey(data.getId()))
@@ -50,7 +50,7 @@ public class BattleMapTester {
 
         for (int i = 0; i < untested.size(); i++) {
             if ((i + 1) % 500 == 0) {
-                saveResults(testOutputFile, results);
+                this.saveResults(testOutputFile, results);
                 log.info("Stopping tester to avoid memory problems. Restart the server to continue testing.");
                 Bukkit.shutdown();
                 return;
@@ -59,7 +59,7 @@ public class BattleMapTester {
             BattleMapData battleMapData = untested.get(i);
             try {
                 log.info("Processing map {}", battleMapData);
-                List<String> errors = test(
+                List<String> errors = this.test(
                     mapManager.getWorldData(battleMapData),
                     battleMapData,
                     i
@@ -71,8 +71,8 @@ public class BattleMapTester {
         }
 
         log.info("Map testing complete!");
-        saveResults(testOutputFile, results);
-        generateMapsJson(mapSource, results, testOptions);
+        this.saveResults(testOutputFile, results);
+        this.generateMapsJson(mapSource, results, testOptions);
 
         Bukkit.shutdown();
     }
@@ -102,7 +102,7 @@ public class BattleMapTester {
             return List.of("parser_error");
         }
 
-        List<String> errors = evaluate(config);
+        List<String> errors = this.evaluate(config);
 
         Bukkit.unloadWorld(world, false);
 
@@ -131,11 +131,11 @@ public class BattleMapTester {
             return new MapTestResults();
         }
 
-        return mapper.readValue(outputFile, MapTestResults.class);
+        return this.mapper.readValue(outputFile, MapTestResults.class);
     }
 
     private void saveResults(File outputFile, MapTestResults results) throws IOException {
-        mapper.writeValue(outputFile, results);
+        this.mapper.writeValue(outputFile, results);
         log.info("Saved testing results to {}", outputFile.getAbsoluteFile());
     }
 
@@ -152,7 +152,7 @@ public class BattleMapTester {
         }
 
         File file = new File(testerOptions.getOutputDir(), "maps_" + testerOptions.getRunId() + ".json");
-        mapper.writeValue(file, maps);
+        this.mapper.writeValue(file, maps);
 
         log.info("Saved a new maps.json file to {}", file.getAbsolutePath());
     }

@@ -68,8 +68,8 @@ public class NecroKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        tag = new KitItem(this, ItemBuilder.of(Material.NAME_TAG).name("Revival Tag").build());
-        tag.onInteractEntity(event -> {
+        this.tag = new KitItem(this, ItemBuilder.of(Material.NAME_TAG).name("Revival Tag").build());
+        this.tag.onInteractEntity(event -> {
             if (event.getRightClicked() instanceof Player clicked) {
                 this.attemptRevivalTag(clicked);
             }
@@ -81,40 +81,40 @@ public class NecroKit extends BattleKit {
                 .enchant(Enchantment.DAMAGE_ALL, 2)
                 .unbreakable())
             .addFood(4)
-            .add(tag)
+            .add(this.tag)
             .add(new CrypticSkull())
             .build();
     }
 
     private void attemptRevivalTag(Player target) {
-        if (!isTeammate(target) || tag.isPlaceholder()) {
+        if (!this.isTeammate(target) || this.tag.isPlaceholder()) {
             return;
         }
 
-        if (revivalTagManager.isRevivalTagged(target)) {
-            getPlayer().sendMessage(C.warn(C.GOLD) + C.hl(target.getName()) + " is already revival tagged!");
+        if (this.revivalTagManager.isRevivalTagged(target)) {
+            this.getPlayer().sendMessage(C.warn(C.GOLD) + C.hl(target.getName()) + " is already revival tagged!");
             return;
         }
 
-        if (revivalTagManager.isZombie(target)) {
-            getPlayer().sendMessage(C.warn(C.GOLD) + C.hl(target.getName()) + " is already a zombie!");
+        if (this.revivalTagManager.isZombie(target)) {
+            this.getPlayer().sendMessage(C.warn(C.GOLD) + C.hl(target.getName()) + " is already a zombie!");
             return;
         }
 
-        revivalTagManager.setRevivalTagged(target);
-        getPlayer().sendMessage(C.info(C.AQUA) + "You revival tagged " + C.hl(target.getName()) + "!");
+        this.revivalTagManager.setRevivalTagged(target);
+        this.getPlayer().sendMessage(C.info(C.AQUA) + "You revival tagged " + C.hl(target.getName()) + "!");
         target.sendMessage(
-            C.info(C.GREEN) + C.hl(getPlayer().getName())
+            C.info(C.GREEN) + C.hl(this.getPlayer().getName())
                 + " has revival tagged you. You are safe for the next "
                 + C.hl("" + TAG_DURATION.seconds()) + " seconds!");
 
-        tag.setPlaceholder();
-        attach(EasyTask.of(() -> tag.restore()).runTaskLater(getPlugin(), TAG_COOLDOWN.ticks()));
+        this.tag.setPlaceholder();
+        this.attach(EasyTask.of(() -> this.tag.restore()).runTaskLater(this.getPlugin(), TAG_COOLDOWN.ticks()));
     }
 
     private WitherSkull spawnWitherSkull() {
-        Vector vector = getPlayer().getEyeLocation().getDirection().clone().normalize().multiply(0.1D);
-        EntityPlayer entityPlayer = PlayerUtil.asCraftPlayer(getPlayer());
+        Vector vector = this.getPlayer().getEyeLocation().getDirection().clone().normalize().multiply(0.1D);
+        EntityPlayer entityPlayer = PlayerUtil.asCraftPlayer(this.getPlayer());
         EntityWitherSkull witherSkull = new EntityWitherSkull(
             entityPlayer.getWorld(),
             entityPlayer,
@@ -125,13 +125,13 @@ public class NecroKit extends BattleKit {
         witherSkull.dirX = vector.getX();
         witherSkull.dirY = vector.getY();
         witherSkull.dirZ = vector.getZ();
-        witherSkull.locX = getPlayer().getEyeLocation().getX();
-        witherSkull.locY = getPlayer().getEyeLocation().getY();
-        witherSkull.locZ = getPlayer().getEyeLocation().getZ();
+        witherSkull.locX = this.getPlayer().getEyeLocation().getX();
+        witherSkull.locY = this.getPlayer().getEyeLocation().getY();
+        witherSkull.locZ = this.getPlayer().getEyeLocation().getZ();
         entityPlayer.getWorld().addEntity(witherSkull);
 
         WitherSkull bukkitEntity = (WitherSkull) witherSkull.getBukkitEntity();
-        bukkitEntity.setShooter(getPlayer());
+        bukkitEntity.setShooter(this.getPlayer());
 
         return bukkitEntity;
     }
@@ -142,31 +142,31 @@ public class NecroKit extends BattleKit {
             .at(skull.getLocation())
             .spread(SKULL_EFFECT_RADIUS / 2)
             .count(SKULL_EFFECT_RADIUS * 10);
-        getEnemies().forEach(wither::send);
+        this.getEnemies().forEach(wither::send);
 
         // Positive particles
         ParticlePacket absorption = ParticlePacket.blockDust(Material.GOLD_BLOCK)
             .at(skull.getLocation())
             .spread(SKULL_EFFECT_RADIUS / 2)
             .count(SKULL_EFFECT_RADIUS * 10);
-        getTeammates().forEach(absorption::send);
+        this.getTeammates().forEach(absorption::send);
 
         // Impact nearby players
         EntityUtil.getNearbyEntities(skull.getLocation(), Player.class, SKULL_EFFECT_RADIUS).stream()
-            .filter(getGame()::isParticipant)
-            .filter(player -> !getGame().getTeamManager().getTeam(player).isInSpawn(player))
+            .filter(this.getGame()::isParticipant)
+            .filter(player -> !this.getGame().getTeamManager().getTeam(player).isInSpawn(player))
             .forEach(player -> {
-                if (isTeammate(player)) {
-                    onSkullHitsTeammate(player);
+                if (this.isTeammate(player)) {
+                    this.onSkullHitsTeammate(player);
                 } else {
-                    onSkullHitsEnemy(player);
+                    this.onSkullHitsEnemy(player);
                 }
             });
 
         // Remove nearby webs
-        getBattle().getStructureManager().getStructures().stream()
+        this.getBattle().getStructureManager().getStructures().stream()
             .filter(structure -> structure instanceof MedicKit.MedicWeb)
-            .filter(structure -> isEnemy(structure.getOwner()))
+            .filter(structure -> this.isEnemy(structure.getOwner()))
             .filter(structure -> structure.distance(skull.getLocation()) <= SKULL_EFFECT_RADIUS)
             .forEach(Structure::remove);
 
@@ -179,11 +179,11 @@ public class NecroKit extends BattleKit {
             new PotionEffect(PotionEffectType.ABSORPTION, SKULL_ABSORPTION_DURATION.ticks(), amplifier, true), true
         );
 
-        player.sendMessage(C.info(C.AQUA) + C.hl(getPlayer().getName()) + " gave you absorption!");
+        player.sendMessage(C.info(C.AQUA) + C.hl(this.getPlayer().getName()) + " gave you absorption!");
     }
 
     private void onSkullHitsEnemy(Player player) {
-        player.sendMessage(C.warn(C.GOLD) + C.hl(getPlayer().getName()) + " withered you!");
+        player.sendMessage(C.warn(C.GOLD) + C.hl(this.getPlayer().getName()) + " withered you!");
         player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, Duration.seconds(5).ticks(), 2, true));
     }
 
@@ -197,53 +197,53 @@ public class NecroKit extends BattleKit {
                 ItemBuilder.of(Material.SKULL_ITEM).name("Cryptic Skull").data(1).build()
             );
 
-            onInteract(event -> launch());
+            this.onInteract(event -> this.launch());
         }
 
         private void launch() {
-            if (isPlaceholder() || inSpawn()) {
+            if (this.isPlaceholder() || NecroKit.this.inSpawn()) {
                 return;
             }
 
             // Projectile launch
-            WitherSkull witherSkull = spawnWitherSkull();
+            WitherSkull witherSkull = NecroKit.this.spawnWitherSkull();
 
             // Handling
-            attach(
-                new InteractiveProjectile(getPlugin(), witherSkull)
-                    .onHitEvent(event -> explodeSkull(witherSkull))
+            NecroKit.this.attach(
+                new InteractiveProjectile(this.getPlugin(), witherSkull)
+                    .onHitEvent(event -> NecroKit.this.explodeSkull(witherSkull))
             );
 
             // Effects
-            attach(EffectUtil.colorTrail(witherSkull, getTeam().getColor().getColor()).runTaskTimer(getPlugin(), 0, 1));
-            getPlayer().getWorld().playSound(getPlayer().getEyeLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
+            NecroKit.this.attach(EffectUtil.colorTrail(witherSkull, NecroKit.this.getTeam().getColor().getColor()).runTaskTimer(this.getPlugin(), 0, 1));
+            NecroKit.this.getPlayer().getWorld().playSound(NecroKit.this.getPlayer().getEyeLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
 
             // Item handling
-            decrement(true);
+            this.decrement(true);
 
             Expiration expiration = Expiration.after(SKULL_REGENERATION_TIME);
-            restores.add(expiration);
-            attach(EasyTask.of(this::regenerate).runTaskLater(getPlugin(), SKULL_REGENERATION_TIME.ticks()));
+            this.restores.add(expiration);
+            NecroKit.this.attach(EasyTask.of(this::regenerate).runTaskLater(this.getPlugin(), SKULL_REGENERATION_TIME.ticks()));
         }
 
         private void regenerate() {
-            if (!restores.isEmpty()) {
-                restores.remove();
+            if (!this.restores.isEmpty()) {
+                this.restores.remove();
             }
-            increment(3);
+            this.increment(3);
         }
 
         @EventHandler
         public void updateExp(TickEvent event) {
-            if (isItem(getPlayer().getItemInHand()) && !restores.isEmpty()) {
-                getPlayer().setExp(restores.peek().getCompletionPercent(SKULL_REGENERATION_TIME));
+            if (this.isItem(NecroKit.this.getPlayer().getItemInHand()) && !this.restores.isEmpty()) {
+                NecroKit.this.getPlayer().setExp(this.restores.peek().getCompletionPercent(SKULL_REGENERATION_TIME));
             }
         }
 
         @EventHandler
         public void onKillOtherPlayer(PlayerKilledByPlayerEvent event) {
-            if (event.getKiller() == getPlayer()) {
-                regenerate();
+            if (event.getKiller() == NecroKit.this.getPlayer()) {
+                this.regenerate();
             }
         }
 

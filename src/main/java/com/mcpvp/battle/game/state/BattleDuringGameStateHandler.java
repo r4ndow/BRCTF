@@ -36,19 +36,19 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     public void enterState() {
         super.enterState();
 
-        game.getTeamManager().getTeams().forEach(bt -> {
+        this.game.getTeamManager().getTeams().forEach(bt -> {
             bt.getFlag().setLocked(false);
         });
 
-        game.getBattle().getMatch().getTimer().setSeconds(game.getConfig().getTime() * 60);
-        game.getBattle().getMatch().getTimer().setPaused(false);
+        this.game.getBattle().getMatch().getTimer().setSeconds(this.game.getConfig().getTime() * 60);
+        this.game.getBattle().getMatch().getTimer().setPaused(false);
     }
 
     @Override
     public void leaveState() {
         // Shut down all kits
-        game.getParticipants().forEach(player -> {
-            Optional.ofNullable(game.getBattle().getKitManager().get(player)).ifPresent(Kit::shutdown);
+        this.game.getParticipants().forEach(player -> {
+            Optional.ofNullable(this.game.getBattle().getKitManager().get(player)).ifPresent(Kit::shutdown);
         });
 
         super.leaveState();
@@ -58,11 +58,11 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         summary.add(" ");
         summary.add(C.YELLOW + "✦ " + C.GOLD + "✦ " + C.b(C.R) + "GAME SUMMARY" + C.YELLOW + " ✦" + C.GOLD + " ✦");
 
-        BattleTeam winner = game.getWinner();
+        BattleTeam winner = this.game.getWinner();
         if (winner == null) {
             summary.add(C.info(C.GOLD) + "Nobody won!");
         } else {
-            BattleTeam loser = game.getTeamManager().getNext(winner);
+            BattleTeam loser = this.game.getTeamManager().getNext(winner);
             summary.add("%sWinner: %s (%s - %s)".formatted(
                 C.info(C.GOLD), winner.getColoredName(), winner.getColor().toString() + winner.getCaptures(), loser.getColor().toString() + loser.getCaptures()
             ));
@@ -85,31 +85,31 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
             return;
         }
 
-        game.respawn(event.getEntity(), true, true);
+        this.game.respawn(event.getEntity(), true, true);
     }
 
     @EventHandler
     public void onJoinTeam(PlayerJoinTeamEvent event) {
-        game.respawn(event.getPlayer(), false, true);
+        this.game.respawn(event.getPlayer(), false, true);
     }
 
     @EventHandler
     public void onParticipate(PlayerParticipateEvent event) {
-        game.respawn(event.getPlayer(), false, true);
+        this.game.respawn(event.getPlayer(), false, true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onKitSelected(KitSelectedEvent event) {
         if (event.isRespawn()) {
-            game.respawn(event.getPlayer(), false, true);
+            this.game.respawn(event.getPlayer(), false, true);
         }
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         // This should not happen, but just to be safe...
-        if (game.isParticipant(event.getPlayer())) {
-            game.respawn(event.getPlayer(), false, true);
+        if (this.game.isParticipant(event.getPlayer())) {
+            this.game.respawn(event.getPlayer(), false, true);
         }
     }
 
@@ -119,7 +119,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
             return;
         }
 
-        BattleTeam team = game.getTeamManager().getTeam(player);
+        BattleTeam team = this.game.getTeamManager().getTeam(player);
 
         if (team.isInSpawn(player)) {
             event.setCancelled(true);
@@ -133,16 +133,16 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
         if (event.getDamager() instanceof Projectile projectile) {
             if (projectile.getShooter() instanceof Player shooter) {
-                damagerTeam = game.getTeamManager().getTeam(shooter);
+                damagerTeam = this.game.getTeamManager().getTeam(shooter);
             }
         }
 
         if (event.getDamager() instanceof Player damager) {
-            damagerTeam = game.getTeamManager().getTeam(damager);
+            damagerTeam = this.game.getTeamManager().getTeam(damager);
         }
 
         if (event.getEntity() instanceof Player damaged) {
-            damagedTeam = game.getTeamManager().getTeam(damaged);
+            damagedTeam = this.game.getTeamManager().getTeam(damaged);
         }
 
         if (damagedTeam == damagerTeam) {
@@ -152,8 +152,8 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler
     public void passiveHealInSpawn(TickEvent event) {
-        game.getParticipants().forEach(p -> {
-            BattleTeam team = game.getTeamManager().getTeam(p);
+        this.game.getParticipants().forEach(p -> {
+            BattleTeam team = this.game.getTeamManager().getTeam(p);
             if (team != null && team.isInSpawn(p) && event.getTick() % 20 == 0) {
                 p.setHealth(Math.min(p.getMaxHealth(), p.getHealth() + 1));
             }
@@ -162,20 +162,20 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler
     public void killInEnemySpawn(PlayerEnterSpawnEvent event) {
-        if (game.getTeamManager().getTeam(event.getPlayer()) != event.getTeam()) {
+        if (this.game.getTeamManager().getTeam(event.getPlayer()) != event.getTeam()) {
             // If this is caused by teleporting, we need to cancel the teleport
             // Otherwise the player will be respawned, then the teleport will go through
             if (event.getCause() instanceof PlayerTeleportEvent) {
                 event.getCause().setCancelled(true);
             }
 
-            game.respawn(event.getPlayer(), true, true);
+            this.game.respawn(event.getPlayer(), true, true);
         }
     }
 
     @EventHandler
     public void loseFlagInSpawn(PlayerEnterSpawnEvent event) {
-        Optional<BattleTeam> carryingFlag = game.getTeamManager().getTeams().stream()
+        Optional<BattleTeam> carryingFlag = this.game.getTeamManager().getTeams().stream()
             .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
             .findAny();
         carryingFlag.ifPresent(battleTeam -> battleTeam.getFlagManager().restore());
@@ -183,14 +183,14 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCapture(FlagCaptureEvent event) {
-        if (game.getWinner() != null) {
-            game.setState(BattleGameState.AFTER);
+        if (this.game.getWinner() != null) {
+            this.game.setState(BattleGameState.AFTER);
         }
     }
 
     @EventHandler
     public void onPlayerKillPlayer(PlayerKilledByPlayerEvent event) {
-        game.editStats(event.getKiller(), s -> {
+        this.game.editStats(event.getKiller(), s -> {
             s.setKills(s.getKills() + 1);
             s.setStreak(s.getStreak() + 1);
         });

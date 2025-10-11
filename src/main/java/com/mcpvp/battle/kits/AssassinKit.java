@@ -75,13 +75,13 @@ public class AssassinKit extends BattleKit {
                 .unbreakable()
                 .build()
         );
-        redstone = new KitItem(
+        this.redstone = new KitItem(
             this,
             ItemBuilder.of(Material.REDSTONE)
                 .name("Assassinate")
                 .build()
         );
-        sugar = new KitItem(
+        this.sugar = new KitItem(
             this,
             ItemBuilder.of(Material.SUGAR)
                 .name("Speed Boost")
@@ -89,109 +89,109 @@ public class AssassinKit extends BattleKit {
                 .build()
         );
 
-        redstone.onInteract(event -> {
+        this.redstone.onInteract(event -> {
             if (EventUtil.isRightClick(event)) {
-                activateStrength(sword);
+                this.activateStrength(sword);
             }
         });
 
-        sugar.onInteract(event -> {
+        this.sugar.onInteract(event -> {
             if (EventUtil.isRightClick(event)) {
-                activateSpeed();
+                this.activateSpeed();
             }
         });
 
         return new KitInventoryBuilder()
             .add(sword)
-            .add(redstone)
-            .add(sugar)
+            .add(this.redstone)
+            .add(this.sugar)
             .addCompass(8)
             .build();
     }
 
     private void activateStrength(KitItem sword) {
         // Swap to the sword slot
-        int slot = getPlayer().getInventory().first(sword.getItem());
+        int slot = this.getPlayer().getInventory().first(sword.getItem());
         if (slot < 9 && slot > -1) {
-            getPlayer().getInventory().setHeldItemSlot(slot);
+            this.getPlayer().getInventory().setHeldItemSlot(slot);
         }
 
         // Activate
-        getPlayer().sendMessage(C.info(C.AQUA) + "You are now in " + C.hl("Assassin mode") + "!");
-        strong = true;
-        vulnerable = true;
-        redstone.decrement(true);
+        this.getPlayer().sendMessage(C.info(C.AQUA) + "You are now in " + C.hl("Assassin mode") + "!");
+        this.strong = true;
+        this.vulnerable = true;
+        this.redstone.decrement(true);
 
-        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, VULNERABLE_TIME.ticks(), 0));
-        getPlayer().setExp(1);
+        this.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, VULNERABLE_TIME.ticks(), 0));
+        this.getPlayer().setExp(1);
 
         // Empty XP bar
-        animateExp(new DrainExpBarTask(getPlayer(), STRONG_TIME));
+        this.animateExp(new DrainExpBarTask(this.getPlayer(), STRONG_TIME));
 
         // Task to restore the redstone
-        attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-            redstone.increment(1);
+        this.attach(Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> {
+            this.redstone.increment(1);
         }, STRONG_TIME.add(STRONG_RESTORE).ticks()));
 
         // Task to end the strength
-        attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-            getPlayer().sendMessage(C.info(C.AQUA) + "Your strength fades...");
-            strong = false;
-            animateExp(new FillExpBarTask(getPlayer(), STRONG_RESTORE));
+        this.attach(Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> {
+            this.getPlayer().sendMessage(C.info(C.AQUA) + "Your strength fades...");
+            this.strong = false;
+            this.animateExp(new FillExpBarTask(this.getPlayer(), STRONG_RESTORE));
         }, STRONG_TIME.ticks()));
 
         // Task to end vulnerability
-        attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-            getPlayer().sendMessage(C.info(C.AQUA) + "You are no longer vulnerable");
-            vulnerable = false;
+        this.attach(Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> {
+            this.getPlayer().sendMessage(C.info(C.AQUA) + "You are no longer vulnerable");
+            this.vulnerable = false;
         }, VULNERABLE_TIME.ticks()));
     }
 
     private void activateSpeed() {
-        sugar.decrement(true);
+        this.sugar.decrement(true);
 
         // Add speed effect
         PotionEffect effect = new PotionEffect(PotionEffectType.SPEED, SPEEDY_TIME.ticks(), 2);
-        getPlayer().addPotionEffect(effect, true);
+        this.getPlayer().addPotionEffect(effect, true);
 
         // Restore the item
-        attach(Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-            sugar.increment(SUGAR_AMOUNT);
+        this.attach(Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> {
+            this.sugar.increment(SUGAR_AMOUNT);
         }, SPEEDY_RESTORE.ticks()));
     }
 
     private void giveAbsorption() {
-        int tier = getPlayer().getActivePotionEffects().stream()
+        int tier = this.getPlayer().getActivePotionEffects().stream()
             .filter(potionEffect -> potionEffect.getType() == PotionEffectType.ABSORPTION)
             .findFirst()
             .map(PotionEffect::getAmplifier)
             .map(i -> i + 1)
             .orElse(0);
 
-        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, STRONG_RESTORE.ticks(), tier));
+        this.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, STRONG_RESTORE.ticks(), tier));
     }
 
     private void giveAdrenaline() {
-        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, STRENGTH_II_TIME.ticks(), 0));
-        getPlayer().sendMessage(C.info(C.RED) + "Adrenaline courses through your body");
+        this.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, STRENGTH_II_TIME.ticks(), 0));
+        this.getPlayer().sendMessage(C.info(C.RED) + "Adrenaline courses through your body");
 
-        if (adrenalineFadeMessageTask != null) {
-            adrenalineFadeMessageTask.cancel();
+        if (this.adrenalineFadeMessageTask != null) {
+            this.adrenalineFadeMessageTask.cancel();
         }
 
-        adrenalineFadeMessageTask = Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-            getPlayer().sendMessage(C.info(C.AQUA) + "Your adrenaline fades...");
+        this.adrenalineFadeMessageTask = Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> {
+            this.getPlayer().sendMessage(C.info(C.AQUA) + "Your adrenaline fades...");
         }, STRENGTH_II_TIME.ticks());
-        attach(adrenalineFadeMessageTask);
+        this.attach(this.adrenalineFadeMessageTask);
     }
 
     @EventHandler
     public void onDamagedWhileVulnerable(EntityDamageEvent event) {
-        if (event.getEntity() != getPlayer()) {
+        if (event.getEntity() != this.getPlayer()) {
             return;
         }
 
-        if (vulnerable) {
+        if (this.vulnerable) {
             if (IGNORE_WHILE_VULNERABLE.contains(event.getCause())) {
                 event.setCancelled(true);
             } else {
@@ -202,27 +202,27 @@ public class AssassinKit extends BattleKit {
 
     @EventHandler
     public void onDamagePlayerWhileStrong(EntityDamageByEntityEvent event) {
-        if (strong && event.getDamager() == getPlayer() && event.getEntity() instanceof Player damaged) {
+        if (this.strong && event.getDamager() == this.getPlayer() && event.getEntity() instanceof Player damaged) {
             if (damaged.isBlocking()) {
                 return;
             }
 
             event.setDamage(1000);
 
-            giveAdrenaline();
-            giveAbsorption();
+            this.giveAdrenaline();
+            this.giveAbsorption();
         }
     }
 
     @EventHandler
     public void onKillPlayer(PlayerKilledByPlayerEvent event) {
-        if (event.getKiller() == getPlayer()) {
-            if (!strong) {
+        if (event.getKiller() == this.getPlayer()) {
+            if (!this.strong) {
                 // Restore redstone
-                redstone.increment(1);
+                this.redstone.increment(1);
             }
 
-            getPlayer().setHealth(Math.min(getPlayer().getMaxHealth(), getPlayer().getHealth() + 6));
+            this.getPlayer().setHealth(Math.min(this.getPlayer().getMaxHealth(), this.getPlayer().getHealth() + 6));
         }
     }
 

@@ -37,13 +37,13 @@ public class BattleMapMetadataLoader implements BattleMapLoader {
                     BattleTeamConfig config = domain.equals("Red") ? red : blue;
                     switch (variable) {
                         case "Respawn" -> {
-                            Location loc = findFirstSolidBlock(parseLocation(value, world))
+                            Location loc = this.findFirstSolidBlock(this.parseLocation(value, world))
                                 .add(0.5, 1, 0.5);
                             config.setSpawn(loc);
                             builder.getCallouts().add(new BattleCallout(loc, config, "spawn"));
                         }
                         case "Chest" -> {
-                            Location loc = parseLocation(value, world).add(0.5, 1, 0.5);
+                            Location loc = this.parseLocation(value, world).add(0.5, 1, 0.5);
                             config.setFlag(loc);
                             builder.getCallouts().add(new BattleCallout(loc, config, "flag"));
                         }
@@ -65,7 +65,7 @@ public class BattleMapMetadataLoader implements BattleMapLoader {
                     switch (variable) {
                         case "CapturesToWin" -> builder.setCaps(Integer.parseInt(value));
                         case "Spawn" -> {
-                            Location location = parseLocation(value, world);
+                            Location location = this.parseLocation(value, world);
                             int highestBlockYAt = world.getHighestBlockYAt(location.getBlockX(), location.getBlockZ());
                             location.setY(highestBlockYAt);
                             builder.setSpawn(location.add(0.5, 0, 0.5));
@@ -90,7 +90,7 @@ public class BattleMapMetadataLoader implements BattleMapLoader {
             return location;
         }
 
-        return findFirstSolidBlock(location.subtract(0, 1, 0));
+        return this.findFirstSolidBlock(location.subtract(0, 1, 0));
     }
 
     private Location parseLocation(String string, World world) {

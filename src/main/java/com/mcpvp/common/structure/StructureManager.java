@@ -15,8 +15,8 @@ public class StructureManager {
     private final List<Structure> structures = new ArrayList<>();
 
     {
-        checkers.add(block -> {
-            if (structures.stream().anyMatch(s -> s.getBlocks().contains(block))) {
+        this.checkers.add(block -> {
+            if (this.structures.stream().anyMatch(s -> s.getBlocks().contains(block))) {
                 return Optional.of(new StructureViolation("STRUCTURE_ALREADY_PRESENT", "Something is already placed here"));
             }
             return Optional.empty();
@@ -31,25 +31,25 @@ public class StructureManager {
      */
     public List<StructureViolation> check(Block block) {
         List<StructureViolation> violations = new ArrayList<>();
-        checkers.forEach(checker -> {
+        this.checkers.forEach(checker -> {
             checker.check(block).ifPresent(violations::add);
         });
         return violations;
     }
 
     public void onBuild(Structure structure) {
-        structures.add(structure);
+        this.structures.add(structure);
     }
 
     public void onRemove(Structure structure) {
-        structures.remove(structure);
+        this.structures.remove(structure);
     }
 
     public void registerChecker(StructureViolationChecker checker) {
-        checkers.add(checker);
+        this.checkers.add(checker);
     }
 
     public List<Structure> getStructures() {
-        return new ArrayList<>(structures);
+        return new ArrayList<>(this.structures);
     }
 }

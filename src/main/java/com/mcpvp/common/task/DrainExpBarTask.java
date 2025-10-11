@@ -21,10 +21,10 @@ public final class DrainExpBarTask extends BukkitRunnable implements ExpBarTask 
 
     @Override
     public void run() {
-        player.setExp(Math.max(player.getExp() - perTick, 0f));
+        this.player.setExp(Math.max(this.player.getExp() - this.perTick, 0f));
 
-        if (player.getExp() == 1f || runs++ == runsRequired) {
-            cancel();
+        if (this.player.getExp() == 1f || this.runs++ == this.runsRequired) {
+            this.cancel();
         }
     }
 

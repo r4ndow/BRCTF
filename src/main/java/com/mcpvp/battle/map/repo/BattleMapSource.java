@@ -51,7 +51,7 @@ public interface BattleMapSource {
      * @return All functioning maps.
      */
     default List<BattleMapData> getFunctional() {
-        return getAll().stream().filter(BattleMapData::isFunctional).toList();
+        return this.getAll().stream().filter(BattleMapData::isFunctional).toList();
     }
 
 }

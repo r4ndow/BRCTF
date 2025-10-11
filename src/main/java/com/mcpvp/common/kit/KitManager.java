@@ -36,13 +36,13 @@ public class KitManager {
     }
 
     public KitDefinition getKitDefinition(String name) {
-        return getKitDefinitions().stream().filter(k -> k.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return this.getKitDefinitions().stream().filter(k -> k.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     public KitAttemptSelectEvent setSelected(
         Player player, KitDefinition definition, boolean force
     ) {
-        return setSelected(player, definition, force, true);
+        return this.setSelected(player, definition, force, true);
     }
 
     public KitAttemptSelectEvent setSelected(
@@ -51,7 +51,7 @@ public class KitManager {
         // Allow the kit selection event to be rejected to enforce limits and restrictions.
         KitAttemptSelectEvent kitAttemptSelectEvent = new KitAttemptSelectEvent(player, definition);
         if (!kitAttemptSelectEvent.callIsCancelled() || force) {
-            selected.put(player, definition);
+            this.selected.put(player, definition);
             new KitSelectedEvent(player, definition, respawn).call();
             return kitAttemptSelectEvent;
         }
@@ -60,16 +60,16 @@ public class KitManager {
     }
 
     public boolean isSelected(Player player, KitDefinition definition) {
-        return selected.containsKey(player) && selected.get(player).equals(definition);
+        return this.selected.containsKey(player) && this.selected.get(player).equals(definition);
     }
 
     @Nullable
     public KitDefinition getSelected(Player player) {
-        return selected.get(player);
+        return this.selected.get(player);
     }
 
     public boolean createSelected(Player player) {
-        KitDefinition selected = getSelected(player);
+        KitDefinition selected = this.getSelected(player);
         if (selected == null) {
             return false;
         }
@@ -77,22 +77,22 @@ public class KitManager {
         log.info("Creating selected {} for {}", selected, player.getName());
 
         // Remove the existing kit
-        if (active.containsKey(player)) {
-            active.get(player).shutdown();
+        if (this.active.containsKey(player)) {
+            this.active.get(player).shutdown();
         }
 
-        Kit created = selected.create(plugin, player);
-        active.put(player, created);
+        Kit created = selected.create(this.plugin, player);
+        this.active.put(player, created);
         return true;
     }
 
     @Nullable
     public Kit get(Player player) {
-        return active.get(player);
+        return this.active.get(player);
     }
 
     public boolean isPlaying(Player player, Class<? extends Kit> type) {
-        return Optional.ofNullable(get(player)).map(k -> k.getClass().equals(type)).orElse(false);
+        return Optional.ofNullable(this.get(player)).map(k -> k.getClass().equals(type)).orElse(false);
     }
 
 }

@@ -21,7 +21,7 @@ public class KitAttemptSelectEvent extends EasyCancellableEvent {
 
     public void deny(String reason) {
         this.denial = reason;
-        cancel();
+        this.cancel();
     }
 
 }

@@ -16,21 +16,21 @@ public class FlagCommands extends BattleCommandGroup {
     public FlagCommands(Battle battle) {
         super("flag");
         this.battle = battle;
-        addCommand(new JumpCommand());
-        addCommand(new LockCommand());
-        addCommand(new UnlockCommand());
-        addCommand(new ResetCommand());
+        this.addCommand(new JumpCommand());
+        this.addCommand(new LockCommand());
+        this.addCommand(new UnlockCommand());
+        this.addCommand(new ResetCommand());
     }
 
     public List<String> matchTeam(String arg) {
         return CommandUtil.partialMatches(
-            battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList(),
+            this.battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList(),
             arg
         );
     }
 
     public Optional<BattleTeam> findTeam(String arg) {
-        return battle.getGame().getTeamManager().getTeams().stream()
+        return this.battle.getGame().getTeamManager().getTeams().stream()
             .filter(bt -> bt.getName().toLowerCase().contains(arg))
             .findAny();
     }
@@ -43,7 +43,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            findTeam(args.get(0)).ifPresent(bt -> {
+            FlagCommands.this.findTeam(args.get(0)).ifPresent(bt -> {
                 ((Player) sender).teleport(bt.getFlag().getLocation());
             });
             return true;
@@ -51,7 +51,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         @Override
         public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return matchTeam(arg);
+            return FlagCommands.this.matchTeam(arg);
         }
 
     }
@@ -64,7 +64,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            findTeam(args.get(0)).ifPresent(bt -> {
+            FlagCommands.this.findTeam(args.get(0)).ifPresent(bt -> {
                 bt.getFlag().setLocked(true);
             });
             return true;
@@ -72,7 +72,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         @Override
         public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return matchTeam(arg);
+            return FlagCommands.this.matchTeam(arg);
         }
 
     }
@@ -85,7 +85,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            findTeam(args.get(0)).ifPresent(bt -> {
+            FlagCommands.this.findTeam(args.get(0)).ifPresent(bt -> {
                 bt.getFlag().setLocked(false);
             });
             return true;
@@ -93,7 +93,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         @Override
         public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return matchTeam(arg);
+            return FlagCommands.this.matchTeam(arg);
         }
 
     }
@@ -106,7 +106,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            findTeam(args.get(0)).ifPresent(bt -> {
+            FlagCommands.this.findTeam(args.get(0)).ifPresent(bt -> {
                 bt.getFlag().reset();
             });
             return true;
@@ -114,7 +114,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         @Override
         public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return matchTeam(arg);
+            return FlagCommands.this.matchTeam(arg);
         }
 
     }

@@ -21,16 +21,16 @@ public class CancelNextFallTask implements EasyListener {
 
     @EventHandler
     public void onTick(TickEvent event) {
-        if (!player.isOnline()) {
-            unregister();
+        if (!this.player.isOnline()) {
+            this.unregister();
             return;
         }
 
-        if (EntityUtil.isOnGround(player)) {
-            player.setFallDistance(0);
-            unregister();
+        if (EntityUtil.isOnGround(this.player)) {
+            this.player.setFallDistance(0);
+            this.unregister();
         } else {
-            player.setFallDistance(-100);
+            this.player.setFallDistance(-100);
         }
     }
 

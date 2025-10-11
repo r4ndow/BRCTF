@@ -24,57 +24,57 @@ public class VelocityManager implements Runnable {
     public VelocityManager(Plugin plugin, Entity player, Vector vector, Runnable afterLaunch) {
         this.player = player;
         this.vector = vector;
-        task = Bukkit.getScheduler().runTaskTimer(plugin, this, 0, 1);
+        this.task = Bukkit.getScheduler().runTaskTimer(plugin, this, 0, 1);
         this.afterLaunch = afterLaunch;
         new CancelNextFallTask(plugin, (Player) player).register();
     }
 
     @Override
     public void run() {
-        if (((player instanceof Player p) && !p.isOnline()) || player.isDead()) {
-            task.cancel();
+        if (((this.player instanceof Player p) && !p.isOnline()) || this.player.isDead()) {
+            this.task.cancel();
             return;
         }
-        int x = vector.getBlockX();
-        int y = vector.getBlockY();
-        int z = vector.getBlockZ();
+        int x = this.vector.getBlockX();
+        int y = this.vector.getBlockY();
+        int z = this.vector.getBlockZ();
         if (x == 0 && y == 0 && z == 0) {
             if (!smooth) {
-                player.setVelocity(new Vector(0, 0, 0));
+                this.player.setVelocity(new Vector(0, 0, 0));
             }
 
-            task.cancel();
+            this.task.cancel();
 
-            if (afterLaunch != null) {
-                afterLaunch.run();
+            if (this.afterLaunch != null) {
+                this.afterLaunch.run();
             }
 
             return;
         }
         Vector result = new Vector();
         if (x > 0) {
-            vector.setX(x - 1);
+            this.vector.setX(x - 1);
             result.setX(result.getX() + X_INTENSITY);
         } else if (x < 0) {
-            vector.setX(x + 1);
+            this.vector.setX(x + 1);
             result.setX(result.getX() - X_INTENSITY);
         }
         if (y > 0) {
-            vector.setY(y - 1);
+            this.vector.setY(y - 1);
             result.setY(result.getY() + Y_INTENSITY);
         } else if (y < 0) {
-            vector.setY(y + 1);
+            this.vector.setY(y + 1);
             result.setY(result.getY() - Y_INTENSITY);
         }
         if (z > 0) {
-            vector.setZ(z - 1);
+            this.vector.setZ(z - 1);
             result.setZ(result.getZ() + X_INTENSITY);
         } else if (z < 0) {
-            vector.setZ(z + 1);
+            this.vector.setZ(z + 1);
             result.setZ(result.getZ() - X_INTENSITY);
         }
 
-        player.setVelocity(result);
+        this.player.setVelocity(result);
     }
 
 }

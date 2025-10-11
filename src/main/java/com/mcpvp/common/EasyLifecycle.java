@@ -59,10 +59,10 @@ public class EasyLifecycle {
      * End this lifecycle, such as unregistering all listeners.
      */
     public void shutdown() {
-        listeners.forEach(EasyListener::unregister);
-        tasks.forEach(BukkitTask::cancel);
-        lifecycles.forEach(EasyLifecycle::shutdown);
-        entities.forEach(Entity::remove);
+        this.listeners.forEach(EasyListener::unregister);
+        this.tasks.forEach(BukkitTask::cancel);
+        this.lifecycles.forEach(EasyLifecycle::shutdown);
+        this.entities.forEach(Entity::remove);
     }
 
 }

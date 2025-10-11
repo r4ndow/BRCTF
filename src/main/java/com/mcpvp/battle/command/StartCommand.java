@@ -17,7 +17,7 @@ public class StartCommand extends BattleCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
-        battle.getGame().setState(BattleGameState.DURING);
+        this.battle.getGame().setState(BattleGameState.DURING);
         return true;
     }
 

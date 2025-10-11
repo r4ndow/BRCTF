@@ -25,7 +25,7 @@ public class KitItem extends InteractiveItem {
     public KitItem(Kit kit, ItemStack itemStack, boolean restorable) {
         super(kit.getPlugin(), itemStack);
         this.kit = kit;
-        this.original = getItem().clone();
+        this.original = this.getItem().clone();
         this.restorable = restorable;
     }
 
@@ -40,10 +40,10 @@ public class KitItem extends InteractiveItem {
      * @param placeholder If the item should be swapped to a placeholder.
      */
     public void decrement(boolean placeholder) {
-        if (getItem().getAmount() == 1 && placeholder) {
-            setPlaceholder();
+        if (this.getItem().getAmount() == 1 && placeholder) {
+            this.setPlaceholder();
         } else {
-            modify(builder -> builder.amount(getItem().getAmount() - 1));
+            this.modify(builder -> builder.amount(this.getItem().getAmount() - 1));
         }
     }
 
@@ -51,7 +51,7 @@ public class KitItem extends InteractiveItem {
      * Makes this item look like a placeholder. Calls to {@link #isPlaceholder()} will be true.
      */
     public void setPlaceholder() {
-        modify(ib ->
+        this.modify(ib ->
             ib.type(Material.STAINED_GLASS_PANE).durability(0)
         );
     }
@@ -62,7 +62,7 @@ public class KitItem extends InteractiveItem {
      * @return If this item is a placeholder.
      */
     public boolean isPlaceholder() {
-        return getItem().getType() == Material.STAINED_GLASS_PANE;
+        return this.getItem().getType() == Material.STAINED_GLASS_PANE;
     }
 
     /**
@@ -72,11 +72,11 @@ public class KitItem extends InteractiveItem {
      * @param max The maximum amount.
      */
     public void increment(int max) {
-        if (isPlaceholder()) {
-            restore();
-            modify(builder -> builder.amount(1));
-        } else if (getItem().getAmount() < max) {
-            modify(builder -> builder.amount(getItem().getAmount() + 1));
+        if (this.isPlaceholder()) {
+            this.restore();
+            this.modify(builder -> builder.amount(1));
+        } else if (this.getItem().getAmount() < max) {
+            this.modify(builder -> builder.amount(this.getItem().getAmount() + 1));
         }
     }
 
@@ -84,8 +84,8 @@ public class KitItem extends InteractiveItem {
      * Restore this item to its original type and quantity.
      */
     public void restore() {
-        setItem(getOriginal().clone());
-        update(kit.getPlayer().getInventory());
+        this.setItem(this.getOriginal().clone());
+        this.update(this.kit.getPlayer().getInventory());
     }
 
     @Override
@@ -94,15 +94,15 @@ public class KitItem extends InteractiveItem {
 
         // Only force update the item if the player is holding the item
         // Otherwise, we might interrupt something else, e.g. a bow being drawn back
-        if (isItem(kit.getPlayer().getItemInHand())) {
-            kit.getPlayer().setItemInHand(getItem());
-            kit.getPlayer().updateInventory();
+        if (this.isItem(this.kit.getPlayer().getItemInHand())) {
+            this.kit.getPlayer().setItemInHand(this.getItem());
+            this.kit.getPlayer().updateInventory();
         }
     }
 
     public void modify(UnaryOperator<ItemBuilder> editor) {
-        editor.apply(new ItemBuilder(getItem(), false));
-        update(kit.getPlayer().getInventory());
+        editor.apply(new ItemBuilder(this.getItem(), false));
+        this.update(this.kit.getPlayer().getInventory());
 //        kit.getPlayer().updateInventory();
     }
 

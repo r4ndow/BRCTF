@@ -23,11 +23,11 @@ public abstract class EasyCommandGroup extends EasyCommand {
         if (setDefault) {
             this.defaultCommand = command;
         }
-        commands.add(command);
+        this.commands.add(command);
     }
 
     protected void addCommand(EasyCommand command) {
-        addCommand(command, false);
+        this.addCommand(command, false);
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class EasyCommandGroup extends EasyCommand {
         }
 
         // Match command based on args[0]
-        Optional<EasyCommand> found = findCommand(args.get(0));
+        Optional<EasyCommand> found = this.findCommand(args.get(0));
 
         if (found.isPresent()) {
             return found.get().onCommand(sender, alias, args.subList(1, args.size()));
@@ -54,7 +54,7 @@ public abstract class EasyCommandGroup extends EasyCommand {
     @Override
     public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
         if (args.size() == 1) {
-            return CommandUtil.partialMatches(commands.stream().map(c -> {
+            return CommandUtil.partialMatches(this.commands.stream().map(c -> {
                 if (c.getName().contains(" ") && !c.getAliases().isEmpty()) {
                     return c.getAliases().get(0);
                 }
@@ -63,7 +63,7 @@ public abstract class EasyCommandGroup extends EasyCommand {
         }
 
         // Match command based on args[0]
-        Optional<EasyCommand> found = findCommand(args.get(0));
+        Optional<EasyCommand> found = this.findCommand(args.get(0));
 
         if (found.isPresent()) {
             return found.get().onTabComplete(sender, alias, args.subList(1, args.size()));
@@ -73,7 +73,7 @@ public abstract class EasyCommandGroup extends EasyCommand {
     }
 
     protected Optional<EasyCommand> findCommand(String arg) {
-        return commands.stream()
+        return this.commands.stream()
             .sorted((c1, c2) -> c2.getName().length() - c1.getName().length())
             .filter(c -> c.getName().equalsIgnoreCase(arg) || c.getAliases().contains(arg.toLowerCase()))
             .findFirst();

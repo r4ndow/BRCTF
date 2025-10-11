@@ -37,37 +37,37 @@ public class BattleTeam {
         this.color = color;
         this.config = config;
         this.flag = new WoolFlag(this, config.getFlag());
-        this.flagManager = new FlagManager(flag);
+        this.flagManager = new FlagManager(this.flag);
     }
 
     void add(Player player) {
-        players.add(player);
+        this.players.add(player);
     }
 
     void remove(Player player) {
-        players.remove(player);
+        this.players.remove(player);
     }
 
     public boolean contains(Player player) {
-        return players.contains(player);
+        return this.players.contains(player);
     }
 
     public void onCapture() {
-        captures++;
+        this.captures++;
     }
 
     public boolean isInSpawn(Player player) {
-        return isInSpawn(player.getLocation());
+        return this.isInSpawn(player.getLocation());
     }
 
     public boolean isInSpawn(Location location) {
         Block underFeet = location.getBlock().getRelative(BlockFace.DOWN);
-        Block spawnBlock = config.getSpawn().getBlock().getRelative(BlockFace.DOWN);
+        Block spawnBlock = this.config.getSpawn().getBlock().getRelative(BlockFace.DOWN);
         return underFeet.getType() == spawnBlock.getType();
     }
 
     public String getColoredName() {
-        return getColor() + getName() + C.R;
+        return this.getColor() + this.getName() + C.R;
     }
 
 }

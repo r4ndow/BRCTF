@@ -22,17 +22,17 @@ public class FlagStatsListener implements EasyListener {
 
     @EventHandler
     public void onCapture(FlagCaptureEvent event) {
-        game.editStats(event.getPlayer(), stats -> stats.setCaptures(stats.getCaptures() + 1));
+        this.game.editStats(event.getPlayer(), stats -> stats.setCaptures(stats.getCaptures() + 1));
     }
 
     @EventHandler
     public void onSteal(FlagStealEvent event) {
-        game.editStats(event.getPlayer(), stats -> stats.setSteals(stats.getSteals() + 1));
+        this.game.editStats(event.getPlayer(), stats -> stats.setSteals(stats.getSteals() + 1));
     }
 
     @EventHandler
     public void onRecover(FlagRecoverEvent event) {
-        game.editStats(event.getPlayer(), stats -> stats.setRecovers(stats.getRecovers() + 1));
+        this.game.editStats(event.getPlayer(), stats -> stats.setRecovers(stats.getRecovers() + 1));
     }
 
 }

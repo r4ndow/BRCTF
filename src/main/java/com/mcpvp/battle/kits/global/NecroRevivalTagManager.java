@@ -42,15 +42,15 @@ public class NecroRevivalTagManager implements EasyListener {
     private final List<Player> zombies = new ArrayList<>();
 
     public void setRevivalTagged(Player player) {
-        if (tagged.contains(player) || zombies.contains(player)) {
+        if (this.tagged.contains(player) || this.zombies.contains(player)) {
             return;
         }
 
-        tagged.add(player);
+        this.tagged.add(player);
 
         final Expiration expiration = Expiration.after(TAG_DURATION);
         EasyTask.of(holder -> {
-            if (!player.isOnline() || !isRevivalTagged(player)) {
+            if (!player.isOnline() || !this.isRevivalTagged(player)) {
                 holder.cancel();
                 return;
             }
@@ -59,50 +59,50 @@ public class NecroRevivalTagManager implements EasyListener {
                 player.sendMessage(C.info(C.AQUA) + "Your revival tag has expired!");
                 holder.cancel();
             }
-        }).runTaskTimer(getPlugin(), 0, 1);
+        }).runTaskTimer(this.getPlugin(), 0, 1);
     }
 
     public void clearRevivalTag(Player player) {
-        tagged.remove(player);
+        this.tagged.remove(player);
     }
 
     public boolean isRevivalTagged(Player player) {
-        return tagged.contains(player);
+        return this.tagged.contains(player);
     }
 
     public boolean isZombie(Player player) {
-        return zombies.contains(player);
+        return this.zombies.contains(player);
     }
 
     @EventHandler
     public void onDeath(GameDeathEvent event) {
-        if (tagged.contains(event.getPlayer())) {
+        if (this.tagged.contains(event.getPlayer())) {
             event.setCancelled(true);
 
             event.getDeathEvent().setKeepInventory(true);
             event.getDeathEvent().setKeepLevel(true);
 
-            revive(event);
-            clearRevivalTag(event.getPlayer());
+            this.revive(event);
+            this.clearRevivalTag(event.getPlayer());
         }
     }
 
     @EventHandler
     public void onRespawn(GameRespawnEvent event) {
-        clearRevivalTag(event.getPlayer());
-        zombies.remove(event.getPlayer());
+        this.clearRevivalTag(event.getPlayer());
+        this.zombies.remove(event.getPlayer());
     }
 
     @EventHandler
     public void onHeal(MedicKit.HealEvent event) {
-        if (zombies.contains(event.getHealed())) {
-            dezombify(event.getHealed());
+        if (this.zombies.contains(event.getHealed())) {
+            this.dezombify(event.getHealed());
         }
     }
 
     @EventHandler
     public void onWitherDamage(EntityDamageEvent event) {
-        if (zombies.contains(event.getEntity()) && event.getCause() == EntityDamageEvent.DamageCause.WITHER) {
+        if (this.zombies.contains(event.getEntity()) && event.getCause() == EntityDamageEvent.DamageCause.WITHER) {
             event.setCancelled(true);
         }
     }
@@ -115,7 +115,7 @@ public class NecroRevivalTagManager implements EasyListener {
         player.teleport(death.getLocation());
 
         // "Zombify" the kit
-        zombify(player);
+        this.zombify(player);
 
         // Effects
         ParticlePacket.of(EnumParticle.SMOKE_LARGE).at(player.getLocation()).spread(1.5).count(15).send();
@@ -124,7 +124,7 @@ public class NecroRevivalTagManager implements EasyListener {
     }
 
     private void zombify(Player player) {
-        BattleKit kit = plugin.getBattle().getKitManager().get(player);
+        BattleKit kit = this.plugin.getBattle().getKitManager().get(player);
         kit.getAllItems().forEach(kitItem -> {
             if (kitItem instanceof FoodItem) {
                 kitItem.modify(item -> item.type(Material.ROTTEN_FLESH));
@@ -135,12 +135,12 @@ public class NecroRevivalTagManager implements EasyListener {
         player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 99999, 1));
         player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 99999, 0));
 
-        tagged.remove(player);
-        zombies.add(player);
+        this.tagged.remove(player);
+        this.zombies.add(player);
     }
 
     private void dezombify(Player player) {
-        BattleKit kit = plugin.getBattle().getKitManager().get(player);
+        BattleKit kit = this.plugin.getBattle().getKitManager().get(player);
         kit.getAllItems().forEach(kitItem -> {
             if (kitItem instanceof FoodItem) {
                 kitItem.modify(item -> item.type(kitItem.getOriginal().getType()));
@@ -151,7 +151,7 @@ public class NecroRevivalTagManager implements EasyListener {
         player.removePotionEffect(PotionEffectType.WEAKNESS);
         player.removePotionEffect(PotionEffectType.WITHER);
 
-        zombies.remove(player);
+        this.zombies.remove(player);
     }
 
 }

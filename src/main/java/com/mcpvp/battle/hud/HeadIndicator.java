@@ -60,35 +60,35 @@ public abstract class HeadIndicator implements EasyListener {
     @Override
     public void unregister() {
         EasyListener.super.unregister();
-        remove();
+        this.remove();
     }
 
     public final void apply() {
-        Scoreboard s = observer.getScoreboard();
+        Scoreboard s = this.observer.getScoreboard();
         Objective o;
-        if (s.getObjective(id) == null) {
-            o = s.registerNewObjective(id, "dummy");
+        if (s.getObjective(this.id) == null) {
+            o = s.registerNewObjective(this.id, "dummy");
         } else {
-            o = s.getObjective(id);
+            o = s.getObjective(this.id);
         }
 
-        o.setDisplayName(symbol);
+        o.setDisplayName(this.symbol);
         o.setDisplaySlot(DisplaySlot.BELOW_NAME);
     }
 
     public final void remove() {
-        Objective o = observer.getScoreboard().getObjective(id);
+        Objective o = this.observer.getScoreboard().getObjective(this.id);
         if (o != null) {
             o.unregister();
         }
-        observer.getScoreboard().clearSlot(DisplaySlot.BELOW_NAME);
+        this.observer.getScoreboard().clearSlot(DisplaySlot.BELOW_NAME);
     }
 
     /**
      * Updates the value of this indicator for every other observed player.
      */
     public void refresh() {
-        if (observer.getScoreboard().getObjective(id) == null) {
+        if (this.observer.getScoreboard().getObjective(this.id) == null) {
             return;
         }
 
@@ -97,13 +97,13 @@ public abstract class HeadIndicator implements EasyListener {
                 continue;
             }
 
-            Scoreboard scoreboard = observer.getScoreboard();
-            Score score = scoreboard.getObjective(id).getScore(target.getName());
+            Scoreboard scoreboard = this.observer.getScoreboard();
+            Score score = scoreboard.getObjective(this.id).getScore(target.getName());
 
-            if (canSeeIndicatorOn(target)) {
-                updateScore(score, getIndicatorValue(target));
+            if (this.canSeeIndicatorOn(target)) {
+                this.updateScore(score, this.getIndicatorValue(target));
             } else {
-                updateScore(score, getObscuredValue(target));
+                this.updateScore(score, this.getObscuredValue(target));
             }
         }
     }
@@ -122,7 +122,7 @@ public abstract class HeadIndicator implements EasyListener {
 
     @EventHandler
     public void onTick(TickEvent event) {
-        refresh();
+        this.refresh();
     }
 
 }

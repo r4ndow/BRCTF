@@ -24,7 +24,7 @@ public abstract class CooldownItem extends KitItem {
     }
 
     private float getRechargePercentage() {
-        return cooldown.getCompletionPercent(cooldownTime);
+        return this.cooldown.getCompletionPercent(this.cooldownTime);
     }
 
     protected boolean showExpRecharge() {
@@ -42,51 +42,51 @@ public abstract class CooldownItem extends KitItem {
     @Override
     public void restore() {
         super.restore();
-        cooldown.expireNow();
+        this.cooldown.expireNow();
     }
 
     @EventHandler
     public void onTick(TickEvent event) {
-        if (showExpRecharge() && isItem(kit.getPlayer().getItemInHand())) {
-            kit.getPlayer().setExp(getRechargePercentage());
+        if (this.showExpRecharge() && this.isItem(this.kit.getPlayer().getItemInHand())) {
+            this.kit.getPlayer().setExp(this.getRechargePercentage());
         }
 
-        if (showDurabilityRecharge()) {
-            modify(item -> item.durabilityPercent(getRechargePercentage()));
+        if (this.showDurabilityRecharge()) {
+            this.modify(item -> item.durabilityPercent(this.getRechargePercentage()));
         }
 
-        if (getRechargePercentage() >= 1 && isPlaceholder()) {
-            restore();
+        if (this.getRechargePercentage() >= 1 && this.isPlaceholder()) {
+            this.restore();
         }
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if (!autoUse()) {
+        if (!this.autoUse()) {
             return;
         }
 
-        if (!isItem(event.getItem())) {
+        if (!this.isItem(event.getItem())) {
             return;
         }
 
-        if (((BattleKit) kit).inSpawn()) {
+        if (((BattleKit) this.kit).inSpawn()) {
             event.setCancelled(true);
             return;
         }
 
-        if (!cooldown.isExpired()) {
+        if (!this.cooldown.isExpired()) {
             event.setCancelled(true);
-            onFailedUse();
+            this.onFailedUse();
             return;
         }
 
-        onUse(event);
-        startCooldown();
+        this.onUse(event);
+        this.startCooldown();
     }
 
     protected void startCooldown() {
-        cooldown.expireIn(cooldownTime);
+        this.cooldown.expireIn(this.cooldownTime);
     }
 
     protected void onFailedUse() {

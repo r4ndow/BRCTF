@@ -24,32 +24,32 @@ public class BattleMatchManager {
 
     public BattleMatch create() {
         List<BattleGame> games = new ArrayList<>();
-        List<BattleMapData> maps = selectMaps();
+        List<BattleMapData> maps = this.selectMaps();
         for (int i = 0; i < maps.size(); i++) {
-            games.add(gameLoader.create(maps.get(i), mapManager.getWorldData(maps.get(i)), i));
+            games.add(this.gameLoader.create(maps.get(i), this.mapManager.getWorldData(maps.get(i)), i));
         }
 
-        return new BattleMatch(plugin, battle, games);
+        return new BattleMatch(this.plugin, this.battle, games);
     }
 
     private List<BattleMapData> selectMaps() {
-        if (mapManager.getOverride() != null && !mapManager.getOverride().isEmpty()) {
-            List<BattleMapData> maps = mapManager.getOverride().stream()
+        if (this.mapManager.getOverride() != null && !this.mapManager.getOverride().isEmpty()) {
+            List<BattleMapData> maps = this.mapManager.getOverride().stream()
                 .map(BattleMapData::getId)
                 .peek(id -> {
-                    if (!mapManager.isMap(id) || mapManager.loadMap(id) == null) {
+                    if (!this.mapManager.isMap(id) || this.mapManager.loadMap(id) == null) {
                         log.warn("Map ID {} is not enabled and will be ignored", id);
                     }
                 })
-                .filter(mapManager::isMap)
-                .map(mapManager::loadMap)
+                .filter(this.mapManager::isMap)
+                .map(this.mapManager::loadMap)
                 .filter(Objects::nonNull)
                 .toList();
-            mapManager.clearOverride();
+            this.mapManager.clearOverride();
             return maps;
         }
 
-        return mapManager.loadMaps(plugin.getBattle().getOptions().getMatch().getGames());
+        return this.mapManager.loadMaps(this.plugin.getBattle().getOptions().getMatch().getGames());
     }
 
 }

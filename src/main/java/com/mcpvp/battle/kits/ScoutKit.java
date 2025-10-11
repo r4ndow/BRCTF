@@ -49,10 +49,10 @@ public class ScoutKit extends BattleKit {
 
     public ScoutKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
-        this.deathTagManager = getBattle().getKitManager().getScoutDeathTagManager();
-        this.revivalTagManager = getBattle().getKitManager().getNecroRevivalTagManager();
+        this.deathTagManager = this.getBattle().getKitManager().getScoutDeathTagManager();
+        this.revivalTagManager = this.getBattle().getKitManager().getNecroRevivalTagManager();
 
-        getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 0));
+        this.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 0));
     }
 
     @Override
@@ -78,97 +78,97 @@ public class ScoutKit extends BattleKit {
                 .enchant(Enchantment.DAMAGE_ALL, 2)
                 .unbreakable())
             .addFood(2)
-            .add(swapper = new SwapperItem())
-            .add(deathTagItem = new DeathTagItem())
+            .add(this.swapper = new SwapperItem())
+            .add(this.deathTagItem = new DeathTagItem())
             .addCompass(8)
             .build();
     }
 
     @EventHandler
     public void onFallDamage(EntityDamageEvent event) {
-        if (event.getEntity() == getPlayer() && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+        if (event.getEntity() == this.getPlayer() && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
             event.setDamage(event.getDamage() * 0.3);
         }
     }
 
     @EventHandler
     public void onKillOtherPlayer(PlayerKilledByPlayerEvent event) {
-        if (event.getKiller() == getPlayer() && !deathTagManager.isDeathTagged(event.getKilled())) {
-            deathTagItem.restore();
+        if (event.getKiller() == this.getPlayer() && !this.deathTagManager.isDeathTagged(event.getKilled())) {
+            this.deathTagItem.restore();
         }
     }
 
     private void throwSwapperBall() {
-        swapper.setPlaceholder();
+        this.swapper.setPlaceholder();
 
-        Snowball snowball = getPlayer().launchProjectile(Snowball.class);
+        Snowball snowball = this.getPlayer().launchProjectile(Snowball.class);
         double velocity = snowball.getVelocity().multiply(1.5).length();
-        snowball.setVelocity(getPlayer().getEyeLocation().getDirection().multiply(velocity));
+        snowball.setVelocity(this.getPlayer().getEyeLocation().getDirection().multiply(velocity));
 
-        attach(new InteractiveProjectile(getPlugin(), snowball)
+        this.attach(new InteractiveProjectile(this.getPlugin(), snowball)
             .singleEventOnly()
-            .onDeath(swapper::restore)
+            .onDeath(this.swapper::restore)
             .onHitPlayer(this::attemptSwap)
         );
     }
 
     private void attemptSwap(Player player) {
-        if (!isEnemy(player) || swapper.isPlaceholder()) {
+        if (!this.isEnemy(player) || this.swapper.isPlaceholder()) {
             return;
         }
 
-        if (isOnSwapCooldown(player)) {
+        if (this.isOnSwapCooldown(player)) {
             return;
         }
 
-        swap(player);
-        swapper.restore();
+        this.swap(player);
+        this.swapper.restore();
     }
 
     private void swap(Player player) {
         Location toKitPlayer = player.getLocation();
-        Location toSwappedPlayer = getPlayer().getLocation();
+        Location toSwappedPlayer = this.getPlayer().getLocation();
 
-        getPlayer().teleport(toKitPlayer);
+        this.getPlayer().teleport(toKitPlayer);
         player.teleport(toSwappedPlayer);
 
         LocationUtil.trace(
-            getPlayer().getLocation(),
+            this.getPlayer().getLocation(),
             player.getLocation(),
-            (int) getPlayer().getLocation().distance(player.getLocation()) * 2
+            (int) this.getPlayer().getLocation().distance(player.getLocation()) * 2
         ).forEach(loc -> {
             ParticlePacket.of(EnumParticle.SMOKE_NORMAL).at(loc).send();
         });
 
-        getPlayer().playSound(getPlayer().getEyeLocation(), Sound.ENDERMAN_TELEPORT, 0.5f, 0.5f);
+        this.getPlayer().playSound(this.getPlayer().getEyeLocation(), Sound.ENDERMAN_TELEPORT, 0.5f, 0.5f);
         player.playSound(player.getEyeLocation(), Sound.ENDERMAN_TELEPORT, 0.5f, 0.5f);
 
         PlayerUtil.setAbsorptionHearts(
-            getPlayer(), Math.min(PlayerUtil.getAbsorptionHearts(getPlayer()) + 4, 8)
+            this.getPlayer(), Math.min(PlayerUtil.getAbsorptionHearts(this.getPlayer()) + 4, 8)
         );
 
-        startSwapCooldown(player);
-        sendSwapNotification(player);
+        this.startSwapCooldown(player);
+        this.sendSwapNotification(player);
     }
 
     private void sendSwapNotification(Player swapped) {
-        int distance = (int) swapped.getLocation().distance(getPlayer().getLocation());
-        getPlayer().sendMessage("You swapped with " + C.hl(swapped.getName()) + " from " + distance + " blocks");
-        swapped.sendMessage(C.hl(getPlayer().getName()) + " swapped with you from " + distance + " blocks");
+        int distance = (int) swapped.getLocation().distance(this.getPlayer().getLocation());
+        this.getPlayer().sendMessage("You swapped with " + C.hl(swapped.getName()) + " from " + distance + " blocks");
+        swapped.sendMessage(C.hl(this.getPlayer().getName()) + " swapped with you from " + distance + " blocks");
 
-        String nearby = getGame().findClosestCallout(swapped.getLocation()).map(callout ->
+        String nearby = this.getGame().findClosestCallout(swapped.getLocation()).map(callout ->
             C.GRAY + " (near " + callout.getText() + C.GRAY + ")"
         ).orElse("");
 
         EntityUtil.getNearbyEntities(swapped.getLocation(), Player.class, 20).forEach(player -> {
             if (player != swapped) {
-                if (getGame().getTeamManager().isSameTeam(player, swapped)) {
+                if (this.getGame().getTeamManager().isSameTeam(player, swapped)) {
                     player.sendMessage(C.warn(C.GOLD) + "Your flag carrier was swapped!");
-                } else if (getGame().isParticipant(player)) {
+                } else if (this.getGame().isParticipant(player)) {
                     player.sendMessage(C.warn(C.GOLD) + "The enemy flag carrier was swapped! " + nearby);
                 } else {
                     player.sendMessage(C.warn(C.GOLD) + "The "
-                        + getGame().getTeamManager().getTeam(swapped).getColoredName()
+                        + this.getGame().getTeamManager().getTeam(swapped).getColoredName()
                         + " flag carrier was swapped! " + nearby);
                 }
             }
@@ -186,35 +186,35 @@ public class ScoutKit extends BattleKit {
         // This should not be attached to the kit, as it is a global cooldown
         EasyTask.of(() -> {
             player.sendMessage(C.info(C.AQUA) + "You can now be swapped again");
-        }).runTaskLater(getPlugin(), expiration.getRemaining().ticks());
+        }).runTaskLater(this.getPlugin(), expiration.getRemaining().ticks());
     }
 
     private boolean attemptDeathTag(Player player) {
-        if (!isEnemy(player) || deathTagItem.isPlaceholder()) {
+        if (!this.isEnemy(player) || this.deathTagItem.isPlaceholder()) {
             return false;
         }
 
-        return deathTag(player);
+        return this.deathTag(player);
     }
 
     private boolean deathTag(Player player) {
-        if (revivalTagManager.isRevivalTagged(player)) {
-            revivalTagManager.clearRevivalTag(player);
-            player.sendMessage(C.info(C.GRAY) + "Your revival tag was removed by the death tag of " + C.hl(getPlayer().getName()));
-            getPlayer().sendMessage(C.warn(C.GOLD) + "You removed the revival tag on " + C.hl(player.getName()));
+        if (this.revivalTagManager.isRevivalTagged(player)) {
+            this.revivalTagManager.clearRevivalTag(player);
+            player.sendMessage(C.info(C.GRAY) + "Your revival tag was removed by the death tag of " + C.hl(this.getPlayer().getName()));
+            this.getPlayer().sendMessage(C.warn(C.GOLD) + "You removed the revival tag on " + C.hl(player.getName()));
             return false;
         }
 
-        boolean tagged = deathTagManager.setDeathTagged(player);
+        boolean tagged = this.deathTagManager.setDeathTagged(player);
         if (tagged) {
-            getPlayer().sendMessage(C.info(C.GOLD) + "You have death tagged " + C.hl(player.getName()));
+            this.getPlayer().sendMessage(C.info(C.GOLD) + "You have death tagged " + C.hl(player.getName()));
 
-            getGame().getTeamManager().getTeams().stream()
+            this.getGame().getTeamManager().getTeams().stream()
                 .filter(bt -> bt.getFlag().getCarrier() == player)
                 .findAny()
                 .ifPresent(this::sendCarrierDeathTagMessages);
         } else {
-            getPlayer().sendMessage(C.warn(C.GOLD) + C.hl(player.getName()) + " is already death tagged!");
+            this.getPlayer().sendMessage(C.warn(C.GOLD) + C.hl(player.getName()) + " is already death tagged!");
         }
 
         return tagged;
@@ -225,11 +225,11 @@ public class ScoutKit extends BattleKit {
             enemy.sendMessage(C.warn(C.GOLD) + "You flag carrier was death tagged!")
         );
 
-        getTeammates().forEach(teammate ->
+        this.getTeammates().forEach(teammate ->
             teammate.sendMessage(C.warn(C.GOLD) + "The enemy flag carrier was death tagged!")
         );
 
-        getGame().getSpectators().forEach(spectator ->
+        this.getGame().getSpectators().forEach(spectator ->
             spectator.sendMessage(C.warn(C.GOLD) + "The " + team.getColoredName() + " flag carrier was death tagged!")
         );
     }
@@ -246,7 +246,7 @@ public class ScoutKit extends BattleKit {
 
         @Override
         protected void onUse(PlayerInteractEvent event) {
-            throwSwapperBall();
+            ScoutKit.this.throwSwapperBall();
         }
 
     }
@@ -260,19 +260,19 @@ public class ScoutKit extends BattleKit {
                 TAG_COOLDOWN
             );
 
-            onInteractEntity(event -> {
+            this.onInteractEntity(event -> {
                 if (event.getRightClicked() instanceof Player hit) {
-                    if (attemptDeathTag(hit)) {
-                        startCooldown();
-                        setPlaceholder();
+                    if (ScoutKit.this.attemptDeathTag(hit)) {
+                        this.startCooldown();
+                        this.setPlaceholder();
                     }
                 }
             });
-            onDamage(event -> {
+            this.onDamage(event -> {
                 if (event.getEntity() instanceof Player hit) {
-                    if (attemptDeathTag(hit)) {
-                        startCooldown();
-                        setPlaceholder();
+                    if (ScoutKit.this.attemptDeathTag(hit)) {
+                        this.startCooldown();
+                        this.setPlaceholder();
                     }
                 }
             });

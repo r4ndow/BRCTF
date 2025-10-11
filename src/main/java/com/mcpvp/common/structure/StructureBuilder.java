@@ -43,19 +43,19 @@ public class StructureBuilder {
      * @throws IllegalArgumentException If this structure already has a block at the location.
      */
     public void setBlock(Block block, Consumer<Block> placer) {
-        if (queued.containsKey(block)) {
+        if (this.queued.containsKey(block)) {
             throw new IllegalArgumentException("Location already has a block in structure");
         }
 
         // Register any violations
-        List<StructureViolation> violations = manager.check(block).stream().filter(violation -> {
-            return !ignoredRestrictions.contains(violation.getKey());
+        List<StructureViolation> violations = this.manager.check(block).stream().filter(violation -> {
+            return !this.ignoredRestrictions.contains(violation.getKey());
         }).toList();
         this.violations.addAll(violations);
 
         // Queue the action anyway
         // The violations might be ignored
-        queued.put(block, placer);
+        this.queued.put(block, placer);
     }
 
     /**
@@ -65,7 +65,7 @@ public class StructureBuilder {
      * @param material The type to make the block.
      */
     public void setBlock(Block block, Material material) {
-        setBlock(block, b -> b.setType(material, false));
+        this.setBlock(block, b -> b.setType(material, false));
     }
 
     /**
@@ -83,7 +83,7 @@ public class StructureBuilder {
      * @param keys The keys of the restriction, e.g. "IN_SPAWN"
      */
     public void ignoreRestrictions(String... keys) {
-        ignoredRestrictions.addAll(Arrays.asList(keys));
+        this.ignoredRestrictions.addAll(Arrays.asList(keys));
     }
 
     /**
@@ -95,9 +95,9 @@ public class StructureBuilder {
             throw new IllegalStateException("Attempted to place structure with violations: " + this.violations);
         }
 
-        queued.forEach((block, placer) -> {
+        this.queued.forEach((block, placer) -> {
             StructureBlock placed = new StructureBlock(block, block.getState());
-            built.add(placed);
+            this.built.add(placed);
             placer.accept(block);
         });
     }

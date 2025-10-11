@@ -56,57 +56,57 @@ public abstract class AbstractFlag implements IBattleFlag {
 
     @Override
     public void drop(Location location, @Nullable Item item) {
-        droppedAt = System.currentTimeMillis();
-        pickupExpiration.expireIn(Duration.milliseconds(1000));
-        restoreExpiration.expireIn(Duration.seconds(15));
+        this.droppedAt = System.currentTimeMillis();
+        this.pickupExpiration.expireIn(Duration.milliseconds(1000));
+        this.restoreExpiration.expireIn(Duration.seconds(15));
 
         if (item != null) {
             item.setPickupDelay(0);
         }
 
-        setCarrier(null);
+        this.setCarrier(null);
     }
 
     @Override
     public void pickup(Player carrier) {
-        setCarrier(carrier);
-        removeEntity();
-        EffectUtil.fakeLightning(getLocation());
+        this.setCarrier(carrier);
+        this.removeEntity();
+        EffectUtil.fakeLightning(this.getLocation());
     }
 
     @Override
     public void steal(Player carrier) {
-        stolenAt = System.currentTimeMillis();
-        pickup(carrier);
-        placeGhost();
+        this.stolenAt = System.currentTimeMillis();
+        this.pickup(carrier);
+        this.placeGhost();
     }
 
     @Override
     public void capture() {
-        reset();
-        EffectUtil.fakeLightning(getLocation());
+        this.reset();
+        EffectUtil.fakeLightning(this.getLocation());
     }
 
     protected final void setCarrier(Player carrier) {
         final Player previous = this.carrier;
         this.carrier = carrier;
 
-        onCarrierChange(previous, carrier);
+        this.onCarrierChange(previous, carrier);
     }
 
     @Override
     public void reset() {
-        stolenAt = 0;
-        droppedAt = 0;
-        setLocked(false);
-        setCarrier(null);
-        removeEntity();
-        placeFlag();
+        this.stolenAt = 0;
+        this.droppedAt = 0;
+        this.setLocked(false);
+        this.setCarrier(null);
+        this.removeEntity();
+        this.placeFlag();
     }
 
     @Override
     public Expiration getPickupExpiration() {
-        return pickupExpiration;
+        return this.pickupExpiration;
     }
 
     /**
@@ -118,11 +118,11 @@ public abstract class AbstractFlag implements IBattleFlag {
      */
     protected void onCarrierChange(Player previous, Player current) {
         if (previous != null) {
-            previous.getInventory().remove(getItem());
+            previous.getInventory().remove(this.getItem());
         }
 
         if (current != null) {
-            current.getInventory().addItem(getItem());
+            current.getInventory().addItem(this.getItem());
         }
     }
 

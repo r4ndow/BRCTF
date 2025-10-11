@@ -46,59 +46,59 @@ public abstract class BattleKit extends Kit {
     }
 
     public Battle getBattle() {
-        return ((BattlePlugin) plugin).getBattle();
+        return ((BattlePlugin) this.plugin).getBattle();
     }
 
     public BattleGame getGame() {
-        return getBattle().getGame();
+        return this.getBattle().getGame();
     }
 
     public BattleTeam getTeam() {
-        return getBattle().getGame().getTeamManager().getTeam(getPlayer());
+        return this.getBattle().getGame().getTeamManager().getTeam(this.getPlayer());
     }
 
     public void restoreFoodItem() {
-        if (foodItem != null) {
-            foodItem.increment(foodItem.getOriginal().getAmount());
+        if (this.foodItem != null) {
+            this.foodItem.increment(this.foodItem.getOriginal().getAmount());
         }
     }
 
     protected Set<Player> getEnemies() {
-        BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
-        return teamManager.getNext(teamManager.getTeam(getPlayer())).getPlayers();
+        BattleTeamManager teamManager = this.getBattle().getGame().getTeamManager();
+        return teamManager.getNext(teamManager.getTeam(this.getPlayer())).getPlayers();
     }
 
     protected Set<Player> getTeammates() {
-        BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
-        return teamManager.getTeam(getPlayer()).getPlayers();
+        BattleTeamManager teamManager = this.getBattle().getGame().getTeamManager();
+        return teamManager.getTeam(this.getPlayer()).getPlayers();
     }
 
     protected boolean isTeammate(Player player) {
-        return getGame().getTeamManager().isSameTeam(getPlayer(), player);
+        return this.getGame().getTeamManager().isSameTeam(this.getPlayer(), player);
     }
 
     protected boolean isEnemy(Player player) {
-        return !isTeammate(player) && getGame().getTeamManager().getTeam(player) != null;
+        return !this.isTeammate(player) && this.getGame().getTeamManager().getTeam(player) != null;
     }
 
     protected boolean hasFlag() {
-        BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
-        return teamManager.getTeams().stream().anyMatch(team -> team.getFlag().getCarrier() == getPlayer());
+        BattleTeamManager teamManager = this.getBattle().getGame().getTeamManager();
+        return teamManager.getTeams().stream().anyMatch(team -> team.getFlag().getCarrier() == this.getPlayer());
     }
 
     public boolean inSpawn() {
-        BattleTeamManager teamManager = getBattle().getGame().getTeamManager();
-        return teamManager.getTeam(getPlayer()).isInSpawn(getPlayer());
+        BattleTeamManager teamManager = this.getBattle().getGame().getTeamManager();
+        return teamManager.getTeam(this.getPlayer()).isInSpawn(this.getPlayer());
     }
 
     protected boolean placeStructure(Structure structure, Block center) {
         List<StructureViolation> violations = structure.place(center);
         if (!violations.isEmpty()) {
-            ActionbarUtil.send(getPlayer(), C.warn(C.RED) + violations.get(0).getMessage());
+            ActionbarUtil.send(this.getPlayer(), C.warn(C.RED) + violations.get(0).getMessage());
             return false;
         } else {
             // Structure will be removed on kit destruction
-            attach((EasyLifecycle) structure);
+            this.attach((EasyLifecycle) structure);
             return true;
         }
     }
@@ -108,8 +108,8 @@ public abstract class BattleKit extends Kit {
             this.expBarTask.cancel();
         }
 
-        this.expBarTask = task.schedule(getPlugin());
-        attach(this.expBarTask);
+        this.expBarTask = task.schedule(this.getPlugin());
+        this.attach(this.expBarTask);
     }
 
     protected void attach(HeadIndicator indicator) {
@@ -119,9 +119,9 @@ public abstract class BattleKit extends Kit {
 
     @EventHandler
     public void onItemMove(InventoryCloseEvent event) {
-        ((BattlePlugin) plugin).getBattle().getInventoryManager().save(this);
+        ((BattlePlugin) this.plugin).getBattle().getInventoryManager().save(this);
         // Ideally, we wouldn't save all the layouts here, but whatever
-        ((BattlePlugin) plugin).getBattle().getInventoryManager().saveAll();
+        ((BattlePlugin) this.plugin).getBattle().getInventoryManager().saveAll();
     }
 
     public class KitInventoryBuilder {
@@ -132,21 +132,21 @@ public abstract class BattleKit extends Kit {
         private int currentSlot = 0;
 
         public KitInventoryBuilder add(Material material) {
-            return add(ItemBuilder.of(material));
+            return this.add(ItemBuilder.of(material));
         }
 
         public KitInventoryBuilder add(ItemBuilder builder) {
-            items[currentSlot++] = autoAdjust(builder, false);
+            this.items[this.currentSlot++] = this.autoAdjust(builder, false);
             return this;
         }
 
         public KitInventoryBuilder add(ItemBuilder builder, boolean restorable) {
-            items[currentSlot++] = autoAdjust(builder, restorable);
+            this.items[this.currentSlot++] = this.autoAdjust(builder, restorable);
             return this;
         }
 
         public KitInventoryBuilder add(KitItem item) {
-            items[currentSlot++] = item;
+            this.items[this.currentSlot++] = item;
             return this;
         }
 
@@ -155,13 +155,13 @@ public abstract class BattleKit extends Kit {
                 BattleKit.this,
                 ItemBuilder.of(Material.COOKED_BEEF).name("Food").amount(count).build()
             );
-            foodItem = food;
-            items[currentSlot++] = food;
+            BattleKit.this.foodItem = food;
+            this.items[this.currentSlot++] = food;
             return this;
         }
 
         public KitInventoryBuilder addCompass(int slot) {
-            items[slot] = new FlagCompassItem(BattleKit.this, getBattle().getGame());
+            this.items[slot] = new FlagCompassItem(BattleKit.this, BattleKit.this.getBattle().getGame());
             return this;
         }
 
@@ -175,12 +175,12 @@ public abstract class BattleKit extends Kit {
 
         public Map<Integer, KitItem> build() {
             Map<Integer, KitItem> map = new HashMap<>();
-            for (int i = 0; i < items.length; i++) {
-                if (items[i] != null) {
-                    map.put(i, items[i]);
+            for (int i = 0; i < this.items.length; i++) {
+                if (this.items[i] != null) {
+                    map.put(i, this.items[i]);
                 }
             }
-            return getBattle().getInventoryManager().applyLayout(BattleKit.this, map);
+            return BattleKit.this.getBattle().getInventoryManager().applyLayout(BattleKit.this, map);
         }
 
 

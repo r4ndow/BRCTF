@@ -18,10 +18,10 @@ public class SwitchCommand extends BattleCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
-        BattleTeamManager teamManager = battle.getGame().getTeamManager();
-        BattleTeam current = teamManager.getTeam(asPlayer(sender));
+        BattleTeamManager teamManager = this.battle.getGame().getTeamManager();
+        BattleTeam current = teamManager.getTeam(this.asPlayer(sender));
         BattleTeam next = teamManager.getNext(current);
-        teamManager.setTeam(asPlayer(sender), next);
+        teamManager.setTeam(this.asPlayer(sender), next);
         return true;
     }
 

@@ -30,39 +30,39 @@ public class BattleInventoryManager {
     }
 
     public void loadAll() {
-        if (!dataFile.exists()) {
+        if (!this.dataFile.exists()) {
             try {
                 log.debug("Created new data file");
 
-                dataFile.createNewFile();
+                this.dataFile.createNewFile();
                 // Initialize the file with valid JSON by writing
-                saveAll();
+                this.saveAll();
             } catch (IOException e) {
-                throw new RuntimeException("Unable to create inventory_layouts.json file at " + dataFile.getAbsolutePath(), e);
+                throw new RuntimeException("Unable to create inventory_layouts.json file at " + this.dataFile.getAbsolutePath(), e);
             }
         } else {
             try {
-                Map<UUID, InventoryLayoutData> saved = objectMapper.readValue(dataFile, new TypeReference<Map<UUID, InventoryLayoutData>>() {
+                Map<UUID, InventoryLayoutData> saved = this.objectMapper.readValue(this.dataFile, new TypeReference<Map<UUID, InventoryLayoutData>>() {
                 });
-                liveData.putAll(saved);
+                this.liveData.putAll(saved);
 
                 log.debug("Loaded existing data: {}", saved);
             } catch (IOException e) {
-                throw new RuntimeException("Existing inventory_layouts.json file could not be read. Try deleting it and restarting. Location: " + dataFile.getAbsolutePath(), e);
+                throw new RuntimeException("Existing inventory_layouts.json file could not be read. Try deleting it and restarting. Location: " + this.dataFile.getAbsolutePath(), e);
             }
         }
     }
 
     public void saveAll() {
         try {
-            objectMapper.writeValue(dataFile, liveData);
+            this.objectMapper.writeValue(this.dataFile, this.liveData);
         } catch (IOException e) {
-            throw new RuntimeException("Unable to save inventory_layouts.json file at " + dataFile.getAbsolutePath(), e);
+            throw new RuntimeException("Unable to save inventory_layouts.json file at " + this.dataFile.getAbsolutePath(), e);
         }
     }
 
     public void save(BattleKit kit) {
-        InventoryLayoutData data = load(kit.getPlayer()).orElse(new InventoryLayoutData());
+        InventoryLayoutData data = this.load(kit.getPlayer()).orElse(new InventoryLayoutData());
         log.debug("While saving, loaded data for {}", data);
 
         Map<String, Integer> keyToSlot = getKeyToSlot(kit);
@@ -73,17 +73,17 @@ public class BattleInventoryManager {
         }
 
         data.keyToSlot.put(kit.getName(), keyToSlot);
-        save(kit.getPlayer(), data);
+        this.save(kit.getPlayer(), data);
 
         log.debug("Saved {} data for {}: {}", kit.getPlayer().getName(), kit.getName(), data);
     }
 
     public Optional<InventoryLayoutData> load(Player player) {
-        return Optional.ofNullable(liveData.getOrDefault(player.getUniqueId(), null));
+        return Optional.ofNullable(this.liveData.getOrDefault(player.getUniqueId(), null));
     }
 
     private void save(Player player, InventoryLayoutData data) {
-        liveData.put(player.getUniqueId(), data);
+        this.liveData.put(player.getUniqueId(), data);
     }
 
     /**
@@ -95,7 +95,7 @@ public class BattleInventoryManager {
      * @return A reordered map of inventory slot to kit item.
      */
     public Map<Integer, KitItem> applyLayout(BattleKit kit, Map<Integer, KitItem> items) {
-        Optional<BattleInventoryManager.InventoryLayoutData> load = load(kit.getPlayer());
+        Optional<BattleInventoryManager.InventoryLayoutData> load = this.load(kit.getPlayer());
 
         // Ensure that there is data present for the specific kit
         if (load.isPresent() && load.get().getKeyToSlot().containsKey(kit.getName())) {

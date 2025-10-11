@@ -24,9 +24,9 @@ public class CustomMapSource implements BattleMapSource {
 
     @Override
     public void init() {
-        if (!new File(options.getDir()).exists()) {
+        if (!new File(this.options.getDir()).exists()) {
             throw new IllegalArgumentException("Expected a custom map repository, but it does not exist at path %s".formatted(
-                new File(options.getDir()).getAbsolutePath()
+                new File(this.options.getDir()).getAbsolutePath()
             ));
         }
     }
@@ -34,14 +34,14 @@ public class CustomMapSource implements BattleMapSource {
     @Override
     public List<BattleMapData> getAll() {
         List<BattleMapData> maps = new ArrayList<>();
-        for (File map : Objects.requireNonNull(new File(options.getDir()).listFiles())) {
+        for (File map : Objects.requireNonNull(new File(this.options.getDir()).listFiles())) {
             File data = new File(map, "ctf.json");
             if (!data.exists()) {
                 continue;
             }
 
             try {
-                maps.add(mapper.readValue(data, BattleMapData.class));
+                maps.add(this.mapper.readValue(data, BattleMapData.class));
             } catch (IOException e) {
                 throw new RuntimeException("Failed to read map data for folder %s".formatted(map.getAbsolutePath()), e);
             }
@@ -52,7 +52,7 @@ public class CustomMapSource implements BattleMapSource {
 
     @Override
     public File getWorldData(BattleMapData map) {
-        return new File(options.getDir(), map.getFile());
+        return new File(this.options.getDir(), map.getFile());
     }
 
 }

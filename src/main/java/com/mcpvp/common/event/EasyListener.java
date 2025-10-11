@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 public interface EasyListener extends Listener, PluginContainer {
 
     default EasyListener register() {
-        Bukkit.getPluginManager().registerEvents(this, getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, this.getPlugin());
         return this;
     }
 

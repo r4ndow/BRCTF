@@ -54,13 +54,13 @@ public class Battle {
     private VisibilityManager visibilityManager;
 
     public void load() throws IOException {
-        this.options = new BattleOptions(BattleOptionsLoader.getInput(plugin, objectMapper), plugin);
-        this.mapManager = new MergingMapManager(this.plugin, options.getMaps(), loadMapRepos(this.options));
+        this.options = new BattleOptions(BattleOptionsLoader.getInput(this.plugin, this.objectMapper), this.plugin);
+        this.mapManager = new MergingMapManager(this.plugin, this.options.getMaps(), this.loadMapRepos(this.options));
         this.gameManager = new BattleGameManager(this);
-        this.matchManager = new BattleMatchManager(plugin, this, this.gameManager, this.mapManager);
-        this.kitManager = new BattleKitManager(plugin, this);
+        this.matchManager = new BattleMatchManager(this.plugin, this, this.gameManager, this.mapManager);
+        this.kitManager = new BattleKitManager(this.plugin, this);
         this.structureManager = new StructureManager();
-        this.inventoryManager = new BattleInventoryManager(plugin);
+        this.inventoryManager = new BattleInventoryManager(this.plugin);
         this.inventoryManager.loadAll();
         this.visibilityManager = new VanillaVisibilityManager();
 
@@ -69,7 +69,7 @@ public class Battle {
 
     private List<BattleMapSource> loadMapRepos(BattleOptions options) {
         return options.getMaps().getSources().stream()
-            .map(source -> BattleMapSource.from(objectMapper, source))
+            .map(source -> BattleMapSource.from(this.objectMapper, source))
             .peek(BattleMapSource::init)
             .toList();
     }
@@ -79,11 +79,11 @@ public class Battle {
         this.kitManager.getNecroRevivalTagManager().register();
         this.visibilityManager.init();
 
-        if (getOptions().getMapTester().isEnabled()) {
-            new BattleMapTester(objectMapper).run(
-                getOptions().getMapTester(),
-                BattleMapSource.from(objectMapper, getOptions().getMapTester().getMapSource()),
-                getMapManager()
+        if (this.getOptions().getMapTester().isEnabled()) {
+            new BattleMapTester(this.objectMapper).run(
+                this.getOptions().getMapTester(),
+                BattleMapSource.from(this.objectMapper, this.getOptions().getMapTester().getMapSource()),
+                this.getMapManager()
             );
             return;
         }
@@ -95,7 +95,7 @@ public class Battle {
     }
 
     public BattleGame getGame() {
-        return getMatch().getCurrentGame();
+        return this.getMatch().getCurrentGame();
     }
 
 }

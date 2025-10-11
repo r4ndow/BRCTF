@@ -35,7 +35,7 @@ public enum BattleKitType implements KitDefinition {
 
     @Override
     public Kit create(Plugin plugin, Player player) {
-        return creator.apply((BattlePlugin) plugin, player);
+        return this.creator.apply((BattlePlugin) plugin, player);
     }
 
 }

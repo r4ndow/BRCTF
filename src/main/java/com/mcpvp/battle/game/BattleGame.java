@@ -58,22 +58,22 @@ public class BattleGame extends EasyLifecycle {
     private BattleGameStateHandler stateHandler;
 
     public void setup() {
-        log.info("Setup game on map {}", map);
+        log.info("Setup game on map {}", this.map);
 
-        attach(new BattleGameListener(plugin, this));
-        attach(new BattleDeathMessageHandler(plugin));
-        attach(new FlagListener(plugin, this));
-        attach(new FlagMessageBroadcaster(plugin));
-        attach(new FlagStatsListener(plugin, this));
-        attach(scoreboardManager);
+        this.attach(new BattleGameListener(this.plugin, this));
+        this.attach(new BattleDeathMessageHandler(this.plugin));
+        this.attach(new FlagListener(this.plugin, this));
+        this.attach(new FlagMessageBroadcaster(this.plugin));
+        this.attach(new FlagStatsListener(this.plugin, this));
+        this.attach(this.scoreboardManager);
 
-        scoreboardManager.init();
+        this.scoreboardManager.init();
 
-        setState(BattleGameState.BEFORE);
+        this.setState(BattleGameState.BEFORE);
     }
 
     public void stop() {
-        setState(null);
+        this.setState(null);
         super.shutdown();
     }
 
@@ -86,25 +86,25 @@ public class BattleGame extends EasyLifecycle {
     public void setState(BattleGameState state) {
         if (this.state != state) {
             if (this.state != null) {
-                leaveState();
+                this.leaveState();
             }
 
             this.state = state;
 
             if (state != null) {
-                enterState(state);
+                this.enterState(state);
             }
         }
     }
 
     private void enterState(BattleGameState state) {
         this.stateHandler = switch (state) {
-            case BEFORE, AFTER -> new BattleOutsideGameStateHandler(plugin, this, state);
-            case DURING -> new BattleDuringGameStateHandler(plugin, this);
+            case BEFORE, AFTER -> new BattleOutsideGameStateHandler(this.plugin, this, state);
+            case DURING -> new BattleDuringGameStateHandler(this.plugin, this);
         };
         this.stateHandler.enterState();
 
-        fireParticipateEvents();
+        this.fireParticipateEvents();
     }
 
     private void leaveState() {
@@ -122,7 +122,7 @@ public class BattleGame extends EasyLifecycle {
      */
     public void respawn(Player player, boolean died, boolean respawn) {
         // Drop the flag if they have it
-        teamManager.getTeams().forEach(bt -> {
+        this.teamManager.getTeams().forEach(bt -> {
             if (bt.getFlag().getCarrier() == player) {
                 bt.getFlagManager().drop(player, null);
             }
@@ -130,10 +130,10 @@ public class BattleGame extends EasyLifecycle {
 
         // Death animation
         if (died) {
-            doDeathAnimation(player);
+            this.doDeathAnimation(player);
 
             // Adjust stats
-            editStats(player, s -> {
+            this.editStats(player, s -> {
                 s.setBestStreak(Math.max(s.getBestStreak(), s.getStreak()));
                 s.setStreak(0);
                 s.setDeaths(s.getDeaths() + 1);
@@ -153,19 +153,19 @@ public class BattleGame extends EasyLifecycle {
 
         // Teleport to spawn
         if (respawn) {
-            BattleTeam team = getTeamManager().getTeam(player);
-            Location spawn = getConfig().getTeamConfig(team).getSpawn();
+            BattleTeam team = this.getTeamManager().getTeam(player);
+            Location spawn = this.getConfig().getTeamConfig(team).getSpawn();
             player.teleport(spawn.clone().add(0, 0.1, 0));
         }
 
         // Players must be teleported immediately on death to avoid the death screen
         // But there needs to be a tick delay before equipping the kit due to inventory resets
-        attach(Bukkit.getScheduler().runTask(plugin, () -> {
+        this.attach(Bukkit.getScheduler().runTask(this.plugin, () -> {
             if (!player.isOnline()) {
                 return;
             }
 
-            battle.getKitManager().createSelected(player);
+            this.battle.getKitManager().createSelected(player);
 
             // Velocity also carries over for some reason
             player.setVelocity(new Vector(0, 0.1, 0));
@@ -176,13 +176,13 @@ public class BattleGame extends EasyLifecycle {
 
     public void remove(Player player) {
         // Remove kit
-        Kit kit = battle.getKitManager().get(player);
+        Kit kit = this.battle.getKitManager().get(player);
         if (kit != null) {
             kit.shutdown();
         }
 
         // Remove player from team
-        getTeamManager().setTeam(player, null);
+        this.getTeamManager().setTeam(player, null);
     }
 
     private void doDeathAnimation(Player player) {
@@ -192,7 +192,7 @@ public class BattleGame extends EasyLifecycle {
     }
 
     private void fireParticipateEvents() {
-        for (Player player : getParticipants()) {
+        for (Player player : this.getParticipants()) {
             new PlayerParticipateEvent(player, this).call();
         }
     }
@@ -212,18 +212,18 @@ public class BattleGame extends EasyLifecycle {
     }
 
     public void editStats(Player player, Consumer<BattleGamePlayerStats> operator) {
-        operator.accept(getStats(player));
+        operator.accept(this.getStats(player));
     }
 
     public Optional<BattleCallout> findClosestCallout(Location location) {
-        return getConfig().getCallouts().stream()
+        return this.getConfig().getCallouts().stream()
             .filter(callout -> callout.getLocation().distance(location) <= CALLOUT_RADIUS)
             .min(Comparator.comparingDouble(c -> c.getLocation().distanceSquared(location)));
     }
 
     @NonNull
     public BattleGamePlayerStats getStats(Player player) {
-        return playerStats.computeIfAbsent(player, k -> new BattleGamePlayerStats());
+        return this.playerStats.computeIfAbsent(player, k -> new BattleGamePlayerStats());
     }
 
     /**
@@ -232,8 +232,8 @@ public class BattleGame extends EasyLifecycle {
      */
     @Nullable
     public BattleTeam getWinner() {
-        return teamManager.getTeams().stream()
-            .filter(t -> t.getCaptures() == config.getCaps())
+        return this.teamManager.getTeams().stream()
+            .filter(t -> t.getCaptures() == this.config.getCaps())
             .findFirst()
             .orElse(null);
     }

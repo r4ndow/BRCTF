@@ -26,11 +26,11 @@ public class BattleChatMessageHandler implements EasyListener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
-        Optional<BattleTeam> senderTeam = Optional.ofNullable(battle.getGame().getTeamManager().getTeam(event.getPlayer()));
+        Optional<BattleTeam> senderTeam = Optional.ofNullable(this.battle.getGame().getTeamManager().getTeam(event.getPlayer()));
 
         boolean global = event.getMessage().startsWith("!") || senderTeam.isEmpty();
         Collection<? extends Player> recipients = global ? Bukkit.getOnlinePlayers() : senderTeam.get().getPlayers();
-        String message = formatMessage(
+        String message = this.formatMessage(
             global,
             event.getMessage(),
             event.getPlayer().getName(),

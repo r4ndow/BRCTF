@@ -21,10 +21,10 @@ public final class FillExpBarTask extends BukkitRunnable implements ExpBarTask {
 
     @Override
     public void run() {
-        player.setExp(Math.min(player.getExp() + perTick, 1f));
+        this.player.setExp(Math.min(this.player.getExp() + this.perTick, 1f));
 
-        if (player.getExp() == 1f || runs++ == runsRequired) {
-            cancel();
+        if (this.player.getExp() == 1f || this.runs++ == this.runsRequired) {
+            this.cancel();
         }
     }
 

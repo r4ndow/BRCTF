@@ -29,11 +29,11 @@ public class BattleGameConfig {
     private int time = 15;
 
     public BattleTeamConfig getTeamConfig(int id) {
-        return teamConfigs.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
+        return this.teamConfigs.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
     }
 
     public BattleTeamConfig getTeamConfig(BattleTeam team) {
-        return getTeamConfig(team.getId());
+        return this.getTeamConfig(team.getId());
     }
 
 

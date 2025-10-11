@@ -46,13 +46,13 @@ public class BattleGameManager {
             teamManager.createDefaultTeams(config.getTeamConfigs());
 
             // Create scoreboard manager with the teams
-            BattleScoreboardManager scoreboardManager = new BattleScoreboardManager(battle.getPlugin(), battle);
+            BattleScoreboardManager scoreboardManager = new BattleScoreboardManager(this.battle.getPlugin(), this.battle);
 
             // Create game instance
             // This game is inactive until `setup` is called
             return new BattleGame(
-                battle.getPlugin(),
-                battle,
+                this.battle.getPlugin(),
+                this.battle,
                 map,
                 world,
                 config,

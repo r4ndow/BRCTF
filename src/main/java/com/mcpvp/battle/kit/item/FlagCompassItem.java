@@ -27,21 +27,21 @@ public class FlagCompassItem extends KitItem {
 
     public void toggle() {
         if (this.target != null) {
-            target = game.getTeamManager().getNext(target);
-            if (target == game.getTeamManager().getTeam(player)) {
-                modify(ib -> ib.name("Pointing to " + target.getColoredName() + " flag").dummyEnchant());
+            this.target = this.game.getTeamManager().getNext(this.target);
+            if (this.target == this.game.getTeamManager().getTeam(this.player)) {
+                this.modify(ib -> ib.name("Pointing to " + this.target.getColoredName() + " flag").dummyEnchant());
             } else {
-                modify(ib -> ib.name("Pointing to " + target.getColoredName() + " flag").removeDummyEnchant());
+                this.modify(ib -> ib.name("Pointing to " + this.target.getColoredName() + " flag").removeDummyEnchant());
             }
 
-            update(kit.getPlayer().getInventory());
+            this.update(this.kit.getPlayer().getInventory());
         }
     }
 
     @EventHandler
     public void onTick(TickEvent event) {
-        if (this.target != null && kit.getPlayer().getCompassTarget() != target.getFlag().getLocation()) {
-            kit.getPlayer().setCompassTarget(target.getFlag().getLocation());
+        if (this.target != null && this.kit.getPlayer().getCompassTarget() != this.target.getFlag().getLocation()) {
+            this.kit.getPlayer().setCompassTarget(this.target.getFlag().getLocation());
         }
     }
 

@@ -45,7 +45,7 @@ public class ParticlePacket {
 
     public ParticlePacket(EnumParticle particle, Location location) {
         this(particle);
-        at(location);
+        this.at(location);
     }
 
     public static ParticlePacket of(EnumParticle particle) {
@@ -81,10 +81,10 @@ public class ParticlePacket {
      * @param location The location to spawn the particle(s) at.
      */
     public ParticlePacket at(Location location) {
-        x = (float) location.getX();
-        y = (float) location.getY();
-        z = (float) location.getZ();
-        world = location.getWorld();
+        this.x = (float) location.getX();
+        this.y = (float) location.getY();
+        this.z = (float) location.getZ();
+        this.world = location.getWorld();
         return this;
     }
 
@@ -106,9 +106,9 @@ public class ParticlePacket {
      * @param z The Z location to spawn at.
      */
     public ParticlePacket offset(float x, float y, float z) {
-        setOffX(x);
-        setOffY(y);
-        setOffZ(z);
+        this.setOffX(x);
+        this.setOffY(y);
+        this.setOffZ(z);
         return this;
     }
 
@@ -153,7 +153,7 @@ public class ParticlePacket {
      * @param spread The distance in each direction to spread.
      */
     public ParticlePacket spread(Number spread) {
-        offset(spread.floatValue(), spread.floatValue(), spread.floatValue());
+        this.offset(spread.floatValue(), spread.floatValue(), spread.floatValue());
         return this;
     }
 
@@ -171,7 +171,7 @@ public class ParticlePacket {
      * color.
      */
     public ParticlePacket data(float data) {
-        return setData(data);
+        return this.setData(data);
     }
 
     public ParticlePacket setShowFar(boolean showFar) {
@@ -183,7 +183,7 @@ public class ParticlePacket {
      * Enables the particle to be shown extremely far away.
      */
     public ParticlePacket showFar() {
-        return setShowFar(true);
+        return this.setShowFar(true);
     }
 
     /**
@@ -202,13 +202,13 @@ public class ParticlePacket {
      * @param color The color to make the particle.
      */
     public ParticlePacket color(org.bukkit.Color color) {
-        Validate.isTrue((particle == EnumParticle.REDSTONE || particle == EnumParticle.SPELL_MOB || particle == EnumParticle.NOTE), "Only redstone particles can be colored");
-        count(0);
-        setShowFar(false);
-        setOffX(-1 + (color.getRed() * 1f / 255));
-        setOffY(color.getGreen() * 1f / 255);
-        setOffZ(color.getBlue() * 1f / 255);
-        data(1);
+        Validate.isTrue((this.particle == EnumParticle.REDSTONE || this.particle == EnumParticle.SPELL_MOB || this.particle == EnumParticle.NOTE), "Only redstone particles can be colored");
+        this.count(0);
+        this.setShowFar(false);
+        this.setOffX(-1 + (color.getRed() * 1f / 255));
+        this.setOffY(color.getGreen() * 1f / 255);
+        this.setOffZ(color.getBlue() * 1f / 255);
+        this.data(1);
         return this;
     }
 
@@ -216,33 +216,33 @@ public class ParticlePacket {
      * Uses {@link #color(org.bukkit.Color)}.
      */
     public ParticlePacket color(java.awt.Color color) {
-        return color(org.bukkit.Color.fromRGB(color.getRGB()));
+        return this.color(org.bukkit.Color.fromRGB(color.getRGB()));
     }
 
     public String getParticleName() {
-        return particle.name();
+        return this.particle.name();
     }
 
     public void send() {
-        Validate.notNull(particle);
-        Validate.notNull(world);
-        Bukkit.getOnlinePlayers().stream().filter(p -> p.getWorld().equals(world)).forEach(this::send);
+        Validate.notNull(this.particle);
+        Validate.notNull(this.world);
+        Bukkit.getOnlinePlayers().stream().filter(p -> p.getWorld().equals(this.world)).forEach(this::send);
     }
 
     public void send(Player player) {
-        Validate.notNull(particle);
-        Validate.notNull(world);
-        PacketUtil.sendPacket(player, create());
+        Validate.notNull(this.particle);
+        Validate.notNull(this.world);
+        PacketUtil.sendPacket(player, this.create());
     }
 
     public PacketPlayOutWorldParticles create() {
-        return new PacketPlayOutWorldParticles(EnumParticle.valueOf(EnumParticle.class, getParticleName()),
-            showFar,
-            x, y, z,
-            offX, offY, offZ,
-            data,
-            count,
-            dataArray
+        return new PacketPlayOutWorldParticles(EnumParticle.valueOf(EnumParticle.class, this.getParticleName()),
+            this.showFar,
+            this.x, this.y, this.z,
+            this.offX, this.offY, this.offZ,
+            this.data,
+            this.count,
+            this.dataArray
         );
     }
 

@@ -27,15 +27,15 @@ public class CentralMapSource implements BattleMapSource {
 
     @Override
     public void init() {
-        File mapsDir = new File(mapOptions.getDir());
+        File mapsDir = new File(this.mapOptions.getDir());
         if (!mapsDir.exists()) {
             throw new IllegalStateException("Maps directory does not exist: " + mapsDir);
         }
 
-        String mapsJson = loadMapsJson();
+        String mapsJson = this.loadMapsJson();
 
         try {
-            this.mapData.addAll(mapper.readValue(
+            this.mapData.addAll(this.mapper.readValue(
                 mapsJson, new TypeReference<List<BattleMapData>>() {
                 }
             ));
@@ -43,19 +43,19 @@ public class CentralMapSource implements BattleMapSource {
             throw new RuntimeException("Failed to read maps.json", e);
         }
 
-        check();
+        this.check();
     }
 
     private String loadMapsJson() {
         String json = null;
 
         // Try to read the configuration supplied file first
-        File configured = new File(mapOptions.getJson());
+        File configured = new File(this.mapOptions.getJson());
         if (configured.exists()) {
             try {
                 return Objects.requireNonNull(FileUtils.readFileToString(configured));
             } catch (IOException e) {
-                log.warn("Failed to read custom maps.json at {}", mapOptions.getJson(), e);
+                log.warn("Failed to read custom maps.json at {}", this.mapOptions.getJson(), e);
             }
         } else {
             log.warn("Given a custom maps.json that does not exist, expected at {}", configured.getAbsoluteFile());
@@ -88,7 +88,7 @@ public class CentralMapSource implements BattleMapSource {
         }
 
         this.mapData.forEach(data -> {
-            File mapData = new File(mapOptions.getDir(), data.getFile());
+            File mapData = new File(this.mapOptions.getDir(), data.getFile());
 
             if (!mapData.exists()) {
                 log.warn("Map file was not found. Expected at: {}", mapData);
@@ -99,12 +99,12 @@ public class CentralMapSource implements BattleMapSource {
 
     @Override
     public List<BattleMapData> getAll() {
-        return mapData;
+        return this.mapData;
     }
 
     @Override
     public File getWorldData(BattleMapData map) {
-        return new File(mapOptions.getDir(), map.getFile());
+        return new File(this.mapOptions.getDir(), map.getFile());
     }
 
 }

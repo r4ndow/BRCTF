@@ -73,7 +73,7 @@ public class ItemBuilder implements Cloneable {
      */
     public ItemBuilder(Potion potion) {
         this(Material.POTION);
-        data(potion.toDamageValue());
+        this.data(potion.toDamageValue());
     }
 
     /**
@@ -105,7 +105,7 @@ public class ItemBuilder implements Cloneable {
      * @return the {@link ItemStack} that was built.
      */
     public ItemStack build() {
-        return item;
+        return this.item;
     }
 
     /**
@@ -115,7 +115,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder type(Material material) {
-        item.setType(material);
+        this.item.setType(material);
         return this;
     }
 
@@ -126,7 +126,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder amount(int quantity) {
-        item.setAmount(quantity);
+        this.item.setAmount(quantity);
         return this;
     }
 
@@ -137,7 +137,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder increaseAmount(int delta) {
-        item.setAmount(item.getAmount() + delta);
+        this.item.setAmount(this.item.getAmount() + delta);
         return this;
     }
 
@@ -149,12 +149,12 @@ public class ItemBuilder implements Cloneable {
      */
     public ItemBuilder safeAmount(int quantity) {
         if (quantity > 64) {
-            return amount(64);
+            return this.amount(64);
         }
         if (quantity < 1) {
-            return amount(1);
+            return this.amount(1);
         }
-        return amount(quantity);
+        return this.amount(quantity);
     }
 
     /**
@@ -164,7 +164,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder genericName() {
-        name(WordUtils.capitalize(item.getType().toString().toLowerCase().replaceAll("_", " ")));
+        this.name(WordUtils.capitalize(this.item.getType().toString().toLowerCase().replaceAll("_", " ")));
         return this;
     }
 
@@ -175,7 +175,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder name(String name) {
-        return rawName(ChatColor.RESET + name);
+        return this.rawName(ChatColor.RESET + name);
     }
 
     /**
@@ -185,7 +185,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder rawName(String name) {
-        editMeta(m -> m.setDisplayName(name));
+        this.editMeta(m -> m.setDisplayName(name));
         return this;
     }
 
@@ -201,7 +201,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder lore(List<String> lore) {
-        editMeta(m -> m.setLore(lore));
+        this.editMeta(m -> m.setLore(lore));
         return this;
     }
 
@@ -212,7 +212,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder lore(String... lore) {
-        return lore(Arrays.asList(lore));
+        return this.lore(Arrays.asList(lore));
     }
 
     /**
@@ -224,7 +224,7 @@ public class ItemBuilder implements Cloneable {
      * @see C#wrapWithColor(String, int)
      */
     public ItemBuilder lore(String lore, int charsPerLine) {
-        return lore(C.wrapWithColor(lore, charsPerLine));
+        return this.lore(C.wrapWithColor(lore, charsPerLine));
     }
 
     /**
@@ -234,7 +234,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder desc(List<String> desc) {
-        ItemUtil.setDescription(item, desc);
+        ItemUtil.setDescription(this.item, desc);
         return this;
     }
 
@@ -247,7 +247,7 @@ public class ItemBuilder implements Cloneable {
      * @see C#wrapWithColor(String, int)
      */
     public ItemBuilder desc(String desc, int charsPerLine) {
-        return desc(C.wrapWithColor(desc, charsPerLine));
+        return this.desc(C.wrapWithColor(desc, charsPerLine));
     }
 
     /**
@@ -260,7 +260,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder tag(String key, String value) {
-        item = NBTUtil.saveString(this.item, key, value);
+        this.item = NBTUtil.saveString(this.item, key, value);
         return this;
     }
 
@@ -276,11 +276,11 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder enchantBook(Enchantment enchantment, Integer level, boolean force) {
-        if (item.getType() != Material.ENCHANTED_BOOK) {
+        if (this.item.getType() != Material.ENCHANTED_BOOK) {
             return this;
         }
 
-        editMeta(meta -> {
+        this.editMeta(meta -> {
             EnchantmentStorageMeta eMeta = (EnchantmentStorageMeta) meta;
             eMeta.addStoredEnchant(enchantment, level, force);
         });
@@ -301,9 +301,9 @@ public class ItemBuilder implements Cloneable {
      */
     public ItemBuilder enchant(Enchantment enchantment, int level, boolean force) {
         if (force) {
-            item.addUnsafeEnchantment(enchantment, level);
+            this.item.addUnsafeEnchantment(enchantment, level);
         } else {
-            item.addEnchantment(enchantment, level);
+            this.item.addEnchantment(enchantment, level);
         }
 
         return this;
@@ -318,7 +318,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder enchant(Enchantment enchantment, int level) {
-        return enchant(enchantment, level, true);
+        return this.enchant(enchantment, level, true);
     }
 
     /**
@@ -329,7 +329,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder unenchant(Enchantment enchantment) {
-        item.removeEnchantment(enchantment);
+        this.item.removeEnchantment(enchantment);
         return this;
     }
 
@@ -340,7 +340,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder durability(Number data) {
-        item.setDurability(data.shortValue());
+        this.item.setDurability(data.shortValue());
         return this;
     }
 
@@ -348,7 +348,7 @@ public class ItemBuilder implements Cloneable {
      * Sets the durability of this item in percent
      */
     public ItemBuilder durabilityPercent(float percent) {
-        item.setDurability((short) (item.getType().getMaxDurability() * (1 - percent)));
+        this.item.setDurability((short) (this.item.getType().getMaxDurability() * (1 - percent)));
         return this;
     }
 
@@ -359,7 +359,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder data(Number data) {
-        return durability(data);
+        return this.durability(data);
     }
 
     /**
@@ -370,27 +370,27 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder color(DyeColor color) {
-        switch (item.getType()) {
+        switch (this.item.getType()) {
             case WOOL:
             case CARPET:
             case STAINED_GLASS:
             case STAINED_GLASS_PANE:
-                item.setDurability(color.getData());
+                this.item.setDurability(color.getData());
                 break;
             case INK_SACK:
             case STAINED_CLAY:
             case CLAY:
-                item.setDurability(color.getDyeData());
+                this.item.setDurability(color.getDyeData());
                 break;
             case LEATHER_HELMET:
             case LEATHER_CHESTPLATE:
             case LEATHER_LEGGINGS:
             case LEATHER_BOOTS:
-                return color(color.getColor());
+                return this.color(color.getColor());
             case GLASS:
-                return type(Material.STAINED_GLASS).color(color);
+                return this.type(Material.STAINED_GLASS).color(color);
             case THIN_GLASS:
-                return type(Material.STAINED_GLASS_PANE).color(color);
+                return this.type(Material.STAINED_GLASS_PANE).color(color);
             default:
                 throw new IllegalArgumentException("Attempted to color a non-colorable item");
         }
@@ -405,7 +405,7 @@ public class ItemBuilder implements Cloneable {
      * @see #color(Color, boolean)
      */
     public ItemBuilder color(Colors color) {
-        return color(color.getDye());
+        return this.color(color.getDye());
     }
 
     /**
@@ -417,7 +417,7 @@ public class ItemBuilder implements Cloneable {
      * @see #color(Color, boolean)
      */
     public ItemBuilder color(Color color) {
-        return color(color, false);
+        return this.color(color, false);
     }
 
     /**
@@ -432,7 +432,7 @@ public class ItemBuilder implements Cloneable {
      *                               leather armor piece.
      */
     public ItemBuilder color(Color color, boolean mix) {
-        if (!(item.getItemMeta() instanceof LeatherArmorMeta meta)) {
+        if (!(this.item.getItemMeta() instanceof LeatherArmorMeta meta)) {
             throw new IllegalStateException("Only leather items can be dyed!");
         }
 
@@ -441,7 +441,7 @@ public class ItemBuilder implements Cloneable {
         } else {
             meta.setColor(color);
         }
-        item.setItemMeta(meta);
+        this.item.setItemMeta(meta);
         return this;
     }
 
@@ -452,7 +452,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder flag(ItemFlag... flags) {
-        editMeta(m -> m.addItemFlags(flags));
+        this.editMeta(m -> m.addItemFlags(flags));
         return this;
     }
 
@@ -463,7 +463,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder hideData() {
-        return flag(ItemFlag.values());
+        return this.flag(ItemFlag.values());
     }
 
     /**
@@ -475,7 +475,7 @@ public class ItemBuilder implements Cloneable {
      * @see #breakable()
      */
     public ItemBuilder unbreakable() {
-        ItemMeta itemMeta = item.getItemMeta();
+        ItemMeta itemMeta = this.item.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         return this;
     }
@@ -487,7 +487,7 @@ public class ItemBuilder implements Cloneable {
      * @see #unbreakable()
      */
     public ItemBuilder breakable() {
-        ItemMeta itemMeta = item.getItemMeta();
+        ItemMeta itemMeta = this.item.getItemMeta();
         itemMeta.spigot().setUnbreakable(false);
         return this;
     }
@@ -498,7 +498,7 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder dummyEnchant() {
-        return enchant(Enchantment.LURE, 5).flag(ItemFlag.HIDE_ENCHANTS);
+        return this.enchant(Enchantment.LURE, 5).flag(ItemFlag.HIDE_ENCHANTS);
     }
 
     /**
@@ -507,8 +507,8 @@ public class ItemBuilder implements Cloneable {
      * @return this builder instance, for chaining.
      */
     public ItemBuilder removeDummyEnchant() {
-        item.removeEnchantment(Enchantment.LURE);
-        editMeta(itemMeta -> itemMeta.removeItemFlags(ItemFlag.HIDE_ENCHANTS));
+        this.item.removeEnchantment(Enchantment.LURE);
+        this.editMeta(itemMeta -> itemMeta.removeItemFlags(ItemFlag.HIDE_ENCHANTS));
         return this;
     }
 
@@ -516,14 +516,14 @@ public class ItemBuilder implements Cloneable {
      * Adds x to the amount of the item stack
      */
     public ItemBuilder add(int amount) {
-        return amount(item.getAmount() + amount);
+        return this.amount(this.item.getAmount() + amount);
     }
 
     /**
      * Removes x to the amount of the item stack
      */
     public ItemBuilder remove(int amount) {
-        return amount(item.getAmount() - amount);
+        return this.amount(this.item.getAmount() - amount);
     }
 
     /* (non-Javadoc)
@@ -540,9 +540,9 @@ public class ItemBuilder implements Cloneable {
      * @param consumer The consumer that edits the meta.
      */
     private void editMeta(Consumer<ItemMeta> consumer) {
-        ItemMeta meta = item.getItemMeta();
+        ItemMeta meta = this.item.getItemMeta();
         consumer.accept(meta);
-        item.setItemMeta(meta);
+        this.item.setItemMeta(meta);
     }
 
     /**
@@ -564,7 +564,7 @@ public class ItemBuilder implements Cloneable {
          * @return this builder instance, for chaining.
          */
         public PotionBuilder splash() {
-            potion.splash();
+            this.potion.splash();
             return this;
         }
 
@@ -581,9 +581,9 @@ public class ItemBuilder implements Cloneable {
          */
         public PotionBuilder effect(PotionEffectType type, Duration duration, int amplifier) {
             if (this.potion == null) {
-                this.potion = new Potion(getType(type));
+                this.potion = new Potion(this.getType(type));
             }
-            editMeta(m -> m.addCustomEffect(new PotionEffect(type, duration.ticks(), amplifier), true));
+            this.editMeta(m -> m.addCustomEffect(new PotionEffect(type, duration.ticks(), amplifier), true));
             return this;
         }
 
@@ -598,7 +598,7 @@ public class ItemBuilder implements Cloneable {
          * @return this builder instance, for chaining.
          */
         public PotionBuilder effect(PotionEffectType type, int amplifier) {
-            return effect(type, Duration.ZERO, amplifier);
+            return this.effect(type, Duration.ZERO, amplifier);
         }
 
         /**
@@ -610,7 +610,7 @@ public class ItemBuilder implements Cloneable {
          * @return this builder instance, for chaining.
          */
         public PotionBuilder effect(PotionEffectType type, Duration duration) {
-            return effect(type, duration, 0);
+            return this.effect(type, duration, 0);
         }
 
         /**
@@ -621,7 +621,7 @@ public class ItemBuilder implements Cloneable {
          * @return this builder instance, for chaining.
          */
         public PotionBuilder effect(PotionEffectType type) {
-            return effect(type, Duration.ZERO, 0);
+            return this.effect(type, Duration.ZERO, 0);
         }
 
         /**
@@ -636,7 +636,7 @@ public class ItemBuilder implements Cloneable {
          * @return this builder instance, for chaining.
          */
         public PotionBuilder effect(PotionType type, Duration duration, int amplifier) {
-            return effect(type.getEffectType(), duration, amplifier);
+            return this.effect(type.getEffectType(), duration, amplifier);
         }
 
         /**
@@ -650,7 +650,7 @@ public class ItemBuilder implements Cloneable {
          * @return this builder instance, for chaining.
          */
         public PotionBuilder effect(PotionType type, int amplifier) {
-            return effect(type.getEffectType(), amplifier);
+            return this.effect(type.getEffectType(), amplifier);
         }
 
         /**
@@ -662,7 +662,7 @@ public class ItemBuilder implements Cloneable {
          * @return this builder instance, for chaining.
          */
         public PotionBuilder effect(PotionType type, Duration duration) {
-            return effect(type.getEffectType(), duration, 0);
+            return this.effect(type.getEffectType(), duration, 0);
         }
 
         /**
@@ -673,7 +673,7 @@ public class ItemBuilder implements Cloneable {
          * @return this builder instance, for chaining.
          */
         public PotionBuilder effect(PotionType type) {
-            return effect(type.getEffectType(), Duration.ZERO, 0);
+            return this.effect(type.getEffectType(), Duration.ZERO, 0);
         }
 
         private PotionType getType(PotionEffectType effect) {
@@ -687,15 +687,15 @@ public class ItemBuilder implements Cloneable {
         }
 
         private void editMeta(Consumer<PotionMeta> consumer) {
-            PotionMeta meta = (PotionMeta) build().getItemMeta();
+            PotionMeta meta = (PotionMeta) this.build().getItemMeta();
             consumer.accept(meta);
-            build().setItemMeta(meta);
+            this.build().setItemMeta(meta);
         }
 
         @Override
         public ItemStack build() {
-            potion.apply(item);
-            return item;
+            this.potion.apply(this.item);
+            return this.item;
         }
 
     }
@@ -707,19 +707,19 @@ public class ItemBuilder implements Cloneable {
         }
 
         public FireworkBuilder effect(FireworkEffect... effects) {
-            editMeta(m -> m.addEffects(effects));
+            this.editMeta(m -> m.addEffects(effects));
             return this;
         }
 
         public FireworkBuilder power(int power) {
-            editMeta(m -> m.setPower(power));
+            this.editMeta(m -> m.setPower(power));
             return this;
         }
 
         public void editMeta(Consumer<FireworkMeta> consumer) {
-            FireworkMeta meta = getMeta();
+            FireworkMeta meta = this.getMeta();
             consumer.accept(meta);
-            item.setItemMeta(meta);
+            this.item.setItemMeta(meta);
         }
 
         private FireworkMeta getMeta() {

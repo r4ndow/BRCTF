@@ -42,10 +42,10 @@ public enum Colors {
     private final String CHAT_STRING;
 
     Colors(DyeColor dye, ChatColor chat, String string) {
-        COLOR = dye.getColor();
-        DYE = dye;
-        CHAT = chat;
-        CHAT_STRING = string;
+        this.COLOR = dye.getColor();
+        this.DYE = dye;
+        this.CHAT = chat;
+        this.CHAT_STRING = string;
     }
 
     public static Colors find(Color col) {
@@ -70,23 +70,23 @@ public enum Colors {
 
     @Override
     public String toString() {
-        return getChat().toString();
+        return this.getChat().toString();
     }
 
     public Color getColor() {
-        return COLOR;
+        return this.COLOR;
     }
 
     public DyeColor getDye() {
-        return DYE;
+        return this.DYE;
     }
 
     public ChatColor getChat() {
-        return CHAT;
+        return this.CHAT;
     }
 
     public String getChatString() {
-        return CHAT_STRING;
+        return this.CHAT_STRING;
     }
 
 }

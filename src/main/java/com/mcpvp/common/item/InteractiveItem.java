@@ -167,7 +167,7 @@ public class InteractiveItem implements EasyListener {
 
     @EventHandler
     public void onInteractEvent(PlayerInteractEvent event) {
-        if (event.isCancelled() && ignoreCancelled) {
+        if (event.isCancelled() && this.ignoreCancelled) {
             return;
         }
 
@@ -175,18 +175,18 @@ public class InteractiveItem implements EasyListener {
             return;
         }
 
-        if (isItem(event.getItem())) {
+        if (this.isItem(event.getItem())) {
             // Re-assign the ItemStack instance, which improves syncing with the client
             // Without doing this, a call to `update()` would be required
             this.setItem(event.getItem());
-            interactHandlers.forEach(ih -> ih.accept(event));
-            anyHandler.accept(event.getPlayer());
+            this.interactHandlers.forEach(ih -> ih.accept(event));
+            this.anyHandler.accept(event.getPlayer());
         }
     }
 
     @EventHandler
     public void onInteractEvent(PlayerInteractEntityEvent event) {
-        if (event.isCancelled() && ignoreCancelled) {
+        if (event.isCancelled() && this.ignoreCancelled) {
             return;
         }
 
@@ -194,20 +194,20 @@ public class InteractiveItem implements EasyListener {
             return;
         }
 
-        if (isItem(event.getPlayer().getItemInHand())) {
-            anyHandler.accept(event.getPlayer());
+        if (this.isItem(event.getPlayer().getItemInHand())) {
+            this.anyHandler.accept(event.getPlayer());
         }
     }
 
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
-        if (event.isCancelled() && ignoreCancelled) {
+        if (event.isCancelled() && this.ignoreCancelled) {
             return;
         }
 
-        if (isItem(event.getItemInHand())) {
-            blockPlaceHandlers.forEach(ih -> ih.accept(event));
-            anyHandler.accept(event.getPlayer());
+        if (this.isItem(event.getItemInHand())) {
+            this.blockPlaceHandlers.forEach(ih -> ih.accept(event));
+            this.anyHandler.accept(event.getPlayer());
         }
     }
 
@@ -222,9 +222,9 @@ public class InteractiveItem implements EasyListener {
         }
 
         // Allow movement in the player's inventory.
-        if (isItem(event.getCurrentItem())) {
-            clickHandler.accept(event);
-            anyHandler.accept((Player) event.getWhoClicked());
+        if (this.isItem(event.getCurrentItem())) {
+            this.clickHandler.accept(event);
+            this.anyHandler.accept((Player) event.getWhoClicked());
         }
     }
 
@@ -238,8 +238,8 @@ public class InteractiveItem implements EasyListener {
             return;
         }
 
-        if (isItem(damager.getItemInHand())) {
-            edbeeHandlers.forEach(h -> h.accept(event));
+        if (this.isItem(damager.getItemInHand())) {
+            this.edbeeHandlers.forEach(h -> h.accept(event));
         }
     }
 
@@ -251,15 +251,15 @@ public class InteractiveItem implements EasyListener {
             return;
         }
 
-        if (isItem(player.getItemInHand())) {
-            interactEntityHandlers.forEach(h -> h.accept(event));
+        if (this.isItem(player.getItemInHand())) {
+            this.interactEntityHandlers.forEach(h -> h.accept(event));
         }
     }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
-        if (isItem(event.getItemDrop())) {
-            dropHandlers.forEach(h -> h.accept(event));
+        if (this.isItem(event.getItemDrop())) {
+            this.dropHandlers.forEach(h -> h.accept(event));
         }
     }
 
@@ -268,7 +268,7 @@ public class InteractiveItem implements EasyListener {
      * @return True if the given item is this InteractiveItem's item.
      */
     public boolean isItem(ItemStack item) {
-        return NBTUtil.hasString(item, NBT_KEY, "" + id);
+        return NBTUtil.hasString(item, NBT_KEY, "" + this.id);
     }
 
     /**
@@ -276,7 +276,7 @@ public class InteractiveItem implements EasyListener {
      * @return True if the given item is this InteractiveItem's item.
      */
     public boolean isItem(Item item) {
-        return isItem(item.getItemStack());
+        return this.isItem(item.getItemStack());
     }
 
     /**
@@ -286,8 +286,8 @@ public class InteractiveItem implements EasyListener {
      */
     public void update(Inventory inv) {
         for (int i = 0; i < inv.getContents().length; i++) {
-            if (isItem(inv.getItem(i))) {
-                inv.setItem(i, getItem());
+            if (this.isItem(inv.getItem(i))) {
+                inv.setItem(i, this.getItem());
             }
         }
     }
@@ -300,7 +300,7 @@ public class InteractiveItem implements EasyListener {
      */
     public void refresh(Inventory inv) {
         for (int i = 0; i < inv.getContents().length; i++) {
-            if (isItem(inv.getItem(i))) {
+            if (this.isItem(inv.getItem(i))) {
                 this.setItem(inv.getItem(i));
             }
         }

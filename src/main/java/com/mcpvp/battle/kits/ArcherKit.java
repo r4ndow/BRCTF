@@ -54,13 +54,13 @@ public class ArcherKit extends BattleKit {
                 .name("Archer Bow")
                 .enchant(Enchantment.ARROW_KNOCKBACK, 1)
                 .unbreakable())
-            .add(arrows1 = new KitItem(
+            .add(this.arrows1 = new KitItem(
                 this,
                 ItemBuilder.of(Material.ARROW)
                     .name("Archer Arrows #1")
                     .amount(64)
                     .build()))
-            .add(arrows2 = new KitItem(
+            .add(this.arrows2 = new KitItem(
                 this,
                 ItemBuilder.of(Material.ARROW)
                     .name("Archer Arrows #2")
@@ -72,26 +72,26 @@ public class ArcherKit extends BattleKit {
 
     @EventHandler
     public void onFireArrow(EntityShootBowEvent event) {
-        if (!isPlayer(event.getEntity())) {
+        if (!this.isPlayer(event.getEntity())) {
             return;
         }
 
-        attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
+        this.attach(new InteractiveProjectile(this.getPlugin(), (Projectile) event.getProjectile())
             .singleEventOnly()
             .onDamageEvent(this::onHit)
         );
-        attach(event.getEntity());
+        this.attach(event.getEntity());
 
         // Keep the arrow stacks in sync
-        List.of(arrows1, arrows2).forEach(kitItem -> {
-            kitItem.refresh(getPlayer().getInventory());
+        List.of(this.arrows1, this.arrows2).forEach(kitItem -> {
+            kitItem.refresh(this.getPlayer().getInventory());
         });
 
-        if (arrows1.getItem().getAmount() == 1) {
-            arrows1.setPlaceholder();
+        if (this.arrows1.getItem().getAmount() == 1) {
+            this.arrows1.setPlaceholder();
         }
-        if (arrows2.getItem().getAmount() == 1) {
-            arrows2.setPlaceholder();
+        if (this.arrows2.getItem().getAmount() == 1) {
+            this.arrows2.setPlaceholder();
         }
     }
 

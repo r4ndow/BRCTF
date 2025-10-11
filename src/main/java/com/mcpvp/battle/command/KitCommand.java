@@ -25,7 +25,7 @@ public class KitCommand extends BattleCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
-        Player player = asPlayer(sender);
+        Player player = this.asPlayer(sender);
 
         KitDefinition kit;
         if (label.equals("kit")) {
@@ -35,7 +35,7 @@ public class KitCommand extends BattleCommand {
         }
 
         if (kit != null) {
-            KitAttemptSelectEvent kitAttemptSelectEvent = kitManager.setSelected(
+            KitAttemptSelectEvent kitAttemptSelectEvent = this.kitManager.setSelected(
                 player, kit, false, !(args.contains("-f") && sender.isOp())
             );
 

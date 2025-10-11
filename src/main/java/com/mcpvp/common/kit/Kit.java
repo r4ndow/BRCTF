@@ -30,8 +30,8 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
     public Kit(Plugin plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
-        this.items = createItems();
-        setup(player);
+        this.items = this.createItems();
+        this.setup(player);
     }
 
     /**
@@ -41,11 +41,11 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
      * @param player The player this Kit exists for.
      */
     protected void setup(@NonNull Player player) {
-        attach((EasyListener) this);
+        this.attach((EasyListener) this);
 
         player.getInventory().clear();
         ItemStack[] armor = new ItemStack[4];
-        ItemStack[] createdArmor = createArmor();
+        ItemStack[] createdArmor = this.createArmor();
         for (int i = 0; i < createdArmor.length; i++) {
             if (createdArmor[i] != null) {
                 armor[i] = ItemBuilder.of(createdArmor[i]).unbreakable().build();
@@ -56,7 +56,7 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
         this.items.entrySet().stream()
             .filter(e -> e.getValue() != null)
             .forEach(e -> {
-                attach(e.getValue());
+                this.attach(e.getValue());
                 player.getInventory().setItem(e.getKey(), e.getValue().getItem());
             });
     }

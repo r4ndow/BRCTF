@@ -87,7 +87,7 @@ public class DwarfKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        sword = new KitItem(this,
+        this.sword = new KitItem(this,
             ItemBuilder.of(Material.WOOD_SWORD)
                 .name("Dwarf Weapon")
                 .enchant(Enchantment.DAMAGE_ALL, 2)
@@ -96,8 +96,8 @@ public class DwarfKit extends BattleKit {
         );
 
         return new KitInventoryBuilder()
-            .add(sword)
-            .add(smash = new SmashItem())
+            .add(this.sword)
+            .add(this.smash = new SmashItem())
             .addFood(3)
             .addCompass(8)
             .build();
@@ -105,101 +105,101 @@ public class DwarfKit extends BattleKit {
 
     @EventHandler
     public void onKill(PlayerKilledByPlayerEvent event) {
-        if (event.getKiller() == getPlayer()) {
-            setState(State.READY);
+        if (event.getKiller() == this.getPlayer()) {
+            this.setState(State.READY);
         }
     }
 
     @EventHandler
     public void onTick(TickEvent event) {
-        if (downgrade.isExpired() && level != 1) {
-            setLevel(level - 1);
+        if (this.downgrade.isExpired() && this.level != 1) {
+            this.setLevel(this.level - 1);
         }
 
-        if (state == State.FLYING && getPlayer().getVelocity().getY() - Math.abs(EntityUtil.GRAVITY) <= 0) {
-            setState(State.FALLING);
+        if (this.state == State.FLYING && this.getPlayer().getVelocity().getY() - Math.abs(EntityUtil.GRAVITY) <= 0) {
+            this.setState(State.FALLING);
         }
 
-        if (state == State.COOLDOWN && smashCooldown.isExpired()) {
-            setState(State.READY);
+        if (this.state == State.COOLDOWN && this.smashCooldown.isExpired()) {
+            this.setState(State.READY);
         }
 
-        if ((state == State.FALLING || state == State.SPIKING) && EntityUtil.isOnGround(getPlayer())) {
+        if ((this.state == State.FALLING || this.state == State.SPIKING) && EntityUtil.isOnGround(this.getPlayer())) {
             // If they reach the ground without taking fall damage, short-circuit
-            smash(getPlayer().getLocation());
+            this.smash(this.getPlayer().getLocation());
         }
     }
 
     private void launch(boolean upwards) {
-        getPlayer().setExp(0);
+        this.getPlayer().setExp(0);
 
         Vector launch;
         if (upwards) {
-            launch = getPlayer().getEyeLocation().getDirection();
+            launch = this.getPlayer().getEyeLocation().getDirection();
             launch.multiply(DWARF_SMASH_LAUNCH_VELOCITY * 1.25);
         } else {
             launch = new Vector(0, DWARF_SMASH_LAUNCH_VELOCITY, 0);
         }
 
-        getPlayer().setVelocity(launch);
+        this.getPlayer().setVelocity(launch);
 
         // Guesstimate the ticks it will take to reach the apex of the velocity
         // This could be wrong if the player bumps their head, but it's okay
-        long ticksUntilApex = (long) Math.abs((long) getPlayer().getVelocity().getY() / EntityUtil.GRAVITY) + 1;
-        animateExp(new FillExpBarTask(getPlayer(), Duration.ticks(ticksUntilApex)));
+        long ticksUntilApex = (long) Math.abs((long) this.getPlayer().getVelocity().getY() / EntityUtil.GRAVITY) + 1;
+        this.animateExp(new FillExpBarTask(this.getPlayer(), Duration.ticks(ticksUntilApex)));
 
-        attach(new CancelNextFallTask(getPlugin(), getPlayer()));
-        attach(EasyTask.of(task -> {
+        this.attach(new CancelNextFallTask(this.getPlugin(), this.getPlayer()));
+        this.attach(EasyTask.of(task -> {
             // The player has reached the apex of their launch
-            if (getPlayer().getVelocity().getY() - EntityUtil.GRAVITY <= 0) {
-                lastApex = getPlayer().getLocation();
+            if (this.getPlayer().getVelocity().getY() - EntityUtil.GRAVITY <= 0) {
+                this.lastApex = this.getPlayer().getLocation();
                 task.cancel();
             }
-        }).runTaskTimer(getPlugin(), 0, 1));
+        }).runTaskTimer(this.getPlugin(), 0, 1));
 
-        setState(State.FLYING);
+        this.setState(State.FLYING);
     }
 
     private void pull() {
-        setState(State.SPIKING);
-        getPlayer().setVelocity(new Vector(0, -2 * DWARF_SMASH_LAUNCH_VELOCITY, 0));
+        this.setState(State.SPIKING);
+        this.getPlayer().setVelocity(new Vector(0, -2 * DWARF_SMASH_LAUNCH_VELOCITY, 0));
     }
 
     private void smash(Location location) {
-        final State previousState = state;
+        final State previousState = this.state;
 
-        setState(State.COOLDOWN);
-        getPlayer().setExp(0);
+        this.setState(State.COOLDOWN);
+        this.getPlayer().setExp(0);
 
-        animateExp(new FillExpBarTask(getPlayer(), SMASH_COOLDOWN));
-        smashCooldown.expireIn(SMASH_COOLDOWN);
+        this.animateExp(new FillExpBarTask(this.getPlayer(), SMASH_COOLDOWN));
+        this.smashCooldown.expireIn(SMASH_COOLDOWN);
 
-        if (getDamage((lastApex.getBlockY() - location.getBlockY())) == 0) {
+        if (this.getDamage((this.lastApex.getBlockY() - location.getBlockY())) == 0) {
             return;
         }
 
         location.getWorld().playSound(location, Sound.ANVIL_LAND, 0.5f, 0.5f);
 
         BlockUtil.getBlocksInRadius(location.getBlock(), DWARF_SMASH_RANGE, 0).forEach(block -> {
-            attach(EasyTask.of(() -> {
+            this.attach(EasyTask.of(() -> {
                 new ParticlePacket(EnumParticle.EXPLOSION_NORMAL)
                     .at(block.getLocation().add(0.5, 0, 0.5))
                     .send();
-            }).runTaskLater(getPlugin(), (int) block.getLocation().distance(location)));
+            }).runTaskLater(this.getPlugin(), (int) block.getLocation().distance(location)));
         });
 
-        List<Player> damaged = getEnemies().stream()
+        List<Player> damaged = this.getEnemies().stream()
             .filter(enemy -> enemy.getLocation().distance(location) <= DWARF_SMASH_RANGE)
             .toList();
 
-        int nextLevel = Math.min(level + damaged.size(), MAX_LEVEL);
+        int nextLevel = Math.min(this.level + damaged.size(), MAX_LEVEL);
         if (nextLevel == MAX_LEVEL && !damaged.isEmpty()) {
             location.getWorld().playSound(location, Sound.WITHER_DEATH, 1f, 0.5f);
         }
 
         damaged.forEach(enemy -> {
-            double damage = getDamage(Math.abs(lastApex.getBlockY() - location.getBlockY()));
-            double distance = getPlayer().getLocation().distance(enemy.getLocation());
+            double damage = this.getDamage(Math.abs(this.lastApex.getBlockY() - location.getBlockY()));
+            double distance = this.getPlayer().getLocation().distance(enemy.getLocation());
             double range = 1 - MIN_SMASH_FALLOFF_MULTIPLIER;
             double scale = (DWARF_SMASH_RANGE - distance) / DWARF_SMASH_RANGE;
             scale = scale * range + (1 - range);
@@ -213,13 +213,13 @@ public class DwarfKit extends BattleKit {
                 damage *= 1.15;
             }
 
-            enemy.damage(damage, getPlayer());
+            enemy.damage(damage, this.getPlayer());
             enemy.setVelocity(enemy.getVelocity().add(new Vector(0, ENEMY_LIFT_VELOCITY, 0)));
 
-            new SmashEvent(getPlayer(), enemy).call();
+            new SmashEvent(this.getPlayer(), enemy).call();
         });
 
-        setLevel(nextLevel);
+        this.setLevel(nextLevel);
     }
 
     private int getDamage(int fallDistance) {
@@ -237,10 +237,10 @@ public class DwarfKit extends BattleKit {
         this.level = level;
 
         if (level < SWORD_TIERS.size()) {
-            sword.modify(SWORD_TIERS.get(level - 1));
+            this.sword.modify(SWORD_TIERS.get(level - 1));
         }
 
-        downgrade.expireIn(Duration.seconds(10 - (1.5 * (level - 1))));
+        this.downgrade.expireIn(Duration.seconds(10 - (1.5 * (level - 1))));
     }
 
     private void setState(State state) {
@@ -250,11 +250,11 @@ public class DwarfKit extends BattleKit {
 
     @EventHandler
     public void onTakeFallDamage(EntityDamageEvent event) {
-        if (event.getEntity() == getPlayer() &&
+        if (event.getEntity() == this.getPlayer() &&
             event.getCause() == EntityDamageEvent.DamageCause.FALL &&
-            (state == State.FALLING || state == State.SPIKING)
+            (this.state == State.FALLING || this.state == State.SPIKING)
         ) {
-            smash(getPlayer().getLocation());
+            this.smash(this.getPlayer().getLocation());
         }
     }
 
@@ -269,28 +269,28 @@ public class DwarfKit extends BattleKit {
             this.onInteract(ev -> {
                 ev.setCancelled(true);
 
-                switch (state) {
+                switch (DwarfKit.this.state) {
                     case READY -> {
-                        launch(EventUtil.isLeftClick(ev));
-                        setPlaceholder();
+                        DwarfKit.this.launch(EventUtil.isLeftClick(ev));
+                        this.setPlaceholder();
                     }
                     case FALLING -> {
-                        pull();
-                        setPlaceholder();
+                        DwarfKit.this.pull();
+                        this.setPlaceholder();
                     }
                 }
             });
         }
 
         public void setState(State state) {
-            modify(item -> item.name("Dwarf Smash"));
+            this.modify(item -> item.name("Dwarf Smash"));
 
             switch (state) {
-                case READY -> restore();
-                case FLYING -> setPlaceholder();
-                case FALLING -> modify(item -> item.type(Material.ARROW).name("Spike"));
-                case SPIKING -> setPlaceholder();
-                case COOLDOWN -> setPlaceholder();
+                case READY -> this.restore();
+                case FLYING -> this.setPlaceholder();
+                case FALLING -> this.modify(item -> item.type(Material.ARROW).name("Spike"));
+                case SPIKING -> this.setPlaceholder();
+                case COOLDOWN -> this.setPlaceholder();
             }
         }
 

@@ -108,14 +108,14 @@ public class EngineerKit extends BattleKit {
 
         @Override
         protected void onUse(PlayerInteractEvent event) {
-            launchGrenade(event);
+            this.launchGrenade(event);
         }
 
         @Override
         protected void onFailedUse() {
             // Controlled explosion of the previously launched grenade
-            if (lastGrenade != null && !lastGrenade.isDead()) {
-                lastGrenade.setFuseTicks(0);
+            if (this.lastGrenade != null && !this.lastGrenade.isDead()) {
+                this.lastGrenade.setFuseTicks(0);
             }
         }
 
@@ -123,18 +123,18 @@ public class EngineerKit extends BattleKit {
             event.setCancelled(true);
 
             // Launch the grenade
-            Location position = getPlayer().getLocation().clone().add(0, 1, 0);
+            Location position = EngineerKit.this.getPlayer().getLocation().clone().add(0, 1, 0);
             Vector velocity = position.getDirection().normalize().multiply(1.3);
-            TNTPrimed tnt = (TNTPrimed) getPlayer().getWorld().spawnEntity(position, EntityType.PRIMED_TNT);
+            TNTPrimed tnt = (TNTPrimed) EngineerKit.this.getPlayer().getWorld().spawnEntity(position, EntityType.PRIMED_TNT);
             tnt.setFuseTicks(TNT_FUSE_TIME.ticks());
             tnt.setVelocity(velocity);
-            tnt.setMetadata("shooter", new FixedMetadataValue(getPlugin(), getPlayer()));
-            lastGrenade = tnt;
-            attach(tnt);
+            tnt.setMetadata("shooter", new FixedMetadataValue(this.getPlugin(), EngineerKit.this.getPlayer()));
+            this.lastGrenade = tnt;
+            EngineerKit.this.attach(tnt);
 
             // Item decorating
             this.modify(item -> item.type(Material.WOOD_SPADE));
-            EasyTask.of(this::restore).runTaskLater(getPlugin(), LAUNCHER_COOLDOWN.ticks());
+            EasyTask.of(this::restore).runTaskLater(this.getPlugin(), LAUNCHER_COOLDOWN.ticks());
 
             // Queue the TNT for exploding
             new GrenadeExplosionTask(tnt, () -> {
@@ -144,19 +144,19 @@ public class EngineerKit extends BattleKit {
             });
 
             // Visual effect
-            EffectUtil.colorTrail(tnt, getTeam().getColor().getColor()).runTaskTimer(getPlugin(), 0, 1);
+            EffectUtil.colorTrail(tnt, EngineerKit.this.getTeam().getColor().getColor()).runTaskTimer(this.getPlugin(), 0, 1);
         }
 
         @EventHandler(ignoreCancelled = true)
         public void onDamagedByGrenade(EntityDamageByEntityEvent event) {
-            if (event.getDamager() != lastGrenade) {
+            if (event.getDamager() != this.lastGrenade) {
                 return;
             }
 
             // The shooter of the grenade might have been changed by an Elf reflection
-            Player shooter = (Player) lastGrenade.getMetadata("shooter").get(0).value();
+            Player shooter = (Player) this.lastGrenade.getMetadata("shooter").get(0).value();
 
-            if (!(event.getEntity() instanceof Player hit) || getGame().getTeamManager().isSameTeam(shooter, hit)) {
+            if (!(event.getEntity() instanceof Player hit) || EngineerKit.this.getGame().getTeamManager().isSameTeam(shooter, hit)) {
                 event.setCancelled(true);
                 return;
             }
@@ -166,12 +166,12 @@ public class EngineerKit extends BattleKit {
                 return;
             }
 
-            EventUtil.setDamage(event, calculateGrenadeDamage(event.getDamager().getLocation(), hit));
+            EventUtil.setDamage(event, this.calculateGrenadeDamage(event.getDamager().getLocation(), hit));
         }
 
         @EventHandler
         public void onGrenadeExplode(EntityExplodeEvent event) {
-            if (event.getEntity() != lastGrenade) {
+            if (event.getEntity() != this.lastGrenade) {
                 return;
             }
 
@@ -180,9 +180,9 @@ public class EngineerKit extends BattleKit {
             event.setYield(0f);
 
             // Remove nearby medic webs
-            getBattle().getStructureManager().getStructures().stream()
+            EngineerKit.this.getBattle().getStructureManager().getStructures().stream()
                 .filter(structure -> structure instanceof MedicKit.MedicWeb)
-                .filter(structure -> isEnemy(structure.getOwner()))
+                .filter(structure -> EngineerKit.this.isEnemy(structure.getOwner()))
                 .filter(structure -> structure.distance(event.getEntity().getLocation()) <= EXPLOSION_RADIUS)
                 .forEach(Structure::remove);
         }
@@ -203,14 +203,14 @@ public class EngineerKit extends BattleKit {
 
         @Override
         public void run() {
-            if (tnt.isDead()) {
-                cancel();
+            if (this.tnt.isDead()) {
+                this.cancel();
                 return;
             }
 
-            if (tnt.isOnGround() || tnt.getLocation().getBlock().getType() == Material.WEB) {
-                afterLanding.run();
-                cancel();
+            if (this.tnt.isOnGround() || this.tnt.getLocation().getBlock().getType() == Material.WEB) {
+                this.afterLanding.run();
+                this.cancel();
             }
         }
 
@@ -231,21 +231,21 @@ public class EngineerKit extends BattleKit {
         @Override
         protected void onUse(PlayerInteractEvent event) {
             event.setCancelled(true);
-            setPlaceholder();
-            Snowball snowball = getPlayer().launchProjectile(Snowball.class);
+            this.setPlaceholder();
+            Snowball snowball = EngineerKit.this.getPlayer().launchProjectile(Snowball.class);
 
-            attach(new InteractiveProjectile(EngineerKit.this.getPlugin(), snowball)
+            EngineerKit.this.attach(new InteractiveProjectile(EngineerKit.this.getPlugin(), snowball)
                 .singleEventOnly()
                 .onHitEvent(projectileHitEvent -> {
                     Block block = projectileHitEvent.getEntity().getLocation().getBlock().getRelative(BlockFace.DOWN);
                     SpeedBeacon speedBeacon = new SpeedBeacon(this);
-                    if (!placeStructure(speedBeacon, block)) {
-                        restore();
+                    if (!EngineerKit.this.placeStructure(speedBeacon, block)) {
+                        this.restore();
                     }
                 })
                 .onDamageEvent(damageEvent -> {
                     damageEvent.setCancelled(true);
-                    restore();
+                    this.restore();
                 })
                 .onDeath(this::restore));
         }
@@ -266,9 +266,9 @@ public class EngineerKit extends BattleKit {
         private Item glassPane;
 
         public SpeedBeacon(KitItem item) {
-            super(getBattle().getStructureManager(), getPlayer());
+            super(EngineerKit.this.getBattle().getStructureManager(), EngineerKit.this.getPlayer());
             this.item = item;
-            removeAfter(DEPLOY_TIME);
+            this.removeAfter(DEPLOY_TIME);
         }
 
         @Override
@@ -281,34 +281,34 @@ public class EngineerKit extends BattleKit {
 
             Location itemLocation = center.getLocation().add(0.5, 4, 0.5);
 
-            glassPane = getOwner().getWorld().dropItem(itemLocation,
+            this.glassPane = this.getOwner().getWorld().dropItem(itemLocation,
                 ItemBuilder.of(Material.SUGAR)
                     .tag("prevent_merge", UUID.randomUUID().toString())
                     .build()
             );
-            glassPane.setPickupDelay(99999);
+            this.glassPane.setPickupDelay(99999);
 
-            armorStand = center.getWorld().spawn(itemLocation, ArmorStand.class);
-            armorStand.setGravity(false);
-            armorStand.setVisible(false);
-            armorStand.setMarker(true);
-            armorStand.setPassenger(glassPane);
+            this.armorStand = center.getWorld().spawn(itemLocation, ArmorStand.class);
+            this.armorStand.setGravity(false);
+            this.armorStand.setVisible(false);
+            this.armorStand.setMarker(true);
+            this.armorStand.setPassenger(this.glassPane);
 
-            attach(armorStand);
-            attach(glassPane);
+            this.attach(this.armorStand);
+            this.attach(this.glassPane);
         }
 
         @EventHandler
         public void onTick(TickEvent event) {
-            giveSpeedEffect();
+            this.giveSpeedEffect();
 
             if (event.isInterval(ANIMATION_INTERVAL)) {
-                animateParticleRing();
+                this.animateParticleRing();
             }
         }
 
         private void giveSpeedEffect() {
-            getTeammates().stream()
+            EngineerKit.this.getTeammates().stream()
                 .filter(this::isCloseEnough)
                 .forEach(teammate -> {
                     teammate.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, SPEED_TIME.ticks(), SPEED_TIER - 1));
@@ -327,16 +327,16 @@ public class EngineerKit extends BattleKit {
 
         private boolean isCloseEnough(Player player) {
             return player.getLocation().toVector().distance(
-                getCenter().getLocation().toVector().setY(player.getLocation().getY())
-            ) <= AURA_RADIUS && Math.abs(player.getLocation().getY() - getCenter().getLocation().getY() - 1) <= AURA_HEIGHT;
+                this.getCenter().getLocation().toVector().setY(player.getLocation().getY())
+            ) <= AURA_RADIUS && Math.abs(player.getLocation().getY() - this.getCenter().getLocation().getY() - 1) <= AURA_HEIGHT;
         }
 
         private void animateParticleRing() {
-            List<Location> locations = EffectUtil.getParticleRing(getCenter().getLocation(), 20, AURA_RADIUS);
+            List<Location> locations = EffectUtil.getParticleRing(this.getCenter().getLocation(), 20, AURA_RADIUS);
             for (int i = 0; i < locations.size(); i++) {
                 // Alternate white and team colored particles
                 if (i % 2 == 0) {
-                    ParticlePacket.colored(getTeam().getColor().getColor()).at(locations.get(i)).showFar().send();
+                    ParticlePacket.colored(EngineerKit.this.getTeam().getColor().getColor()).at(locations.get(i)).showFar().send();
                 } else {
                     ParticlePacket.of(EnumParticle.FIREWORKS_SPARK).at(locations.get(i)).showFar().send();
                 }
@@ -345,35 +345,35 @@ public class EngineerKit extends BattleKit {
 
         @EventHandler
         public void onItemPickup(PlayerPickupItemEvent event) {
-            if (event.getItem().equals(glassPane)) {
+            if (event.getItem().equals(this.glassPane)) {
                 event.setCancelled(true);
             }
         }
 
         @EventHandler
         public void onItemMerge(ItemMergeEvent event) {
-            if (event.getEntity() == glassPane) {
+            if (event.getEntity() == this.glassPane) {
                 event.setCancelled(true);
             }
         }
 
         @EventHandler
         public void onEntityDamageByEntity(EntityDamageEvent event) {
-            if (event.getEntity() == armorStand || event.getEntity() == glassPane) {
+            if (event.getEntity() == this.armorStand || event.getEntity() == this.glassPane) {
                 event.setCancelled(true);
             }
         }
 
         @EventHandler
         public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-            if (event.getEntity() == armorStand || event.getEntity() == glassPane) {
+            if (event.getEntity() == this.armorStand || event.getEntity() == this.glassPane) {
                 event.setCancelled(true);
             }
         }
 
         @EventHandler
         public void onInteractAtEntity(PlayerInteractAtEntityEvent event) {
-            if (event.getRightClicked() == armorStand) {
+            if (event.getRightClicked() == this.armorStand) {
                 event.setCancelled(true);
             }
         }
@@ -381,7 +381,7 @@ public class EngineerKit extends BattleKit {
         @Override
         public void shutdown() {
             super.shutdown();
-            item.restore();
+            this.item.restore();
         }
 
         @Override
@@ -409,15 +409,15 @@ public class EngineerKit extends BattleKit {
         @Override
         protected void onUse(PlayerInteractEvent event) {
             event.setCancelled(true);
-            setPlaceholder();
+            this.setPlaceholder();
 
-            doHealPulse();
-            animateRing();
+            this.doHealPulse();
+            this.animateRing();
         }
 
         protected void doHealPulse() {
-            getTeammates().stream()
-                .filter(teammate -> teammate.getLocation().distance(getPlayer().getLocation()) <= HEAL_RADIUS)
+            EngineerKit.this.getTeammates().stream()
+                .filter(teammate -> teammate.getLocation().distance(EngineerKit.this.getPlayer().getLocation()) <= HEAL_RADIUS)
                 .filter(teammate -> {
                     if (HEAL_COOLDOWNS.containsKey(teammate) && !HEAL_COOLDOWNS.get(teammate).isExpired()) {
                         String duration = HEAL_COOLDOWNS.get(teammate).getRemaining().formatText();
@@ -435,7 +435,7 @@ public class EngineerKit extends BattleKit {
 
                     HEAL_COOLDOWNS.put(teammate, Expiration.after(HEALING_COOLDOWN));
 
-                    getBattle().getKitManager().get(teammate).restoreFoodItem();
+                    EngineerKit.this.getBattle().getKitManager().get(teammate).restoreFoodItem();
                 });
         }
 
@@ -445,11 +445,11 @@ public class EngineerKit extends BattleKit {
 
             while (radius < HEAL_RADIUS) {
                 final double r = radius;
-                attach(EasyTask.of(() -> {
-                    EffectUtil.getParticleRing(getPlayer().getLocation(), (int) (points * r), r).forEach(location -> {
+                EngineerKit.this.attach(EasyTask.of(() -> {
+                    EffectUtil.getParticleRing(EngineerKit.this.getPlayer().getLocation(), (int) (points * r), r).forEach(location -> {
                         ParticlePacket.of(EnumParticle.HEART).at(location).send();
                     });
-                }).runTaskLater(getPlugin(), (long) r));
+                }).runTaskLater(this.getPlugin(), (long) r));
                 radius += 0.75;
             }
         }

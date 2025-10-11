@@ -24,7 +24,7 @@ public class BattlePlugin extends JavaPlugin {
         this.battle = new Battle(this);
         this.battle.load();
 
-        registerCommands();
+        this.registerCommands();
     }
 
     @Override
@@ -44,13 +44,13 @@ public class BattlePlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        new FlagCommands(battle).register();
-        new KitCommand(battle.getKitManager()).register();
-        new KitManagerCommands(battle.getKitManager()).register();
-        new MapCommands(battle).register();
-        new StartCommand(battle).register();
-        new SwitchCommand(battle).register();
-        new TimerCommand(battle).register();
+        new FlagCommands(this.battle).register();
+        new KitCommand(this.battle.getKitManager()).register();
+        new KitManagerCommands(this.battle.getKitManager()).register();
+        new MapCommands(this.battle).register();
+        new StartCommand(this.battle).register();
+        new SwitchCommand(this.battle).register();
+        new TimerCommand(this.battle).register();
         new YellCommand().register();
 
         QuickCommands.registerAll(this.battle);

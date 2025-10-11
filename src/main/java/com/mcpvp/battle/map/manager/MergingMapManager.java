@@ -24,16 +24,16 @@ public class MergingMapManager implements BattleMapManager {
 
     @Override
     public List<BattleMapData> getEnabled() {
-        return repos.stream().flatMap(repo -> repo.getFunctional().stream()).filter(m ->
-            mapOptions.getCategories().getOrDefault(m.getCategory(), true)
+        return this.repos.stream().flatMap(repo -> repo.getFunctional().stream()).filter(m ->
+            this.mapOptions.getCategories().getOrDefault(m.getCategory(), true)
         ).filter(m ->
-            !mapOptions.getDisable().contains(m.getId())
+            !this.mapOptions.getDisable().contains(m.getId())
         ).toList();
     }
 
     @Override
     public boolean isMap(int id) {
-        return repos.stream().anyMatch(repo -> 
+        return this.repos.stream().anyMatch(repo ->
             repo.getFunctional().stream().anyMatch(d -> d.getId() == id)
         );
     }
@@ -41,7 +41,7 @@ public class MergingMapManager implements BattleMapManager {
     @Override
     public List<Integer> pickMaps(int games) {
         List<BattleMapData> eligible = new ArrayList<>();
-        repos.forEach(repo -> eligible.addAll(getEnabled()));
+        this.repos.forEach(repo -> eligible.addAll(this.getEnabled()));
         Collections.shuffle(eligible);
 
         List<Integer> maps = new ArrayList<>();
@@ -55,7 +55,7 @@ public class MergingMapManager implements BattleMapManager {
 
     @Override
     public BattleMapData loadMap(int id) {
-        return repos.stream()
+        return this.repos.stream()
             .flatMap(repo -> repo.getFunctional().stream())
             .filter(m -> m.getId() == id)
             .findFirst()
@@ -64,12 +64,12 @@ public class MergingMapManager implements BattleMapManager {
 
     @Override
     public List<BattleMapData> loadMaps(int games) {
-        return pickMaps(games).stream().map(this::loadMap).toList();
+        return this.pickMaps(games).stream().map(this::loadMap).toList();
     }
 
     @Override
     public File getWorldData(BattleMapData map) {
-        return repos.stream()
+        return this.repos.stream()
             .filter(repo -> repo.getAll().contains(map))
             .findFirst()
             .map(repo -> repo.getWorldData(map))
@@ -78,7 +78,7 @@ public class MergingMapManager implements BattleMapManager {
 
     @Override
     public void setOverride(List<Integer> ids) {
-        File file = new File(plugin.getDataFolder(), "override_maps.json");
+        File file = new File(this.plugin.getDataFolder(), "override_maps.json");
         try {
             FileUtils.write(file, new ObjectMapper().writeValueAsString(ids));
         } catch (IOException e) {
@@ -88,14 +88,14 @@ public class MergingMapManager implements BattleMapManager {
 
     @Override
     public void clearOverride() {
-        if (!new File(plugin.getDataFolder(), "override_maps.json").delete()) {
+        if (!new File(this.plugin.getDataFolder(), "override_maps.json").delete()) {
             throw new RuntimeException("Failed to remove the override_maps.json");
         }
     }
 
     @Override
     public List<BattleMapData> getOverride() {
-        File file = new File(plugin.getDataFolder(), "override_maps.json");
+        File file = new File(this.plugin.getDataFolder(), "override_maps.json");
         if (!file.exists()) {
             return Collections.emptyList();
         }

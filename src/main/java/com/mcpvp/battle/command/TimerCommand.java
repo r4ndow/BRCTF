@@ -13,10 +13,10 @@ public class TimerCommand extends BattleCommandGroup {
         super("timer");
         this.battle = battle;
 
-        addCommand(new SetCommand());
-        addCommand(new LockCommand());
-        addCommand(new UnlockCommand());
-        addCommand(new SkipCommand());
+        this.addCommand(new SetCommand());
+        this.addCommand(new LockCommand());
+        this.addCommand(new UnlockCommand());
+        this.addCommand(new SkipCommand());
     }
 
     public class SetCommand extends BattleCommand {
@@ -33,7 +33,7 @@ public class TimerCommand extends BattleCommandGroup {
 
             try {
                 int set = Integer.parseInt(args.get(0));
-                battle.getMatch().getTimer().setSeconds(set);
+                TimerCommand.this.battle.getMatch().getTimer().setSeconds(set);
                 return true;
             } catch (Exception e) {
                 return false;
@@ -50,7 +50,7 @@ public class TimerCommand extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            battle.getMatch().getTimer().setPaused(true);
+            TimerCommand.this.battle.getMatch().getTimer().setPaused(true);
             return true;
         }
 
@@ -64,7 +64,7 @@ public class TimerCommand extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            battle.getMatch().getTimer().setPaused(false);
+            TimerCommand.this.battle.getMatch().getTimer().setPaused(false);
             return true;
         }
 
@@ -79,7 +79,7 @@ public class TimerCommand extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            battle.getMatch().advanceStateOrGame();
+            TimerCommand.this.battle.getMatch().advanceStateOrGame();
             return true;
         }
 

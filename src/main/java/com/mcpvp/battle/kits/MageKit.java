@@ -93,7 +93,7 @@ public class MageKit extends BattleKit {
 
     @EventHandler
     public void onEnderPearl(PlayerTeleportEvent event) {
-        if (event.getPlayer() == getPlayer() && event.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
+        if (event.getPlayer() == this.getPlayer() && event.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
             event.setCancelled(true);
         }
     }
@@ -117,26 +117,26 @@ public class MageKit extends BattleKit {
         public void onUse(PlayerInteractEvent event) {
             Location spawned = event.getPlayer().getLocation().add(0, 1, 0);
             Arrow arrow = event.getPlayer().launchProjectile(Arrow.class);
-            arrow.setShooter(getPlayer());
-            attach(arrow);
+            arrow.setShooter(MageKit.this.getPlayer());
+            MageKit.this.attach(arrow);
             Vector v = arrow.getVelocity().clone().add(arrow.getVelocity().clone());
 
-            attach(EasyTask.of(task -> {
+            MageKit.this.attach(EasyTask.of(task -> {
                 if (arrow.isDead() || arrow.getLocation().distanceSquared(spawned) >= DAMAGE_ARROW_DIST_SQUARED) {
                     arrow.remove();
                     task.cancel();
                 } else {
                     arrow.setVelocity(v);
                 }
-            }).runTaskTimer(getPlugin(), 0, 1));
+            }).runTaskTimer(this.getPlugin(), 0, 1));
 
-            attach(new InteractiveProjectile(getPlugin(), arrow)
+            MageKit.this.attach(new InteractiveProjectile(this.getPlugin(), arrow)
                 .singleEventOnly()
                 .onDeath(() -> {
                     FireworkEffect effect = FireworkEffect.builder()
                         .with(FireworkEffect.Type.BALL)
                         .withColor(
-                            getGame().getTeamManager().getTeam(getPlayer()).getColor().getColor(), Color.PURPLE
+                            MageKit.this.getGame().getTeamManager().getTeam(MageKit.this.getPlayer()).getColor().getColor(), Color.PURPLE
                         )
                         .build();
 
@@ -148,7 +148,7 @@ public class MageKit extends BattleKit {
                         return;
                     }
 
-                    if (isTeammate(hit)) {
+                    if (MageKit.this.isTeammate(hit)) {
                         return;
                     }
 
@@ -158,14 +158,14 @@ public class MageKit extends BattleKit {
                 })
                 .onHitPlayer(player -> {
                     // The arrow hitting the player actually deals the damage.
-                    if (isTeammate(player)) {
+                    if (MageKit.this.isTeammate(player)) {
                         return;
                     }
 
                     FireworkEffect effect = FireworkEffect.builder()
                         .with(FireworkEffect.Type.BALL)
                         .withColor(
-                            getGame().getTeamManager().getTeam(getPlayer()).getColor().getColor(), Color.PURPLE
+                            MageKit.this.getGame().getTeamManager().getTeam(MageKit.this.getPlayer()).getColor().getColor(), Color.PURPLE
                         ).build();
 
                     EffectUtil.sendInstantFirework(effect, arrow.getLocation());
@@ -193,17 +193,17 @@ public class MageKit extends BattleKit {
         @Override
         public void onUse(PlayerInteractEvent event) {
             EnderPearl pearl = event.getPlayer().launchProjectile(EnderPearl.class);
-            pearl.setShooter(getPlayer());
+            pearl.setShooter(MageKit.this.getPlayer());
             pearl.setFireTicks(Duration.seconds(60).toTicks());
-            attach(pearl);
+            MageKit.this.attach(pearl);
 
             event.getPlayer().getWorld().playEffect(event.getPlayer().getEyeLocation(), Effect.BLAZE_SHOOT, 0);
 
-            attach(new InteractiveProjectile(getPlugin(), pearl)
+            MageKit.this.attach(new InteractiveProjectile(this.getPlugin(), pearl)
                 .singleEventOnly()
                 .onDeath(pearl::remove)
                 .onHitPlayer(player -> {
-                    if (isTeammate(player)) {
+                    if (MageKit.this.isTeammate(player)) {
                         return;
                     }
 
@@ -234,20 +234,20 @@ public class MageKit extends BattleKit {
         @Override
         public void onUse(PlayerInteractEvent event) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                strike(event.getClickedBlock().getLocation());
+                this.strike(event.getClickedBlock().getLocation());
             } else {
                 Egg egg = event.getPlayer().launchProjectile(Egg.class);
-                egg.setShooter(getPlayer());
+                egg.setShooter(MageKit.this.getPlayer());
                 egg.setVelocity(egg.getVelocity().multiply(3));
-                attach(egg);
+                MageKit.this.attach(egg);
 
                 // Remove the projectile after 3 ticks
                 // This will trigger the `onMiss` hook of the ProjectileManager
-                attach(EasyTask.of(egg::remove).runTaskLater(getPlugin(), 3));
+                MageKit.this.attach(EasyTask.of(egg::remove).runTaskLater(this.getPlugin(), 3));
 
-                attach(new InteractiveProjectile(getPlugin(), egg)
-                    .onDeath(() -> strike(egg.getLocation()))
-                    .onHitPlayer(player -> strike(player.getLocation()))
+                MageKit.this.attach(new InteractiveProjectile(this.getPlugin(), egg)
+                    .onDeath(() -> this.strike(egg.getLocation()))
+                    .onHitPlayer(player -> this.strike(player.getLocation()))
                 );
             }
         }
@@ -260,19 +260,19 @@ public class MageKit extends BattleKit {
                 block = block.getRelative(BlockFace.DOWN);
             }
 
-            LightningStrike lightning = getPlayer().getWorld().strikeLightningEffect(block.getLocation());
+            LightningStrike lightning = MageKit.this.getPlayer().getWorld().strikeLightningEffect(block.getLocation());
 
-            for (Player enemy : getEnemies()) {
+            for (Player enemy : MageKit.this.getEnemies()) {
                 if (enemy.getLocation().distanceSquared(block.getLocation().add(0.5, 0.5, 0.5)) > Math.pow(LIGHTNING_DIST, 2)) {
                     continue;
                 }
 
-                if (getGame().getTeamManager().getTeam(enemy).isInSpawn(enemy)) {
+                if (MageKit.this.getGame().getTeamManager().getTeam(enemy).isInSpawn(enemy)) {
                     return;
                 }
 
                 enemy.damage(LIGHTNING_DAMAGE);
-                getGame().getWorld().playSound(getPlayer().getEyeLocation(), Sound.SHOOT_ARROW, 1f, 0.5f);
+                MageKit.this.getGame().getWorld().playSound(MageKit.this.getPlayer().getEyeLocation(), Sound.SHOOT_ARROW, 1f, 0.5f);
 
                 Location loc = lightning.getLocation().add(0.5, 0, 0.5);
                 loc.setY(enemy.getLocation().getY() - 0.2);
@@ -302,24 +302,24 @@ public class MageKit extends BattleKit {
         @Override
         public void onUse(PlayerInteractEvent event) {
             Snowball snowball = event.getPlayer().launchProjectile(Snowball.class);
-            snowball.setShooter(getPlayer());
-            attach(snowball);
+            snowball.setShooter(MageKit.this.getPlayer());
+            MageKit.this.attach(snowball);
 
-            getGame().getWorld().playSound(getPlayer().getEyeLocation(), Sound.SHOOT_ARROW, 1f, 0.5f);
+            MageKit.this.getGame().getWorld().playSound(MageKit.this.getPlayer().getEyeLocation(), Sound.SHOOT_ARROW, 1f, 0.5f);
 
-            attach(new InteractiveProjectile(getPlugin(), snowball)
+            MageKit.this.attach(new InteractiveProjectile(this.getPlugin(), snowball)
                 .onHitPlayer(player -> {
-                    if (isTeammate(player)) {
+                    if (MageKit.this.isTeammate(player)) {
                         return;
                     }
 
-                    if (getGame().getTeamManager().getTeam(player).isInSpawn(player)) {
+                    if (MageKit.this.getGame().getTeamManager().getTeam(player).isInSpawn(player)) {
                         return;
                     }
 
-                    centerPlayer(player);
+                    this.centerPlayer(player);
                     IceBoxStructure iceBox = new IceBoxStructure(player);
-                    placeStructure(iceBox, player.getLocation().getBlock());
+                    MageKit.this.placeStructure(iceBox, player.getLocation().getBlock());
                 })
             );
         }
@@ -339,9 +339,9 @@ public class MageKit extends BattleKit {
         private final LivingEntity target;
 
         public IceBoxStructure(LivingEntity target) {
-            super(getBattle().getStructureManager(), getPlayer());
+            super(MageKit.this.getBattle().getStructureManager(), MageKit.this.getPlayer());
             this.target = target;
-            removeAfter(FREEZE_DURATION);
+            this.removeAfter(FREEZE_DURATION);
         }
 
         @Override
@@ -351,7 +351,7 @@ public class MageKit extends BattleKit {
             );
 
             // Expand the bounding box around the target by one block.
-            AxisAlignedBB bb = ((CraftLivingEntity) target).getHandle().getBoundingBox().grow(1, 1, 1);
+            AxisAlignedBB bb = ((CraftLivingEntity) this.target).getHandle().getBoundingBox().grow(1, 1, 1);
             // Form the cube that will surround the target.
             Location corner1 = new Location(center.getWorld(), bb.a, bb.b, bb.c);
             Location corner2 = new Location(center.getWorld(), bb.d, bb.e, bb.f);
@@ -394,8 +394,8 @@ public class MageKit extends BattleKit {
 
             if (EventUtil.isRightClick(event)) {
                 ThrownPotion potion = event.getPlayer().launchProjectile(ThrownPotion.class);
-                attach(potion);
-                potion.setMetadata("mage", new FixedMetadataValue(getPlugin(), true));
+                MageKit.this.attach(potion);
+                potion.setMetadata("mage", new FixedMetadataValue(this.getPlugin(), true));
                 potion.setShooter(event.getPlayer());
                 ItemStack item = potion.getItem();
                 PotionMeta meta = (PotionMeta) item.getItemMeta();
@@ -405,8 +405,8 @@ public class MageKit extends BattleKit {
                 item.setItemMeta(meta);
                 potion.setItem(item);
             } else {
-                getPlayer().getWorld().playEffect(getPlayer().getLocation(), Effect.POTION_BREAK, PotionEffectType.REGENERATION.getId());
-                EntityUtil.getNearbyEntities(getPlayer().getLocation(), Player.class, 2, 1, 2).stream()
+                MageKit.this.getPlayer().getWorld().playEffect(MageKit.this.getPlayer().getLocation(), Effect.POTION_BREAK, PotionEffectType.REGENERATION.getId());
+                EntityUtil.getNearbyEntities(MageKit.this.getPlayer().getLocation(), Player.class, 2, 1, 2).stream()
                     .filter(MageKit.this::isTeammate)
                     .forEach(teammate -> teammate.addPotionEffect(effect));
             }

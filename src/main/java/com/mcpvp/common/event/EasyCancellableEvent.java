@@ -24,12 +24,12 @@ public class EasyCancellableEvent extends Event implements Cancellable {
 
     public boolean callIsCancelled() {
         Bukkit.getPluginManager().callEvent(this);
-        return isCancelled();
+        return this.isCancelled();
     }
 
     @Override
     public boolean isCancelled() {
-        return cancelled;
+        return this.cancelled;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class EasyCancellableEvent extends Event implements Cancellable {
     }
 
     public void cancel() {
-        setCancelled(true);
+        this.setCancelled(true);
     }
 
 }

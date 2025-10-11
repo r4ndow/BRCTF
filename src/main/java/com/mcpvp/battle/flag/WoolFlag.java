@@ -28,7 +28,7 @@ public class WoolFlag extends AbstractFlag {
     public WoolFlag(BattleTeam team, Location spawn) {
         super(team);
         this.spawn = spawn;
-        this.home = BattleUtil.spawnWool(getHome(), getItem());
+        this.home = BattleUtil.spawnWool(this.getHome(), this.getItem());
     }
 
     @Override
@@ -38,8 +38,8 @@ public class WoolFlag extends AbstractFlag {
             this.dropped = item;
         } else {
             // Triggered by something else, like a player logging out or dying
-            Player carrier = Objects.requireNonNull(getCarrier());
-            this.dropped = carrier.getWorld().dropItem(carrier.getLocation().add(0, 1.5, 0), getItem());
+            Player carrier = Objects.requireNonNull(this.getCarrier());
+            this.dropped = carrier.getWorld().dropItem(carrier.getLocation().add(0, 1.5, 0), this.getItem());
             this.dropped.setVelocity(carrier.getEyeLocation().getDirection().normalize().multiply(0.35));
         }
 
@@ -48,56 +48,56 @@ public class WoolFlag extends AbstractFlag {
 
     @Override
     public boolean isHome() {
-        return getCarrier() == null && dropped == null;
+        return this.getCarrier() == null && this.dropped == null;
     }
 
     @Override
     public boolean isDropped() {
-        return dropped != null;
+        return this.dropped != null;
     }
 
     @Override
     public void removeEntity() {
-        if (dropped != null) {
-            dropped.remove();
-            dropped = null;
+        if (this.dropped != null) {
+            this.dropped.remove();
+            this.dropped = null;
         }
     }
 
     @Override
     public void placeFlag() {
-        home.setItemStack(getItem());
+        this.home.setItemStack(this.getItem());
     }
 
     @Override
     public void placeGhost() {
-        home.setItemStack(ItemBuilder.of(getItem().clone()).color(DyeColor.WHITE).build());
+        this.home.setItemStack(ItemBuilder.of(this.getItem().clone()).color(DyeColor.WHITE).build());
     }
 
     @Override
     public Location getLocation() {
-        if (getCarrier() != null) {
-            return getCarrier().getLocation();
-        } else if (dropped != null) {
-            return dropped.getLocation().clone().add(0, 1.8, 0);
+        if (this.getCarrier() != null) {
+            return this.getCarrier().getLocation();
+        } else if (this.dropped != null) {
+            return this.dropped.getLocation().clone().add(0, 1.8, 0);
         }
-        return getHome();
+        return this.getHome();
     }
 
     @Override
     public Location getHome() {
-        return spawn;
+        return this.spawn;
     }
 
     @Override
     public void update() {
-        if (isHome()) {
-            placeFlag();
-        } else if (dropped != null) {
-            dropped.setItemStack(getItem());
-        } else if (getCarrier() != null) {
-            getCarrier().getInventory().all(Material.WOOL).forEach((s, i) -> getCarrier().getInventory().setItem(s, getItem()));
-            getCarrier().updateInventory();
+        if (this.isHome()) {
+            this.placeFlag();
+        } else if (this.dropped != null) {
+            this.dropped.setItemStack(this.getItem());
+        } else if (this.getCarrier() != null) {
+            this.getCarrier().getInventory().all(Material.WOOL).forEach((s, i) -> this.getCarrier().getInventory().setItem(s, this.getItem()));
+            this.getCarrier().updateInventory();
         }
     }
 
@@ -108,9 +108,9 @@ public class WoolFlag extends AbstractFlag {
 
     @Override
     protected ItemStack getItem() {
-        return ItemBuilder.of(BattleUtil.getColoredWool(getTeam().getColor().getDye()))
-            .name(getTeam().getName() + " Flag")
-            .tag("flag", String.valueOf(getTeam().getId()))
+        return ItemBuilder.of(BattleUtil.getColoredWool(this.getTeam().getColor().getDye()))
+            .name(this.getTeam().getName() + " Flag")
+            .tag("flag", String.valueOf(this.getTeam().getId()))
             .build();
     }
 
@@ -119,15 +119,15 @@ public class WoolFlag extends AbstractFlag {
         super.onTick(tick);
 
         // Remove any visuals that exist if there is no carrier.
-        if (getCarrier() == null || !getCarrier().isOnline() || getCarrier().isDead()) {
-            visuals.removeIf(i -> {
+        if (this.getCarrier() == null || !this.getCarrier().isOnline() || this.getCarrier().isDead()) {
+            this.visuals.removeIf(i -> {
                 i.remove();
                 return true;
             });
             return;
         }
 
-        if (getCarrier() == null) {
+        if (this.getCarrier() == null) {
             return;
         }
 
@@ -136,13 +136,13 @@ public class WoolFlag extends AbstractFlag {
         }
 
         // Spawn a visual indicator that the player is holding the flag.
-        Location l = getCarrier().getEyeLocation().add(0, 0.5, 0);
-        Item i = getCarrier().getWorld().dropItem(l, BattleUtil.getColoredWool(getTeam().getColor().getDye()));
+        Location l = this.getCarrier().getEyeLocation().add(0, 0.5, 0);
+        Item i = this.getCarrier().getWorld().dropItem(l, BattleUtil.getColoredWool(this.getTeam().getColor().getDye()));
         i.setVelocity(i.getVelocity().multiply(new Vector(0.3, 2, 0.3)));
-        visuals.add(i);
+        this.visuals.add(i);
 
         // Remove any older visual items so they don't hang around forever.
-        visuals.removeIf(it -> {
+        this.visuals.removeIf(it -> {
             if (it.getTicksLived() > 12) {
                 it.remove();
                 return true;

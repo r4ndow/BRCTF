@@ -54,16 +54,16 @@ public class InteractiveProjectile implements EasyListener {
 
     @EventHandler
     private void onEntityDamageByProjectile(EntityDamageByEntityEvent event) {
-        if (event.getDamager() == projectile) {
-            if (event.getEntity() instanceof Player hit && hitPlayerConsumer != null) {
-                hitPlayerConsumer.accept(hit);
-                if (singleEventOnly) {
-                    unregister();
+        if (event.getDamager() == this.projectile) {
+            if (event.getEntity() instanceof Player hit && this.hitPlayerConsumer != null) {
+                this.hitPlayerConsumer.accept(hit);
+                if (this.singleEventOnly) {
+                    this.unregister();
                 }
-            } else if (damageEventConsumer != null) {
-                damageEventConsumer.accept(event);
-                if (singleEventOnly) {
-                    unregister();
+            } else if (this.damageEventConsumer != null) {
+                this.damageEventConsumer.accept(event);
+                if (this.singleEventOnly) {
+                    this.unregister();
                 }
             }
         }
@@ -71,30 +71,30 @@ public class InteractiveProjectile implements EasyListener {
 
     @EventHandler
     private void onProjectileHitEvent(ProjectileHitEvent event) {
-        if (event.getEntity() == projectile && hitEventConsumer != null) {
-            hitEventConsumer.accept(event);
+        if (event.getEntity() == this.projectile && this.hitEventConsumer != null) {
+            this.hitEventConsumer.accept(event);
 
-            if (singleEventOnly) {
-                unregister();
+            if (this.singleEventOnly) {
+                this.unregister();
             }
         }
     }
 
     @EventHandler
     private void onDeath(EntityDeathEvent event) {
-        if (event.getEntity() == projectile) {
-            deathRunnable.run();
-            unregister();
+        if (event.getEntity() == this.projectile) {
+            this.deathRunnable.run();
+            this.unregister();
         }
     }
 
     @EventHandler
     private void onTick(TickEvent event) {
-        if (projectile.isDead() || !projectile.isValid()) {
-            if (deathRunnable != null) {
-                deathRunnable.run();
+        if (this.projectile.isDead() || !this.projectile.isValid()) {
+            if (this.deathRunnable != null) {
+                this.deathRunnable.run();
             }
-            unregister();
+            this.unregister();
         }
     }
 

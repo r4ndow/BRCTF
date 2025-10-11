@@ -70,15 +70,15 @@ public class BattleOptionsInput {
         private final Map<BattleMapCategory, Boolean> categories = new LinkedHashMap<>() {
             {
                 for (int i = 0; i <= BattleMapCategory.WAVE20.ordinal(); i++) {
-                    put(BattleMapCategory.values()[i], true);
+                    this.put(BattleMapCategory.values()[i], true);
                 }
                 for (int i = BattleMapCategory.WAVE20.ordinal() + 1; i < BattleMapCategory.values().length; i++) {
-                    put(BattleMapCategory.values()[i], false);
+                    this.put(BattleMapCategory.values()[i], false);
                 }
-                put(BattleMapCategory.DEFAULT, false);
-                put(BattleMapCategory.ORIGINAL, true);
-                put(BattleMapCategory.VAULT, true);
-                put(BattleMapCategory.VARIATION, true);
+                this.put(BattleMapCategory.DEFAULT, false);
+                this.put(BattleMapCategory.ORIGINAL, true);
+                this.put(BattleMapCategory.VAULT, true);
+                this.put(BattleMapCategory.VARIATION, true);
             }
         };
         @Builder.Default

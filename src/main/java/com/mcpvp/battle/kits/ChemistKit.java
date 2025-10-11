@@ -34,7 +34,7 @@ public class ChemistKit extends BattleKit {
 
     public ChemistKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
-        getPlayer().setExp(1f);
+        this.getPlayer().setExp(1f);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class ChemistKit extends BattleKit {
                     .name("Buff Pot"),
                 0
             ))
-            .add(healPotion = new PotionItem(
+            .add(this.healPotion = new PotionItem(
                 ItemBuilder.potion()
                     .effect(PotionType.INSTANT_HEAL, 2)
                     .splash()
@@ -116,12 +116,12 @@ public class ChemistKit extends BattleKit {
     @EventHandler
     public void onTick(TickEvent event) {
         float per = 1f / REFILL_TIME.ticks();
-        getPlayer().setExp(Math.min(getPlayer().getExp() + per, 1));
+        this.getPlayer().setExp(Math.min(this.getPlayer().getExp() + per, 1));
     }
 
     @EventHandler
     public void onPotionEffect(PotionSplashEvent event) {
-        if (event.getPotion().getShooter() != getPlayer()) {
+        if (event.getPotion().getShooter() != this.getPlayer()) {
             return;
         }
 
@@ -147,7 +147,7 @@ public class ChemistKit extends BattleKit {
                 return;
             }
 
-            if (isTeammate(hit) && harmful) {
+            if (this.isTeammate(hit) && harmful) {
                 // Harmful effects shouldn't impact teammates
                 // Beneficial effects are intentionally allowed to impact enemies
                 event.setIntensity(hit, 0);
@@ -157,7 +157,7 @@ public class ChemistKit extends BattleKit {
 
     @Override
     public void restoreFoodItem() {
-        healPotion.increment(healPotion.getOriginal().getAmount());
+        this.healPotion.increment(this.healPotion.getOriginal().getAmount());
     }
 
     class PotionItem extends KitItem {
@@ -171,30 +171,30 @@ public class ChemistKit extends BattleKit {
 
         @EventHandler
         public void onLaunch(ProjectileLaunchEvent event) {
-            if (event.getEntity().getShooter() != getPlayer()) {
+            if (event.getEntity().getShooter() != ChemistKit.this.getPlayer()) {
                 return;
             }
 
-            if (!isItem(getPlayer().getItemInHand()) || isPlaceholder()) {
+            if (!this.isItem(ChemistKit.this.getPlayer().getItemInHand()) || this.isPlaceholder()) {
                 return;
             }
 
-            if (getPlayer().getExp() < xp) {
-                getPlayer().sendMessage(C.warn(C.AQUA) + "Your magic has run dry! You must recharge!");
+            if (ChemistKit.this.getPlayer().getExp() < this.xp) {
+                ChemistKit.this.getPlayer().sendMessage(C.warn(C.AQUA) + "Your magic has run dry! You must recharge!");
                 event.setCancelled(true);
 
                 // The potion item has already been used even if the event is cancelled
-                modify(item -> item.amount(getItem().getAmount() + 1));
+                this.modify(item -> item.amount(this.getItem().getAmount() + 1));
             } else {
-                getPlayer().setExp(Math.max(getPlayer().getExp() - xp, 0));
+                ChemistKit.this.getPlayer().setExp(Math.max(ChemistKit.this.getPlayer().getExp() - this.xp, 0));
 
                 // Because the potion is thrown, we want to increase the number of items first
-                modify(item -> item.amount(getItem().getAmount() + 1));
+                this.modify(item -> item.amount(this.getItem().getAmount() + 1));
                 // Then we can do a decrement which will handle placeholders
-                decrement(true);
+                this.decrement(true);
 
                 // Attach the projectile so it will be removed when this kit is destroyed
-                attach(event.getEntity());
+                ChemistKit.this.attach(event.getEntity());
             }
         }
 

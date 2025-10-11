@@ -71,18 +71,18 @@ public class SoldierKit extends BattleKit {
     public void onTick(TickEvent event) {
         // Restore EXP to the climb bar
         float per = 1f / (RESTORE_TIME.toSeconds() * 20);
-        getPlayer().setExp(Math.min(getPlayer().getExp() + per, 1));
+        this.getPlayer().setExp(Math.min(this.getPlayer().getExp() + per, 1));
     }
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (event.getEntity() == getPlayer() && event.getCause() == DamageCause.FALL) {
+        if (event.getEntity() == this.getPlayer() && event.getCause() == DamageCause.FALL) {
             event.setCancelled(true);
         }
     }
 
     private void onClick(PlayerInteractEvent e) {
-        if (e.getPlayer() != getPlayer()) {
+        if (e.getPlayer() != this.getPlayer()) {
             return;
         }
 
@@ -94,7 +94,7 @@ public class SoldierKit extends BattleKit {
             return;
         }
 
-        if (getPlayer().getExp() < PER_CLIMB) {
+        if (this.getPlayer().getExp() < PER_CLIMB) {
             return;
         }
 
@@ -102,7 +102,7 @@ public class SoldierKit extends BattleKit {
 
         // Push the player away from any wall they are near
         // This prevents them from getting stuck
-        Player player = getPlayer();
+        Player player = this.getPlayer();
         if (player.getLocation().add(0, 0, 0.35).getBlock().getType() != Material.AIR) {
             player.setVelocity(new Vector(0, 0, -1));
         } else if (player.getLocation().add(0, 0, -0.35).getBlock().getType() != Material.AIR) {
@@ -116,7 +116,7 @@ public class SoldierKit extends BattleKit {
         }
 
         if (delay) {
-            attach(Bukkit.getScheduler().runTask(plugin, () ->
+            this.attach(Bukkit.getScheduler().runTask(this.plugin, () ->
                 player.setVelocity(new Vector(0, 1.0f, 0)))
             );
         } else {

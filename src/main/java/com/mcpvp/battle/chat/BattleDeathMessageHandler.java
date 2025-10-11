@@ -27,8 +27,8 @@ public class BattleDeathMessageHandler implements EasyListener {
             return;
         }
 
-        BattleTeam killerTeam = plugin.getBattle().getGame().getTeamManager().getTeam(event.getKiller());
-        BattleTeam killedTeam = plugin.getBattle().getGame().getTeamManager().getTeam(event.getKilled());
+        BattleTeam killerTeam = this.plugin.getBattle().getGame().getTeamManager().getTeam(event.getKiller());
+        BattleTeam killedTeam = this.plugin.getBattle().getGame().getTeamManager().getTeam(event.getKilled());
 
         StringBuilder message = new StringBuilder();
         message.append(killedTeam.getColor().getChat());
@@ -43,7 +43,7 @@ public class BattleDeathMessageHandler implements EasyListener {
 
     @EventHandler(ignoreCancelled = true, priority = HIGHEST)
     public void onDeath(GameDeathEvent event) {
-        BattleTeam team = plugin.getBattle().getGame().getTeamManager().getTeam(event.getPlayer());
+        BattleTeam team = this.plugin.getBattle().getGame().getTeamManager().getTeam(event.getPlayer());
         if (team != null) {
             // A weird and probably incorrect way of coloring the name of the player who died
             event.getDeathEvent().setDeathMessage(

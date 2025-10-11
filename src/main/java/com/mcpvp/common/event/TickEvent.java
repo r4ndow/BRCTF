@@ -18,7 +18,7 @@ public class TickEvent extends EasyEvent {
      * @return True if this tick event is evenly divisible by the duration.
      */
     public boolean isInterval(Duration duration) {
-        return tick % duration.ticks() == 0;
+        return this.tick % duration.ticks() == 0;
     }
 
 }

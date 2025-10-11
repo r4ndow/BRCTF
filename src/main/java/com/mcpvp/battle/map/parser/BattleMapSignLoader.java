@@ -97,7 +97,7 @@ public class BattleMapSignLoader implements BattleMapLoader {
         // If changed: reload new chunks, process
         // Otherwise: keep old chunk list, process
         Location assumedCenter = world.getSpawnLocation();
-        List<ChunkSnapshot> chunks = getChunkSnapshotsAround(assumedCenter, 16);
+        List<ChunkSnapshot> chunks = this.getChunkSnapshotsAround(assumedCenter, 16);
         chunks.forEach(cs -> this.highlightChunk(cs, world));
         List<MapSign> signs = this.getAllMapSigns(chunks);
         Optional<MapSign> spawnBox = signs
@@ -107,15 +107,15 @@ public class BattleMapSignLoader implements BattleMapLoader {
         Location foundCenter = spawnBox.map(ms -> ms.getBlock().getLocation()).orElse(assumedCenter);
         boolean spawnChanged = foundCenter.getBlockX() != assumedCenter.getBlockX() || foundCenter.getBlockZ() != assumedCenter.getBlockZ();
 
-        builder.setSpawn(center(foundCenter));
+        builder.setSpawn(this.center(foundCenter));
 
         if (spawnChanged) {
             log.info("New spawn location found, re-loading chunks");
-            chunks = getChunkSnapshotsAround(foundCenter, 16);
+            chunks = this.getChunkSnapshotsAround(foundCenter, 16);
             signs = this.getAllMapSigns(chunks);
         }
 
-        loadSignsIntoConfig(builder, signs);
+        this.loadSignsIntoConfig(builder, signs);
 
         return builder;
     }
@@ -125,13 +125,13 @@ public class BattleMapSignLoader implements BattleMapLoader {
     ) {
         for (MapSign sign : signs) {
             if (sign instanceof TeamMapSign teamSign) {
-                loadTeamSign(builder, teamSign);
+                this.loadTeamSign(builder, teamSign);
             } else if (sign instanceof ValueMapSign valueSign) {
-                loadValueSign(builder, valueSign);
+                this.loadValueSign(builder, valueSign);
             } else if (sign instanceof SimpleMapSign simpleSign) {
-                loadSimpleSign(builder, simpleSign);
+                this.loadSimpleSign(builder, simpleSign);
             } else if (sign instanceof CalloutSign calloutSign) {
-                loadCalloutSign(builder, calloutSign);
+                this.loadCalloutSign(builder, calloutSign);
             }
         }
     }
@@ -158,12 +158,12 @@ public class BattleMapSignLoader implements BattleMapLoader {
 
         switch (sign.getText()) {
             case "spawn" -> {
-                teamConfig.setSpawn(center(loc));
-                builder.getCallouts().add(new BattleCallout(center(loc), teamConfig, "spawn"));
+                teamConfig.setSpawn(this.center(loc));
+                builder.getCallouts().add(new BattleCallout(this.center(loc), teamConfig, "spawn"));
             }
             case "flag" -> {
-                teamConfig.setFlag(center(loc));
-                builder.getCallouts().add(new BattleCallout(center(loc), teamConfig, "flag"));
+                teamConfig.setFlag(this.center(loc));
+                builder.getCallouts().add(new BattleCallout(this.center(loc), teamConfig, "flag"));
             }
             default -> log.warn("Unknown team config given: {}", sign);
         }
@@ -184,7 +184,7 @@ public class BattleMapSignLoader implements BattleMapLoader {
                 return Stream.empty();
             }
             log.info("Found sign to parse at {} with text: {}", b.getLocation(), Arrays.toString(sign.getLines()));
-            return parseMapSign(b, sign).stream();
+            return this.parseMapSign(b, sign).stream();
         }).toList();
     }
 
@@ -216,7 +216,7 @@ public class BattleMapSignLoader implements BattleMapLoader {
     }
 
     private Stream<Block> findSignBlocks(ChunkSnapshot snapshot) {
-        return findBlocks(snapshot, m -> m == Material.SIGN_POST).stream().distinct();
+        return this.findBlocks(snapshot, m -> m == Material.SIGN_POST).stream().distinct();
     }
 
     @SuppressWarnings("deprecation")
@@ -259,7 +259,7 @@ public class BattleMapSignLoader implements BattleMapLoader {
 
     private Location center(Location loc) {
         if (loc.getBlock().getState().getData() instanceof Directional) {
-            loc = getSignLocation(loc);
+            loc = this.getSignLocation(loc);
         }
         return loc.clone().add(0.5, 0, 0.5);
     }

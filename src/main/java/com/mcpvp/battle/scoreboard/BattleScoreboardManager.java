@@ -31,7 +31,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
     private final Battle battle;
 
     public void init() {
-        attach(new BattleScoreboardListener(plugin, battle, this));
+        this.attach(new BattleScoreboardListener(this.plugin, this.battle, this));
     }
 
     /**
@@ -41,10 +41,10 @@ public class BattleScoreboardManager extends EasyLifecycle {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = scoreboard.registerNewObjective("score", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(getTitle());
+        objective.setDisplayName(this.getTitle());
 
-        for (BattleTeam bt : battle.getGame().getTeamManager().getTeams()) {
-            createTeam(scoreboard, bt);
+        for (BattleTeam bt : this.battle.getGame().getTeamManager().getTeams()) {
+            this.createTeam(scoreboard, bt);
         }
 
         return scoreboard;
@@ -57,8 +57,8 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * @param team   The team to assign the player.
      */
     public void setTeam(Player player, BattleTeam team) {
-        for (Scoreboard sb : getAllScoreboards()) {
-            getScoreboardTeam(sb, team).addEntry(player.getName());
+        for (Scoreboard sb : this.getAllScoreboards()) {
+            this.getScoreboardTeam(sb, team).addEntry(player.getName());
         }
     }
 
@@ -69,11 +69,11 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * @param player The player to update the scoreboard for.
      */
     public void refresh(Player player) {
-        List<String> scores = getScores(player);
+        List<String> scores = this.getScores(player);
         Objective objective = player.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
         ScoreboardUtil.resetChanged(player.getScoreboard(), scores);
         ScoreboardUtil.addLargeScores(player.getScoreboard(), objective, scores);
-        objective.setDisplayName(getTitle());
+        objective.setDisplayName(this.getTitle());
     }
 
     /**
@@ -93,7 +93,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
      */
     private void createTeam(Scoreboard scoreboard, BattleTeam battleTeam) {
         // Register the team
-        Team team = scoreboard.registerNewTeam(getTeamName(battleTeam));
+        Team team = scoreboard.registerNewTeam(this.getTeamName(battleTeam));
         team.setAllowFriendlyFire(true);
         team.setPrefix(battleTeam.getColor().toString());
 
@@ -114,7 +114,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * @return The equivalent team, or null if not found.
      */
     private Team getScoreboardTeam(Scoreboard scoreboard, BattleTeam bt) {
-        return scoreboard.getTeam(getTeamName(bt));
+        return scoreboard.getTeam(this.getTeamName(bt));
     }
 
     /**
@@ -134,31 +134,31 @@ public class BattleScoreboardManager extends EasyLifecycle {
     private List<String> getScores(Player player) {
         List<String> scores = new ArrayList<>();
 
-        BattleGameState state = battle.getGame().getState();
+        BattleGameState state = this.battle.getGame().getState();
         if (state == null) {
             return scores;
         }
 
         switch (state) {
-            case BEFORE -> scores.addAll(getMapDetails());
+            case BEFORE -> scores.addAll(this.getMapDetails());
             case DURING -> {
                 // Add scores for the player's team first
-                BattleTeam team = battle.getGame().getTeamManager().getTeam(player);
+                BattleTeam team = this.battle.getGame().getTeamManager().getTeam(player);
                 if (team != null) {
-                    scores.addAll(getScoresForTeam(player, team));
+                    scores.addAll(this.getScoresForTeam(player, team));
                 }
 
                 // Add scores for all other teams
-                battle.getGame().getTeamManager().getTeams().forEach(bt -> {
+                this.battle.getGame().getTeamManager().getTeams().forEach(bt -> {
                     if (bt != team) {
-                        scores.addAll(getScoresForTeam(player, bt));
+                        scores.addAll(this.getScoresForTeam(player, bt));
                     }
                 });
 
                 // Then add the stats of the player, e.g. kills and deaths
-                scores.addAll(getPlayerStats(player));
+                scores.addAll(this.getPlayerStats(player));
             }
-            case AFTER -> scores.addAll(getPlayerStats(player));
+            case AFTER -> scores.addAll(this.getPlayerStats(player));
         }
 
         return scores;
@@ -168,7 +168,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * @return Map data to be shown in the pre-game
      */
     private List<String> getMapDetails() {
-        BattleMapData map = battle.getGame().getMap();
+        BattleMapData map = this.battle.getGame().getMap();
         List<String> scores = new ArrayList<>();
 
         String[] authors = {"?"};
@@ -176,7 +176,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
             authors = map.getAuthor().split(", ");
 
         scores.addAll(ScoreboardUtil.wrap(" " + C.WHITE + C.B + "Players"));
-        scores.add(ScoreboardUtil.autoSize("  " + C.GREEN + "Online", C.R + battle.getGame().getParticipants().size()));
+        scores.add(ScoreboardUtil.autoSize("  " + C.GREEN + "Online", C.R + this.battle.getGame().getParticipants().size()));
         scores.add("  ");
 
         scores.addAll(ScoreboardUtil.wrap(" " + C.WHITE + C.B + "Map"));
@@ -202,7 +202,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * @return A list of the team specific scores, customized for the given player.
      */
     private List<String> getScoresForTeam(Player player, BattleTeam team) {
-        boolean sameTeam = battle.getGame().getTeamManager().getTeam(player) == team;
+        boolean sameTeam = this.battle.getGame().getTeamManager().getTeam(player) == team;
         List<String> scores = new ArrayList<>();
 
         if (sameTeam) {
@@ -211,9 +211,9 @@ public class BattleScoreboardManager extends EasyLifecycle {
             scores.add(" " + C.B + team.getName());
         }
 
-        scores.add(ScoreboardUtil.autoSize("  " + team.getColor() + "Captures" + C.R, team.getCaptures() + "/" + battle.getGame().getConfig().getCaps(), "  Caps"));
+        scores.add(ScoreboardUtil.autoSize("  " + team.getColor() + "Captures" + C.R, team.getCaptures() + "/" + this.battle.getGame().getConfig().getCaps(), "  Caps"));
 
-        List<String> location = getFlagLoc(team);
+        List<String> location = this.getFlagLoc(team);
 
         scores.add("  " + team.getColor() + "Flag " + C.R + location.get(0));
 
@@ -240,7 +240,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
         }
 
         if (team.getFlag().getCarrier() != null) {
-            BattleTeam heldTeam = battle.getGame().getTeamManager().getTeam(team.getFlag().getCarrier());
+            BattleTeam heldTeam = this.battle.getGame().getTeamManager().getTeam(team.getFlag().getCarrier());
             loc.add("Taken");
             loc.add("Held by " + heldTeam.getColor().getChat() + team.getFlag().getCarrier().getName());
         }
@@ -260,22 +260,22 @@ public class BattleScoreboardManager extends EasyLifecycle {
      * @return The title of the scoreboard.
      */
     private String getTitle() {
-        String display = "[" + (battle.getMatch().getCurrentGameIndex() + 1) + "/" + battle.getMatch().getGames().size() + "] ";
-        String timer = formatDuration(Duration.ofSeconds(battle.getMatch().getTimer().getSeconds()));
+        String display = "[" + (this.battle.getMatch().getCurrentGameIndex() + 1) + "/" + this.battle.getMatch().getGames().size() + "] ";
+        String timer = this.formatDuration(Duration.ofSeconds(this.battle.getMatch().getTimer().getSeconds()));
 
-        if (battle.getMatch().getTimer().isPaused()) {
+        if (this.battle.getMatch().getTimer().isPaused()) {
             timer += "*";
         }
 
-        if (battle.getGame().getState() == null) {
+        if (this.battle.getGame().getState() == null) {
             return "???";
         }
 
-        switch (battle.getGame().getState()) {
+        switch (this.battle.getGame().getState()) {
             case BEFORE -> display += "Starts in " + timer;
             case DURING -> display += "Ends in " + timer;
             case AFTER -> {
-                if (battle.getMatch().getCurrentGameIndex() + 1 == battle.getMatch().getGames().size()) {
+                if (this.battle.getMatch().getCurrentGameIndex() + 1 == this.battle.getMatch().getGames().size()) {
                     return "Match over! Restart in " + timer;
                 }
                 display += "Next map in " + timer;
@@ -291,15 +291,15 @@ public class BattleScoreboardManager extends EasyLifecycle {
      */
     private List<String> getPlayerStats(Player player) {
         List<String> scores = new ArrayList<>();
-        BattleGamePlayerStats stats = battle.getGame().getStats(player);
+        BattleGamePlayerStats stats = this.battle.getGame().getStats(player);
 
         scores.addAll(ScoreboardUtil.wrap(" " + C.RESET + C.B + "Your Stats"));
         scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Kills " + C.R + stats.getKills()));
         scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Deaths " + C.R + stats.getDeaths()));
 
-        if (battle.getGame().getState() == BattleGameState.DURING) {
+        if (this.battle.getGame().getState() == BattleGameState.DURING) {
             scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Streak " + C.R + stats.getStreak()));
-        } else if (battle.getGame().getState() == BattleGameState.AFTER) {
+        } else if (this.battle.getGame().getState() == BattleGameState.AFTER) {
             scores.addAll(ScoreboardUtil.wrap("  " + C.GOLD + "Best Streak " + C.R + stats.getBestStreak()));
         }
 

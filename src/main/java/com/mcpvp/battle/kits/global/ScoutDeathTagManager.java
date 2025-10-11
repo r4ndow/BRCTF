@@ -39,21 +39,21 @@ public class ScoutDeathTagManager implements EasyListener {
     private final Map<Player, Expiration> deathTagged = new HashMap<>();
 
     public boolean setDeathTagged(Player player) {
-        if (isDeathTagged(player)) {
+        if (this.isDeathTagged(player)) {
             return false;
         }
 
-        deathTagged.computeIfAbsent(player, p -> new Expiration()).expireIn(TAG_COOLDOWN);
+        this.deathTagged.computeIfAbsent(player, p -> new Expiration()).expireIn(TAG_COOLDOWN);
 
         EffectUtil.sendBorderEffect(player);
         player.sendMessage(C.warn(C.GOLD) + "You are now death tagged for " + C.hl("" + TAG_DURATION.seconds()) + " seconds!");
 
-        EasyTask.of(() -> removeDeathTag(player)).runTaskLater(getPlugin(), TAG_DURATION.ticks());
+        EasyTask.of(() -> this.removeDeathTag(player)).runTaskLater(this.getPlugin(), TAG_DURATION.ticks());
         return true;
     }
 
     private void removeDeathTag(Player player) {
-        deathTagged.remove(player);
+        this.deathTagged.remove(player);
 
         EffectUtil.resetBorderEffect(player);
 
@@ -61,7 +61,7 @@ public class ScoutDeathTagManager implements EasyListener {
     }
 
     public boolean isDeathTagged(Player player) {
-        return deathTagged.containsKey(player) && !deathTagged.get(player).isExpired();
+        return this.deathTagged.containsKey(player) && !this.deathTagged.get(player).isExpired();
     }
 
     @EventHandler
@@ -70,19 +70,19 @@ public class ScoutDeathTagManager implements EasyListener {
             return;
         }
 
-        if (!isDeathTagged(hit)) {
+        if (!this.isDeathTagged(hit)) {
             return;
         }
 
-        event.setDamage(event.getDamage() * getDamageAmplifier(hit));
+        event.setDamage(event.getDamage() * this.getDamageAmplifier(hit));
     }
 
     @EventHandler
     public void onTick(TickEvent event) {
-        deathTagged.keySet().forEach(player -> {
+        this.deathTagged.keySet().forEach(player -> {
             ParticlePacket.blockDust(Material.REDSTONE_BLOCK)
                 .at(player.getLocation())
-                .count(getParticleCount(getDamageAmplifier(player)))
+                .count(getParticleCount(this.getDamageAmplifier(player)))
                 .setOffY(1)
                 .send();
         });
@@ -90,13 +90,13 @@ public class ScoutDeathTagManager implements EasyListener {
 
     @EventHandler
     public void onGameRespawn(GameRespawnEvent event) {
-        if (isDeathTagged(event.getPlayer())) {
-            removeDeathTag(event.getPlayer());
+        if (this.isDeathTagged(event.getPlayer())) {
+            this.removeDeathTag(event.getPlayer());
         }
     }
 
     private double getDamageAmplifier(Player player) {
-        for (BattleTeam team : plugin.getBattle().getGame().getTeamManager().getTeams()) {
+        for (BattleTeam team : this.plugin.getBattle().getGame().getTeamManager().getTeams()) {
             if (team.getFlag().getCarrier() == player) {
                 return getTemporalDamageAmplifier(System.currentTimeMillis() - team.getFlag().getStolenAt());
             }

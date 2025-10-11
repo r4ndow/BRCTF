@@ -19,24 +19,24 @@ public class KitManagerCommands extends BattleCommandGroup {
     public KitManagerCommands(BattleKitManager kitManager) {
         super("kits", List.of("classmanager", "classes"));
         this.kitManager = kitManager;
-        addCommand(new SummaryCommand(), true);
-        addCommand(new DisableCommand());
-        addCommand(new EnableCommand());
-        addCommand(new LimitCommands());
+        this.addCommand(new SummaryCommand(), true);
+        this.addCommand(new DisableCommand());
+        this.addCommand(new EnableCommand());
+        this.addCommand(new LimitCommands());
     }
 
     private List<String> completeKits(String arg) {
         List<String> kits = new ArrayList<>();
         kits.add("all");
-        kits.addAll(kitManager.getKitDefinitions().stream().map(KitInfo::getName).toList());
+        kits.addAll(this.kitManager.getKitDefinitions().stream().map(KitInfo::getName).toList());
         return CommandUtil.partialMatches(kits, arg);
     }
 
     private List<KitDefinition> findKit(String arg) {
         if (arg.equalsIgnoreCase("all")) {
-            return kitManager.getKitDefinitions();
+            return this.kitManager.getKitDefinitions();
         }
-        return List.of(kitManager.getKitDefinition(arg));
+        return List.of(this.kitManager.getKitDefinition(arg));
     }
 
     public class SummaryCommand extends BattleCommand {
@@ -47,10 +47,10 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            List<KitDefinition> disabled = kitManager.getKitDefinitions().stream().filter(kitManager::isDisabled).toList();
-            List<KitDefinition> limited = kitManager.getKitDefinitions().stream()
-                .filter(kit -> kitManager.getLimit(kit).isPresent())
-                .sorted(Comparator.comparingInt(kit -> -kitManager.getLimit(kit).orElse(0)))
+            List<KitDefinition> disabled = KitManagerCommands.this.kitManager.getKitDefinitions().stream().filter(KitManagerCommands.this.kitManager::isDisabled).toList();
+            List<KitDefinition> limited = KitManagerCommands.this.kitManager.getKitDefinitions().stream()
+                .filter(kit -> KitManagerCommands.this.kitManager.getLimit(kit).isPresent())
+                .sorted(Comparator.comparingInt(kit -> -KitManagerCommands.this.kitManager.getLimit(kit).orElse(0)))
                 .toList();
 
             sender.sendMessage(C.BOLD + "Class Management Summary");
@@ -62,7 +62,7 @@ public class KitManagerCommands extends BattleCommandGroup {
             sender.sendMessage(C.info(C.RED) + "Disabled: " + disabledText);
 
             String limitedText = limited.stream().map(kit ->
-                C.R + kit.getName() + C.GRAY + " × " + C.R + kitManager.getLimit(kit).map(Object::toString).orElse("none")
+                C.R + kit.getName() + C.GRAY + " × " + C.R + KitManagerCommands.this.kitManager.getLimit(kit).map(Object::toString).orElse("none")
             ).collect(Collectors.joining(C.GRAY + ", "));
             if (limitedText.isBlank()) {
                 limitedText = C.R + "none";
@@ -82,12 +82,12 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            List<KitDefinition> kits = findKit(args.get(0));
+            List<KitDefinition> kits = KitManagerCommands.this.findKit(args.get(0));
             if (kits.isEmpty()) {
                 return false;
             }
 
-            kits.forEach(kitManager::setDisabled);
+            kits.forEach(KitManagerCommands.this.kitManager::setDisabled);
             sender.sendMessage(C.cmdPass() + "Disabled " + kits.stream().map(KitDefinition::getName).collect(Collectors.joining(", ")));
 
             return true;
@@ -95,7 +95,7 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         @Override
         public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return completeKits(arg);
+            return KitManagerCommands.this.completeKits(arg);
         }
 
     }
@@ -108,12 +108,12 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
-            List<KitDefinition> kits = findKit(args.get(0));
+            List<KitDefinition> kits = KitManagerCommands.this.findKit(args.get(0));
             if (kits.isEmpty()) {
                 return false;
             }
 
-            kits.forEach(kitManager::setEnabled);
+            kits.forEach(KitManagerCommands.this.kitManager::setEnabled);
             sender.sendMessage(C.cmdPass() + "Enabled " + kits.stream().map(KitDefinition::getName).collect(Collectors.joining(", ")));
 
             return true;
@@ -121,7 +121,7 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         @Override
         public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return completeKits(arg);
+            return KitManagerCommands.this.completeKits(arg);
         }
 
     }
@@ -130,8 +130,8 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         public LimitCommands() {
             super("limit");
-            addCommand(new SetCommand());
-            addCommand(new RemoveCommand());
+            this.addCommand(new SetCommand());
+            this.addCommand(new RemoveCommand());
         }
 
         public class SetCommand extends BattleCommand {
@@ -146,13 +146,13 @@ public class KitManagerCommands extends BattleCommandGroup {
                     return false;
                 }
 
-                List<KitDefinition> kits = findKit(args.get(0));
+                List<KitDefinition> kits = KitManagerCommands.this.findKit(args.get(0));
                 if (kits.isEmpty()) {
                     return false;
                 }
 
                 kits.forEach(kit -> {
-                    kitManager.setLimit(kit, Integer.parseInt(args.get(1)));
+                    KitManagerCommands.this.kitManager.setLimit(kit, Integer.parseInt(args.get(1)));
                 });
                 sender.sendMessage(C.cmdPass() + "Limited " + C.R + kits.stream()
                     .map(KitDefinition::getName)
@@ -165,7 +165,7 @@ public class KitManagerCommands extends BattleCommandGroup {
             @Override
             public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
                 if (args.size() == 1) {
-                    return completeKits(args.get(0));
+                    return KitManagerCommands.this.completeKits(args.get(0));
                 }
                 return super.onTabComplete(sender, alias, args);
             }
@@ -180,12 +180,12 @@ public class KitManagerCommands extends BattleCommandGroup {
 
             @Override
             public boolean onCommand(CommandSender sender, String label, List<String> args) {
-                List<KitDefinition> kits = findKit(args.get(0));
+                List<KitDefinition> kits = KitManagerCommands.this.findKit(args.get(0));
                 if (kits.isEmpty()) {
                     return false;
                 }
 
-                kits.forEach(kitManager::removeLimit);
+                kits.forEach(KitManagerCommands.this.kitManager::removeLimit);
                 sender.sendMessage(C.cmdPass() + "Removed limit on " + C.R + kits.stream()
                     .map(KitDefinition::getName)
                     .collect(Collectors.joining(C.GRAY + ", " + C.R))
@@ -196,7 +196,7 @@ public class KitManagerCommands extends BattleCommandGroup {
 
             @Override
             public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-                return completeKits(arg);
+                return KitManagerCommands.this.completeKits(arg);
             }
 
         }

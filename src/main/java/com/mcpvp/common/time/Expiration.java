@@ -19,7 +19,7 @@ public class Expiration {
      * @return This same Expiration.
      */
     public Expiration expireIn(Duration duration) {
-        expiration = System.currentTimeMillis() + duration.toMilliseconds();
+        this.expiration = System.currentTimeMillis() + duration.toMilliseconds();
         return this;
     }
 
@@ -27,21 +27,21 @@ public class Expiration {
      * @return If this has expired, eg the expiration timestamp has passed.
      */
     public boolean isExpired() {
-        return System.currentTimeMillis() >= expiration;
+        return System.currentTimeMillis() >= this.expiration;
     }
 
     /**
      * Expire this immediately such that {@link #isExpired()} returns true.
      */
     public void expireNow() {
-        expiration = 0;
+        this.expiration = 0;
     }
 
     /**
      * @return A Duration spanning the length of time remaining.
      */
     public Duration getRemaining() {
-        return Duration.ms(expiration - System.currentTimeMillis());
+        return Duration.ms(this.expiration - System.currentTimeMillis());
     }
 
     /**
@@ -49,7 +49,7 @@ public class Expiration {
      * @return The percent done from [0, 1.0].
      */
     public float getCompletionPercent(Duration total) {
-        return Math.min(1, 1 - ((float) getRemaining().ticks() / total.ticks()));
+        return Math.min(1, 1 - ((float) this.getRemaining().ticks() / total.ticks()));
     }
 
 }

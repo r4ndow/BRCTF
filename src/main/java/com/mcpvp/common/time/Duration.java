@@ -42,71 +42,71 @@ public class Duration implements Serializable {
     private final long milliseconds;
 
     public Duration(long value, Unit unit) {
-        milliseconds = (value * unit.getMilliseconds());
+        this.milliseconds = (value * unit.getMilliseconds());
     }
 
     public Duration(double value, Unit unit) {
-        milliseconds = (long) (value * unit.getMilliseconds());
+        this.milliseconds = (long) (value * unit.getMilliseconds());
     }
 
     public Duration(Date startTime, Date endTime) {
-        milliseconds = endTime.getTime() - startTime.getTime();
+        this.milliseconds = endTime.getTime() - startTime.getTime();
     }
 
     public long toMilliseconds() {
-        return milliseconds;
+        return this.milliseconds;
     }
 
     public long ms() {
-        return toMilliseconds();
+        return this.toMilliseconds();
     }
 
     public int toTicks() {
-        return (int) getValue(Unit.TICK);
+        return (int) this.getValue(Unit.TICK);
     }
 
     public int ticks() {
-        return toTicks();
+        return this.toTicks();
     }
 
     public long toSeconds() {
-        return getValue(Unit.SECOND);
+        return this.getValue(Unit.SECOND);
     }
 
     public long seconds() {
-        return toSeconds();
+        return this.toSeconds();
     }
 
     public long toMinutes() {
-        return getValue(Unit.MINUTE);
+        return this.getValue(Unit.MINUTE);
     }
 
     public long mins() {
-        return toMinutes();
+        return this.toMinutes();
     }
 
     public long toHours() {
-        return getValue(Unit.HOUR);
+        return this.getValue(Unit.HOUR);
     }
 
     public double toHoursExact() {
-        return (double) ms() / Unit.HOUR.getMilliseconds();
+        return (double) this.ms() / Unit.HOUR.getMilliseconds();
     }
 
     public long hrs() {
-        return toHours();
+        return this.toHours();
     }
 
     public long getValue(Unit unit) {
-        return toMilliseconds() / unit.getMilliseconds();
+        return this.toMilliseconds() / unit.getMilliseconds();
     }
 
     public String formatText() {
-        return formatText(Unit.SECOND);
+        return this.formatText(Unit.SECOND);
     }
 
     public String formatText(Unit smallest) {
-        long ms = milliseconds;
+        long ms = this.milliseconds;
         List<String> strings = new LinkedList<>();
 
         for (int i = Unit.values().length - 1; i != -1 && ms > 0; i--) {
@@ -167,7 +167,7 @@ public class Duration implements Serializable {
     }
 
     public java.time.Duration toJava() {
-        return java.time.Duration.ofMillis(milliseconds);
+        return java.time.Duration.ofMillis(this.milliseconds);
     }
 
     public static Duration milliseconds(double milliseconds) {
@@ -296,17 +296,17 @@ public class Duration implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Duration && toMilliseconds() == ((Duration) o).toMilliseconds();
+        return o instanceof Duration && this.toMilliseconds() == ((Duration) o).toMilliseconds();
     }
 
     @Override
     public int hashCode() {
-        return Long.valueOf(toMilliseconds()).hashCode();
+        return Long.valueOf(this.toMilliseconds()).hashCode();
     }
 
     @Override
     public String toString() {
-        return formatText();
+        return this.formatText();
     }
 
 }

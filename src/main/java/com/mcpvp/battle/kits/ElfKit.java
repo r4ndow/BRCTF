@@ -53,7 +53,7 @@ public class ElfKit extends BattleKit {
 
     public ElfKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
-        getPlayer().setExp(1.0f);
+        this.getPlayer().setExp(1.0f);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ElfKit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
-        sword = new KitItem(
+        this.sword = new KitItem(
             this,
             ItemBuilder.of(Material.WOOD_SWORD)
                 .name("Elf Sword")
@@ -91,7 +91,7 @@ public class ElfKit extends BattleKit {
                 .enchant(Enchantment.DURABILITY, 10, true)
                 .build()
         );
-        arrows = new KitItem(
+        this.arrows = new KitItem(
             this,
             ItemBuilder.of(Material.ARROW)
                 .name("Elf Arrow")
@@ -101,53 +101,53 @@ public class ElfKit extends BattleKit {
         );
 
         return new KitInventoryBuilder()
-            .add(sword)
+            .add(this.sword)
             .add(new PureElement())
             .add(new WindElement())
             .add(new WaterElement())
             .addFood(5)
-            .add(arrows)
+            .add(this.arrows)
             .addCompass(8)
             .build();
     }
 
     @EventHandler
     public void onTick(TickEvent event) {
-        if (getPlayer().getExp() > 0
-            && sword.isItem(getPlayer().getItemInHand())
-            && getPlayer().isSneaking()
-            && getPlayer().isBlocking()
+        if (this.getPlayer().getExp() > 0
+            && this.sword.isItem(this.getPlayer().getItemInHand())
+            && this.getPlayer().isSneaking()
+            && this.getPlayer().isBlocking()
         ) {
-            if (shield == null) {
-                shield = new ProjectileShield();
-                attach((EasyLifecycle) shield);
+            if (this.shield == null) {
+                this.shield = new ProjectileShield();
+                this.attach((EasyLifecycle) this.shield);
             }
         } else {
-            if (shield != null) {
+            if (this.shield != null) {
                 // The player ran out of XP, add a delay until they can regenerate XP again
-                if (getPlayer().getExp() == 0) {
-                    shieldRegenExpiration.expireIn(SHIELD_REGEN_COOLDOWN);
+                if (this.getPlayer().getExp() == 0) {
+                    this.shieldRegenExpiration.expireIn(SHIELD_REGEN_COOLDOWN);
                 }
 
-                shield.shutdown();
-                shield = null;
+                this.shield.shutdown();
+                this.shield = null;
             }
 
-            if (getPlayer().getExp() < 1 && shieldRegenExpiration.isExpired()) {
-                float increased = (float) (getPlayer().getExp() + (double) 1 / (double) SHIELD_FILL.toTicks());
-                getPlayer().setExp(Math.min(increased, 1));
+            if (this.getPlayer().getExp() < 1 && this.shieldRegenExpiration.isExpired()) {
+                float increased = (float) (this.getPlayer().getExp() + (double) 1 / (double) SHIELD_FILL.toTicks());
+                this.getPlayer().setExp(Math.min(increased, 1));
             }
         }
 
         if (event.isInterval(ARROW_RESTORE)) {
-            arrows.increment(ARROW_COUNT);
+            this.arrows.increment(ARROW_COUNT);
         }
     }
 
     @EventHandler
     public void onKill(PlayerKilledByPlayerEvent event) {
-        if (event.getKiller() == getPlayer()) {
-            arrows.increment(ARROW_COUNT);
+        if (event.getKiller() == this.getPlayer()) {
+            this.arrows.increment(ARROW_COUNT);
         }
     }
 
@@ -168,25 +168,25 @@ public class ElfKit extends BattleKit {
 
         @EventHandler
         public void onTick(TickEvent event) {
-            if (isItem(getPlayer().getItemInHand())) {
-                if (getItem().getType() != Material.BOW) {
-                    modify(item -> item.type(Material.BOW));
+            if (this.isItem(ElfKit.this.getPlayer().getItemInHand())) {
+                if (this.getItem().getType() != Material.BOW) {
+                    this.modify(item -> item.type(Material.BOW));
                 }
             } else {
-                if (getItem().getType() == Material.BOW) {
-                    restore();
+                if (this.getItem().getType() == Material.BOW) {
+                    this.restore();
                 }
             }
         }
 
         @EventHandler
         public void onShootEvent(EntityShootBowEvent event) {
-            if (!isItem(event.getBow())) {
+            if (!this.isItem(event.getBow())) {
                 return;
             }
 
-            onShoot(event);
-            attach(new InteractiveProjectile(getPlugin(), (Projectile) event.getProjectile())
+            this.onShoot(event);
+            ElfKit.this.attach(new InteractiveProjectile(this.getPlugin(), (Projectile) event.getProjectile())
                 .singleEventOnly()
                 .onHitEvent(ev -> this.onLand(ev.getEntity().getLocation(), event))
                 .onDeath(() -> this.onLand(event.getProjectile().getLocation(), event))
@@ -197,10 +197,10 @@ public class ElfKit extends BattleKit {
                 }));
 
             // The arrow item gets out of sync, not exactly sure why
-            arrows.refresh(getPlayer().getInventory());
+            ElfKit.this.arrows.refresh(ElfKit.this.getPlayer().getInventory());
 
-            if (arrows.getItem().getAmount() == 1) {
-                arrows.setPlaceholder();
+            if (ElfKit.this.arrows.getItem().getAmount() == 1) {
+                ElfKit.this.arrows.setPlaceholder();
             }
         }
 
@@ -231,12 +231,12 @@ public class ElfKit extends BattleKit {
         @Override
         public void onShoot(EntityShootBowEvent event) {
             ParticlePacket pp = new ParticlePacket(EnumParticle.FIREWORKS_SPARK).count(1).setData(0.035f);
-            EffectUtil.trail(event.getProjectile(), pp).runTaskTimer(getPlugin(), 0, 1);
+            EffectUtil.trail(event.getProjectile(), pp).runTaskTimer(this.getPlugin(), 0, 1);
         }
 
         @Override
         public void onHit(Player hit, EntityShootBowEvent shootEvent, EntityDamageByEntityEvent damageEvent) {
-            if (isTeammate(hit)) {
+            if (ElfKit.this.isTeammate(hit)) {
                 return;
             }
 
@@ -244,7 +244,7 @@ public class ElfKit extends BattleKit {
                 hit.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 15, 5));
                 hit.setVelocity(new Vector(0, -1, 0));
 
-                if (doTrueDamage.isExpired()) {
+                if (this.doTrueDamage.isExpired()) {
                     EventUtil.setDamage(damageEvent, 12);
 
                     new ParticlePacket(EnumParticle.FIREWORKS_SPARK)
@@ -253,14 +253,14 @@ public class ElfKit extends BattleKit {
                         .setData(0.5f)
                         .send();
 
-                    doTrueDamage.expireIn(PURE_SHOT_WINDOW);
+                    this.doTrueDamage.expireIn(PURE_SHOT_WINDOW);
                 }
             }
         }
 
         @Override
         public void onLand(Location landed, EntityShootBowEvent shootEvent) {
-            doTrueDamage.expireNow();
+            this.doTrueDamage.expireNow();
         }
 
     }
@@ -277,7 +277,7 @@ public class ElfKit extends BattleKit {
 
         @Override
         public void onHit(Player hit, EntityShootBowEvent shootEvent, EntityDamageByEntityEvent damageEvent) {
-            onLand(damageEvent.getDamager().getLocation(), shootEvent);
+            this.onLand(damageEvent.getDamager().getLocation(), shootEvent);
             log.info("Wind element hit, cancel damage");
             damageEvent.setCancelled(true);
         }
@@ -288,17 +288,17 @@ public class ElfKit extends BattleKit {
                 return;
             }
 
-            if (getGame().getTeamManager().getTeams().stream().anyMatch(team ->
+            if (ElfKit.this.getGame().getTeamManager().getTeams().stream().anyMatch(team ->
                 team.getFlag().getLocation().distance(landed) < 15)
             ) {
                 return;
             }
 
-            double aoe = getAreaOfEffect(shootEvent.getForce(), 5);
-            getEnemies().stream()
+            double aoe = ElfKit.this.getAreaOfEffect(shootEvent.getForce(), 5);
+            ElfKit.this.getEnemies().stream()
                 .filter(player -> player.getLocation().distance(landed) <= aoe)
-                .filter(player -> getGame().getTeamManager().getTeam(player) != null)
-                .filter(player -> !getGame().getTeamManager().getTeam(player).isInSpawn(player))
+                .filter(player -> ElfKit.this.getGame().getTeamManager().getTeam(player) != null)
+                .filter(player -> !ElfKit.this.getGame().getTeamManager().getTeam(player).isInSpawn(player))
                 .forEach(enemy -> {
                     // The strength of the effect on a scale of 0 to 1.0
                     double strength = (aoe - enemy.getLocation().distance(landed)) / aoe;
@@ -307,7 +307,7 @@ public class ElfKit extends BattleKit {
                         strength -= 0.35;
                     }
 
-                    if (getPlayer().isSneaking()) {
+                    if (ElfKit.this.getPlayer().isSneaking()) {
                         strength /= 2;
                     }
 
@@ -318,7 +318,7 @@ public class ElfKit extends BattleKit {
                     push.setY(y);
                     enemy.setVelocity(push.multiply(strength));
 
-                    new CancelNextFallTask(getPlugin(), enemy);
+                    new CancelNextFallTask(this.getPlugin(), enemy);
 
                     new ParticlePacket(EnumParticle.CLOUD).at(landed).count(10).setData(0.05f).send();
                 });
@@ -326,18 +326,18 @@ public class ElfKit extends BattleKit {
 
         @Override
         public void onInteract(PlayerInteractEvent event) {
-            if (!flyCooldown.isExpired()) {
+            if (!this.flyCooldown.isExpired()) {
                 return;
             }
 
-            if (!getPlayer().getInventory().contains(Material.ARROW, 2)) {
-                ActionbarUtil.send(getPlayer(), String.format("%sYou need at least %s2 %sarrows to use this!", C.GRAY, C.WHITE, C.GRAY));
+            if (!ElfKit.this.getPlayer().getInventory().contains(Material.ARROW, 2)) {
+                ActionbarUtil.send(ElfKit.this.getPlayer(), String.format("%sYou need at least %s2 %sarrows to use this!", C.GRAY, C.WHITE, C.GRAY));
                 return;
             }
 
-            windPush(getPlayer());
+            this.windPush(ElfKit.this.getPlayer());
 
-            flyCooldown.expireIn(FLY_COOLDOWN);
+            this.flyCooldown.expireIn(FLY_COOLDOWN);
         }
 
         private void windPush(Player shooter) {
@@ -354,10 +354,10 @@ public class ElfKit extends BattleKit {
                 .setData(0.05f)
                 .send();
 
-            arrows.decrement(true);
-            arrows.decrement(true);
+            ElfKit.this.arrows.decrement(true);
+            ElfKit.this.arrows.decrement(true);
 
-            attach(new CancelNextFallTask(getPlugin(), getPlayer()));
+            ElfKit.this.attach(new CancelNextFallTask(this.getPlugin(), ElfKit.this.getPlayer()));
         }
 
     }
@@ -371,18 +371,18 @@ public class ElfKit extends BattleKit {
         @Override
         public void onShoot(EntityShootBowEvent event) {
             super.onShoot(event);
-            EffectUtil.trail(event.getProjectile(), new ParticlePacket(EnumParticle.WATER_SPLASH).count(20)).runTaskTimer(getPlugin(), 0, 1);
+            EffectUtil.trail(event.getProjectile(), new ParticlePacket(EnumParticle.WATER_SPLASH).count(20)).runTaskTimer(this.getPlugin(), 0, 1);
         }
 
         @Override
         public void onHit(Player hit, EntityShootBowEvent shootEvent, EntityDamageByEntityEvent damageEvent) {
-            onLand(hit.getLocation(), shootEvent);
+            this.onLand(hit.getLocation(), shootEvent);
             damageEvent.setCancelled(true);
         }
 
         @Override
         public void onLand(Location landed, EntityShootBowEvent shootEvent) {
-            Runnable extinguishRunnable = getExtinguishRunnable(landed, shootEvent);
+            Runnable extinguishRunnable = this.getExtinguishRunnable(landed, shootEvent);
 
             if (shootEvent.getForce() == 1) {
                 final Expiration expiration = Expiration.after(Duration.seconds(8));
@@ -393,14 +393,14 @@ public class ElfKit extends BattleKit {
                     }
 
                     extinguishRunnable.run();
-                }).runTaskTimer(getPlugin(), 0, 1);
+                }).runTaskTimer(this.getPlugin(), 0, 1);
             } else {
                 extinguishRunnable.run();
             }
         }
 
         private Runnable getExtinguishRunnable(Location landed, EntityShootBowEvent shootEvent) {
-            double aoe = getAreaOfEffect(shootEvent.getForce(), 3);
+            double aoe = ElfKit.this.getAreaOfEffect(shootEvent.getForce(), 3);
             return () -> {
                 // Give potion effects to teammates
                 EntityUtil.getNearbyEntities(landed, Player.class, 2, 1, 2).stream()
@@ -420,7 +420,7 @@ public class ElfKit extends BattleKit {
                     });
 
                 // Extinguish nearby Pyro fires
-                getBattle().getStructureManager().getStructures().stream()
+                ElfKit.this.getBattle().getStructureManager().getStructures().stream()
                     .filter(structure -> structure instanceof PyroKit.PyroFire)
                     .filter(structure -> structure.getCenter().getLocation().distance(landed) <= aoe)
                     .forEach(fire -> {
@@ -446,81 +446,81 @@ public class ElfKit extends BattleKit {
         private final Set<Entity> reflected = new HashSet<>();
 
         public ProjectileShield() {
-            attach((EasyListener) this);
-            attach(EasyTask.of(() -> {
+            this.attach((EasyListener) this);
+            this.attach(EasyTask.of(() -> {
                 EffectUtil.getParticleSphere(
-                    getPlayer().getLocation().add(0, 1, 0), 100, SHIELD_RADIUS
+                    ElfKit.this.getPlayer().getLocation().add(0, 1, 0), 100, SHIELD_RADIUS
                 ).forEach(location -> {
                     new ParticlePacket(EnumParticle.VILLAGER_HAPPY).at(location).setShowFar(true).send();
                 });
-            }).runTaskTimer(getPlugin(), 0, 20));
+            }).runTaskTimer(this.getPlugin(), 0, 20));
         }
 
         @EventHandler
         public void onTick(TickEvent event) {
-            getGame().getWorld().getEntities()
+            ElfKit.this.getGame().getWorld().getEntities()
                 .stream()
                 .filter(e ->
-                    e.getLocation().add(e.getVelocity()).distance(getPlayer().getLocation()) <= SHIELD_RADIUS
+                    e.getLocation().add(e.getVelocity()).distance(ElfKit.this.getPlayer().getLocation()) <= SHIELD_RADIUS
                 ).forEach(this::attemptReflection);
 
             // Reduce the Player's XP
-            float decreased = (float) (getPlayer().getExp() - (double) 1 / (double) SHIELD_EMPTY.toTicks());
-            getPlayer().setExp(Math.max(decreased, 0));
+            float decreased = (float) (ElfKit.this.getPlayer().getExp() - (double) 1 / (double) SHIELD_EMPTY.toTicks());
+            ElfKit.this.getPlayer().setExp(Math.max(decreased, 0));
         }
 
         @EventHandler
         public void onDamagedByProjectile(EntityDamageByEntityEvent event) {
-            if (event.getEntity() != getPlayer()) {
+            if (event.getEntity() != ElfKit.this.getPlayer()) {
                 return;
             }
 
-            if (attemptReflection(event.getEntity())) {
+            if (this.attemptReflection(event.getEntity())) {
                 event.setCancelled(true);
             }
         }
 
         @EventHandler
         public void onDwarfSmash(DwarfKit.SmashEvent event) {
-            if (event.getDamaged() == getPlayer()) {
-                getPlayer().setExp(0);
+            if (event.getDamaged() == ElfKit.this.getPlayer()) {
+                ElfKit.this.getPlayer().setExp(0);
             }
         }
 
         private boolean attemptReflection(Entity entity) {
-            if (reflected.contains(entity)) {
+            if (this.reflected.contains(entity)) {
                 return false;
             }
 
-            Player shooter = getShooter(entity);
+            Player shooter = this.getShooter(entity);
             if (shooter == null) {
                 return false;
             }
 
-            if (isTeammate(shooter)) {
+            if (ElfKit.this.isTeammate(shooter)) {
                 return false;
             }
 
-            reflect(entity, shooter);
+            this.reflect(entity, shooter);
             return true;
         }
 
         private void reflect(Entity entity, Player shooter) {
             // Lightning strike from a mage breaks the shield
-            if (entity instanceof Egg && getBattle().getKitManager().isPlaying(shooter, MageKit.class)) {
-                getPlayer().setExp(0f);
+            if (entity instanceof Egg && ElfKit.this.getBattle().getKitManager().isPlaying(shooter, MageKit.class)) {
+                ElfKit.this.getPlayer().setExp(0f);
                 return;
             }
 
-            reflected.add(entity);
-            bounce(entity);
+            this.reflected.add(entity);
+            this.bounce(entity);
 
             // Preserve the shooter of the ender pearl so that the Ninja doesn't get teleported
-            if (entity instanceof EnderPearl && getBattle().getKitManager().isPlaying(shooter, NinjaKit.class)) {
+            if (entity instanceof EnderPearl && ElfKit.this.getBattle().getKitManager().isPlaying(shooter, NinjaKit.class)) {
                 return;
             }
 
-            setShooter(entity, getPlayer());
+            this.setShooter(entity, ElfKit.this.getPlayer());
         }
 
         private void bounce(Entity entity) {
@@ -542,7 +542,7 @@ public class ElfKit extends BattleKit {
             if (entity instanceof Projectile projectile) {
                 projectile.setShooter(player);
             } else if (entity instanceof TNTPrimed tnt) {
-                tnt.setMetadata("shooter", new FixedMetadataValue(getPlugin(), player));
+                tnt.setMetadata("shooter", new FixedMetadataValue(this.getPlugin(), player));
             }
         }
 

@@ -38,38 +38,38 @@ public class BattleKitManager extends KitManager {
     }
 
     public void setDisabled(KitDefinition kit) {
-        disabled.add(kit);
+        this.disabled.add(kit);
 
         // Any players who are playing this Kit should have it force changed
-        battle.getGame().getParticipants().forEach(player -> {
-            if (battle.getKitManager().isSelected(player, kit)) {
+        this.battle.getGame().getParticipants().forEach(player -> {
+            if (this.battle.getKitManager().isSelected(player, kit)) {
                 player.sendMessage(C.info(C.GOLD) + C.hl(kit.getName()) + " has been disabled");
                 // Calling `setSelected` will auto re-spawn/re-equip them
-                battle.getKitManager().setSelected(player, BattleKitType.HEAVY, true);
+                this.battle.getKitManager().setSelected(player, BattleKitType.HEAVY, true);
             }
         });
     }
 
     public void setEnabled(KitDefinition kit) {
-        disabled.remove(kit);
+        this.disabled.remove(kit);
     }
 
     public boolean isDisabled(KitDefinition kit) {
-        return disabled.contains(kit);
+        return this.disabled.contains(kit);
     }
 
     public void setLimit(KitDefinition kit, int limit) {
-        limited.put(kit, limit);
+        this.limited.put(kit, limit);
 
         // Any players who are playing this Kit should have it force changed
-        battle.getGame().getTeamManager().getTeams().forEach(team -> {
+        this.battle.getGame().getTeamManager().getTeams().forEach(team -> {
             int count = 0;
             for (Player player : team.getPlayers()) {
-                if (battle.getKitManager().isSelected(player, kit)) {
+                if (this.battle.getKitManager().isSelected(player, kit)) {
                     if (count++ == limit) {
                         player.sendMessage(C.info(C.GOLD) + C.hl(kit.getName()) + " has been limited");
                         // Calling `setSelected` will auto re-spawn/re-equip them
-                        battle.getKitManager().setSelected(player, BattleKitType.HEAVY, true);
+                        this.battle.getKitManager().setSelected(player, BattleKitType.HEAVY, true);
                     }
                 }
             }
@@ -77,11 +77,11 @@ public class BattleKitManager extends KitManager {
     }
 
     public void removeLimit(KitDefinition kit) {
-        limited.remove(kit);
+        this.limited.remove(kit);
     }
 
     public Optional<Integer> getLimit(KitDefinition kit) {
-        return Optional.ofNullable(limited.getOrDefault(kit, null));
+        return Optional.ofNullable(this.limited.getOrDefault(kit, null));
     }
 
     @Nullable

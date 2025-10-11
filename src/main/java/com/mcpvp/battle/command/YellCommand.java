@@ -12,7 +12,7 @@ public class YellCommand extends BattleCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
-        asPlayer(sender).chat("!" + String.join(" ", args));
+        this.asPlayer(sender).chat("!" + String.join(" ", args));
         return true;
     }
 

@@ -30,16 +30,16 @@ public class BattleMatch {
     private int currentGameIndex = 0;
 
     public BattleGame getCurrentGame() {
-        return games.get(currentGameIndex);
+        return this.games.get(this.currentGameIndex);
     }
 
     public void start() {
-        new BattleChatMessageHandler(plugin, battle).register();
-        BattleMatchStructureRestrictions.register(this, battle.getStructureManager());
+        new BattleChatMessageHandler(this.plugin, this.battle).register();
+        BattleMatchStructureRestrictions.register(this, this.battle.getStructureManager());
 
-        Bukkit.getScheduler().runTaskTimer(plugin, getTimerTask(), 0, 20);
+        Bukkit.getScheduler().runTaskTimer(this.plugin, this.getTimerTask(), 0, 20);
 
-        getCurrentGame().setup();
+        this.getCurrentGame().setup();
     }
 
     /**
@@ -47,18 +47,18 @@ public class BattleMatch {
      */
     private void advanceGame() {
         // Shut down the current game
-        BattleGame current = getCurrentGame();
+        BattleGame current = this.getCurrentGame();
         current.stop();
 
         // Preserve team IDs
         Map<BattleTeam, Set<Player>> playerMap = current.getTeamManager().getPlayerMap();
 
         // Start the next game
-        if (currentGameIndex + 1 == games.size()) {
+        if (this.currentGameIndex + 1 == this.games.size()) {
             Bukkit.broadcastMessage("All done!");
             Bukkit.shutdown();
         } else {
-            BattleGame next = games.get(++currentGameIndex);
+            BattleGame next = this.games.get(++this.currentGameIndex);
             next.setup();
 
             // Move everyone to their proper teams
@@ -73,25 +73,25 @@ public class BattleMatch {
      * Advance the state of the current game, or proceed to the next game entirely.
      */
     public void advanceStateOrGame() {
-        BattleGameState state = getCurrentGame().getState();
+        BattleGameState state = this.getCurrentGame().getState();
         if (state == null) {
             throw new IllegalStateException("Game state was null");
         }
 
         if (state.getNext() != null) {
-            getCurrentGame().setState(state.getNext());
+            this.getCurrentGame().setState(state.getNext());
         } else {
             // Advance to the next game
-            advanceGame();
+            this.advanceGame();
         }
     }
 
     public void insertNextGame(int map) {
-        BattleMapData battleMapData = battle.getMapManager().loadMap(map);
-        BattleGame game = battle.getGameManager().create(
-            battleMapData, battle.getMapManager().getWorldData(battleMapData), games.size() + 1
+        BattleMapData battleMapData = this.battle.getMapManager().loadMap(map);
+        BattleGame game = this.battle.getGameManager().create(
+            battleMapData, this.battle.getMapManager().getWorldData(battleMapData), this.games.size() + 1
         );
-        games.add(currentGameIndex + 1, game);
+        this.games.add(this.currentGameIndex + 1, game);
     }
 
     /**
@@ -100,14 +100,14 @@ public class BattleMatch {
      */
     private Runnable getTimerTask() {
         return () -> {
-            if (timer.isPaused()) {
+            if (this.timer.isPaused()) {
                 return;
             }
 
-            if (timer.getSeconds() == 0) {
-                advanceStateOrGame();
+            if (this.timer.getSeconds() == 0) {
+                this.advanceStateOrGame();
             } else {
-                timer.setSeconds(timer.getSeconds() - 1);
+                this.timer.setSeconds(this.timer.getSeconds() - 1);
             }
         };
     }
@@ -115,12 +115,12 @@ public class BattleMatch {
     public String getMotd() {
         StringBuilder motd = new StringBuilder();
 
-        if (getCurrentGame() == null) {
+        if (this.getCurrentGame() == null) {
             motd.append("Starting up!");
             return motd.toString();
         }
 
-        if (getCurrentGameIndex() == 0 && getCurrentGame().getState() == BattleGameState.BEFORE) {
+        if (this.getCurrentGameIndex() == 0 && this.getCurrentGame().getState() == BattleGameState.BEFORE) {
             motd.append(C.cmd(C.YELLOW))
                 .append(C.WHITE)
                 .append("Starting soon! ")
@@ -128,19 +128,19 @@ public class BattleMatch {
                 .append(C.info(C.YELLOW))
                 .append(C.WHITE)
                 .append("Map: ")
-                .append(getCurrentGame().getMap().getName());
+                .append(this.getCurrentGame().getMap().getName());
         } else {
             motd.append(C.cmd(C.GREEN))
                 .append(C.WHITE)
                 .append("In progress! Game ")
-                .append(getCurrentGameIndex() + 1)
+                .append(this.getCurrentGameIndex() + 1)
                 .append(" of ")
-                .append(getGames().size()).append(" ")
+                .append(this.getGames().size()).append(" ")
                 .append("\n")
                 .append(C.info(C.GREEN))
                 .append(C.WHITE)
                 .append("Map: ")
-                .append(getCurrentGame().getMap().getName());
+                .append(this.getCurrentGame().getMap().getName());
         }
 
         return motd.toString();

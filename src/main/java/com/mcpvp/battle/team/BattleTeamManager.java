@@ -38,7 +38,7 @@ public class BattleTeamManager {
 
     public void setTeam(Player player, @Nullable BattleTeam team) {
         // Remove from any existing team
-        for (BattleTeam battleTeam : getTeams()) {
+        for (BattleTeam battleTeam : this.getTeams()) {
             if (battleTeam.contains(player)) {
                 battleTeam.remove(player);
                 new PlayerLeaveTeamEvent(player, battleTeam).call();
@@ -53,37 +53,37 @@ public class BattleTeamManager {
     }
 
     public BattleTeam getTeam(Player player) {
-        return getTeams().stream().filter(bt -> bt.contains(player)).findFirst().orElse(null);
+        return this.getTeams().stream().filter(bt -> bt.contains(player)).findFirst().orElse(null);
     }
 
     public BattleTeam getTeam(int id) {
-        return getTeams().stream().filter(bt -> bt.getId() == id).findFirst().orElseThrow(() ->
+        return this.getTeams().stream().filter(bt -> bt.getId() == id).findFirst().orElseThrow(() ->
             new IllegalStateException("No team found for id " + id)
         );
     }
 
     public BattleTeam selectAutoTeam() {
-        if (getTeams().stream().map(t -> t.getPlayers().size()).distinct().count() == 1) {
+        if (this.getTeams().stream().map(t -> t.getPlayers().size()).distinct().count() == 1) {
             // All teams have the same size
-            return getTeams().get(RANDOM.nextInt(getTeams().size()));
+            return this.getTeams().get(RANDOM.nextInt(this.getTeams().size()));
         } else {
             // Find the team with the fewest players
-            return getTeams().stream()
+            return this.getTeams().stream()
                 .min(Comparator.comparingInt(t -> t.getPlayers().size()))
-                .orElse(getTeams().get(RANDOM.nextInt(getTeams().size())));
+                .orElse(this.getTeams().get(RANDOM.nextInt(this.getTeams().size())));
         }
     }
 
     public BattleTeam getNext(BattleTeam team) {
-        return teams.get((teams.indexOf(team) + 1) % teams.size());
+        return this.teams.get((this.teams.indexOf(team) + 1) % this.teams.size());
     }
 
     public boolean isSameTeam(Player first, Player second) {
-        return getTeam(first) == getTeam(second);
+        return this.getTeam(first) == this.getTeam(second);
     }
 
     public Map<BattleTeam, Set<Player>> getPlayerMap() {
-        return teams.stream().collect(Collectors.toMap(e -> e, BattleTeam::getPlayers));
+        return this.teams.stream().collect(Collectors.toMap(e -> e, BattleTeam::getPlayers));
     }
 
 }
