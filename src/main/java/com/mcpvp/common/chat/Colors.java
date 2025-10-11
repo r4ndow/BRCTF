@@ -20,7 +20,7 @@ public enum Colors {
     DARK_RED(DyeColor.RED, ChatColor.DARK_RED, C.DARK_RED),
     DARK_PURPLE(DyeColor.MAGENTA, ChatColor.DARK_PURPLE, C.DARK_PURPLE),
     GOLD(DyeColor.ORANGE, ChatColor.GOLD, C.GOLD),
-    GRAY(getGray(), ChatColor.GRAY, C.GRAY),
+    GRAY(DyeColor.GRAY, ChatColor.GRAY, C.GRAY),
     DARK_GRAY(DyeColor.GRAY, ChatColor.DARK_GRAY, C.DARK_GRAY),
     BLUE(DyeColor.BLUE, ChatColor.BLUE, C.BLUE),
     LIGHT_BLUE(DyeColor.LIGHT_BLUE, ChatColor.AQUA, C.AQUA),
@@ -66,15 +66,6 @@ public enum Colors {
 
     private static <T> Colors match(T object, Function<Colors, T> func) {
         return Stream.of(Colors.values()).filter(c -> func.apply(c).equals(object)).findFirst().orElse(null);
-    }
-
-    private static DyeColor getGray() {
-        for (DyeColor dc : DyeColor.values()) {
-            if (dc.name().equalsIgnoreCase("gray") || dc.name().equalsIgnoreCase("silver")) {
-                return dc;
-            }
-        }
-        return null;
     }
 
     @Override

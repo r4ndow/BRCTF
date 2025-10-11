@@ -57,6 +57,8 @@ public class CentralMapSource implements BattleMapSource {
             } catch (IOException e) {
                 log.warn("Failed to read custom maps.json at {}", mapOptions.getJson(), e);
             }
+        } else {
+            log.warn("Given a custom maps.json that does not exist, expected at {}", configured.getAbsoluteFile());
         }
 
         // Otherwise, use the included maps.json

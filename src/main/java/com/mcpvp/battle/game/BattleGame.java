@@ -5,6 +5,7 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.chat.BattleDeathMessageHandler;
+import com.mcpvp.battle.event.GameRespawnEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.flag.FlagListener;
 import com.mcpvp.battle.flag.FlagMessageBroadcaster;
@@ -18,6 +19,7 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
+import com.mcpvp.common.util.PlayerUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -116,8 +118,9 @@ public class BattleGame extends EasyLifecycle {
      * Respawns the player **during the game**. Not before or after.
      *
      * @param player The player to respawn.
+     * @param respawn Whether to respawn them.
      */
-    public void respawn(Player player, boolean died) {
+    public void respawn(Player player, boolean died, boolean respawn) {
         // Drop the flag if they have it
         teamManager.getTeams().forEach(bt -> {
             if (bt.getFlag().getCarrier() == player) {
@@ -139,6 +142,7 @@ public class BattleGame extends EasyLifecycle {
 
         // Reset negative statues
         player.setHealth(player.getMaxHealth());
+        PlayerUtil.setAbsorptionHearts(player, 0);
         player.setFireTicks(0);
         player.setExp(0);
 
@@ -148,9 +152,11 @@ public class BattleGame extends EasyLifecycle {
         player.getActivePotionEffects().stream().map(PotionEffect::getType).forEach(player::removePotionEffect);
 
         // Teleport to spawn
-        BattleTeam team = getTeamManager().getTeam(player);
-        Location spawn = getConfig().getTeamConfig(team).getSpawn();
-        player.teleport(spawn.clone().add(0, 0.1, 0));
+        if (respawn) {
+            BattleTeam team = getTeamManager().getTeam(player);
+            Location spawn = getConfig().getTeamConfig(team).getSpawn();
+            player.teleport(spawn.clone().add(0, 0.1, 0));
+        }
 
         // Players must be teleported immediately on death to avoid the death screen
         // But there needs to be a tick delay before equipping the kit due to inventory resets
@@ -162,7 +168,9 @@ public class BattleGame extends EasyLifecycle {
             battle.getKitManager().createSelected(player);
 
             // Velocity also carries over for some reason
-            player.setVelocity(new Vector());
+            player.setVelocity(new Vector(0, 0.1, 0));
+
+            new GameRespawnEvent(player).call();
         }));
     }
 

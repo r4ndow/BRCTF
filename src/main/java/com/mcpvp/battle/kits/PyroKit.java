@@ -251,7 +251,12 @@ public class PyroKit extends BattleKit {
 
         @Override
         public void build(Block center, StructureBuilder builder) {
-            builder.ignoreRestriction(BattleMatchStructureRestrictions.NEAR_PLAYER);
+            builder.ignoreRestrictions(
+                BattleMatchStructureRestrictions.NEAR_SPAWN,
+                BattleMatchStructureRestrictions.NEAR_FLAG,
+                BattleMatchStructureRestrictions.NEAR_PLAYER,
+                BattleMatchStructureRestrictions.NEAR_RESTRICTED
+            );
             builder.setBlock(center, Material.FIRE);
             this.center = center;
         }

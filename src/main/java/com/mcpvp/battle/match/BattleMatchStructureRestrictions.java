@@ -14,6 +14,7 @@ public class BattleMatchStructureRestrictions {
     public static final String NEAR_SPAWN = "NEAR_SPAWN";
     public static final String NEAR_RESTRICTED = "NEAR_RESTRICTED";
     public static final String NEAR_FLAG = "NEAR_FLAG";
+    public static final String IN_FLAG = "IN_FLAG";
     public static final String NEAR_PLAYER = "NEAR_PLAYER";
 
     private static final List<Material> RESTRICT_NEARBY = List.of(
@@ -39,6 +40,15 @@ public class BattleMatchStructureRestrictions {
                 block.getLocation().distance(bt.getConfig().getSpawn()) <= SPAWN_RANGE)
             ) {
                 return Optional.of(new StructureViolation(NEAR_SPAWN, "You can't place this near spawn"));
+            }
+            return Optional.empty();
+        });
+
+        structureManager.registerChecker((block) -> {
+            if (match.getCurrentGame().getTeamManager().getTeams().stream().anyMatch(bt ->
+                block.getLocation().equals(bt.getFlag().getHome())
+            )) {
+                return Optional.of(new StructureViolation(IN_FLAG, "You can't place this on the flag"));
             }
             return Optional.empty();
         });

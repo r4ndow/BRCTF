@@ -33,6 +33,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 import java.util.Optional;
@@ -253,6 +254,11 @@ public class BattleGameListener implements EasyListener {
         if (event.getItem().getItemStack().getType() == Material.ARROW) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onServerListPing(ServerListPingEvent event) {
+        event.setMotd(plugin.getBattle().getMatch().getMotd());
     }
 
 }

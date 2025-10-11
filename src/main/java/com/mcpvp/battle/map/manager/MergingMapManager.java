@@ -56,8 +56,10 @@ public class MergingMapManager implements BattleMapManager {
     @Override
     public BattleMapData loadMap(int id) {
         return repos.stream()
-            .flatMap(repo -> getEnabled().stream())
-            .filter(m -> m.getId() == id).findFirst().orElse(null);
+            .flatMap(repo -> repo.getFunctional().stream())
+            .filter(m -> m.getId() == id)
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Could not find request map: " + id));
     }
 
     @Override
@@ -71,7 +73,7 @@ public class MergingMapManager implements BattleMapManager {
             .filter(repo -> repo.getAll().contains(map))
             .findFirst()
             .map(repo -> repo.getWorldData(map))
-            .orElseThrow();
+            .orElseThrow(() -> new IllegalStateException("No world data found for map: " + map));
     }
 
     @Override

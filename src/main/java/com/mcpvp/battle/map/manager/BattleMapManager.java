@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Picks maps based on what's available in {@link BattleMapSource}.
+ * Picks maps based on what's available in one or more {@link BattleMapSource BattleMapSources}.
  */
 public interface BattleMapManager {
 

@@ -309,10 +309,8 @@ public class EngineerKit extends BattleKit {
 
         private void giveSpeedEffect() {
             getTeammates().stream()
-                .filter(Predicate.not(this::hasBetterSpeed))
                 .filter(this::isCloseEnough)
                 .forEach(teammate -> {
-                    teammate.removePotionEffect(PotionEffectType.SPEED);
                     teammate.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, SPEED_TIME.ticks(), SPEED_TIER - 1));
                 });
         }

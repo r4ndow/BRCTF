@@ -7,6 +7,7 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.chat.C;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
@@ -109,6 +110,40 @@ public class BattleMatch {
                 timer.setSeconds(timer.getSeconds() - 1);
             }
         };
+    }
+
+    public String getMotd() {
+        StringBuilder motd = new StringBuilder();
+
+        if (getCurrentGame() == null) {
+            motd.append("Starting up!");
+            return motd.toString();
+        }
+
+        if (getCurrentGameIndex() == 0 && getCurrentGame().getState() == BattleGameState.BEFORE) {
+            motd.append(C.cmd(C.YELLOW))
+                .append(C.WHITE)
+                .append("Starting soon! ")
+                .append("\n")
+                .append(C.info(C.YELLOW))
+                .append(C.WHITE)
+                .append("Map: ")
+                .append(getCurrentGame().getMap().getName());
+        } else {
+            motd.append(C.cmd(C.GREEN))
+                .append(C.WHITE)
+                .append("In progress! Game ")
+                .append(getCurrentGameIndex() + 1)
+                .append(" of ")
+                .append(getGames().size()).append(" ")
+                .append("\n")
+                .append(C.info(C.GREEN))
+                .append(C.WHITE)
+                .append("Map: ")
+                .append(getCurrentGame().getMap().getName());
+        }
+
+        return motd.toString();
     }
 
 }

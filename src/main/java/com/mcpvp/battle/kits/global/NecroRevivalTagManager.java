@@ -90,6 +90,7 @@ public class NecroRevivalTagManager implements EasyListener {
     @EventHandler
     public void onRespawn(GameRespawnEvent event) {
         clearRevivalTag(event.getPlayer());
+        zombies.remove(event.getPlayer());
     }
 
     @EventHandler

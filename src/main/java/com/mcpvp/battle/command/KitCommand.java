@@ -35,7 +35,10 @@ public class KitCommand extends BattleCommand {
         }
 
         if (kit != null) {
-            KitAttemptSelectEvent kitAttemptSelectEvent = kitManager.setSelected(player, kit, false);
+            KitAttemptSelectEvent kitAttemptSelectEvent = kitManager.setSelected(
+                player, kit, false, !(args.contains("-f") && sender.isOp())
+            );
+
             if (!kitAttemptSelectEvent.isCancelled()) {
                 player.sendMessage(C.cmdPass() + "Selected " + C.hl(kit.getName()));
                 return true;

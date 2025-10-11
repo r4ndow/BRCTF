@@ -95,6 +95,7 @@ public class KitItem extends InteractiveItem {
         // Only force update the item if the player is holding the item
         // Otherwise, we might interrupt something else, e.g. a bow being drawn back
         if (isItem(kit.getPlayer().getItemInHand())) {
+            kit.getPlayer().setItemInHand(getItem());
             kit.getPlayer().updateInventory();
         }
     }
@@ -102,6 +103,7 @@ public class KitItem extends InteractiveItem {
     public void modify(UnaryOperator<ItemBuilder> editor) {
         editor.apply(new ItemBuilder(getItem(), false));
         update(kit.getPlayer().getInventory());
+//        kit.getPlayer().updateInventory();
     }
 
 }

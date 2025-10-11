@@ -52,4 +52,5 @@ public class QuickCommand extends BattleCommand {
         this.includeLocation = true;
         return this;
     }
+
 }

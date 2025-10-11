@@ -1,6 +1,7 @@
 package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.InteractiveProjectile;
@@ -143,6 +144,13 @@ public class ElfKit extends BattleKit {
         }
     }
 
+    @EventHandler
+    public void onKill(PlayerKilledByPlayerEvent event) {
+        if (event.getKiller() == getPlayer()) {
+            arrows.increment(ARROW_COUNT);
+        }
+    }
+
     protected double getAreaOfEffect(float drawStrength, int max) {
         return drawStrength * max;
     }
@@ -196,13 +204,6 @@ public class ElfKit extends BattleKit {
             }
         }
 
-        @EventHandler
-        public void onHitEvent(EntityDamageByEntityEvent event) {
-            if (event.getDamager() == getPlayer() && isItem(getPlayer().getItemInHand())) {
-                onPunch();
-            }
-        }
-
         public abstract void onHit(Player hit, EntityShootBowEvent shootEvent, EntityDamageByEntityEvent damageEvent);
 
         public abstract void onLand(Location landed, EntityShootBowEvent shootEvent);
@@ -212,10 +213,6 @@ public class ElfKit extends BattleKit {
         }
 
         public void onInteract(PlayerInteractEvent event) {
-
-        }
-
-        public void onPunch() {
 
         }
 
@@ -281,6 +278,7 @@ public class ElfKit extends BattleKit {
         @Override
         public void onHit(Player hit, EntityShootBowEvent shootEvent, EntityDamageByEntityEvent damageEvent) {
             onLand(damageEvent.getDamager().getLocation(), shootEvent);
+            log.info("Wind element hit, cancel damage");
             damageEvent.setCancelled(true);
         }
 
@@ -300,7 +298,7 @@ public class ElfKit extends BattleKit {
             getEnemies().stream()
                 .filter(player -> player.getLocation().distance(landed) <= aoe)
                 .filter(player -> getGame().getTeamManager().getTeam(player) != null)
-                .filter(player -> getGame().getTeamManager().getTeam(player).isInSpawn(player))
+                .filter(player -> !getGame().getTeamManager().getTeam(player).isInSpawn(player))
                 .forEach(enemy -> {
                     // The strength of the effect on a scale of 0 to 1.0
                     double strength = (aoe - enemy.getLocation().distance(landed)) / aoe;
@@ -319,8 +317,6 @@ public class ElfKit extends BattleKit {
                     double y = Math.max(enemy.getVelocity().getY(), push.getY() - 0.5);
                     push.setY(y);
                     enemy.setVelocity(push.multiply(strength));
-
-                    log.info("WindElement set velocity of {} to {}", enemy.getName(), push.multiply(strength));
 
                     new CancelNextFallTask(getPlugin(), enemy);
 

@@ -4,6 +4,7 @@ import com.mcpvp.common.event.EasyListener;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -177,7 +178,7 @@ public class InteractiveItem implements EasyListener {
         if (isItem(event.getItem())) {
             // Re-assign the ItemStack instance, which improves syncing with the client
             // Without doing this, a call to `update()` would be required
-//            this.setItem(event.getItem());
+            this.setItem(event.getItem());
             interactHandlers.forEach(ih -> ih.accept(event));
             anyHandler.accept(event.getPlayer());
         }

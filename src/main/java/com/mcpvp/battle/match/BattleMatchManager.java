@@ -7,10 +7,13 @@ import com.mcpvp.battle.game.BattleGameManager;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.battle.map.manager.BattleMapManager;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+@Log4j2
 @AllArgsConstructor
 public class BattleMatchManager {
 
@@ -33,7 +36,14 @@ public class BattleMatchManager {
         if (mapManager.getOverride() != null && !mapManager.getOverride().isEmpty()) {
             List<BattleMapData> maps = mapManager.getOverride().stream()
                 .map(BattleMapData::getId)
+                .peek(id -> {
+                    if (!mapManager.isMap(id) || mapManager.loadMap(id) == null) {
+                        log.warn("Map ID {} is not enabled and will be ignored", id);
+                    }
+                })
+                .filter(mapManager::isMap)
                 .map(mapManager::loadMap)
+                .filter(Objects::nonNull)
                 .toList();
             mapManager.clearOverride();
             return maps;

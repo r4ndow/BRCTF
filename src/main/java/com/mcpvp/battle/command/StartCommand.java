@@ -20,4 +20,5 @@ public class StartCommand extends BattleCommand {
         battle.getGame().setState(BattleGameState.DURING);
         return true;
     }
+
 }

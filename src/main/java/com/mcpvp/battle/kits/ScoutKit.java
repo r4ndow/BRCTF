@@ -113,7 +113,7 @@ public class ScoutKit extends BattleKit {
     }
 
     private void attemptSwap(Player player) {
-        if (!isEnemy(player)) {
+        if (!isEnemy(player) || swapper.isPlaceholder()) {
             return;
         }
 
@@ -162,9 +162,9 @@ public class ScoutKit extends BattleKit {
 
         EntityUtil.getNearbyEntities(swapped.getLocation(), Player.class, 20).forEach(player -> {
             if (player != swapped) {
-                if (isTeammate(swapped)) {
+                if (getGame().getTeamManager().isSameTeam(player, swapped)) {
                     player.sendMessage(C.warn(C.GOLD) + "Your flag carrier was swapped!");
-                } else if (isEnemy(swapped)) {
+                } else if (getGame().isParticipant(player)) {
                     player.sendMessage(C.warn(C.GOLD) + "The enemy flag carrier was swapped! " + nearby);
                 } else {
                     player.sendMessage(C.warn(C.GOLD) + "The "
@@ -190,7 +190,7 @@ public class ScoutKit extends BattleKit {
     }
 
     private boolean attemptDeathTag(Player player) {
-        if (!isEnemy(player)) {
+        if (!isEnemy(player) || deathTagItem.isPlaceholder()) {
             return false;
         }
 
