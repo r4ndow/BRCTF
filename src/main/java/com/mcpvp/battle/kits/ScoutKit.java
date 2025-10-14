@@ -38,7 +38,7 @@ import java.util.Map;
 public class ScoutKit extends BattleKit {
 
     private static final Duration SWAPPER_COOLDOWN_OTHERS = Duration.seconds(10);
-    private static final Duration SWAPPER_COOLDOWN_OWN = Duration.seconds(0.75);
+    private static final Duration SWAPPER_ITEM_COOLDOWN = Duration.seconds(1.5);
     private static final Duration TAG_COOLDOWN = Duration.seconds(15);
     private static final Map<Player, Expiration> COOLDOWN_MAP = new HashMap<>();
 
@@ -106,14 +106,17 @@ public class ScoutKit extends BattleKit {
         snowball.setVelocity(this.getPlayer().getEyeLocation().getDirection().multiply(velocity));
 
         this.attach(new InteractiveProjectile(this.getPlugin(), snowball)
-            .singleEventOnly()
-            .onDeath(this.swapper::restore)
-            .onHitPlayer(this::attemptSwap)
+            .onDamageEvent(event -> {
+                event.setCancelled(true);
+                if (event.getEntity() instanceof Player hit) {
+                    this.attemptSwap(hit);
+                }
+            })
         );
     }
 
     private void attemptSwap(Player player) {
-        if (!this.isEnemy(player) || this.swapper.isPlaceholder()) {
+        if (!this.isEnemy(player)) {
             return;
         }
 
@@ -159,6 +162,12 @@ public class ScoutKit extends BattleKit {
         String nearby = this.getGame().findClosestCallout(swapped.getLocation()).map(callout ->
             C.GRAY + " (near " + callout.getText() + C.GRAY + ")"
         ).orElse("");
+
+        if (this.getGame().getTeamManager().getTeams().stream().noneMatch(bt ->
+            bt.getFlag().getCarrier() == swapped
+        )) {
+            return;
+        }
 
         EntityUtil.getNearbyEntities(swapped.getLocation(), Player.class, 20).forEach(player -> {
             if (player != swapped) {
@@ -240,13 +249,15 @@ public class ScoutKit extends BattleKit {
             super(
                 ScoutKit.this,
                 ItemBuilder.of(Material.SLIME_BALL).name("Swapper").build(),
-                SWAPPER_COOLDOWN_OWN
+                SWAPPER_ITEM_COOLDOWN
             );
         }
 
         @Override
         protected void onUse(PlayerInteractEvent event) {
-            ScoutKit.this.throwSwapperBall();
+            if (!this.isPlaceholder()) {
+                ScoutKit.this.throwSwapperBall();
+            }
         }
 
     }

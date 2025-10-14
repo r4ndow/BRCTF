@@ -80,7 +80,7 @@ public class ArcherKit extends BattleKit {
             .singleEventOnly()
             .onDamageEvent(this::onHit)
         );
-        this.attach(event.getEntity());
+        this.attach(event.getProjectile());
 
         // Keep the arrow stacks in sync
         List.of(this.arrows1, this.arrows2).forEach(kitItem -> {

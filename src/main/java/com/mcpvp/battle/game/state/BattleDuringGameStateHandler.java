@@ -9,7 +9,10 @@ import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitSelectedEvent;
 import com.mcpvp.common.chat.C;
+import com.mcpvp.common.task.EasyTask;
+import com.mcpvp.common.util.PlayerUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -21,6 +24,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +78,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
+        event.getEntity().setHealth(event.getEntity().getMaxHealth());
         event.setKeepInventory(false);
         event.setKeepLevel(false);
         event.setNewExp(0);
@@ -109,6 +115,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     public void onRespawn(PlayerRespawnEvent event) {
         // This should not happen, but just to be safe...
         if (this.game.isParticipant(event.getPlayer())) {
+            System.out.println("Respawned?");
             this.game.respawn(event.getPlayer(), false, true);
         }
     }

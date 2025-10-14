@@ -2,6 +2,7 @@ package com.mcpvp.common;
 
 import com.mcpvp.common.event.EasyListener;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashSet;
@@ -52,6 +53,10 @@ public class EasyLifecycle {
      * @param entity The entity to attach.
      */
     protected void attach(Entity entity) {
+        if (entity instanceof Player) {
+            throw new IllegalArgumentException("Player entity cannot be attached");
+        }
+
         this.entities.add(entity);
     }
 

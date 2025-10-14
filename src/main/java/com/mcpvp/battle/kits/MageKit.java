@@ -136,7 +136,8 @@ public class MageKit extends BattleKit {
                     FireworkEffect effect = FireworkEffect.builder()
                         .with(FireworkEffect.Type.BALL)
                         .withColor(
-                            MageKit.this.getGame().getTeamManager().getTeam(MageKit.this.getPlayer()).getColor().getColor(), Color.PURPLE
+                            MageKit.this.getGame().getTeamManager().getTeam(MageKit.this.getPlayer()).getColor().getColor(),
+                            Color.PURPLE
                         )
                         .build();
 

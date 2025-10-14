@@ -19,6 +19,7 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.kit.Kit;
+import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.util.PlayerUtil;
 import lombok.Getter;
 import lombok.NonNull;
@@ -140,38 +141,40 @@ public class BattleGame extends EasyLifecycle {
             });
         }
 
-        // Reset negative statues
-        player.setHealth(player.getMaxHealth());
-        PlayerUtil.setAbsorptionHearts(player, 0);
-        player.setFireTicks(0);
-        player.setExp(0);
-
-        // Clear inventory
-        player.getInventory().clear();
-        player.getInventory().setArmorContents(new ItemStack[4]);
-        player.getActivePotionEffects().stream().map(PotionEffect::getType).forEach(player::removePotionEffect);
-
         // Teleport to spawn
         if (respawn) {
             BattleTeam team = this.getTeamManager().getTeam(player);
             Location spawn = this.getConfig().getTeamConfig(team).getSpawn();
-            player.teleport(spawn.clone().add(0, 0.1, 0));
+
+            player.setHealth(player.getMaxHealth());
+            player.setFireTicks(0);
+            player.setExp(0);
+            PlayerUtil.setAbsorptionHearts(player, 0);
+
+            // Clear inventory
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(new ItemStack[4]);
+            player.getActivePotionEffects().stream().map(PotionEffect::getType).forEach(player::removePotionEffect);
+
+            player.setHealth(player.getMaxHealth());
+            player.teleport(spawn);
+            player.setVelocity(new Vector());
+
+            EasyTask.of(() -> {
+                if (!player.isOnline()) {
+                    return;
+                }
+
+                // A small amount of velocity carries over for some reason
+                player.setVelocity(new Vector());
+
+                // Kit application needs to be done later due to inventory clearing
+                this.battle.getKitManager().createSelected(player);
+
+                // Respawn is finished
+                new GameRespawnEvent(player).call();
+            }).runTaskLater(this.getPlugin(), 0);
         }
-
-        // Players must be teleported immediately on death to avoid the death screen
-        // But there needs to be a tick delay before equipping the kit due to inventory resets
-        this.attach(Bukkit.getScheduler().runTask(this.plugin, () -> {
-            if (!player.isOnline()) {
-                return;
-            }
-
-            this.battle.getKitManager().createSelected(player);
-
-            // Velocity also carries over for some reason
-            player.setVelocity(new Vector(0, 0.1, 0));
-
-            new GameRespawnEvent(player).call();
-        }));
     }
 
     public void remove(Player player) {

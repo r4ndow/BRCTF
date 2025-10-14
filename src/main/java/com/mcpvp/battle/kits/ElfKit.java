@@ -169,7 +169,7 @@ public class ElfKit extends BattleKit {
         @EventHandler
         public void onTick(TickEvent event) {
             if (this.isItem(ElfKit.this.getPlayer().getItemInHand())) {
-                if (this.getItem().getType() != Material.BOW) {
+                if (this.getItem().getType() != Material.BOW && !isPlaceholder()) {
                     this.modify(item -> item.type(Material.BOW));
                 }
             } else {
@@ -187,9 +187,7 @@ public class ElfKit extends BattleKit {
 
             this.onShoot(event);
             ElfKit.this.attach(new InteractiveProjectile(this.getPlugin(), (Projectile) event.getProjectile())
-                .singleEventOnly()
                 .onHitEvent(ev -> this.onLand(ev.getEntity().getLocation(), event))
-                .onDeath(() -> this.onLand(event.getProjectile().getLocation(), event))
                 .onDamageEvent(ev -> {
                     if (ev.getEntity() instanceof Player hit) {
                         this.onHit(hit, event, ev);
@@ -278,7 +276,6 @@ public class ElfKit extends BattleKit {
         @Override
         public void onHit(Player hit, EntityShootBowEvent shootEvent, EntityDamageByEntityEvent damageEvent) {
             this.onLand(damageEvent.getDamager().getLocation(), shootEvent);
-            log.info("Wind element hit, cancel damage");
             damageEvent.setCancelled(true);
         }
 
@@ -364,14 +361,21 @@ public class ElfKit extends BattleKit {
 
     class WaterElement extends Element {
 
+        private static final Duration COOLDOWN = Duration.seconds(15);
+
         public WaterElement() {
-            super(ItemBuilder.of(new ItemStack(Material.INK_SACK, 1, DyeColor.BLUE.getDyeData())).name("Water Element").build());
+            super(ItemBuilder.of(
+                new ItemStack(Material.INK_SACK, 1, DyeColor.BLUE.getDyeData())
+            ).name("Water Element").build());
         }
 
         @Override
         public void onShoot(EntityShootBowEvent event) {
             super.onShoot(event);
             EffectUtil.trail(event.getProjectile(), new ParticlePacket(EnumParticle.WATER_SPLASH).count(20)).runTaskTimer(this.getPlugin(), 0, 1);
+
+            ElfKit.this.attach(EasyTask.of(this::restore).runTaskLater(this.getPlugin(), COOLDOWN.ticks()));
+            this.setPlaceholder();
         }
 
         @Override
