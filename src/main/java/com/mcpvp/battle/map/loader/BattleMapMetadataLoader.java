@@ -1,4 +1,4 @@
-package com.mcpvp.battle.map.parser;
+package com.mcpvp.battle.map.loader;
 
 import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleGameConfig;

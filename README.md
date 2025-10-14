@@ -31,11 +31,13 @@ java -jar paper-1.8.8-455.jar
 
 To stop the server, type `stop` into the console. Within the folder that you made, you should now have a folder called `plugins`. If so, you can proceed:
 
-- Open that folder and place the mcctf JAR as well as all the other plugin JARs into that folder.
-- Create a new folder called `ctf`, then a folder called `maps` in that directory.
+- Open that directory. Place the mcctf JAR in there.
+- Create a new folder called `ctf`, then a folder called `maps` in that directory (or adjust it as described below).
 - Unzip the map archive into that maps folder. See below for an example.
 - Start the server and hope everything works.
-- Make sure to turn off spawn protection in the Minecraft server settings.
+- Make the following adjustments:
+  - In `server.properties`, change `spawn-protection` to `0`
+  - In `spigot.yml`, change `moved-wrongly-threshold` to `1` and `moved-too-quickly-threshold` to `200` 
 
 ### Example File Layout
 
@@ -51,10 +53,6 @@ documents/
 │  │  │  │  ├─ ...etc
 │  ├─ paper-1.8.8-445.jar
 ```
-
-## Known Issues
-
-- Ninjas cannot be damaged by projectiles while invisible
 
 # Configuration
 
@@ -72,7 +70,7 @@ Maps can be pulled from a "map source", configured in the `maps.sources` array i
 }
 ```
 
-The second type of map source, is where each map file has its own `ctf.json` configuration. For example:
+The second type of map source is where each map file has its own `ctf.json` configuration. For example:
 
 ```
 custom_maps_here/

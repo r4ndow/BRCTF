@@ -1,4 +1,4 @@
-package com.mcpvp.battle.map.parser;
+package com.mcpvp.battle.map.loader;
 
 import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleGameConfig;
@@ -88,18 +88,23 @@ public class BattleMapSignLoader implements BattleMapLoader {
         builder.getTeamConfigs().add(new BattleTeamConfig(1));
         builder.getTeamConfigs().add(new BattleTeamConfig(2));
 
-        // Step 1: find center of the map
-        // By default, we assume it's getSpawnLocation
+        // By default, we assume the center of the map is getSpawnLocation
         // But a `spawn_box` sign should override this
-
-        // Assume spawn, load chunks
-        // Check for new center, detect if changed
-        // If changed: reload new chunks, process
-        // Otherwise: keep old chunk list, process
         Location assumedCenter = world.getSpawnLocation();
         List<ChunkSnapshot> chunks = this.getChunkSnapshotsAround(assumedCenter, 16);
         chunks.forEach(cs -> this.highlightChunk(cs, world));
         List<MapSign> signs = this.getAllMapSigns(chunks);
+
+        if (signs.isEmpty()) {
+            throw new IllegalStateException(
+                "No signs were found within 16 chunks of the map's world spawn. " +
+                "This usually indicates that the spawn set on the map is incorrect and needs to be relocated. " +
+                "The current spawn is set at: (x=%s, y=%s, z=%s).".formatted(
+                    world.getSpawnLocation().getX(), world.getSpawnLocation().getY(), world.getSpawnLocation().getZ()
+                ));
+        }
+
+        // Check for a spawn_box sign, which will trigger searching for signs again
         Optional<MapSign> spawnBox = signs
             .stream()
             .filter(ms -> ms instanceof SimpleMapSign sms && sms.getText().equals("spawn_box"))
@@ -116,6 +121,10 @@ public class BattleMapSignLoader implements BattleMapLoader {
         }
 
         this.loadSignsIntoConfig(builder, signs);
+
+        signs.forEach(sign ->
+            sign.getBlock().setType(Material.AIR)
+        );
 
         return builder;
     }
@@ -254,7 +263,7 @@ public class BattleMapSignLoader implements BattleMapLoader {
     }
 
     private void highlightChunk(ChunkSnapshot snapshot, World world) {
-        world.getChunkAt(snapshot.getX(), snapshot.getZ()).getBlock(10, 128, 10).setType(Material.DIAMOND_BLOCK);
+//        world.getChunkAt(snapshot.getX(), snapshot.getZ()).getBlock(10, 128, 10).setType(Material.DIAMOND_BLOCK);
     }
 
     private Location center(Location loc) {
