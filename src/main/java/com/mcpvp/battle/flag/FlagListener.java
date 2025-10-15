@@ -121,59 +121,6 @@ public class FlagListener implements EasyListener {
             }
         }
 
-//        game.getTeamManager().getTeams().forEach(bt -> {
-//            if (!bt.getFlag().isItem(event.getItem().getItemStack())) {
-//                return;
-//            }
-//
-//            // Always cancel picking up the item for simplicity
-//            event.setCancelled(true);
-//
-//            if (bt.getFlag().getCarrier() != null) {
-//                return;
-//            }
-//
-//            if (bt != playerTeam) {
-//                if (bt.getFlag().isHome()) {
-//                    bt.getFlagManager().attemptSteal(event.getPlayer());
-//                } else {
-//                    if (bt.getFlag().getPickupExpiration().isExpired() && !bt.getFlag().isGhostFlag(event.getItem().getItemStack())) {
-//                        bt.getFlagManager().pickup(event.getPlayer());
-//                    }
-//                }
-//            } else if (!bt.getFlag().isHome()) {
-//                bt.getFlagManager().recover(event.getPlayer());
-//            }
-//        });
-    }
-
-//    @EventHandler
-    public void onCapture(PlayerPickupItemEvent event) {
-        if (!this.isFlag(event.getItem().getItemStack())) {
-            return;
-        }
-
-        // Ensure the player is carrying a flag
-        Optional<BattleTeam> carried = this.game.getTeamManager().getTeams().stream()
-            .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
-            .findFirst();
-
-        if (carried.isEmpty()) {
-            return;
-        }
-
-        // Ensure the player's flag is home
-        BattleTeam playerTeam = this.game.getTeamManager().getTeam(event.getPlayer());
-
-        if (!playerTeam.getFlag().isHome()) {
-            return;
-        }
-
-        if (!playerTeam.getFlag().isItem(event.getItem().getItemStack())) {
-            return;
-        }
-
-        carried.get().getFlagManager().capture(event.getPlayer(), playerTeam);
     }
 
     @EventHandler(ignoreCancelled = true)

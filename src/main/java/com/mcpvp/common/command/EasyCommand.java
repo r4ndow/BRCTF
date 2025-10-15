@@ -59,6 +59,9 @@ public abstract class EasyCommand extends Command {
 
     @Override // Overrides Command
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!sender.isOp()) {
+            super.testPermission(sender);
+        }
         return this.onCommand(sender, commandLabel, Arrays.asList(args));
     }
 

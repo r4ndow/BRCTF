@@ -39,6 +39,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         public JumpCommand() {
             super("jump");
+            this.setPermission("mcctf.flag.jump");
         }
 
         @Override
@@ -60,6 +61,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         public LockCommand() {
             super("lock");
+            this.setPermission("mcctf.flag.lock");
         }
 
         @Override
@@ -81,6 +83,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         public UnlockCommand() {
             super("unlock");
+            this.setPermission("mcctf.flag.unlock");
         }
 
         @Override
@@ -102,6 +105,7 @@ public class FlagCommands extends BattleCommandGroup {
 
         public ResetCommand() {
             super("reset");
+            this.setPermission("mcctf.flag.reset");
         }
 
         @Override

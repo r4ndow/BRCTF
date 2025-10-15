@@ -78,6 +78,7 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         protected DisableCommand() {
             super("disable");
+            this.setPermission("mcctf.kits.disable");
         }
 
         @Override
@@ -104,6 +105,7 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         protected EnableCommand() {
             super("enable");
+            this.setPermission("mcctf.kits.enable");
         }
 
         @Override
@@ -130,6 +132,7 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         public LimitCommands() {
             super("limit");
+            this.setPermission("mcctf.kits.limit");
             this.addCommand(new SetCommand());
             this.addCommand(new RemoveCommand());
         }

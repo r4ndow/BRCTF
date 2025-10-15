@@ -23,6 +23,7 @@ public class TimerCommand extends BattleCommandGroup {
 
         public SetCommand() {
             super("set");
+            this.setPermission("mcctf.timer.set");
         }
 
         @Override
@@ -46,6 +47,7 @@ public class TimerCommand extends BattleCommandGroup {
 
         public LockCommand() {
             super("lock");
+            this.setPermission("mcctf.timer.lock");
         }
 
         @Override
@@ -60,6 +62,7 @@ public class TimerCommand extends BattleCommandGroup {
 
         public UnlockCommand() {
             super("unlock");
+            this.setPermission("mcctf.timer.unlock");
         }
 
         @Override
@@ -70,11 +73,11 @@ public class TimerCommand extends BattleCommandGroup {
 
     }
 
-
     public class SkipCommand extends BattleCommand {
 
         public SkipCommand() {
             super("skip");
+            this.setPermission("mcctf.timer.skip");
         }
 
         @Override

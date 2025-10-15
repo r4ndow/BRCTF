@@ -91,11 +91,6 @@ public interface IBattleFlag {
     Location getHome();
 
     /**
-     * Triggers an update of the flag's state and can do things such as recoloring on the fly.
-     */
-    void update();
-
-    /**
      * @return The team that this flag belongs to.
      */
     BattleTeam getTeam();

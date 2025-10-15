@@ -39,6 +39,7 @@ public class MapCommands extends BattleCommandGroup {
 
         public OverrideCommand() {
             super("override");
+            this.setPermission("mcctf.map.override");
         }
 
         @Override
@@ -61,6 +62,7 @@ public class MapCommands extends BattleCommandGroup {
 
         public NextCommand() {
             super("next");
+            this.setPermission("mcctf.map.next");
         }
 
         @Override

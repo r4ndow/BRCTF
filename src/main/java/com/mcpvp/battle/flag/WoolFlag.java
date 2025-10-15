@@ -90,18 +90,6 @@ public class WoolFlag extends AbstractFlag {
     }
 
     @Override
-    public void update() {
-        if (this.isHome()) {
-            this.placeFlag();
-        } else if (this.dropped != null) {
-            this.dropped.setItemStack(this.getItem());
-        } else if (this.getCarrier() != null) {
-            this.getCarrier().getInventory().all(Material.WOOL).forEach((s, i) -> this.getCarrier().getInventory().setItem(s, this.getItem()));
-            this.getCarrier().updateInventory();
-        }
-    }
-
-    @Override
     public boolean isGhostFlag(ItemStack item) {
         return item.getType() == Material.WOOL && item.getDurability() == DyeColor.WHITE.getData();
     }
