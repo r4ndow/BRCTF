@@ -4,3 +4,12 @@ description: The classic MCPVP plugin reborn
 author: NomNuggetNom
 main: com.mcpvp.battle.BattlePlugin
 depend: []
+commands:
+  flag jump:
+    description: Jump to a flag
+    usage: /flag jump <team>
+    permission: mcctf.flag.jump
+  mcctf:
+    description: Permission test
+    usage: /mcctf
+    permission: mcctf.test

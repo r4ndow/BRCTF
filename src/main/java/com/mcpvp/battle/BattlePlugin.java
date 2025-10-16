@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,12 +51,23 @@ public class BattlePlugin extends JavaPlugin {
         new KitCommand(this.battle.getKitManager()).register();
         new KitManagerCommands(this.battle.getKitManager()).register();
         new MapCommands(this.battle).register();
-        new StartCommand(this.battle).register();
         new SwitchCommand(this.battle).register();
         new TimerCommand(this.battle).register();
         new YellCommand().register();
 
         QuickCommands.registerAll(this.battle);
+
+        this.getCommand("mcctf").setExecutor(new McctfCommand());
+    }
+
+    public static class McctfCommand implements CommandExecutor {
+
+        @Override
+        public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+            commandSender.sendMessage("nice");
+            return false;
+        }
+
     }
 
 }
