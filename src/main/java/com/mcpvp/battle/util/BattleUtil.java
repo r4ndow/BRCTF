@@ -21,4 +21,9 @@ public class BattleUtil {
         return ItemBuilder.of(Material.WOOL).color(color).build();
     }
 
+    public static ItemStack getColoredBanner(DyeColor color) {
+        //noinspection deprecation
+        return new ItemStack(Material.BANNER, 1, color.getDyeData());
+    }
+
 }

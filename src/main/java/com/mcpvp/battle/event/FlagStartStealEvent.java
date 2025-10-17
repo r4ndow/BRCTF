@@ -1,6 +1,6 @@
 package com.mcpvp.battle.event;
 
-import com.mcpvp.battle.flag.IBattleFlag;
+import com.mcpvp.battle.flag.BattleFlag;
 import com.mcpvp.common.event.EasyCancellableEvent;
 import com.mcpvp.common.time.Duration;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 public class FlagStartStealEvent extends EasyCancellableEvent {
 
     private final Player player;
-    private final IBattleFlag flag;
+    private final BattleFlag flag;
     private Duration requiredStealTime;
 
 }

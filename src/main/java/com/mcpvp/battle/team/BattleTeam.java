@@ -1,13 +1,13 @@
 package com.mcpvp.battle.team;
 
 import com.mcpvp.battle.config.BattleTeamConfig;
+import com.mcpvp.battle.flag.BattleFlag;
 import com.mcpvp.battle.flag.FlagManager;
-import com.mcpvp.battle.flag.IBattleFlag;
-import com.mcpvp.battle.flag.WoolFlag;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.chat.Colors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -27,17 +27,17 @@ public class BattleTeam {
     private final BattleTeamConfig config;
     private String name;
     private Colors color;
-    private IBattleFlag flag;
-    private FlagManager flagManager;
     private int captures;
+    @Setter
+    private BattleFlag flag;
+    @Setter
+    private FlagManager flagManager;
 
     public BattleTeam(int id, String name, Colors color, BattleTeamConfig config) {
         this.id = id;
         this.name = name;
         this.color = color;
         this.config = config;
-        this.flag = new WoolFlag(this, config.getFlag());
-        this.flagManager = new FlagManager(this.flag);
     }
 
     void add(Player player) {

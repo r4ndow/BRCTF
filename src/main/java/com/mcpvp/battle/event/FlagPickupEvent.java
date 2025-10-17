@@ -1,6 +1,6 @@
 package com.mcpvp.battle.event;
 
-import com.mcpvp.battle.flag.IBattleFlag;
+import com.mcpvp.battle.flag.BattleFlag;
 import org.bukkit.entity.Player;
 
 /**
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
  */
 public class FlagPickupEvent extends FlagTakeEvent {
 
-    public FlagPickupEvent(Player player, IBattleFlag flag) {
+    public FlagPickupEvent(Player player, BattleFlag flag) {
         super(player, flag);
     }
 

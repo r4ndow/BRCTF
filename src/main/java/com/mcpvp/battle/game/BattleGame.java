@@ -7,9 +7,7 @@ import com.mcpvp.battle.config.BattleGameConfig;
 import com.mcpvp.battle.chat.BattleDeathMessageHandler;
 import com.mcpvp.battle.event.GameRespawnEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
-import com.mcpvp.battle.flag.FlagListener;
-import com.mcpvp.battle.flag.FlagMessageBroadcaster;
-import com.mcpvp.battle.flag.FlagStatsListener;
+import com.mcpvp.battle.flag.*;
 import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
 import com.mcpvp.battle.game.state.BattleGameStateHandler;
 import com.mcpvp.battle.game.state.BattleOutsideGameStateHandler;
@@ -67,6 +65,26 @@ public class BattleGame extends EasyLifecycle {
         this.attach(new FlagMessageBroadcaster(this.plugin));
         this.attach(new FlagStatsListener(this.plugin, this));
         this.attach(this.scoreboardManager);
+
+        switch (this.getBattle().getOptions().getGame().getFlagType()) {
+            case WOOL: {
+                this.teamManager.getTeams().forEach(bt -> {
+                    WoolFlag flag = new WoolFlag(this.plugin, bt);
+                    this.attach(flag);
+                    bt.setFlag(flag);
+                    bt.setFlagManager(new FlagManager(flag));
+                });
+                break;
+            }
+            case BANNER: {
+                this.teamManager.getTeams().forEach(bt -> {
+                    BannerFlag flag = new BannerFlag(this.plugin, bt);
+                    this.attach(flag);
+                    bt.setFlag(flag);
+                    bt.setFlagManager(new FlagManager(flag));
+                });
+            }
+        }
 
         this.scoreboardManager.init();
 

@@ -6,8 +6,12 @@ import com.mcpvp.battle.config.BattleTeamConfig;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.common.util.LookUtil;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Skull;
+import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +48,15 @@ public class BattleMapMetadataLoader implements BattleMapLoader {
                         }
                         case "Chest" -> {
                             Location loc = this.parseLocation(value, world).add(0.5, 1, 0.5);
+                            Block skull = this.parseLocation(value, world).getBlock().getRelative(BlockFace.UP);
+
+                            if (skull.getState() instanceof Skull s) {
+                                Location targ = skull.getRelative(s.getRotation()).getLocation();
+                                Vector dir = LookUtil.lookAt(loc, targ).getDirection();
+                                loc.setDirection(dir);
+                                loc.getBlock().setType(Material.AIR);
+                            }
+
                             config.setFlag(loc);
                             builder.getCallouts().add(new BattleCallout(loc, config, "flag"));
                         }

@@ -14,14 +14,14 @@ import java.util.Map;
 
 /**
  * Entrypoint for controlling flag mechanics and triggering flag events.
- * Called primarily from {@link FlagListener}.
+ * Called primarily from {@link FlagListener}. This is independent of the flag type.
  */
 @RequiredArgsConstructor
 public class FlagManager {
 
     private static final Duration FLAG_STEAL_TIMER = Duration.milliseconds(200);
 
-    private final IBattleFlag flag;
+    private final BattleFlag flag;
     private final Map<Player, Expiration> stealTimers = new HashMap<>();
 
     /**

@@ -57,7 +57,7 @@ public class BattlePlugin extends JavaPlugin {
 
         QuickCommands.registerAll(this.battle);
 
-        this.getCommand("mcctf").setExecutor(new McctfCommand());
+//        this.getCommand("mcctf").setExecutor(new McctfCommand());
     }
 
     public static class McctfCommand implements CommandExecutor {

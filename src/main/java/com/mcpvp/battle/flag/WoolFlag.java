@@ -3,13 +3,20 @@ package com.mcpvp.battle.flag;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.util.BattleUtil;
 import com.mcpvp.common.item.ItemBuilder;
+import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
+import org.bukkit.event.entity.ItemMergeEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
@@ -17,17 +24,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class WoolFlag extends AbstractFlag {
+public class WoolFlag extends BattleFlag {
 
+    @Getter
+    private final Plugin plugin;
     private final Location spawn;
     private final List<Item> visuals = new ArrayList<>();
     @NonNull
     private final Item home;
     private Item dropped;
 
-    public WoolFlag(BattleTeam team, Location spawn) {
+    public WoolFlag(Plugin plugin, BattleTeam team) {
         super(team);
-        this.spawn = spawn;
+        this.plugin = plugin;
+        this.spawn = team.getConfig().getFlag();
         this.home = BattleUtil.spawnWool(this.getHome(), this.getItem());
     }
 
@@ -47,6 +57,24 @@ public class WoolFlag extends AbstractFlag {
     }
 
     @Override
+    public void removeEntity() {
+        if (this.dropped != null) {
+            this.dropped.remove();
+            this.dropped = null;
+        }
+    }
+
+    @Override
+    public void placeGhost() {
+        this.home.setItemStack(ItemBuilder.of(this.getItem().clone()).color(DyeColor.WHITE).build());
+    }
+
+    @Override
+    public void placeFlag() {
+        this.home.setItemStack(this.getItem());
+    }
+
+    @Override
     public boolean isHome() {
         return this.getCarrier() == null && this.dropped == null;
     }
@@ -57,29 +85,11 @@ public class WoolFlag extends AbstractFlag {
     }
 
     @Override
-    public void removeEntity() {
-        if (this.dropped != null) {
-            this.dropped.remove();
-            this.dropped = null;
-        }
-    }
-
-    @Override
-    public void placeFlag() {
-        this.home.setItemStack(this.getItem());
-    }
-
-    @Override
-    public void placeGhost() {
-        this.home.setItemStack(ItemBuilder.of(this.getItem().clone()).color(DyeColor.WHITE).build());
-    }
-
-    @Override
     public Location getLocation() {
         if (this.getCarrier() != null) {
             return this.getCarrier().getLocation();
         } else if (this.dropped != null) {
-            return this.dropped.getLocation().clone().add(0, 1.8, 0);
+            return this.dropped.getLocation();
         }
         return this.getHome();
     }
@@ -89,10 +99,6 @@ public class WoolFlag extends AbstractFlag {
         return this.spawn;
     }
 
-    @Override
-    public boolean isGhostFlag(ItemStack item) {
-        return item.getType() == Material.WOOL && item.getDurability() == DyeColor.WHITE.getData();
-    }
 
     @Override
     protected ItemStack getItem() {
@@ -137,6 +143,46 @@ public class WoolFlag extends AbstractFlag {
             }
             return false;
         });
+    }
+
+    @EventHandler
+    public void onPickupVisuals(PlayerPickupItemEvent event) {
+        if (this.isItem(event.getItem().getItemStack())|| this.visuals.contains(event.getItem())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemMerge(ItemMergeEvent event) {
+        if (this.isItem(event.getEntity().getItemStack())) {
+            event.setCancelled(true);
+        }
+
+        // For the visual stream of wool above the players head
+        if (this.visuals.contains(event.getEntity())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemCombust(EntityCombustEvent event) {
+        if (event.getEntity() instanceof Item item && this.isItem(item.getItemStack())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onFlagDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Item item && this.isItem(item.getItemStack())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemDespawn(ItemDespawnEvent event) {
+        if (this.isItem(event.getEntity().getItemStack())) {
+            event.setCancelled(true);
+        }
     }
 
 }

@@ -56,6 +56,8 @@ public class BattleOptionsInput {
         private int secondsBeforeGame = 30;
         @Builder.Default
         private int secondsAfterGame = 15;
+        @Builder.Default
+        private final FlagType flagType = FlagType.WOOL;
 
     }
 
@@ -130,6 +132,10 @@ public class BattleOptionsInput {
         @Builder.Default
         private final int runId = 1;
 
+    }
+
+    public enum FlagType {
+        WOOL, BANNER
     }
 
 }

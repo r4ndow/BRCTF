@@ -1,6 +1,6 @@
 package com.mcpvp.battle.event;
 
-import com.mcpvp.battle.flag.IBattleFlag;
+import com.mcpvp.battle.flag.BattleFlag;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.EasyEvent;
 import lombok.Data;
@@ -13,6 +13,6 @@ public class FlagCaptureEvent extends EasyEvent {
 
     private final Player player;
     private final BattleTeam playerTeam;
-    private final IBattleFlag capturedFlag;
+    private final BattleFlag capturedFlag;
 
 }

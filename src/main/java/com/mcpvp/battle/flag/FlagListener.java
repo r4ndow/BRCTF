@@ -6,25 +6,15 @@ import com.mcpvp.battle.event.FlagTakeEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.time.Duration;
-import com.mcpvp.common.chat.C;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityCombustEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Optional;
 
 /**
  * Listens for flag interactions and calls {@link FlagManager}.
@@ -40,17 +30,61 @@ public class FlagListener implements EasyListener {
 
     @EventHandler
     public void onTick(TickEvent event) {
-        // Flag timer restoration
-        this.game.getTeamManager().getTeams().forEach(bt -> {
-            IBattleFlag flag = bt.getFlag();
-            if (flag.isDropped() && flag.getRestoreExpiration().isExpired()) {
-                bt.getFlagManager().restore();
-            }
+        this.processRestoration(event);
+        this.resetStealTimers();
+        this.dealFlagPoison(event);
+        this.processSteals();
+    }
 
-            flag.onTick(event.getTick());
+    private void processSteals() {
+        this.game.getTeamManager().getTeams().forEach(flagTeam -> {
+            BattleFlag flag = flagTeam.getFlag();
+
+            this.game.getParticipants()
+                .stream()
+                .filter(player ->
+                    player.getLocation().distance(flag.getLocation()) <= FLAG_DIST
+                ).forEach(player -> {
+                    BattleTeam playerTeam = this.game.getTeamManager().getTeam(player);
+
+                    if (flagTeam != playerTeam) {
+                        if (flag.isHome()) {
+                            flagTeam.getFlagManager().attemptSteal(player);
+                        } else if (flag.isDropped() && flag.getPickupExpiration().isExpired()) {
+                            flagTeam.getFlagManager().pickup(player);
+                        }
+                    } else {
+                        if (!flag.isHome()) {
+                            flagTeam.getFlagManager().recover(player);
+                        } else {
+                            this.game.getTeamManager().getTeams().stream()
+                                .filter(bt -> bt.getFlag().getCarrier() == player)
+                                .forEach(bt -> {
+                                    bt.getFlagManager().capture(player, playerTeam);
+                                });
+                        }
+                    }
+                });
         });
+    }
 
-        // Steal related processing
+    private void dealFlagPoison(TickEvent event) {
+        if (event.isInterval(Duration.seconds(15))) {
+            this.game.getTeamManager().getTeams().stream().map(BattleTeam::getFlag).forEach(flag -> {
+                if (flag.getCarrier() != null) {
+                    if (!new FlagPoisonEvent(flag.getCarrier()).callIsCancelled()) {
+                        String message = "%s%s flag poisoned you!".formatted(
+                            C.warn(C.RED), flag.getTeam().getColoredName() + C.GRAY
+                        );
+                        flag.getCarrier().sendMessage(message);
+                        flag.getCarrier().damage(3);
+                    }
+                }
+            });
+        }
+    }
+
+    private void resetStealTimers() {
         for (Player player : this.game.getParticipants()) {
             BattleTeam team = this.game.getTeamManager().getTeam(player);
             if (team == null) {
@@ -68,59 +102,17 @@ public class FlagListener implements EasyListener {
                 }
             }
         }
-
-        // Flag poison every 15 seconds
-        if (event.isInterval(Duration.seconds(15))) {
-            this.game.getTeamManager().getTeams().stream().map(BattleTeam::getFlag).forEach(flag -> {
-                if (flag.getCarrier() != null) {
-                    if (!new FlagPoisonEvent(flag.getCarrier()).callIsCancelled()) {
-                        String message = "%s%s flag poisoned you!".formatted(
-                            C.warn(C.RED), flag.getTeam().getColoredName() + C.GRAY
-                        );
-                        flag.getCarrier().sendMessage(message);
-                        flag.getCarrier().damage(3);
-                    }
-                }
-            });
-        }
     }
 
-    @EventHandler
-    public void onPickup(PlayerPickupItemEvent event) {
-        BattleTeam playerTeam = this.game.getTeamManager().getTeam(event.getPlayer());
-
-        // Make sure there is a relevant team and that the involved flag isn't the ghost/placeholder
-        BattleTeam flagTeam = this.getTeamForFlag(event.getItem().getItemStack())
-            .filter(bt -> !bt.getFlag().isGhostFlag(event.getItem().getItemStack()))
-            .orElse(null);
-
-        if (flagTeam == null) {
-            return;
-        }
-
-        IBattleFlag flag = flagTeam.getFlag();
-
-        // Always cancel picking up the item for simplicity
-        event.setCancelled(true);
-
-        if (flagTeam != playerTeam) {
-            if (flag.isHome()) {
-                flagTeam.getFlagManager().attemptSteal(event.getPlayer());
-            } else if (flag.getPickupExpiration().isExpired()) {
-                flagTeam.getFlagManager().pickup(event.getPlayer());
+    private void processRestoration(TickEvent event) {
+        this.game.getTeamManager().getTeams().forEach(bt -> {
+            BattleFlag flag = bt.getFlag();
+            if (flag.isDropped() && flag.getRestoreExpiration().isExpired()) {
+                bt.getFlagManager().restore();
             }
-        } else {
-            if (!flag.isHome()) {
-                flagTeam.getFlagManager().recover(event.getPlayer());
-            } else {
-                this.game.getTeamManager().getTeams().stream()
-                    .filter(bt -> bt.getFlag().getCarrier() == event.getPlayer())
-                    .forEach(bt -> {
-                        bt.getFlagManager().capture(event.getPlayer(), playerTeam);
-                    });
-            }
-        }
 
+            flag.onTick(event.getTick());
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -149,62 +141,11 @@ public class FlagListener implements EasyListener {
     }
 
     @EventHandler
-    public void onPickupVisuals(PlayerPickupItemEvent event) {
-        // For the visual stream of wool above the players head
-        if (event.getItem().getItemStack().getType() == Material.WOOL) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemMerge(ItemMergeEvent event) {
-        if (this.isFlag(event.getEntity().getItemStack())) {
-            event.setCancelled(true);
-        }
-
-        // For the visual stream of wool above the players head
-        if (event.getEntity().getItemStack().getType() == Material.WOOL) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemDespawn(ItemDespawnEvent event) {
-        if (this.isFlag(event.getEntity().getItemStack())) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemCombust(EntityCombustEvent event) {
-        if (event.getEntity() instanceof Item item && this.isFlag(item.getItemStack())) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onFlagDamage(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Item item && this.isFlag(item.getItemStack())) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
     public void onFlagInVoid(TickEvent event) {
         this.game.getTeamManager().getTeams().stream()
             .map(BattleTeam::getFlag)
             .filter(flag -> flag.getLocation().getY() <= 0)
             .forEach(flag -> flag.getTeam().getFlagManager().restore());
-    }
-
-    private Optional<BattleTeam> getTeamForFlag(ItemStack itemStack) {
-        return this.game.getTeamManager().getTeams().stream()
-            .filter(bt -> bt.getFlag().isItem(itemStack))
-            .findAny();
-    }
-
-    private boolean isFlag(ItemStack itemStack) {
-        return this.getTeamForFlag(itemStack).isPresent();
     }
 
 }

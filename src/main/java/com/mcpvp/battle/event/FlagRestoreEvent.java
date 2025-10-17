@@ -1,6 +1,6 @@
 package com.mcpvp.battle.event;
 
-import com.mcpvp.battle.flag.IBattleFlag;
+import com.mcpvp.battle.flag.BattleFlag;
 import com.mcpvp.common.event.EasyEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +9,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class FlagRestoreEvent extends EasyEvent {
 
-    private final IBattleFlag flag;
+    private final BattleFlag flag;
 
 }
