@@ -46,10 +46,11 @@ public class BattlePlugin extends JavaPlugin {
         this.battle.start();
 
         this.getCommand("mcctf").setExecutor(new McctfCommand());
+        this.getCommand("flag").setExecutor(new FlagCommands(this.battle));
     }
 
     private void registerCommands() {
-        new FlagCommands(this.battle).register();
+//        new FlagCommands(this.battle).register();
         new KitCommand(this.battle.getKitManager()).register();
         new KitManagerCommands(this.battle.getKitManager()).register();
         new MapCommands(this.battle).register();

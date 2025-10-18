@@ -1,10 +1,13 @@
 name: mcctf
-version: 3.3.0
+version: 3.4.0
 description: The classic MCPVP plugin reborn
 author: NomNuggetNom
 main: com.mcpvp.battle.BattlePlugin
 depend: []
 commands:
+  flag:
+    description: Flag commands
+    usage: /<command>
   flag jump:
     description: Jump to a flag
     usage: /flag jump <team>
