@@ -137,36 +137,45 @@ public class NecroKit extends BattleKit {
     }
 
     private void explodeSkull(WitherSkull skull) {
-        // Negative particles
-        ParticlePacket wither = ParticlePacket.blockDust(Material.OBSIDIAN)
-            .at(skull.getLocation())
-            .spread(SKULL_EFFECT_RADIUS / 2)
-            .count(SKULL_EFFECT_RADIUS * 10);
-        this.getEnemies().forEach(wither::send);
+        // The shooter might change due to Elf reflection
+        if (!(skull.getShooter() instanceof Player shooter)) {
+            return;
+        }
 
-        // Positive particles
-        ParticlePacket absorption = ParticlePacket.blockDust(Material.GOLD_BLOCK)
+        ParticlePacket absorptionParticle = ParticlePacket.blockDust(Material.GOLD_BLOCK)
             .at(skull.getLocation())
             .spread(SKULL_EFFECT_RADIUS / 2)
             .count(SKULL_EFFECT_RADIUS * 10);
-        this.getTeammates().forEach(absorption::send);
+
+        ParticlePacket witherParticle = ParticlePacket.blockDust(Material.OBSIDIAN)
+            .at(skull.getLocation())
+            .spread(SKULL_EFFECT_RADIUS / 2)
+            .count(SKULL_EFFECT_RADIUS * 10);
 
         // Impact nearby players
-        EntityUtil.getNearbyEntities(skull.getLocation(), Player.class, SKULL_EFFECT_RADIUS).stream()
-            .filter(this.getGame()::isParticipant)
-            .filter(player -> !this.getGame().getTeamManager().getTeam(player).isInSpawn(player))
-            .forEach(player -> {
-                if (this.isTeammate(player)) {
+        this.getGame().getParticipants().forEach(player -> {
+            if (this.getGame().getTeamManager().getTeam(player).isInSpawn(player)) {
+                return;
+            }
+
+            boolean teammate = this.getGame().getTeamManager().isSameTeam(shooter, player);
+            if (teammate) {
+                absorptionParticle.send(player);
+                if (player.getLocation().distance(skull.getLocation()) <= SKULL_EFFECT_RADIUS) {
                     this.onSkullHitsTeammate(player);
-                } else {
+                }
+            } else {
+                witherParticle.send(player);
+                if (player.getLocation().distance(skull.getLocation()) <= SKULL_EFFECT_RADIUS) {
                     this.onSkullHitsEnemy(player);
                 }
-            });
+            }
+        });
 
         // Remove nearby webs
         this.getBattle().getStructureManager().getStructures().stream()
             .filter(structure -> structure instanceof MedicKit.MedicWeb)
-            .filter(structure -> this.isEnemy(structure.getOwner()))
+            .filter(structure -> !this.getGame().getTeamManager().isSameTeam(shooter, structure.getOwner()))
             .filter(structure -> structure.distance(skull.getLocation()) <= SKULL_EFFECT_RADIUS)
             .forEach(Structure::remove);
 

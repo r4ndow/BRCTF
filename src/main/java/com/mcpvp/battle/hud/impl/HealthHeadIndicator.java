@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin;
 public class HealthHeadIndicator extends HeadIndicator {
 
     public HealthHeadIndicator(Plugin plugin, Player observer) {
-        super(plugin, observer, "hp", C.RED + "\u2764");
+        super(plugin, observer, "hp", C.RED + "❤");
     }
 
     @Override

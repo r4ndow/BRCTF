@@ -26,15 +26,15 @@ The JAR file can be found in the releases tab. This is a standalone plugin that 
 Before you install the plugins, run the server on its own. Move the downloaded PaperMC JAR to its own folder, as it will create a lot of folders and files. Then open a command prompt, `cd` to that directory, and run the following console command:
 
 ```bash
-java -jar paper-1.8.8-455.jar
+java -jar paper-1.8.8-445.jar
 ```
 
 To stop the server, type `stop` into the console. Within the folder that you made, you should now have a folder called `plugins`. If so, you can proceed:
 
 - Open that directory. Place the mcctf JAR in there.
-- Create a new folder called `ctf`, then a folder called `maps` in that directory (or adjust it as described below).
+- Create a new folder called `mcctf`, then a folder called `maps` in that directory (or adjust it as described below).
 - Unzip the map archive into that maps folder. See below for an example.
-- Start the server and hope everything works.
+- Start the server and hope everything works. You will probably have to accept the EULA before the server will begin.
 - Make the following adjustments:
   - In `server.properties`, change `spawn-protection` to `0`
   - In `spigot.yml`, change `moved-wrongly-threshold` to `1` and `moved-too-quickly-threshold` to `200` 

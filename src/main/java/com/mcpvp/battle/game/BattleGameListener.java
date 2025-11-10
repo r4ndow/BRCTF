@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
@@ -250,8 +251,22 @@ public class BattleGameListener implements EasyListener {
     }
 
     @EventHandler
+    public void onMobDeath(EntityDeathEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            event.getDrops().clear();
+        }
+    }
+
+    @EventHandler
     public void onPickupArrow(PlayerPickupItemEvent event) {
         if (event.getItem().getItemStack().getType() == Material.ARROW) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onTrampleCrops(PlayerInteractEvent event) {
+        if (event.getAction() == Action.PHYSICAL && event.getClickedBlock().getType() == Material.SOIL) {
             event.setCancelled(true);
         }
     }

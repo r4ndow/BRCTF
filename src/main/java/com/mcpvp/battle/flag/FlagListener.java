@@ -44,6 +44,8 @@ public class FlagListener implements EasyListener {
                 .stream()
                 .filter(player ->
                     player.getLocation().distance(flag.getLocation()) <= FLAG_DIST
+                ).filter(player ->
+                    !this.game.getTeamManager().getTeam(player).isInSpawn(player)
                 ).forEach(player -> {
                     BattleTeam playerTeam = this.game.getTeamManager().getTeam(player);
 
@@ -54,9 +56,9 @@ public class FlagListener implements EasyListener {
                             flagTeam.getFlagManager().pickup(player);
                         }
                     } else {
-                        if (!flag.isHome()) {
+                        if (!flag.isHome() && flag.isDropped()) {
                             flagTeam.getFlagManager().recover(player);
-                        } else {
+                        } else if (flag.isHome()) {
                             this.game.getTeamManager().getTeams().stream()
                                 .filter(bt -> bt.getFlag().getCarrier() == player)
                                 .forEach(bt -> {

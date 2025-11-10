@@ -9,23 +9,17 @@ import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitSelectedEvent;
 import com.mcpvp.common.chat.C;
-import com.mcpvp.common.task.EasyTask;
-import com.mcpvp.common.util.PlayerUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.EntityCombustEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -204,10 +198,20 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     }
 
     @EventHandler
-    public void onCombust(EntityCombustEvent event) {
-        if (event.getEntity() instanceof Item) {
-            event.setCancelled(true);
+    public void onLandOnSoulSand(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            return;
         }
+
+        if (event.getCause() != EntityDamageEvent.DamageCause.FALL) {
+            return;
+        }
+
+        if (event.getEntity().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.SOUL_SAND) {
+            return;
+        }
+
+        event.setCancelled(true);
     }
 
 }

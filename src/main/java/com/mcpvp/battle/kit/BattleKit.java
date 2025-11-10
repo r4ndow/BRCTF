@@ -63,6 +63,13 @@ public abstract class BattleKit extends Kit {
         }
     }
 
+    public int getFoodItemCount() {
+        if (this.foodItem != null) {
+            return this.foodItem.getItem().getAmount();
+        }
+        return 0;
+    }
+
     protected Set<Player> getEnemies() {
         BattleTeamManager teamManager = this.getBattle().getGame().getTeamManager();
         return teamManager.getNext(teamManager.getTeam(this.getPlayer())).getPlayers();

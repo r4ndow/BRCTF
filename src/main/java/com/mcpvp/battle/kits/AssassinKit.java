@@ -44,6 +44,7 @@ public class AssassinKit extends BattleKit {
     private boolean vulnerable;
     private KitItem redstone;
     private KitItem sugar;
+    private BukkitTask endStrengthTask;
     private BukkitTask adrenalineFadeMessageTask;
 
     public AssassinKit(BattlePlugin plugin, Player player) {
@@ -134,7 +135,7 @@ public class AssassinKit extends BattleKit {
         }, STRONG_TIME.add(STRONG_RESTORE).ticks()));
 
         // Task to end the strength
-        this.attach(Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> {
+        this.attach(this.endStrengthTask = Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> {
             this.getPlayer().sendMessage(C.info(C.AQUA) + "Your strength fades...");
             this.strong = false;
             this.animateExp(new FillExpBarTask(this.getPlayer(), STRONG_RESTORE));
@@ -201,9 +202,25 @@ public class AssassinKit extends BattleKit {
     }
 
     @EventHandler
+    public void onDamageWhileVulnerable(EntityDamageByEntityEvent event) {
+        if (event.getDamager() != this.getPlayer()) {
+            return;
+        }
+
+        if (this.vulnerable && !this.strong) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onDamagePlayerWhileStrong(EntityDamageByEntityEvent event) {
         if (this.strong && event.getDamager() == this.getPlayer() && event.getEntity() instanceof Player damaged) {
             if (damaged.isBlocking()) {
+                // End strength early
+                if (this.endStrengthTask != null && this.endStrengthTask instanceof Runnable r) {
+                    r.run();
+                    this.endStrengthTask.cancel();
+                }
                 return;
             }
 
