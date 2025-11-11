@@ -3,11 +3,13 @@ package com.mcpvp.battle.command;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.map.BattleMapData;
 import com.mcpvp.common.chat.C;
+import com.mcpvp.common.command.EasyCommand;
+import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class MapCommands extends BattleCommandGroup {
+public class MapCommands extends EasyCommandGroup {
 
     private final Battle battle;
 
@@ -20,7 +22,7 @@ public class MapCommands extends BattleCommandGroup {
         this.addCommand(new NextCommand());
     }
 
-    public class InfoCommand extends BattleCommand {
+    public class InfoCommand extends EasyCommand {
 
         public InfoCommand() {
             super("info");
@@ -35,11 +37,10 @@ public class MapCommands extends BattleCommandGroup {
 
     }
 
-    public class OverrideCommand extends BattleCommand {
+    public class OverrideCommand extends EasyCommand {
 
         public OverrideCommand() {
             super("override");
-            this.setPermission("mcctf.map.override");
         }
 
         @Override
@@ -58,11 +59,10 @@ public class MapCommands extends BattleCommandGroup {
 
     }
 
-    public class NextCommand extends BattleCommand {
+    public class NextCommand extends EasyCommand {
 
         public NextCommand() {
             super("next");
-            this.setPermission("mcctf.map.next");
         }
 
         @Override

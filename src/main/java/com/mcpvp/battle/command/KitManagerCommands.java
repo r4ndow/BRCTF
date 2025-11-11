@@ -2,6 +2,8 @@ package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.common.command.CommandUtil;
+import com.mcpvp.common.command.EasyCommand;
+import com.mcpvp.common.command.EasyCommandGroup;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitInfo;
 import com.mcpvp.common.chat.C;
@@ -12,12 +14,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class KitManagerCommands extends BattleCommandGroup {
+public class KitManagerCommands extends EasyCommandGroup {
 
     private final BattleKitManager kitManager;
 
     public KitManagerCommands(BattleKitManager kitManager) {
-        super("kits", List.of("classmanager", "classes"));
+        super("kits");
         this.kitManager = kitManager;
         this.addCommand(new SummaryCommand(), true);
         this.addCommand(new DisableCommand());
@@ -39,7 +41,7 @@ public class KitManagerCommands extends BattleCommandGroup {
         return List.of(this.kitManager.getKitDefinition(arg));
     }
 
-    public class SummaryCommand extends BattleCommand {
+    public class SummaryCommand extends EasyCommand {
 
         protected SummaryCommand() {
             super("summary");
@@ -74,11 +76,10 @@ public class KitManagerCommands extends BattleCommandGroup {
 
     }
 
-    public class DisableCommand extends BattleCommand {
+    public class DisableCommand extends EasyCommand {
 
         protected DisableCommand() {
             super("disable");
-            this.setPermission("mcctf.kits.disable");
         }
 
         @Override
@@ -101,11 +102,10 @@ public class KitManagerCommands extends BattleCommandGroup {
 
     }
 
-    public class EnableCommand extends BattleCommand {
+    public class EnableCommand extends EasyCommand {
 
         protected EnableCommand() {
             super("enable");
-            this.setPermission("mcctf.kits.enable");
         }
 
         @Override
@@ -128,16 +128,15 @@ public class KitManagerCommands extends BattleCommandGroup {
 
     }
 
-    public class LimitCommands extends BattleCommandGroup {
+    public class LimitCommands extends EasyCommandGroup {
 
         public LimitCommands() {
             super("limit");
-            this.setPermission("mcctf.kits.limit");
             this.addCommand(new SetCommand());
             this.addCommand(new RemoveCommand());
         }
 
-        public class SetCommand extends BattleCommand {
+        public class SetCommand extends EasyCommand {
 
             protected SetCommand() {
                 super("set");
@@ -175,7 +174,7 @@ public class KitManagerCommands extends BattleCommandGroup {
 
         }
 
-        public class RemoveCommand extends BattleCommand {
+        public class RemoveCommand extends EasyCommand {
 
             protected RemoveCommand() {
                 super("remove");

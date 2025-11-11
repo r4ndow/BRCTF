@@ -1,42 +1,30 @@
 package com.mcpvp.common.command;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import lombok.Getter;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class EasyCommand extends Command implements CommandExecutor, TabCompleter {
+@Getter
+public abstract class EasyCommand implements CommandExecutor, TabCompleter {
+
+    private final String name;
 
     protected EasyCommand(String name) {
-        super(name);
+        this.name = name;
     }
 
-    protected EasyCommand(String name, List<String> aliases) {
-        super(name, "", "", aliases);
-    }
-
-    protected EasyCommand(String name, String description, String usageMessage, List<String> aliases) {
-        super(name, description, usageMessage, aliases);
-    }
-
-    /**
-     * Actual invocation path (as opposed to {@link #execute(CommandSender, String, String[])}) for executing this command.
-     */
     public abstract boolean onCommand(CommandSender sender, String label, List<String> args);
 
+    @Override
     public boolean onCommand(CommandSender var1, Command var2, String var3, String[] var4) {
         return this.onCommand(var1, var3, Arrays.asList(var4));
     }
 
-    /**
-     * Actual invocation path (as opposed to {@link #tabComplete(CommandSender, String, String[])}) for executing tab
-     * completion for this command.
-     */
     public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
         if (!args.isEmpty()) {
             return this.onTabComplete(sender, alias, args.get(args.size() - 1));
@@ -44,40 +32,23 @@ public abstract class EasyCommand extends Command implements CommandExecutor, Ta
         return Collections.emptyList();
     }
 
-    /**
-     * Actual invocation path (as opposed to {@link #tabComplete(CommandSender, String, String[])}) for executing tab
-     * completion for this command.
-     */
     public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
         return Collections.emptyList();
     }
 
+    @Override
     public List<String> onTabComplete(CommandSender var1, Command var2, String var3, String[] var4) {
         return this.onTabComplete(var1, var3, Arrays.asList(var4));
     }
 
-    /**
-     * @return Prefix, eg `plugin` becomes `plugin:command`
-     */
-    protected String getFallbackPrefix() {
-        return "";
-    }
-
-    public void register() {
-        CommandUtil.getCommandMap().register(this.getFallbackPrefix(), this);
-    }
-
-    @Override // Overrides Command
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (!sender.isOp()) {
-            super.testPermission(sender);
+    public void register(JavaPlugin plugin) {
+        PluginCommand command = plugin.getCommand(this.name);
+        if (command == null) {
+            throw new IllegalStateException("No command registered for " + this.name);
         }
-        return this.onCommand(sender, commandLabel, Arrays.asList(args));
-    }
 
-    @Override
-    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        return this.onTabComplete(sender, alias, Arrays.asList(args));
+        command.setExecutor(this);
+        command.setTabCompleter(this);
     }
 
     protected Player asPlayer(CommandSender sender) {

@@ -1,13 +1,14 @@
 package com.mcpvp.battle.command;
 
+import com.mcpvp.common.command.EasyCommand;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class YellCommand extends BattleCommand {
+public class YellCommand extends EasyCommand {
 
     public YellCommand() {
-        super("yell", List.of("all", "a"));
+        super("yell");
     }
 
     @Override

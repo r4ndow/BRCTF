@@ -2,11 +2,12 @@ package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.common.chat.C;
+import com.mcpvp.common.command.CommandUtil;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.util.List;
-
-public class QuickCommand extends BattleCommand {
+public class QuickCommand extends Command {
 
     private final Battle battle;
     private final String message;
@@ -20,7 +21,7 @@ public class QuickCommand extends BattleCommand {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, String label, List<String> args) {
+    public boolean execute(CommandSender sender, String label, String[] args) {
         String callout = this.battle.getGame().findClosestCallout(this.asPlayer(sender).getLocation())
             .map(c -> {
                 if (c.getConfig() != null) {
@@ -43,6 +44,14 @@ public class QuickCommand extends BattleCommand {
         return false;
     }
 
+    protected Player asPlayer(CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            throw new IllegalStateException("Only players can execute this command.");
+        }
+
+        return ((Player) sender);
+    }
+
     public QuickCommand all() {
         this.sendToAll = true;
         return this;
@@ -51,6 +60,10 @@ public class QuickCommand extends BattleCommand {
     public QuickCommand loc() {
         this.includeLocation = true;
         return this;
+    }
+
+    public void register() {
+        CommandUtil.getCommandMap().register("mcctf", this);
     }
 
 }

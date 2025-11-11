@@ -3,13 +3,15 @@ package com.mcpvp.battle.command;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.command.CommandUtil;
+import com.mcpvp.common.command.EasyCommand;
+import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Optional;
 
-public class FlagCommands extends BattleCommandGroup {
+public class FlagCommands extends EasyCommandGroup {
 
     private final Battle battle;
 
@@ -35,11 +37,10 @@ public class FlagCommands extends BattleCommandGroup {
             .findAny();
     }
 
-    public class JumpCommand extends BattleCommand {
+    public class JumpCommand extends EasyCommand {
 
         public JumpCommand() {
             super("jump");
-            this.setPermission("mcctf.flag.jump");
         }
 
         @Override
@@ -57,11 +58,10 @@ public class FlagCommands extends BattleCommandGroup {
 
     }
 
-    public class LockCommand extends BattleCommand {
+    public class LockCommand extends EasyCommand {
 
         public LockCommand() {
             super("lock");
-            this.setPermission("mcctf.flag.lock");
         }
 
         @Override
@@ -79,11 +79,10 @@ public class FlagCommands extends BattleCommandGroup {
 
     }
 
-    public class UnlockCommand extends BattleCommand {
+    public class UnlockCommand extends EasyCommand {
 
         public UnlockCommand() {
             super("unlock");
-            this.setPermission("mcctf.flag.unlock");
         }
 
         @Override
@@ -101,11 +100,10 @@ public class FlagCommands extends BattleCommandGroup {
 
     }
 
-    public class ResetCommand extends BattleCommand {
+    public class ResetCommand extends EasyCommand {
 
         public ResetCommand() {
             super("reset");
-            this.setPermission("mcctf.flag.reset");
         }
 
         @Override

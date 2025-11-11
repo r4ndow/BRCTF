@@ -1,11 +1,13 @@
 package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.Battle;
+import com.mcpvp.common.command.EasyCommand;
+import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class TimerCommand extends BattleCommandGroup {
+public class TimerCommand extends EasyCommandGroup {
 
     private final Battle battle;
 
@@ -19,11 +21,10 @@ public class TimerCommand extends BattleCommandGroup {
         this.addCommand(new SkipCommand());
     }
 
-    public class SetCommand extends BattleCommand {
+    public class SetCommand extends EasyCommand {
 
         public SetCommand() {
             super("set");
-            this.setPermission("mcctf.timer.set");
         }
 
         @Override
@@ -43,11 +44,10 @@ public class TimerCommand extends BattleCommandGroup {
 
     }
 
-    public class LockCommand extends BattleCommand {
+    public class LockCommand extends EasyCommand {
 
         public LockCommand() {
             super("lock");
-            this.setPermission("mcctf.timer.lock");
         }
 
         @Override
@@ -58,11 +58,10 @@ public class TimerCommand extends BattleCommandGroup {
 
     }
 
-    public class UnlockCommand extends BattleCommand {
+    public class UnlockCommand extends EasyCommand {
 
         public UnlockCommand() {
             super("unlock");
-            this.setPermission("mcctf.timer.unlock");
         }
 
         @Override
@@ -73,11 +72,10 @@ public class TimerCommand extends BattleCommandGroup {
 
     }
 
-    public class SkipCommand extends BattleCommand {
+    public class SkipCommand extends EasyCommand {
 
         public SkipCommand() {
             super("skip");
-            this.setPermission("mcctf.timer.skip");
         }
 
         @Override

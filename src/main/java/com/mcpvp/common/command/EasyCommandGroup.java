@@ -15,10 +15,6 @@ public abstract class EasyCommandGroup extends EasyCommand {
         super(name);
     }
 
-    public EasyCommandGroup(String name, List<String> aliases) {
-        super(name, aliases);
-    }
-
     protected void addCommand(EasyCommand command, boolean setDefault) {
         if (setDefault) {
             this.defaultCommand = command;
@@ -44,22 +40,15 @@ public abstract class EasyCommandGroup extends EasyCommand {
         // Match command based on args[0]
         Optional<EasyCommand> found = this.findCommand(args.get(0));
 
-        if (found.isPresent()) {
-            return found.get().onCommand(sender, alias, args.subList(1, args.size()));
-        } else {
-            return false;
-        }
+        return found.map(easyCommand ->
+            easyCommand.onCommand(sender, alias, args.subList(1, args.size()))
+        ).orElse(false);
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
         if (args.size() == 1) {
-            return CommandUtil.partialMatches(this.commands.stream().map(c -> {
-                if (c.getName().contains(" ") && !c.getAliases().isEmpty()) {
-                    return c.getAliases().get(0);
-                }
-                return c.getName();
-            }).toList(), args.get(0));
+            return CommandUtil.partialMatches(this.commands.stream().map(EasyCommand::getName).toList(), args.get(0));
         }
 
         // Match command based on args[0]
@@ -75,7 +64,7 @@ public abstract class EasyCommandGroup extends EasyCommand {
     protected Optional<EasyCommand> findCommand(String arg) {
         return this.commands.stream()
             .sorted((c1, c2) -> c2.getName().length() - c1.getName().length())
-            .filter(c -> c.getName().equalsIgnoreCase(arg) || c.getAliases().contains(arg.toLowerCase()))
+            .filter(c -> c.getName().equalsIgnoreCase(arg))
             .findFirst();
     }
 

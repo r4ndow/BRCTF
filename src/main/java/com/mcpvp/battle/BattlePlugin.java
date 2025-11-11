@@ -27,7 +27,6 @@ public class BattlePlugin extends JavaPlugin {
         this.battle = new Battle(this);
         this.battle.load();
 
-        this.registerCommands();
     }
 
     @Override
@@ -43,32 +42,20 @@ public class BattlePlugin extends JavaPlugin {
             }
         }, 1, 1);
 
+        this.registerCommands();
         this.battle.start();
-
-        this.getCommand("mcctf").setExecutor(new McctfCommand());
-        this.getCommand("flag").setExecutor(new FlagCommands(this.battle));
     }
 
     private void registerCommands() {
-//        new FlagCommands(this.battle).register();
-        new KitCommand(this.battle.getKitManager()).register();
-        new KitManagerCommands(this.battle.getKitManager()).register();
-        new MapCommands(this.battle).register();
-        new SwitchCommand(this.battle).register();
-        new TimerCommand(this.battle).register();
-        new YellCommand().register();
+        new FlagCommands(this.battle).register(this);
+        new KitCommand(this.battle.getKitManager()).register(this);
+        new KitManagerCommands(this.battle.getKitManager()).register(this);
+        new MapCommands(this.battle).register(this);
+        new SwitchCommand(this.battle).register(this);
+        new TimerCommand(this.battle).register(this);
+        new YellCommand().register(this);
 
         QuickCommands.registerAll(this.battle);
-    }
-
-    public static class McctfCommand implements CommandExecutor {
-
-        @Override
-        public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-            commandSender.sendMessage("nice");
-            return false;
-        }
-
     }
 
 }

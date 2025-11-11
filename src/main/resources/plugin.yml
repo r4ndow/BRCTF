@@ -7,12 +7,74 @@ depend: []
 commands:
   flag:
     description: Flag commands
-    usage: /<command>
   flag jump:
     description: Jump to a flag
-    usage: /flag jump <team>
+    usage: /<command> <team>
     permission: mcctf.flag.jump
-  mcctf:
-    description: Permission test
-    usage: /mcctf
-    permission: mcctf.test
+  flag lock:
+    description: Lock a flag to prevent it from being stolen
+    usage: /<command> <team>
+    permission: mcctf.flag.lock
+  flag unlock:
+    description: Unlock a flag to allow it to be stolen
+    usage: /<command> <team>
+    permission: mcctf.flag.unlock
+  flag reset:
+    description: Reset a flag to its normal state
+    usage: /<command> <team>
+    permission: mcctf.flag.reset
+  kit:
+    description: Select a class
+    usage: /<command> <class>
+    aliases: [class, archer, assassin, chemist, dwarf, elf, engineer, heavy, mage, medic, necro, ninja, pyro, scout, soldier]
+  kits:
+    description: Manage the classes, such as disabling and setting limits
+    aliases: [classes, classmanager]
+  kits summary:
+    description: View current class controls
+  kits disable:
+    description: Disable a class so that no players can use it
+    permission: mcctf.kits.disable
+    usage: /<command> <class>
+  kits enable:
+    description: Enable a class so that players can use it
+    permission: mcctf.kits.enable
+    usage: /<command> <class>
+  kits limit:
+    description: Limit a class so that only a certain number of players can use it
+    permission: mcctf.kits.limit
+    usage: /<command> <class> <limit>
+  map:
+    description: View the current map
+    usage: /<command>
+  map info:
+    description: View the current map
+    usage: /<command>
+  map override:
+    description: Specify maps to be played on reboot
+    permission: mcctf.map.override
+    usage: /<command> <map ids>
+  map next:
+    description: Insert a new game with the given map after the current game
+    permission: mcctf.map.next
+    usage: /<command> <map ids>
+  switch:
+    description: Switch to the other team
+  timer:
+    description: Manage the game timer
+  timer set:
+    description: Set the current time (in seconds) left on the timer
+    permission: mcctf.timer.set
+    usage: /<command> <seconds>
+  timer lock:
+    description: Lock the timer to prevent it from counting down
+    permission: mcctf.timer.lock
+  timer unlock:
+    description: Unlock the timer to allow it to begin counting down
+    permission: mcctf.timer.unlock
+  timer skip:
+    description: Advance the game as if the timer has immediately expired
+    permission: mcctf.timer.skip
+  yell:
+    description: Yell!
+    aliases: [a]

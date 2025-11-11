@@ -1,6 +1,7 @@
 package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.kit.BattleKitManager;
+import com.mcpvp.common.command.EasyCommand;
 import com.mcpvp.common.kit.KitAttemptSelectEvent;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitInfo;
@@ -10,16 +11,13 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class KitCommand extends BattleCommand {
+public class KitCommand extends EasyCommand {
 
     private final BattleKitManager kitManager;
 
     public KitCommand(BattleKitManager kitManager) {
-        super("kit", kitManager.getKitDefinitions().stream()
-            .map(KitInfo::getName)
-            .map(String::toLowerCase)
-            .toList()
-        );
+        // Aliases are handled in the plugin.yml
+        super("kit");
         this.kitManager = kitManager;
     }
 
