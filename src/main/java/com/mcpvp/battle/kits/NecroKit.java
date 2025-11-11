@@ -113,6 +113,8 @@ public class NecroKit extends BattleKit {
     }
 
     private WitherSkull spawnWitherSkull() {
+        // There is a known bug here. WitherSkulls have a built-in acceleration which causes them to not
+        // be properly reflected by Elf shields. There's no (easy) way to control it in this version.
         Vector vector = this.getPlayer().getEyeLocation().getDirection().clone().normalize().multiply(0.1D);
         EntityPlayer entityPlayer = PlayerUtil.asCraftPlayer(this.getPlayer());
         EntityWitherSkull witherSkull = new EntityWitherSkull(

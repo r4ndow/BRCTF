@@ -36,5 +36,4 @@ public class BattleGameConfig {
         return this.getTeamConfig(team.getId());
     }
 
-
 }

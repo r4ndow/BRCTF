@@ -131,7 +131,6 @@ public class MageKit extends BattleKit {
             }).runTaskTimer(this.getPlugin(), 0, 1));
 
             MageKit.this.attach(new InteractiveProjectile(this.getPlugin(), arrow)
-                .singleEventOnly()
                 .onDeath(() -> {
                     FireworkEffect effect = FireworkEffect.builder()
                         .with(FireworkEffect.Type.BALL)
@@ -142,6 +141,9 @@ public class MageKit extends BattleKit {
                         .build();
 
                     EffectUtil.sendInstantFirework(effect, arrow.getLocation());
+                })
+                .onHitEvent(hitEvent -> {
+                    arrow.remove();
                 })
                 .onDamageEvent(ev -> {
                     // The arrow hitting the player actually deals the damage.
@@ -163,13 +165,13 @@ public class MageKit extends BattleKit {
                         return;
                     }
 
-                    FireworkEffect effect = FireworkEffect.builder()
-                        .with(FireworkEffect.Type.BALL)
-                        .withColor(
-                            MageKit.this.getGame().getTeamManager().getTeam(MageKit.this.getPlayer()).getColor().getColor(), Color.PURPLE
-                        ).build();
-
-                    EffectUtil.sendInstantFirework(effect, arrow.getLocation());
+//                    FireworkEffect effect = FireworkEffect.builder()
+//                        .with(FireworkEffect.Type.BALL)
+//                        .withColor(
+//                            MageKit.this.getGame().getTeamManager().getTeam(MageKit.this.getPlayer()).getColor().getColor(), Color.PURPLE
+//                        ).build();
+//
+//                    EffectUtil.sendInstantFirework(effect, arrow.getLocation());
                 })
             );
         }
@@ -348,7 +350,7 @@ public class MageKit extends BattleKit {
         @Override
         protected void build(Block center, StructureBuilder builder) {
             builder.ignoreRestrictions(
-                NEAR_SPAWN, NEAR_RESTRICTED, NEAR_PLAYER
+                NEAR_SPAWN, NEAR_RESTRICTED, NEAR_PLAYER, NEAR_FLAG
             );
 
             // Expand the bounding box around the target by one block.

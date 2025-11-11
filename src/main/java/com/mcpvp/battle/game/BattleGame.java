@@ -164,19 +164,17 @@ public class BattleGame extends EasyLifecycle {
             BattleTeam team = this.getTeamManager().getTeam(player);
             Location spawn = this.getConfig().getTeamConfig(team).getSpawn();
 
+            // Reset statuses
+            PlayerUtil.setAbsorptionHearts(player, 0);
             player.setHealth(player.getMaxHealth());
             player.setFireTicks(0);
             player.setExp(0);
-            PlayerUtil.setAbsorptionHearts(player, 0);
-
-            // Clear inventory
             player.getInventory().clear();
             player.getInventory().setArmorContents(new ItemStack[4]);
             player.getActivePotionEffects().stream().map(PotionEffect::getType).forEach(player::removePotionEffect);
-
             player.setHealth(player.getMaxHealth());
-            player.teleport(spawn);
             player.setVelocity(new Vector());
+            player.teleport(spawn);
 
             EasyTask.of(() -> {
                 if (!player.isOnline()) {

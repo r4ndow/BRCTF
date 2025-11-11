@@ -528,6 +528,7 @@ public class ElfKit extends BattleKit {
         }
 
         private void bounce(Entity entity) {
+            System.out.println("reflect " + entity);
             Vector v = entity.getVelocity().clone();
             v.multiply(-1);
             entity.setVelocity(v);

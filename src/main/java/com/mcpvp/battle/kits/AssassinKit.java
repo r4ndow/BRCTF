@@ -219,6 +219,7 @@ public class AssassinKit extends BattleKit {
                 // End strength early
                 if (this.endStrengthTask != null && this.endStrengthTask instanceof Runnable r) {
                     r.run();
+                    event.setCancelled(true);
                     this.endStrengthTask.cancel();
                 }
                 return;
