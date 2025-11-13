@@ -7,13 +7,16 @@ import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.chat.C;
+import com.mcpvp.common.util.PlayerUtil;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.EntityPotion;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -167,35 +170,33 @@ public class ChemistKit extends BattleKit {
         public PotionItem(ItemBuilder item, double xp) {
             super(ChemistKit.this, item.build(), true);
             this.xp = (float) xp;
-        }
 
-        @EventHandler
-        public void onLaunch(ProjectileLaunchEvent event) {
-            if (event.getEntity().getShooter() != ChemistKit.this.getPlayer()) {
-                return;
-            }
+            this.onInteract(event -> {
+                if (this.isPlaceholder()) {
+                    return;
+                }
 
-            if (!this.isItem(ChemistKit.this.getPlayer().getItemInHand()) || this.isPlaceholder()) {
-                return;
-            }
-
-            if (ChemistKit.this.getPlayer().getExp() < this.xp) {
-                ChemistKit.this.getPlayer().sendMessage(C.warn(C.AQUA) + "Your magic has run dry! You must recharge!");
                 event.setCancelled(true);
 
-                // The potion item has already been used even if the event is cancelled
-                this.modify(item -> item.amount(this.getItem().getAmount() + 1));
-            } else {
-                ChemistKit.this.getPlayer().setExp(Math.max(ChemistKit.this.getPlayer().getExp() - this.xp, 0));
+                if (ChemistKit.this.getPlayer().getExp() < this.xp) {
+                    ChemistKit.this.getPlayer().sendMessage(C.warn(C.AQUA) + "Your magic has run dry! You must recharge!");
+                    return;
+                }
 
-                // Because the potion is thrown, we want to increase the number of items first
-                this.modify(item -> item.amount(this.getItem().getAmount() + 1));
-                // Then we can do a decrement which will handle placeholders
+                // Using Player#launchProjectile uses a water bottle instead of the item
+                // Construct the potion entity manually
+                EntityPlayer entityPlayer = PlayerUtil.asCraftPlayer(ChemistKit.this.getPlayer());
+                EntityPotion thrownPotion = new EntityPotion(
+                    entityPlayer.world,
+                    entityPlayer,
+                    CraftItemStack.asNMSCopy(this.getItem())
+                );
+                entityPlayer.getWorld().addEntity(thrownPotion);
+
+                ChemistKit.this.attach(thrownPotion.getBukkitEntity());
+
                 this.decrement(true);
-
-                // Attach the projectile so it will be removed when this kit is destroyed
-                ChemistKit.this.attach(event.getEntity());
-            }
+            });
         }
 
     }
