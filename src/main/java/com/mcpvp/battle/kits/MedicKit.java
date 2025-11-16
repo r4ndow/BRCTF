@@ -7,20 +7,20 @@ import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.ParticlePacket;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EasyEvent;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
+import com.mcpvp.common.nms.ActionbarUtil;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureBuilder;
 import com.mcpvp.common.structure.StructureManager;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
-import com.mcpvp.common.chat.C;
-import com.mcpvp.common.nms.ActionbarUtil;
 import lombok.Data;
 import org.bukkit.Color;
 import org.bukkit.EntityEffect;
@@ -201,7 +201,9 @@ public class MedicKit extends BattleKit {
             new HealEvent(player).call();
         } else {
             // Heal player
-            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 4));
+            this.getBattle().getKitManager().find(player).ifPresent(playerKit -> {
+                playerKit.addTemporaryEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 4));
+            });
             player.setFireTicks(0);
         }
     }

@@ -4,9 +4,9 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kits.global.NecroRevivalTagManager;
 import com.mcpvp.battle.kits.global.ScoutDeathTagManager;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitManager;
-import com.mcpvp.common.chat.C;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -89,4 +89,9 @@ public class BattleKitManager extends KitManager {
     public BattleKit get(Player player) {
         return (BattleKit) super.get(player);
     }
+
+    public Optional<BattleKit> find(Player player) {
+        return Optional.ofNullable((BattleKit) super.get(player));
+    }
+
 }

@@ -5,19 +5,21 @@ import com.mcpvp.battle.event.*;
 import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitSelectedEvent;
-import com.mcpvp.common.chat.C;
+import com.mcpvp.common.util.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -48,6 +50,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         // Shut down all kits
         this.game.getParticipants().forEach(player -> {
             Optional.ofNullable(this.game.getBattle().getKitManager().get(player)).ifPresent(Kit::shutdown);
+            PlayerUtil.reset(player);
         });
 
         super.leaveState();

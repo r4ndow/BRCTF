@@ -2,9 +2,9 @@ package com.mcpvp.battle.game;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.chat.BattleDeathMessageHandler;
 import com.mcpvp.battle.config.BattleCallout;
 import com.mcpvp.battle.config.BattleGameConfig;
-import com.mcpvp.battle.chat.BattleDeathMessageHandler;
 import com.mcpvp.battle.event.GameRespawnEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.flag.*;
@@ -27,8 +27,6 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
@@ -161,19 +159,11 @@ public class BattleGame extends EasyLifecycle {
 
         // Teleport to spawn
         if (respawn) {
+            // Reset health, potion effects, etc
+            PlayerUtil.reset(player);
+
             BattleTeam team = this.getTeamManager().getTeam(player);
             Location spawn = this.getConfig().getTeamConfig(team).getSpawn();
-
-            // Reset statuses
-            PlayerUtil.setAbsorptionHearts(player, 0);
-            player.setHealth(player.getMaxHealth());
-            player.setFireTicks(0);
-            player.setExp(0);
-            player.getInventory().clear();
-            player.getInventory().setArmorContents(new ItemStack[4]);
-            player.getActivePotionEffects().stream().map(PotionEffect::getType).forEach(player::removePotionEffect);
-            player.setHealth(player.getMaxHealth());
-            player.setVelocity(new Vector());
             player.teleport(spawn);
 
             EasyTask.of(() -> {

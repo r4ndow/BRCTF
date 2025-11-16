@@ -3,9 +3,9 @@ package com.mcpvp.battle.kits;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.common.InteractiveProjectile;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
-import com.mcpvp.common.chat.C;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class ArcherKit extends BattleKit {
 
-    private static final int HEADSHOT_DIST = 35;
+    private static final int HEADSHOT_DIST = 1;
 
     private KitItem arrows1;
     private KitItem arrows2;

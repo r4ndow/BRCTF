@@ -6,6 +6,7 @@ import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kits.global.NecroRevivalTagManager;
 import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.ParticlePacket;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
@@ -14,9 +15,7 @@ import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EffectUtil;
-import com.mcpvp.common.util.EntityUtil;
 import com.mcpvp.common.util.PlayerUtil;
-import com.mcpvp.common.chat.C;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EntityWitherSkull;
 import org.bukkit.Material;
@@ -186,16 +185,20 @@ public class NecroKit extends BattleKit {
 
     private void onSkullHitsTeammate(Player player) {
         int amplifier = player.hasPotionEffect(PotionEffectType.ABSORPTION) ? 1 : 0;
-        player.addPotionEffect(
-            new PotionEffect(PotionEffectType.ABSORPTION, SKULL_ABSORPTION_DURATION.ticks(), amplifier, true), true
-        );
+        this.getBattle().getKitManager().find(player).ifPresent(kit -> {
+            kit.addTemporaryEffect(
+                new PotionEffect(PotionEffectType.ABSORPTION, SKULL_ABSORPTION_DURATION.ticks(), amplifier, true)
+            );
+        });
 
         player.sendMessage(C.info(C.AQUA) + C.hl(this.getPlayer().getName()) + " gave you absorption!");
     }
 
     private void onSkullHitsEnemy(Player player) {
         player.sendMessage(C.warn(C.GOLD) + C.hl(this.getPlayer().getName()) + " withered you!");
-        player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, Duration.seconds(5).ticks(), 2, true));
+        this.getBattle().getKitManager().find(player).ifPresent(kit -> {
+            kit.addTemporaryEffect(new PotionEffect(PotionEffectType.WITHER, Duration.seconds(5).ticks(), 2, true));
+        });
     }
 
     public class CrypticSkull extends KitItem {

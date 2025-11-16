@@ -41,9 +41,13 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Stream;
+
+import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.NEAR_PLAYER;
 
 public class EngineerKit extends BattleKit {
 
@@ -260,6 +264,9 @@ public class EngineerKit extends BattleKit {
         private static final int SPEED_TIER = 2;
         private static final Duration SPEED_TIME = Duration.seconds(4.5);
         private static final double AURA_HEIGHT = 10.0;
+        private static final PotionEffect SPEED_EFFECT = new PotionEffect(
+            PotionEffectType.SPEED, SPEED_TIME.ticks(), SPEED_TIER - 1
+        );
 
         private final KitItem item;
         private ArmorStand armorStand;
@@ -273,6 +280,7 @@ public class EngineerKit extends BattleKit {
 
         @Override
         protected void build(Block center, StructureBuilder builder) {
+            builder.ignoreRestriction(NEAR_PLAYER);
             builder.setBlock(center, Material.BEACON);
 
             Stream.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
@@ -311,18 +319,10 @@ public class EngineerKit extends BattleKit {
             EngineerKit.this.getTeammates().stream()
                 .filter(this::isCloseEnough)
                 .forEach(teammate -> {
-                    teammate.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, SPEED_TIME.ticks(), SPEED_TIER - 1));
+                    EngineerKit.this.getBattle().getKitManager().find(teammate).ifPresent(kit -> {
+                        kit.addTemporaryEffect(SPEED_EFFECT);
+                    });
                 });
-        }
-
-        private boolean hasBetterSpeed(Player player) {
-            //noinspection SimplifyStreamApiCallChains
-            return player.getActivePotionEffects().stream()
-                .filter(effect -> effect.getType() == PotionEffectType.SPEED)
-                .filter(effect -> effect.getAmplifier() + 1 >= SPEED_TIER)
-                .filter(effect -> effect.getDuration() >= SPEED_TIME.ticks())
-                .findAny()
-                .isPresent();
         }
 
         private boolean isCloseEnough(Player player) {
@@ -431,7 +431,9 @@ public class EngineerKit extends BattleKit {
                     PotionEffect effect = new PotionEffect(
                         PotionEffectType.REGENERATION, HEALING_DURATION.ticks(), HEALING_REGEN_TIER - 1
                     );
-                    teammate.addPotionEffect(effect, true);
+                    EngineerKit.this.getBattle().getKitManager().find(teammate).ifPresent(kit -> {
+                        kit.addTemporaryEffect(effect);
+                    });
 
                     HEAL_COOLDOWNS.put(teammate, Expiration.after(HEALING_COOLDOWN));
 

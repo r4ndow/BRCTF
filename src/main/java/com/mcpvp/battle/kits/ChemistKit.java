@@ -2,11 +2,11 @@ package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.time.Duration;
-import com.mcpvp.common.chat.C;
 import com.mcpvp.common.util.PlayerUtil;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EntityPotion;
@@ -161,6 +161,11 @@ public class ChemistKit extends BattleKit {
     @Override
     public void restoreFoodItem() {
         this.healPotion.increment(this.healPotion.getOriginal().getAmount());
+    }
+
+    @Override
+    public int getFoodItemCount() {
+        return this.healPotion.getItem().getAmount();
     }
 
     class PotionItem extends KitItem {

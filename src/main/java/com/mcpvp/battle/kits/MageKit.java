@@ -37,6 +37,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.*;
 
@@ -411,7 +412,9 @@ public class MageKit extends BattleKit {
                 MageKit.this.getPlayer().getWorld().playEffect(MageKit.this.getPlayer().getLocation(), Effect.POTION_BREAK, PotionEffectType.REGENERATION.getId());
                 EntityUtil.getNearbyEntities(MageKit.this.getPlayer().getLocation(), Player.class, 2, 1, 2).stream()
                     .filter(MageKit.this::isTeammate)
-                    .forEach(teammate -> teammate.addPotionEffect(effect));
+                    .map(MageKit.this.getBattle().getKitManager()::get)
+                    .filter(Objects::nonNull)
+                    .forEach(kit -> kit.addTemporaryEffect(effect));
             }
         }
 

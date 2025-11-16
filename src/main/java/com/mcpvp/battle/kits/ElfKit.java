@@ -6,20 +6,20 @@ import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.ParticlePacket;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
+import com.mcpvp.common.movement.CancelNextFallTask;
+import com.mcpvp.common.nms.ActionbarUtil;
 import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
 import com.mcpvp.common.util.EffectUtil;
 import com.mcpvp.common.util.EntityUtil;
-import com.mcpvp.common.chat.C;
-import com.mcpvp.common.movement.CancelNextFallTask;
-import com.mcpvp.common.nms.ActionbarUtil;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.*;
@@ -36,7 +36,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 @Log4j2
 public class ElfKit extends BattleKit {
@@ -239,7 +242,9 @@ public class ElfKit extends BattleKit {
             }
 
             if (shootEvent.getForce() == 1) {
-                hit.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 15, 5));
+                ElfKit.this.getBattle().getKitManager().find(hit).ifPresent(kit -> {
+                    kit.addTemporaryEffect(new PotionEffect(PotionEffectType.SLOW, 15, 5));
+                });
                 hit.setVelocity(new Vector(0, -1, 0));
 
                 if (this.doTrueDamage.isExpired()) {
@@ -409,18 +414,19 @@ public class ElfKit extends BattleKit {
                 // Give potion effects to teammates
                 EntityUtil.getNearbyEntities(landed, Player.class, 2, 1, 2).stream()
                     .filter(ElfKit.this::isTeammate)
-                    .forEach(player -> {
+                    .peek(player -> player.setFireTicks(0))
+                    .map(ElfKit.this.getBattle().getKitManager()::get)
+                    .filter(Objects::nonNull)
+                    .forEach(playerKit -> {
                         if (shootEvent.getForce() == 1) {
-                            player.addPotionEffect(
+                            playerKit.addTemporaryEffect(
                                 new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Duration.seconds(5).ticks(), 0)
                             );
 
-                            player.addPotionEffect(
+                            playerKit.addTemporaryEffect(
                                 new PotionEffect(PotionEffectType.REGENERATION, Duration.seconds(5).ticks(), 2)
                             );
                         }
-
-                        player.setFireTicks(0);
                     });
 
                 // Extinguish nearby Pyro fires
@@ -528,7 +534,6 @@ public class ElfKit extends BattleKit {
         }
 
         private void bounce(Entity entity) {
-            System.out.println("reflect " + entity);
             Vector v = entity.getVelocity().clone();
             v.multiply(-1);
             entity.setVelocity(v);

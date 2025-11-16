@@ -9,23 +9,22 @@ import com.mcpvp.battle.kit.item.FoodItem;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
 import com.mcpvp.common.EasyLifecycle;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.item.ItemBuilder;
-import com.mcpvp.common.item.ItemUtil;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
+import com.mcpvp.common.nms.ActionbarUtil;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureViolation;
+import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.task.ExpBarTask;
-import com.mcpvp.common.chat.C;
-import com.mcpvp.common.nms.ActionbarUtil;
-import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nullable;
@@ -68,6 +67,33 @@ public abstract class BattleKit extends Kit {
             return this.foodItem.getItem().getAmount();
         }
         return 0;
+    }
+
+    public void addTemporaryEffect(PotionEffect effect) {
+        // If the player has a potion effect of the same type which is of lesser duration or a worse amplifier,
+        // override the existing effect
+        PotionEffect current = this.getPlayer().getActivePotionEffects().stream()
+            .filter(currentEffect -> currentEffect.getType().equals(effect.getType()))
+            .findFirst()
+            .orElse(null);
+
+        if (current == null) {
+            this.getPlayer().addPotionEffect(effect);
+        } else if (current.getAmplifier() == effect.getAmplifier() && current.getDuration() < effect.getDuration()) {
+            // Even though the amplifier is equal, extend the duration
+            this.getPlayer().addPotionEffect(effect, true);
+        } else if (current.getAmplifier() < effect.getAmplifier()) {
+            // A worse amplifier should always be overridden, but schedule restoration of the original effect
+            this.getPlayer().addPotionEffect(effect, true);
+
+            int remaining = current.getDuration() - effect.getDuration();
+            if (remaining > 0) {
+                // Potion restoration after the given effect runs out
+                this.attach(EasyTask.of(() -> {
+                    this.getPlayer().addPotionEffect(new PotionEffect(current.getType(), remaining, current.getAmplifier()), true);
+                }).runTaskLater(this.getPlugin(), effect.getDuration()));
+            }
+        }
     }
 
     protected Set<Player> getEnemies() {

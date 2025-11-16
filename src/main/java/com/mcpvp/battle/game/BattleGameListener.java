@@ -5,9 +5,11 @@ import com.mcpvp.battle.event.PlayerEnterSpawnEvent;
 import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
 import com.mcpvp.battle.event.PlayerParticipateEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
+import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.battle.kit.BattleKitType;
 import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.KitAttemptSelectEvent;
@@ -187,10 +189,23 @@ public class BattleGameListener implements EasyListener {
     }
 
     @EventHandler
-    public void onHunger(FoodLevelChangeEvent event) {
-        event.setCancelled(true);
-        if (event.getEntity() instanceof Player player) {
-            player.setFoodLevel(50);
+    public void onRightClickPlayerAsSpectator(PlayerInteractAtEntityEvent event) {
+        if (!this.game.isParticipant(event.getPlayer())
+            && event.getRightClicked() instanceof Player clicked
+            && this.game.isParticipant(clicked)
+        ) {
+            BattleKit kit = this.game.getBattle().getKitManager().get(clicked);
+            if (kit != null) {
+                event.getPlayer().sendMessage(
+                    "%s%s%s%s has %s food".formatted(
+                        C.info(C.AQUA),
+                        this.game.getTeamManager().getTeam(clicked).getColor().getChat(),
+                        clicked.getName(),
+                        C.R,
+                        C.hl(String.valueOf(kit.getFoodItemCount()))
+                    )
+                );
+            }
         }
     }
 
@@ -202,6 +217,11 @@ public class BattleGameListener implements EasyListener {
         )) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onHunger(FoodLevelChangeEvent event) {
+        event.setCancelled(true);
     }
 
     @EventHandler
