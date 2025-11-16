@@ -1,11 +1,10 @@
 package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.kit.BattleKitManager;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.command.EasyCommand;
 import com.mcpvp.common.kit.KitAttemptSelectEvent;
 import com.mcpvp.common.kit.KitDefinition;
-import com.mcpvp.common.kit.KitInfo;
-import com.mcpvp.common.chat.C;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

@@ -2,8 +2,6 @@ package com.mcpvp.battle.map;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 @Getter
 @AllArgsConstructor

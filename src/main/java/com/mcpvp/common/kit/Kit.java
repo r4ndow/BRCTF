@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
