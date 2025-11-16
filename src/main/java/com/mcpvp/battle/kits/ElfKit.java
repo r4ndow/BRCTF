@@ -172,7 +172,7 @@ public class ElfKit extends BattleKit {
         @EventHandler
         public void onTick(TickEvent event) {
             if (this.isItem(ElfKit.this.getPlayer().getItemInHand())) {
-                if (this.getItem().getType() != Material.BOW && !isPlaceholder()) {
+                if (this.getItem().getType() != Material.BOW && !this.isPlaceholder()) {
                     this.modify(item -> item.type(Material.BOW));
                 }
             } else {
@@ -368,6 +368,7 @@ public class ElfKit extends BattleKit {
 
         private static final Duration COOLDOWN = Duration.seconds(15);
 
+        @SuppressWarnings("deprecation")
         public WaterElement() {
             super(ItemBuilder.of(
                 new ItemStack(Material.INK_SACK, 1, DyeColor.BLUE.getDyeData())

@@ -22,6 +22,7 @@ import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bukkit.Color;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
@@ -343,6 +344,7 @@ public class MedicKit extends BattleKit {
     }
 
     @Data
+    @EqualsAndHashCode(callSuper = false)
     public static class HealEvent extends EasyEvent {
         private final Player healed;
     }

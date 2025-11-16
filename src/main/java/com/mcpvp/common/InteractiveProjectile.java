@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -81,15 +80,8 @@ public class InteractiveProjectile implements EasyListener {
     }
 
     @EventHandler
-    private void onDeath(EntityDeathEvent event) {
-        if (event.getEntity() == this.projectile) {
-            this.deathRunnable.run();
-            this.unregister();
-        }
-    }
-
-    @EventHandler
     private void onTick(TickEvent event) {
+        // EntityDeathEvent is not fired for a Projectile, so check manually
         if (this.projectile.isDead() || !this.projectile.isValid()) {
             if (this.deathRunnable != null) {
                 this.deathRunnable.run();

@@ -433,11 +433,10 @@ public class EngineerKit extends BattleKit {
                     );
                     EngineerKit.this.getBattle().getKitManager().find(teammate).ifPresent(kit -> {
                         kit.addTemporaryEffect(effect);
+                        kit.restoreFoodItem();
                     });
 
                     HEAL_COOLDOWNS.put(teammate, Expiration.after(HEALING_COOLDOWN));
-
-                    EngineerKit.this.getBattle().getKitManager().get(teammate).restoreFoodItem();
                 });
         }
 

@@ -3,7 +3,6 @@ package com.mcpvp.battle.kits.global;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.GameDeathEvent;
 import com.mcpvp.battle.event.GameRespawnEvent;
-import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.item.FoodItem;
 import com.mcpvp.battle.kits.MedicKit;
 import com.mcpvp.common.ParticlePacket;
@@ -102,7 +101,10 @@ public class NecroRevivalTagManager implements EasyListener {
 
     @EventHandler
     public void onWitherDamage(EntityDamageEvent event) {
-        if (this.zombies.contains(event.getEntity()) && event.getCause() == EntityDamageEvent.DamageCause.WITHER) {
+        if (event.getEntity() instanceof Player player
+            && this.zombies.contains(player)
+            && event.getCause() == EntityDamageEvent.DamageCause.WITHER
+        ) {
             event.setCancelled(true);
         }
     }
@@ -124,11 +126,12 @@ public class NecroRevivalTagManager implements EasyListener {
     }
 
     private void zombify(Player player) {
-        BattleKit kit = this.plugin.getBattle().getKitManager().get(player);
-        kit.getAllItems().forEach(kitItem -> {
-            if (kitItem instanceof FoodItem) {
-                kitItem.modify(item -> item.type(Material.ROTTEN_FLESH));
-            }
+        this.plugin.getBattle().getKitManager().find(player).ifPresent(playerKit -> {
+            playerKit.getAllItems().forEach(kitItem -> {
+                if (kitItem instanceof FoodItem) {
+                    kitItem.modify(item -> item.type(Material.ROTTEN_FLESH));
+                }
+            });
         });
 
         player.getInventory().setHelmet(ItemBuilder.of(Material.SKULL_ITEM).data(2).build());
@@ -140,14 +143,15 @@ public class NecroRevivalTagManager implements EasyListener {
     }
 
     private void dezombify(Player player) {
-        BattleKit kit = this.plugin.getBattle().getKitManager().get(player);
-        kit.getAllItems().forEach(kitItem -> {
-            if (kitItem instanceof FoodItem) {
-                kitItem.modify(item -> item.type(kitItem.getOriginal().getType()));
-            }
-        });
+        this.plugin.getBattle().getKitManager().find(player).ifPresent(playerKit -> {
+            playerKit.getAllItems().forEach(kitItem -> {
+                if (kitItem instanceof FoodItem) {
+                    kitItem.modify(item -> item.type(kitItem.getOriginal().getType()));
+                }
+            });
 
-        player.getInventory().setHelmet(kit.createArmor()[3]);
+            player.getInventory().setHelmet(playerKit.createArmor()[3]);
+        });
         player.removePotionEffect(PotionEffectType.WEAKNESS);
         player.removePotionEffect(PotionEffectType.WITHER);
 

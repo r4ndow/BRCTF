@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  * A duration is a "one fits all" solution for saving an amount of time, being able to convert from and to {@link Unit}s
  * A duration will take a double, but is parsed to a long amount of milliseconds.
  */
+@SuppressWarnings("unused")
 public class Duration implements Serializable {
 
     public static final Duration ZERO = new Duration(0, Unit.MILLISECOND);
@@ -129,7 +130,6 @@ public class Duration implements Serializable {
     /**
      * Add this duration to the parameter into a new Duration.
      *
-     * @param duration
      * @return A new duration with the sum of this and <b>duration</b>
      */
     public Duration add(Duration duration) {
@@ -139,7 +139,6 @@ public class Duration implements Serializable {
     /**
      * Subtracts the parameter from this into a new Duration.
      *
-     * @param duration
      * @return A new duration with the difference of {@code this} and {@code duration}.
      */
     public Duration subtract(Duration duration) {
@@ -149,7 +148,6 @@ public class Duration implements Serializable {
     /**
      * Multiplies this and the parameter into a new Duration.
      *
-     * @param duration
      * @return A new duration with the product of {@code this} and {@code duration}.
      */
     public Duration multiply(Duration duration) {
@@ -159,7 +157,6 @@ public class Duration implements Serializable {
     /**
      * Divides this by the parameter into a new Duration.
      *
-     * @param duration
      * @return A new duration with the dividend of {@code this} and {@code duration}.
      */
     public Duration divide(Duration duration) {
@@ -287,7 +284,7 @@ public class Duration implements Serializable {
             Matcher m = u.pattern.matcher(str);
 
             while (m.find()) {
-                dur = dur.add(new Duration(Integer.valueOf(m.group().replaceAll(m.pattern().pattern(), "$1").trim()), u));
+                dur = dur.add(new Duration(Integer.parseInt(m.group().replaceAll(m.pattern().pattern(), "$1").trim()), u));
             }
         }
 

@@ -69,8 +69,8 @@ public class ScoreboardUtil {
     public static void addLargeScores(Scoreboard board, Objective objective, List<String> entries) {
         for (String entry : entries) {
             if (entry.length() > 16) {
-                String prefix = "";
-                String entrie = "";
+                String prefix;
+                String entrie;
                 String suffix = "";
                 if (entry.length() <= 32) {
                     // No need for a suffix.

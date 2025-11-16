@@ -32,9 +32,10 @@ public class BattleInventoryManager {
     public void loadAll() {
         if (!this.dataFile.exists()) {
             try {
-                log.debug("Created new data file");
+                if (this.dataFile.createNewFile()) {
+                    log.debug("Created new data file");
+                }
 
-                this.dataFile.createNewFile();
                 // Initialize the file with valid JSON by writing
                 this.saveAll();
             } catch (IOException e) {
@@ -42,7 +43,7 @@ public class BattleInventoryManager {
             }
         } else {
             try {
-                Map<UUID, InventoryLayoutData> saved = this.objectMapper.readValue(this.dataFile, new TypeReference<Map<UUID, InventoryLayoutData>>() {
+                Map<UUID, InventoryLayoutData> saved = this.objectMapper.readValue(this.dataFile, new TypeReference<>() {
                 });
                 this.liveData.putAll(saved);
 

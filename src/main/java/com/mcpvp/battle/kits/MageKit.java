@@ -45,11 +45,11 @@ public class MageKit extends BattleKit {
 
     public static final int DAMAGE_ARROW_DIST = 15;
     public static final int DAMAGE_ARROW_DIST_SQUARED = (int) Math.pow(DAMAGE_ARROW_DIST, 2);
-    public static int DAMAGE_ARROW_DAMAGE = 9; // 4.5 hearts
-    public static int FIRE_IMPACT_DAMAGE = 5;
+    public static final int DAMAGE_ARROW_DAMAGE = 9; // 4.5 hearts
+    public static final int FIRE_IMPACT_DAMAGE = 5;
     public static final Duration FIRE_DURATION = Duration.seconds(4);
     public static final int LIGHTNING_DAMAGE = 6; // 3 hearts
-    public static double LIGHTNING_DIST = 3;
+    public static final double LIGHTNING_DIST = 3;
     public static final Duration FREEZE_DURATION = Duration.seconds(3);
 
     public MageKit(BattlePlugin plugin, Player player) {
@@ -159,20 +159,6 @@ public class MageKit extends BattleKit {
                     double mult = 1.00;
                     // 7 should be base damage, then do 2 more
                     ev.setDamage(DAMAGE_ARROW_DAMAGE * mult);
-                })
-                .onHitPlayer(player -> {
-                    // The arrow hitting the player actually deals the damage.
-                    if (MageKit.this.isTeammate(player)) {
-                        return;
-                    }
-
-//                    FireworkEffect effect = FireworkEffect.builder()
-//                        .with(FireworkEffect.Type.BALL)
-//                        .withColor(
-//                            MageKit.this.getGame().getTeamManager().getTeam(MageKit.this.getPlayer()).getColor().getColor(), Color.PURPLE
-//                        ).build();
-//
-//                    EffectUtil.sendInstantFirework(effect, arrow.getLocation());
                 })
             );
         }
@@ -409,6 +395,7 @@ public class MageKit extends BattleKit {
                 item.setItemMeta(meta);
                 potion.setItem(item);
             } else {
+                //noinspection deprecation
                 MageKit.this.getPlayer().getWorld().playEffect(MageKit.this.getPlayer().getLocation(), Effect.POTION_BREAK, PotionEffectType.REGENERATION.getId());
                 EntityUtil.getNearbyEntities(MageKit.this.getPlayer().getLocation(), Player.class, 2, 1, 2).stream()
                     .filter(MageKit.this::isTeammate)

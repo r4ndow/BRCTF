@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
  * @author redslime
  */
 @Getter
+@SuppressWarnings("UnusedReturnValue")
 public class ParticlePacket {
 
     private EnumParticle particle;
@@ -52,15 +53,12 @@ public class ParticlePacket {
         return new ParticlePacket(particle);
     }
 
+    @SuppressWarnings("deprecation")
     public static ParticlePacket blockDust(Material material) {
         ParticlePacket packet = of(EnumParticle.BLOCK_CRACK);
         packet.setDataArray(new int[]{material.getId(), 0});
         return packet;
     }
-
-//    public WrapperParticlePacket create() {
-//        return new WrapperParticlePacket(particle.name(), showFar, new Location(world, x, y, z), new Vector(offX, offY, offZ), data, count, dataArray);
-//    }
 
     /**
      * Factory method shortcut to {@link #color(org.bukkit.Color)}.

@@ -60,6 +60,7 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
             });
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     protected boolean isPlayer(ProjectileSource source) {
         return source.equals(this.player);
     }

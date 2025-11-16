@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  *
  * @author NomNuggetNom
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "unused"})
 public class ItemBuilder implements Cloneable {
 
     /**
@@ -530,6 +530,7 @@ public class ItemBuilder implements Cloneable {
      * @see java.lang.Object#clone()
      */
     @Override
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     public ItemBuilder clone() {
         return new ItemBuilder(this.item, true);
     }

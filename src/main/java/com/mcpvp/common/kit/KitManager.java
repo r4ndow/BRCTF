@@ -39,10 +39,8 @@ public class KitManager {
         return this.getKitDefinitions().stream().filter(k -> k.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
-    public KitAttemptSelectEvent setSelected(
-        Player player, KitDefinition definition, boolean force
-    ) {
-        return this.setSelected(player, definition, force, true);
+    public void setSelected(Player player, KitDefinition definition, boolean force) {
+        this.setSelected(player, definition, force, true);
     }
 
     public KitAttemptSelectEvent setSelected(
@@ -68,10 +66,10 @@ public class KitManager {
         return this.selected.get(player);
     }
 
-    public boolean createSelected(Player player) {
+    public void createSelected(Player player) {
         KitDefinition selected = this.getSelected(player);
         if (selected == null) {
-            return false;
+            return;
         }
 
         log.info("Creating selected {} for {}", selected, player.getName());
@@ -83,7 +81,6 @@ public class KitManager {
 
         Kit created = selected.create(this.plugin, player);
         this.active.put(player, created);
-        return true;
     }
 
     @Nullable

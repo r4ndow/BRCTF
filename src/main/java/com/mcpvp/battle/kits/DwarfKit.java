@@ -17,6 +17,7 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
 import com.mcpvp.common.util.EntityUtil;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.Location;
@@ -282,6 +283,7 @@ public class DwarfKit extends BattleKit {
             });
         }
 
+        @SuppressWarnings("DuplicateBranchesInSwitch")
         public void setState(State state) {
             this.modify(item -> item.name("Dwarf Smash"));
 
@@ -305,6 +307,7 @@ public class DwarfKit extends BattleKit {
     }
 
     @Data
+    @EqualsAndHashCode(callSuper = false)
     @RequiredArgsConstructor
     public static class SmashEvent extends EasyEvent {
 
