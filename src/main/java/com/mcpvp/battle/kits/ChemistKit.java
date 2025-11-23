@@ -3,6 +3,7 @@ package com.mcpvp.battle.kits;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.common.chat.C;
+import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
@@ -177,7 +178,7 @@ public class ChemistKit extends BattleKit {
             this.xp = (float) xp;
 
             this.onInteract(event -> {
-                if (this.isPlaceholder()) {
+                if (this.isPlaceholder() || EventUtil.isLeftClick(event)) {
                     return;
                 }
 

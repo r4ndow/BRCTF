@@ -10,6 +10,7 @@ import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.ParticlePacket;
 import com.mcpvp.common.chat.C;
+import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.task.EasyTask;
@@ -258,7 +259,7 @@ public class ScoutKit extends BattleKit {
 
         @Override
         protected void onUse(PlayerInteractEvent event) {
-            if (!this.isPlaceholder()) {
+            if (!this.isPlaceholder() && EventUtil.isRightClick(event)) {
                 ScoutKit.this.throwSwapperBall();
             }
         }
