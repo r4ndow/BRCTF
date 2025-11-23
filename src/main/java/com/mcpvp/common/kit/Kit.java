@@ -6,6 +6,7 @@ import com.mcpvp.common.item.ItemBuilder;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
@@ -47,7 +48,8 @@ public abstract class Kit extends EasyLifecycle implements KitInfo, EasyListener
         ItemStack[] createdArmor = this.createArmor();
         for (int i = 0; i < createdArmor.length; i++) {
             if (createdArmor[i] != null) {
-                armor[i] = ItemBuilder.of(createdArmor[i]).unbreakable().build();
+                // The flag here forces the creation of an ItemMeta instance so that unbreakable works
+                armor[i] = ItemBuilder.of(createdArmor[i]).flag(ItemFlag.HIDE_PLACED_ON).unbreakable().build();
             }
         }
         player.getInventory().setArmorContents(armor);
