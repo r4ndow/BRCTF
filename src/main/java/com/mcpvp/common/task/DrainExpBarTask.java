@@ -15,7 +15,7 @@ public final class DrainExpBarTask extends BukkitRunnable implements ExpBarTask 
 
     public DrainExpBarTask(Player player, Duration duration) {
         this.player = player;
-        this.perTick = 1f / duration.toTicks();
+        this.perTick = player.getExp() / duration.ticks();
         this.runsRequired = duration.ticks();
     }
 

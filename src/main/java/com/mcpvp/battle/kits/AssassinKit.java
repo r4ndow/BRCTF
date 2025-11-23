@@ -3,13 +3,16 @@ package com.mcpvp.battle.kits;
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
 import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.battle.kits.global.AssassinCooldownManager;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.task.DrainExpBarTask;
+import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.task.FillExpBarTask;
 import com.mcpvp.common.time.Duration;
+import com.mcpvp.common.time.Expiration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -40,6 +43,7 @@ public class AssassinKit extends BattleKit {
         EntityDamageEvent.DamageCause.FALL
     );
 
+    private final AssassinCooldownManager cooldownManager;
     private boolean strong;
     private boolean vulnerable;
     private KitItem redstone;
@@ -49,6 +53,8 @@ public class AssassinKit extends BattleKit {
 
     public AssassinKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
+        this.cooldownManager = this.getBattle().getKitManager().getAssassinCooldownManager();
+        this.restorePreviousCooldown();
     }
 
     @Override
@@ -65,6 +71,7 @@ public class AssassinKit extends BattleKit {
             null
         };
     }
+
 
     @Override
     public Map<Integer, KitItem> createItems() {
@@ -91,13 +98,13 @@ public class AssassinKit extends BattleKit {
         );
 
         this.redstone.onInteract(event -> {
-            if (EventUtil.isRightClick(event)) {
+            if (EventUtil.isRightClick(event) && !this.redstone.isPlaceholder()) {
                 this.activateStrength(sword);
             }
         });
 
         this.sugar.onInteract(event -> {
-            if (EventUtil.isRightClick(event)) {
+            if (EventUtil.isRightClick(event) && !this.sugar.isPlaceholder()) {
                 this.activateSpeed();
             }
         });
@@ -108,6 +115,17 @@ public class AssassinKit extends BattleKit {
             .add(this.sugar)
             .addCompass(8)
             .build();
+    }
+
+    private void restorePreviousCooldown() {
+        this.cooldownManager.getCooldownRemaining(this.getPlayer()).ifPresentOrElse(remaining -> {
+            this.redstone.setPlaceholder();
+            this.getPlayer().setExp(Expiration.after(remaining).getCompletionPercent(STRONG_RESTORE));
+            this.animateExp(new FillExpBarTask(this.getPlayer(), remaining));
+            this.attach(EasyTask.of(this.redstone::restore).runTaskLater(this.getPlugin(), remaining.ticks()));
+        }, () -> {
+            this.getPlayer().setExp(1f);
+        });
     }
 
     private void activateStrength(KitItem sword) {
@@ -139,6 +157,8 @@ public class AssassinKit extends BattleKit {
             this.getPlayer().sendMessage(C.info(C.AQUA) + "Your strength fades...");
             this.strong = false;
             this.animateExp(new FillExpBarTask(this.getPlayer(), STRONG_RESTORE));
+            // Override the existing cooldown in case strength ends early
+            this.cooldownManager.storeCooldown(this.getPlayer(), STRONG_RESTORE);
         }, STRONG_TIME.ticks()));
 
         // Task to end vulnerability
@@ -146,6 +166,9 @@ public class AssassinKit extends BattleKit {
             this.getPlayer().sendMessage(C.info(C.AQUA) + "You are no longer vulnerable");
             this.vulnerable = false;
         }, VULNERABLE_TIME.ticks()));
+
+        // Persist the time until redstone is available
+        this.cooldownManager.storeCooldown(this.getPlayer(), STRONG_RESTORE.add(STRONG_TIME));
     }
 
     private void activateSpeed() {
@@ -238,6 +261,7 @@ public class AssassinKit extends BattleKit {
             if (!this.strong) {
                 // Restore redstone
                 this.redstone.increment(1);
+                this.cooldownManager.storeCooldown(this.getPlayer(), Duration.ZERO);
             }
 
             this.getPlayer().setHealth(Math.min(this.getPlayer().getMaxHealth(), this.getPlayer().getHealth() + 6));

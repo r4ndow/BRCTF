@@ -15,7 +15,7 @@ public final class FillExpBarTask extends BukkitRunnable implements ExpBarTask {
 
     public FillExpBarTask(Player player, Duration duration) {
         this.player = player;
-        this.perTick = 1f / duration.toTicks();
+        this.perTick = (1f - player.getExp()) / duration.ticks();
         this.runsRequired = duration.ticks();
     }
 

@@ -2,6 +2,7 @@ package com.mcpvp.battle.kit;
 
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.kits.global.AssassinCooldownManager;
 import com.mcpvp.battle.kits.global.NecroRevivalTagManager;
 import com.mcpvp.battle.kits.global.ScoutDeathTagManager;
 import com.mcpvp.common.chat.C;
@@ -24,12 +25,15 @@ public class BattleKitManager extends KitManager {
     private final ScoutDeathTagManager scoutDeathTagManager;
     @Getter
     private final NecroRevivalTagManager necroRevivalTagManager;
+    @Getter
+    private final AssassinCooldownManager assassinCooldownManager;
 
     public BattleKitManager(Plugin plugin, Battle battle) {
         super(plugin);
         this.battle = battle;
         this.scoutDeathTagManager = new ScoutDeathTagManager((BattlePlugin) plugin);
         this.necroRevivalTagManager = new NecroRevivalTagManager((BattlePlugin) plugin);
+        this.assassinCooldownManager = new AssassinCooldownManager();
     }
 
     @Override
