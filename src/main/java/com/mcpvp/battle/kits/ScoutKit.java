@@ -121,6 +121,9 @@ public class ScoutKit extends BattleKit {
         }
 
         if (this.isOnSwapCooldown(player)) {
+            this.getPlayer().sendMessage("%s%s cannot be swapped for %s seconds!".formatted(
+                C.warn(C.RED), C.hl(player.getName()), C.hl(String.valueOf(COOLDOWN_MAP.get(player).getRemaining().seconds())))
+            );
             return;
         }
 
@@ -129,8 +132,8 @@ public class ScoutKit extends BattleKit {
     }
 
     private void swap(Player player) {
-        Location toKitPlayer = player.getLocation();
-        Location toSwappedPlayer = this.getPlayer().getLocation();
+        Location toKitPlayer = player.getLocation().setDirection(this.getPlayer().getEyeLocation().getDirection());
+        Location toSwappedPlayer = this.getPlayer().getLocation().setDirection(player.getEyeLocation().getDirection());
 
         this.getPlayer().teleport(toKitPlayer);
         player.teleport(toSwappedPlayer);
