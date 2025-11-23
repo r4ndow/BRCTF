@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class BattleMatch {
 
         Bukkit.getScheduler().runTaskTimer(this.plugin, this.getTimerTask(), 0, 20);
 
-        this.getCurrentGame().setup();
+        this.getCurrentGame().setup(Collections.emptyMap());
     }
 
     /**
@@ -59,13 +60,7 @@ public class BattleMatch {
             Bukkit.shutdown();
         } else {
             BattleGame next = this.games.get(++this.currentGameIndex);
-            next.setup();
-
-            // Move everyone to their proper teams
-            playerMap.forEach((oldTeam, players) -> {
-                BattleTeam nextTeam = next.getTeamManager().getTeam(oldTeam.getId());
-                players.forEach(player -> next.getTeamManager().setTeam(player, nextTeam));
-            });
+            next.setup(playerMap);
         }
     }
 

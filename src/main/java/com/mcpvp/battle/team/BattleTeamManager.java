@@ -46,7 +46,7 @@ public class BattleTeamManager {
         }
 
         // Add to new team
-        if (team != null) {
+        if (team != null && !team.contains(player)) {
             team.add(player);
             new PlayerJoinTeamEvent(player, team).call();
         }

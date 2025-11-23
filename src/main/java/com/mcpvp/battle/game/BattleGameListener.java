@@ -1,10 +1,7 @@
 package com.mcpvp.battle.game;
 
 import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.event.PlayerEnterSpawnEvent;
-import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
-import com.mcpvp.battle.event.PlayerParticipateEvent;
-import com.mcpvp.battle.event.PlayerResignEvent;
+import com.mcpvp.battle.event.*;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.battle.kit.BattleKitType;
@@ -207,6 +204,11 @@ public class BattleGameListener implements EasyListener {
                 );
             }
         }
+    }
+
+    @EventHandler
+    public void onJoinTeam(PlayerJoinTeamEvent event) {
+        event.getPlayer().sendMessage(C.info(C.GREEN) + "You have joined the " + event.getTeam().getColoredName() + C.GRAY + " team");
     }
 
     @EventHandler

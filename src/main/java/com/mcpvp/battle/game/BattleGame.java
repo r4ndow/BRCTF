@@ -54,7 +54,7 @@ public class BattleGame extends EasyLifecycle {
     private BattleGameState state = null;
     private BattleGameStateHandler stateHandler;
 
-    public void setup() {
+    public void setup(Map<BattleTeam, Set<Player>> playerMap) {
         log.info("Setup game on map {}", this.map);
 
         this.attach(new BattleGameListener(this.plugin, this));
@@ -85,6 +85,12 @@ public class BattleGame extends EasyLifecycle {
         }
 
         this.scoreboardManager.init();
+
+        // Transfer players from the old game
+        playerMap.forEach((oldTeam, players) -> {
+            BattleTeam nextTeam = this.getTeamManager().getTeam(oldTeam.getId());
+            players.forEach(player -> this.getTeamManager().setTeam(player, nextTeam));
+        });
 
         this.setState(BattleGameState.BEFORE);
     }
