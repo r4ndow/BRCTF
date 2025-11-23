@@ -37,11 +37,6 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
         };
         this.plugin.getBattle().getMatch().getTimer().setSeconds(seconds);
 
-        // Pause the timer before any players are on
-        if (this.game.getParticipants().isEmpty()) {
-            this.plugin.getBattle().getMatch().getTimer().setPaused(true);
-        }
-
         // Since spectators won't get a PlayerParticipateEvent fired, teleport them manually
         Bukkit.getOnlinePlayers().stream()
             .filter(Predicate.not(this.game::isParticipant))
@@ -64,10 +59,6 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
         event.getPlayer().getInventory().setArmorContents(new ItemStack[4]);
         event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
         event.getPlayer().setExp(0);
-
-        if (!this.game.getParticipants().isEmpty() && this.plugin.getBattle().getMatch().getTimer().isPaused()) {
-            this.plugin.getBattle().getMatch().getTimer().setPaused(false);
-        }
     }
 
     @EventHandler

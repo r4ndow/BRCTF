@@ -106,7 +106,7 @@ public class BattleMatch {
 
             if (this.timer.getSeconds() == 0) {
                 this.advanceStateOrGame();
-            } else {
+            } else if (!this.getCurrentGame().getParticipants().isEmpty()) {
                 this.timer.setSeconds(this.timer.getSeconds() - 1);
             }
         };
