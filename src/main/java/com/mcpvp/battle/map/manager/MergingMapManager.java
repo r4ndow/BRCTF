@@ -59,7 +59,7 @@ public class MergingMapManager implements BattleMapManager {
             .flatMap(repo -> repo.getFunctional().stream())
             .filter(m -> m.getId() == id)
             .findFirst()
-            .orElseThrow(() -> new IllegalStateException("Could not find request map: " + id));
+            .orElseThrow(() -> new IllegalStateException("Could not find the requested map: " + id));
     }
 
     @Override
