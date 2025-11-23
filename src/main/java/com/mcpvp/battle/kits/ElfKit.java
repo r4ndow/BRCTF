@@ -403,7 +403,7 @@ public class ElfKit extends BattleKit {
                     }
 
                     extinguishRunnable.run();
-                }).runTaskTimer(this.getPlugin(), 0, 1);
+                }).runTaskTimer(this.getPlugin(), 0, 20);
             } else {
                 extinguishRunnable.run();
             }
