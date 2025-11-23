@@ -141,11 +141,11 @@ public class EngineerKit extends BattleKit {
             EasyTask.of(this::restore).runTaskLater(this.getPlugin(), LAUNCHER_COOLDOWN.ticks());
 
             // Queue the TNT for exploding
-            new GrenadeExplosionTask(tnt, () -> {
+            EngineerKit.this.attach(new GrenadeExplosionTask(tnt, () -> {
                 if (tnt.getFuseTicks() > 10) {
                     tnt.setFuseTicks(10);
                 }
-            });
+            }).runTaskTimer(this.getPlugin(), 0, 1));
 
             // Visual effect
             EffectUtil.colorTrail(tnt, EngineerKit.this.getTeam().getColor().getColor()).runTaskTimer(this.getPlugin(), 0, 1);
@@ -410,7 +410,6 @@ public class EngineerKit extends BattleKit {
         protected void onUse(PlayerInteractEvent event) {
             event.setCancelled(true);
             this.setPlaceholder();
-
             this.doHealPulse();
             this.animateRing();
         }
