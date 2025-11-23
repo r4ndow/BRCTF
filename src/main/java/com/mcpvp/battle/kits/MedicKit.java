@@ -323,7 +323,7 @@ public class MedicKit extends BattleKit {
         @Override
         public void build(Block center, StructureBuilder builder) {
             builder.ignoreRestrictions(
-                NEAR_SPAWN, NEAR_RESTRICTED, NEAR_PLAYER
+                NEAR_SPAWN, NEAR_RESTRICTED, NEAR_PLAYER, NEAR_FLAG
             );
             builder.setBlock(center, Material.WEB);
         }
