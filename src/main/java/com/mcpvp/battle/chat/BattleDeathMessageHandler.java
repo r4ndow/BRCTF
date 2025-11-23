@@ -60,7 +60,7 @@ public class BattleDeathMessageHandler implements EasyListener {
     @EventHandler(ignoreCancelled = true, priority = HIGHEST)
     public void onDeath(GameDeathEvent event) {
         BattleTeam team = this.plugin.getBattle().getGame().getTeamManager().getTeam(event.getPlayer());
-        if (team != null) {
+        if (team != null && event.getDeathEvent().getDeathMessage().contains(event.getPlayer().getName())) {
             // A weird and probably incorrect way of coloring the name of the player who died
             event.getDeathEvent().setDeathMessage(
                 event.getDeathEvent().getDeathMessage().replaceFirst(
