@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Random;
+import java.util.function.Predicate;
 
 public class KitCommand extends EasyCommand {
 
@@ -25,7 +27,12 @@ public class KitCommand extends EasyCommand {
         Player player = this.asPlayer(sender);
 
         KitDefinition kit;
-        if (label.equals("kit")) {
+        if ((label.equals("kit") && args.contains("random")) || label.equals("random")) {
+            List<KitDefinition> eligible = this.kitManager.getKitDefinitions().stream()
+                .filter(Predicate.not(this.kitManager::isDisabled))
+                .toList();
+            kit = eligible.get(new Random().nextInt(eligible.size()));
+        } else if (label.equals("kit")) {
             kit = this.kitManager.getKitDefinition(args.get(0));
         } else {
             kit = this.kitManager.getKitDefinition(label);

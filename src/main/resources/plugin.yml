@@ -25,8 +25,8 @@ commands:
     permission: mcctf.flag.reset
   kit:
     description: Select a class
-    usage: /<command> <class>
-    aliases: [class, archer, assassin, chemist, dwarf, elf, engineer, heavy, mage, medic, necro, ninja, pyro, scout, soldier]
+    usage: /<command> <class | random>
+    aliases: [class, archer, assassin, chemist, dwarf, elf, engineer, heavy, mage, medic, necro, ninja, pyro, scout, soldier, random]
   kits:
     description: Manage the classes, such as disabling and setting limits
     aliases: [classes, classmanager]
@@ -58,6 +58,8 @@ commands:
     description: Insert a new game with the given map after the current game
     permission: mcctf.map.next
     usage: /<command> <map ids>
+  respawn:
+    description: Respawn yourself immediately
   switch:
     description: Switch to the other team
   timer:
@@ -77,4 +79,4 @@ commands:
     permission: mcctf.timer.skip
   yell:
     description: Yell!
-    aliases: [a]
+    aliases: [a, all]

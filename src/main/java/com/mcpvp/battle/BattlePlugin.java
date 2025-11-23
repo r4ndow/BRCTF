@@ -48,6 +48,7 @@ public class BattlePlugin extends JavaPlugin {
         new KitCommand(this.battle.getKitManager()).register(this);
         new KitManagerCommands(this.battle.getKitManager()).register(this);
         new MapCommands(this.battle).register(this);
+        new RespawnCommand(this.battle).register(this);
         new SwitchCommand(this.battle).register(this);
         new TimerCommand(this.battle).register(this);
         new YellCommand().register(this);
