@@ -62,7 +62,7 @@ public abstract class CooldownItem extends KitItem {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if (!this.autoUse()) {
+        if (!this.autoUse() || !this.shouldTrigger(event)) {
             return;
         }
 
@@ -83,6 +83,10 @@ public abstract class CooldownItem extends KitItem {
 
         this.onUse(event);
         this.startCooldown();
+    }
+
+    protected boolean shouldTrigger(PlayerInteractEvent event) {
+        return true;
     }
 
     protected void startCooldown() {

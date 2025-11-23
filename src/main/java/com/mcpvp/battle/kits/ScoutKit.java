@@ -259,11 +259,13 @@ public class ScoutKit extends BattleKit {
 
         @Override
         protected void onUse(PlayerInteractEvent event) {
-            if (!this.isPlaceholder() && EventUtil.isRightClick(event)) {
-                ScoutKit.this.throwSwapperBall();
-            }
+            ScoutKit.this.throwSwapperBall();
         }
 
+        @Override
+        protected boolean shouldTrigger(PlayerInteractEvent event) {
+            return EventUtil.isRightClick(event);
+        }
     }
 
     class DeathTagItem extends CooldownItem {
