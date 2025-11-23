@@ -103,7 +103,6 @@ public class KitItem extends InteractiveItem {
     public void modify(UnaryOperator<ItemBuilder> editor) {
         editor.apply(new ItemBuilder(this.getItem(), false));
         this.update(this.kit.getPlayer().getInventory());
-//        kit.getPlayer().updateInventory();
     }
 
 }

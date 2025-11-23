@@ -11,6 +11,8 @@ public class FoodItem extends KitItem {
         super(kit, itemStack, true);
         this.onInteract(ev -> {
             if (EventUtil.isRightClick(ev)) {
+                // Canceling the interaction event is very important, otherwise the items get out of sync
+                ev.setCancelled(true);
                 this.consume();
             }
         });

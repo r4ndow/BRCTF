@@ -175,9 +175,6 @@ public class InteractiveItem implements EasyListener {
         }
 
         if (this.isItem(event.getItem())) {
-            // Re-assign the ItemStack instance, which improves syncing with the client
-            // Without doing this, a call to `update()` would be required
-            this.setItem(event.getItem());
             this.interactHandlers.forEach(ih -> ih.accept(event));
             this.anyHandler.accept(event.getPlayer());
         }
