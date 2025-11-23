@@ -1,6 +1,8 @@
 package com.mcpvp.battle.command;
 
+import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.kit.BattleKitManager;
+import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.command.CommandUtil;
 import com.mcpvp.common.command.EasyCommand;
@@ -8,18 +10,19 @@ import com.mcpvp.common.command.EasyCommandGroup;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.kit.KitInfo;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class KitManagerCommands extends EasyCommandGroup {
 
+    private final Battle battle;
     private final BattleKitManager kitManager;
 
-    public KitManagerCommands(BattleKitManager kitManager) {
+    public KitManagerCommands(Battle battle, BattleKitManager kitManager) {
         super("kits");
+        this.battle = battle;
         this.kitManager = kitManager;
         this.addCommand(new SummaryCommand(), true);
         this.addCommand(new DisableCommand());
@@ -63,13 +66,53 @@ public class KitManagerCommands extends EasyCommandGroup {
             }
             sender.sendMessage(C.info(C.RED) + "Disabled: " + disabledText);
 
-            String limitedText = limited.stream().map(kit ->
-                C.R + kit.getName() + C.GRAY + " × " + C.R + KitManagerCommands.this.kitManager.getLimit(kit).map(Object::toString).orElse("none")
-            ).collect(Collectors.joining(C.GRAY + ", "));
-            if (limitedText.isBlank()) {
-                limitedText = C.R + "none";
+            // Archer * 1, players: new_instance (1)
+            StringBuilder sb = new StringBuilder(C.info(C.PURPLE) + "Limited: ");
+            if (!limited.isEmpty()) {
+                sb.append(limited.stream().map(kit -> {
+                    StringBuilder inner = new StringBuilder("\n    ");
+                    inner.append(kit.getName());
+                    inner.append(": ");
+                    inner.append(C.R);
+                    inner.append(KitManagerCommands.this.kitManager.getLimit(kit).map(Object::toString).orElse("none"));
+
+                    Map<BattleTeam, List<Player>> playing = new HashMap<>();
+                    KitManagerCommands.this.battle.getGame().getTeamManager().getTeams().forEach(team -> {
+                        List<Player> onTeam = team.getPlayers().stream()
+                            .filter(player -> KitManagerCommands.this.battle.getKitManager().isSelected(player, kit))
+                            .toList();
+
+                        if (!onTeam.isEmpty()) {
+                            playing.put(team, onTeam);
+                        }
+                    });
+
+                    if (!playing.isEmpty()) {
+                        inner.append(C.GRAY);
+                        inner.append(" [");
+                        playing.forEach((battleTeam, players) -> {
+                            inner.append(players.stream().map(player -> {
+                                return battleTeam.getColor().getChat() + player.getName();
+                            }).collect(Collectors.joining(C.GRAY + ", ")));
+
+                            inner.append(" ");
+                            inner.append(C.GRAY);
+                            inner.append("(");
+                            inner.append(C.hl(players.size()));
+                            inner.append(")");
+                        });
+                        inner.append(C.GRAY);
+                        inner.append("]");
+                    }
+
+                    return inner.toString();
+                }).collect(Collectors.joining(C.GRAY + "\n")));
+            } else {
+                sb.append(C.R);
+                sb.append("none");
             }
-            sender.sendMessage(C.info(C.PURPLE) + "Limited: " + limitedText);
+
+            sender.sendMessage(sb.toString());
 
             return false;
         }
@@ -153,12 +196,13 @@ public class KitManagerCommands extends EasyCommandGroup {
                     return false;
                 }
 
+                int limit = Integer.parseInt(args.get(1));
                 kits.forEach(kit -> {
-                    KitManagerCommands.this.kitManager.setLimit(kit, Integer.parseInt(args.get(1)));
+                    KitManagerCommands.this.kitManager.setLimit(kit, limit);
                 });
                 sender.sendMessage(C.cmdPass() + "Limited " + C.R + kits.stream()
                     .map(KitDefinition::getName)
-                    .collect(Collectors.joining(C.GRAY + ", " + C.R))
+                    .collect(Collectors.joining(C.GRAY + ", " + C.R)) + C.GRAY + " to " + C.hl(limit)
                 );
 
                 return true;

@@ -211,7 +211,7 @@ public class C {
      * @return A colored version of the given text, followed by the GRAY color
      * code. Useful for highlighting in GRAY messages.
      */
-    public static String hl(String text) {
+    public static String hl(Object text) {
         return highlight(text);
     }
 

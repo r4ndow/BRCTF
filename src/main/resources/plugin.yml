@@ -45,10 +45,14 @@ commands:
     description: Enable a class so that players can use it
     permission: mcctf.kits.enable
     usage: /<command> <class>
-  kits limit:
+  kits limit set:
     description: Limit a class so that only a certain number of players can use it
     permission: mcctf.kits.limit
-    usage: /<command> <class> <limit>
+    usage: /<command> <class | all> <limit>
+  kits limit remove:
+    description: Remove a class limit so that anyone can use it
+    permission: mcctf.kits.limit
+    usage: /<command> <class | all> <limit>
   map:
     description: View the current map
     usage: /<command>

@@ -1,6 +1,7 @@
 package com.mcpvp.common.command;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,7 +34,10 @@ public abstract class EasyCommand implements CommandExecutor, TabCompleter {
     }
 
     public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-        return Collections.emptyList();
+        return Bukkit.getOnlinePlayers().stream()
+            .map(Player::getName)
+            .filter(string -> string.toLowerCase().startsWith(arg.toLowerCase()))
+            .toList();
     }
 
     @Override
