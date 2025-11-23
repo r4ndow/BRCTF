@@ -4,6 +4,11 @@ description: The classic MCPVP plugin reborn
 author: NomNuggetNom
 main: com.mcpvp.battle.BattlePlugin
 depend: []
+permissions:
+  # Special case for the /switch command, checked in the command code
+  mcctf.switch.other:
+    description: Allow switching the team of other players
+    default: op
 commands:
   flag:
     description: Flag commands
