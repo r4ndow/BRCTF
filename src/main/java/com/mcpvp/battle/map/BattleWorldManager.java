@@ -77,6 +77,7 @@ public class BattleWorldManager {
         world.setGameRuleValue("naturalRegeneration", "false");
         world.setGameRuleValue("doDaylightCycle", "false");
         world.setGameRuleValue("mobGriefing", "false");
+        world.setGameRuleValue("doFireTick", "false");
     }
 
 }
