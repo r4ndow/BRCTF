@@ -46,7 +46,7 @@ public class BattleMatchStructureRestrictions {
 
         structureManager.registerChecker((block) -> {
             if (match.getCurrentGame().getTeamManager().getTeams().stream().anyMatch(bt ->
-                block.getLocation().equals(bt.getFlag().getHome())
+                block.equals(bt.getFlag().getHome().getBlock())
             )) {
                 return Optional.of(new StructureViolation(IN_FLAG, "You can't place this on the flag"));
             }
