@@ -13,8 +13,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @RequiredArgsConstructor
 public class BattleChatMessageHandler implements EasyListener {
@@ -29,7 +31,19 @@ public class BattleChatMessageHandler implements EasyListener {
         Optional<BattleTeam> senderTeam = Optional.ofNullable(this.battle.getGame().getTeamManager().getTeam(event.getPlayer()));
 
         boolean global = event.getMessage().startsWith("!") || senderTeam.isEmpty();
-        Collection<? extends Player> recipients = global ? Bukkit.getOnlinePlayers() : senderTeam.get().getPlayers();
+        List<Player> recipients = new ArrayList<>();
+        if (global) {
+            recipients.addAll(Bukkit.getOnlinePlayers());
+        } else {
+            recipients.addAll(senderTeam.get().getPlayers());
+            // Send to all spectators as well
+            recipients.addAll(
+                Bukkit.getOnlinePlayers().stream()
+                    .filter(Predicate.not(this.battle.getGame()::isParticipant))
+                    .toList()
+            );
+        }
+
         String message = this.formatMessage(
             global,
             event.getMessage(),
