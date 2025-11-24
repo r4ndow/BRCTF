@@ -243,14 +243,23 @@ public class BattleGame extends EasyLifecycle {
 
     /**
      * @return The team that won this game (e.g. by meeting the required number of caps).
-     * Returns null if no team has won.
+     * Returns an empty Optional if no team has won.
+     * @see #getLeader()
      */
-    @Nullable
-    public BattleTeam getWinner() {
+    public Optional<BattleTeam> getWinner() {
         return this.teamManager.getTeams().stream()
             .filter(t -> t.getCaptures() == this.config.getCaps())
-            .findFirst()
-            .orElse(null);
+            .findFirst();
+    }
+
+    /**
+     * @return The team that is currently in the lead, e.g. they have the most caps. They might not have met the
+     * condition to actually end the game yet.
+     * @see #getWinner()
+     */
+    public Optional<BattleTeam> getLeader() {
+        // This is the ideal place for tie breaking logic, but just use captures for now
+        return this.teamManager.getTeams().stream().max(Comparator.comparingInt(BattleTeam::getCaptures));
     }
 
 }

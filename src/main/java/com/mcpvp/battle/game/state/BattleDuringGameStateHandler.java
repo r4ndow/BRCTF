@@ -60,13 +60,16 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         summary.add(" ");
         summary.add(C.YELLOW + "✦ " + C.GOLD + "✦ " + C.b(C.R) + "GAME SUMMARY" + C.YELLOW + " ✦" + C.GOLD + " ✦");
 
-        BattleTeam winner = this.game.getWinner();
-        if (winner == null) {
+        BattleTeam leader = this.game.getLeader().orElse(null);
+        if (leader == null) {
             summary.add(C.info(C.GOLD) + "Nobody won!");
         } else {
-            BattleTeam loser = this.game.getTeamManager().getNext(winner);
+            BattleTeam loser = this.game.getTeamManager().getNext(leader);
             summary.add("%sWinner: %s (%s - %s)".formatted(
-                C.info(C.GOLD), winner.getColoredName(), winner.getColor().toString() + winner.getCaptures(), loser.getColor().toString() + loser.getCaptures()
+                C.info(C.GOLD),
+                leader.getColoredName() + C.GRAY,
+                leader.getColor().toString() + leader.getCaptures() + C.GRAY,
+                loser.getColor().toString() + loser.getCaptures() + C.GRAY
             ));
         }
 
@@ -112,7 +115,6 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     public void onRespawn(PlayerRespawnEvent event) {
         // This should not happen, but just to be safe...
         if (this.game.isParticipant(event.getPlayer())) {
-            System.out.println("Respawned?");
             this.game.respawn(event.getPlayer(), false, true);
         }
     }
@@ -187,7 +189,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCapture(FlagCaptureEvent event) {
-        if (this.game.getWinner() != null) {
+        if (this.game.getWinner().isPresent()) {
             this.game.setState(BattleGameState.AFTER);
         }
     }
