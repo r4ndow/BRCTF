@@ -177,6 +177,11 @@ public class BattleGame extends EasyLifecycle {
             // A small amount of velocity carries over for some reason
             player.setVelocity(new Vector());
 
+            // Sound effect for death needs to be done after teleporting
+            if (died) {
+                player.playSound(player.getEyeLocation(), Sound.HURT_FLESH, 1.0f, 1.0f);
+            }
+
             // Kit application needs to be done later due to inventory clearing
             this.battle.getKitManager().createSelected(player);
 
@@ -197,7 +202,6 @@ public class BattleGame extends EasyLifecycle {
     }
 
     private void doDeathAnimation(Player player) {
-        player.playEffect(EntityEffect.HURT);
         LivingEntity skeleton = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), EntityType.SKELETON);
         skeleton.damage(100);
     }
