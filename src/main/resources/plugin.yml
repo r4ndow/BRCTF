@@ -10,6 +10,12 @@ permissions:
     description: Allow switching the team of other players
     default: op
 commands:
+  captures:
+    description: Capture management commands
+  captures set:
+    description: Set the number of captures for a team
+    usage: /<command> <team> <number>
+    permission: mcctf.captures.set
   flag:
     description: Flag commands
   flag jump:

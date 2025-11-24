@@ -27,6 +27,7 @@ public class BattleTeam {
     private final BattleTeamConfig config;
     private String name;
     private Colors color;
+    @Setter
     private int captures;
     @Setter
     private BattleFlag flag;
