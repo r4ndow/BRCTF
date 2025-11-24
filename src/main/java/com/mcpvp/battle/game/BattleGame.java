@@ -141,9 +141,8 @@ public class BattleGame extends EasyLifecycle {
      * Respawns the player **during the game**. Not before or after.
      *
      * @param player The player to respawn.
-     * @param respawn Whether to respawn them.
      */
-    public void respawn(Player player, boolean died, boolean respawn) {
+    public void respawn(Player player, boolean died) {
         // Drop the flag if they have it
         this.teamManager.getTeams().forEach(bt -> {
             if (bt.getFlag().getCarrier() == player) {
@@ -163,30 +162,27 @@ public class BattleGame extends EasyLifecycle {
             });
         }
 
-        // Teleport to spawn
-        if (respawn) {
-            // Reset health, potion effects, etc
-            PlayerUtil.reset(player);
+        // Reset health, potion effects, etc
+        PlayerUtil.reset(player);
 
-            BattleTeam team = this.getTeamManager().getTeam(player);
-            Location spawn = this.getConfig().getTeamConfig(team).getSpawn();
-            player.teleport(spawn);
+        BattleTeam team = this.getTeamManager().getTeam(player);
+        Location spawn = this.getConfig().getTeamConfig(team).getSpawn();
+        player.teleport(spawn);
 
-            EasyTask.of(() -> {
-                if (!player.isOnline()) {
-                    return;
-                }
+        EasyTask.of(() -> {
+            if (!player.isOnline()) {
+                return;
+            }
 
-                // A small amount of velocity carries over for some reason
-                player.setVelocity(new Vector());
+            // A small amount of velocity carries over for some reason
+            player.setVelocity(new Vector());
 
-                // Kit application needs to be done later due to inventory clearing
-                this.battle.getKitManager().createSelected(player);
+            // Kit application needs to be done later due to inventory clearing
+            this.battle.getKitManager().createSelected(player);
 
-                // Respawn is finished
-                new GameRespawnEvent(player).call();
-            }).runTaskLater(this.getPlugin(), 0);
-        }
+            // Respawn is finished
+            new GameRespawnEvent(player).call();
+        }).runTaskLater(this.getPlugin(), 0);
     }
 
     public void remove(Player player) {

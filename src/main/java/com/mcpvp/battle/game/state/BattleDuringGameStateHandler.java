@@ -91,23 +91,23 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
             return;
         }
 
-        this.game.respawn(event.getEntity(), true, true);
+        this.game.respawn(event.getEntity(), true);
     }
 
     @EventHandler
     public void onJoinTeam(PlayerJoinTeamEvent event) {
-        this.game.respawn(event.getPlayer(), false, true);
+        this.game.respawn(event.getPlayer(), false);
     }
 
     @EventHandler
     public void onParticipate(PlayerParticipateEvent event) {
-        this.game.respawn(event.getPlayer(), false, true);
+        this.game.respawn(event.getPlayer(), false);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onKitSelected(KitSelectedEvent event) {
         if (event.isRespawn()) {
-            this.game.respawn(event.getPlayer(), false, true);
+            this.game.respawn(event.getPlayer(), false);
         }
     }
 
@@ -115,7 +115,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     public void onRespawn(PlayerRespawnEvent event) {
         // This should not happen, but just to be safe...
         if (this.game.isParticipant(event.getPlayer())) {
-            this.game.respawn(event.getPlayer(), false, true);
+            this.game.respawn(event.getPlayer(), false);
         }
     }
 
@@ -175,7 +175,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
                 event.getCause().setCancelled(true);
             }
 
-            this.game.respawn(event.getPlayer(), true, true);
+            this.game.respawn(event.getPlayer(), true);
         }
     }
 

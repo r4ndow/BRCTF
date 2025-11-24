@@ -17,7 +17,7 @@ public class RespawnCommand extends EasyCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
-        this.battle.getGame().respawn(this.asPlayer(sender), false, true);
+        this.battle.getGame().respawn(this.asPlayer(sender), false);
         return true;
     }
 
