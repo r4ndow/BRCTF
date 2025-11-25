@@ -44,6 +44,11 @@ public class SwitchCommand extends EasyCommand {
         BattleTeam current = teamManager.getTeam(target);
         BattleTeam next = teamManager.getNext(current);
         teamManager.setTeam(target, next);
+
+        if (target != sender) {
+            sender.sendMessage(C.cmdPass() + target.getPlayerListName() + " has been switched to " + next.getColoredName());
+        }
+
         return true;
     }
 

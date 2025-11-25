@@ -1,6 +1,7 @@
 package com.mcpvp.battle.command;
 
 import com.mcpvp.battle.Battle;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.command.EasyCommand;
 import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;
@@ -36,6 +37,7 @@ public class TimerCommand extends EasyCommandGroup {
             try {
                 int set = Integer.parseInt(args.get(0));
                 TimerCommand.this.battle.getMatch().getTimer().setSeconds(set);
+                sender.sendMessage(C.cmdPass() + "Timer set to " + C.hl(set) + " seconds");
                 return true;
             } catch (Exception e) {
                 return false;
@@ -53,6 +55,7 @@ public class TimerCommand extends EasyCommandGroup {
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
             TimerCommand.this.battle.getMatch().getTimer().setPaused(true);
+            sender.sendMessage(C.cmdPass() + "Timer locked!");
             return true;
         }
 
@@ -67,6 +70,7 @@ public class TimerCommand extends EasyCommandGroup {
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
             TimerCommand.this.battle.getMatch().getTimer().setPaused(false);
+            sender.sendMessage(C.cmdPass() + "Timer unlocked!");
             return true;
         }
 
@@ -81,6 +85,7 @@ public class TimerCommand extends EasyCommandGroup {
         @Override
         public boolean onCommand(CommandSender sender, String label, List<String> args) {
             TimerCommand.this.battle.getMatch().advanceStateOrGame();
+            sender.sendMessage(C.cmdPass() + "Skipping...");
             return true;
         }
 
