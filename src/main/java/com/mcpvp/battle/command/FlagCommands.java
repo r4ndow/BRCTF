@@ -27,6 +27,7 @@ public class FlagCommands extends EasyCommandGroup {
         this.addCommand(new LockCommand());
         this.addCommand(new UnlockCommand());
         this.addCommand(new ResetCommand());
+        this.addCommand(new DisplayCommand());
     }
 
     public List<String> matchTeam() {
@@ -119,6 +120,57 @@ public class FlagCommands extends EasyCommandGroup {
         @Override
         public List<String> getTabCompletions(CommandSender sender, String alias, List<String> arg) {
             return FlagCommands.this.matchTeam();
+        }
+
+    }
+
+    public class DisplayCommand extends EasyCommand {
+
+        public DisplayCommand() {
+            super("display");
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, String label, List<String> args) {
+            if (args.size() != 2) {
+                return false;
+            }
+
+            FlagDisplayChannel channel = FlagDisplayChannel.valueOf(args.get(0).toUpperCase());
+            boolean active = args.get(1).equalsIgnoreCase("on");
+
+            Set<FlagDisplayChannel> current = FlagCommands.this.battle.getPreferenceManager().find(
+                this.asPlayer(sender), BattlePreferences.FLAG_DISPLAY
+            ).orElse(Sets.newHashSet(FlagDisplayChannel.CHAT));
+
+            if (active) {
+                current.add(channel);
+            } else {
+                current.remove(channel);
+            }
+
+            FlagCommands.this.battle.getPreferenceManager().store(
+                this.asPlayer(sender), BattlePreferences.FLAG_DISPLAY, current
+            );
+
+            if (active) {
+                sender.sendMessage(C.cmdPass() + "Alerts " + C.hl("enabled") + " on the " + C.hl(channel.name().toLowerCase()) + " channel");
+            } else {
+                sender.sendMessage(C.cmdPass() + "Alerts " + C.hl("disabled") + " on the " + C.hl(channel.name().toLowerCase()) + " channel");
+            }
+
+            return true;
+        }
+
+        @Override
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
+            if (args.size() == 1) {
+                return Arrays.stream(FlagDisplayChannel.values()).map(FlagDisplayChannel::name).toList();
+            } else if (args.size() == 2) {
+                return List.of("on", "off");
+            }
+
+            return super.getTabCompletions(sender, alias, args);
         }
 
     }

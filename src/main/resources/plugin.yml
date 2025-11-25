@@ -34,6 +34,9 @@ commands:
     description: Reset a flag to its normal state
     usage: /<command> <team>
     permission: mcctf.flag.reset
+  flag display:
+    description: Control which channels flag alerts are visible on
+    usage: /<command> <chat | subtitle | actionbar> <on | off>
   kit:
     description: Select a class
     usage: /<command> <class | random>

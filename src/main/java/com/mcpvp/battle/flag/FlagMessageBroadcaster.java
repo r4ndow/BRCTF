@@ -1,7 +1,9 @@
 package com.mcpvp.battle.flag;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.BattlePreferences;
 import com.mcpvp.battle.event.*;
+import com.mcpvp.battle.flag.display.FlagDisplayChannel;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EasyListener;
@@ -11,6 +13,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @RequiredArgsConstructor
 public class FlagMessageBroadcaster implements EasyListener {
@@ -18,7 +23,14 @@ public class FlagMessageBroadcaster implements EasyListener {
     private final BattlePlugin plugin;
 
     private void broadcast(String message) {
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(message));
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            this.plugin.getBattle().getPreferenceManager()
+                .find(player, BattlePreferences.FLAG_DISPLAY)
+                .orElse(Set.of(FlagDisplayChannel.CHAT))
+                .forEach(displayChannel -> {
+                    displayChannel.getSender().accept(player, message);
+                });
+        });
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
