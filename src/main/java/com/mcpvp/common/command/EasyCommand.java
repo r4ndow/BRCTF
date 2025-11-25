@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -19,30 +18,20 @@ public abstract class EasyCommand implements CommandExecutor, TabCompleter {
         this.name = name;
     }
 
-    public abstract boolean onCommand(CommandSender sender, String label, List<String> args);
-
     @Override
     public boolean onCommand(CommandSender var1, Command var2, String var3, String[] var4) {
         return this.onCommand(var1, var3, Arrays.asList(var4));
     }
 
-    public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
-        if (!args.isEmpty()) {
-            return this.onTabComplete(sender, alias, args.get(args.size() - 1));
-        }
-        return Collections.emptyList();
-    }
-
-    public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-        return Bukkit.getOnlinePlayers().stream()
-            .map(Player::getName)
-            .filter(string -> string.toLowerCase().startsWith(arg.toLowerCase()))
-            .toList();
-    }
+    public abstract boolean onCommand(CommandSender sender, String label, List<String> args);
 
     @Override
     public List<String> onTabComplete(CommandSender var1, Command var2, String var3, String[] var4) {
-        return this.onTabComplete(var1, var3, Arrays.asList(var4));
+        return CommandUtil.partialMatches(this.getTabCompletions(var1, var3, Arrays.asList(var4)), var4[var4.length - 1]);
+    }
+
+    public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
+        return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
     }
 
     public void register(JavaPlugin plugin) {

@@ -1,15 +1,20 @@
 package com.mcpvp.battle.command;
 
+import com.google.common.collect.Sets;
 import com.mcpvp.battle.Battle;
+import com.mcpvp.battle.BattlePreferences;
+import com.mcpvp.battle.flag.display.FlagDisplayChannel;
 import com.mcpvp.battle.team.BattleTeam;
-import com.mcpvp.common.command.CommandUtil;
+import com.mcpvp.common.chat.C;
 import com.mcpvp.common.command.EasyCommand;
 import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class FlagCommands extends EasyCommandGroup {
 
@@ -24,11 +29,8 @@ public class FlagCommands extends EasyCommandGroup {
         this.addCommand(new ResetCommand());
     }
 
-    public List<String> matchTeam(String arg) {
-        return CommandUtil.partialMatches(
-            this.battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList(),
-            arg
-        );
+    public List<String> matchTeam() {
+        return this.battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList();
     }
 
     public Optional<BattleTeam> findTeam(String arg) {
@@ -52,8 +54,8 @@ public class FlagCommands extends EasyCommandGroup {
         }
 
         @Override
-        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return FlagCommands.this.matchTeam(arg);
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> arg) {
+            return FlagCommands.this.matchTeam();
         }
 
     }
@@ -73,8 +75,8 @@ public class FlagCommands extends EasyCommandGroup {
         }
 
         @Override
-        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return FlagCommands.this.matchTeam(arg);
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> arg) {
+            return FlagCommands.this.matchTeam();
         }
 
     }
@@ -94,8 +96,8 @@ public class FlagCommands extends EasyCommandGroup {
         }
 
         @Override
-        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return FlagCommands.this.matchTeam(arg);
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> arg) {
+            return FlagCommands.this.matchTeam();
         }
 
     }
@@ -115,8 +117,8 @@ public class FlagCommands extends EasyCommandGroup {
         }
 
         @Override
-        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return FlagCommands.this.matchTeam(arg);
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> arg) {
+            return FlagCommands.this.matchTeam();
         }
 
     }

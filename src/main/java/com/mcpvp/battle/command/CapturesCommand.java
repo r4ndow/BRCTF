@@ -21,11 +21,8 @@ public class CapturesCommand extends EasyCommandGroup {
         this.addCommand(new SetCommand());
     }
 
-    public List<String> matchTeam(String arg) {
-        return CommandUtil.partialMatches(
-            this.battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList(),
-            arg
-        );
+    public List<String> matchTeam() {
+        return this.battle.getGame().getTeamManager().getTeams().stream().map(BattleTeam::getName).toList();
     }
 
     public Optional<BattleTeam> findTeam(String arg) {
@@ -50,8 +47,8 @@ public class CapturesCommand extends EasyCommandGroup {
         }
 
         @Override
-        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return CapturesCommand.this.matchTeam(arg);
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
+            return CapturesCommand.this.matchTeam();
         }
 
     }

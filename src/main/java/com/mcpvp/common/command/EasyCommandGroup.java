@@ -46,19 +46,19 @@ public abstract class EasyCommandGroup extends EasyCommand {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
+    public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
         if (args.size() == 1) {
-            return CommandUtil.partialMatches(this.commands.stream().map(EasyCommand::getName).toList(), args.get(0));
+            return this.commands.stream().map(EasyCommand::getName).toList();
         }
 
         // Match command based on args[0]
         Optional<EasyCommand> found = this.findCommand(args.get(0));
 
         if (found.isPresent()) {
-            return found.get().onTabComplete(sender, alias, args.subList(1, args.size()));
+            return found.get().getTabCompletions(sender, alias, args.subList(1, args.size()));
         }
 
-        return super.onTabComplete(sender, alias, args);
+        return super.getTabCompletions(sender, alias, args);
     }
 
     protected Optional<EasyCommand> findCommand(String arg) {

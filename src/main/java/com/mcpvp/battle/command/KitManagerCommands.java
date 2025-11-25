@@ -30,11 +30,11 @@ public class KitManagerCommands extends EasyCommandGroup {
         this.addCommand(new LimitCommands());
     }
 
-    private List<String> completeKits(String arg) {
+    private List<String> completeKits() {
         List<String> kits = new ArrayList<>();
         kits.add("all");
         kits.addAll(this.kitManager.getKitDefinitions().stream().map(KitInfo::getName).toList());
-        return CommandUtil.partialMatches(kits, arg);
+        return kits;
     }
 
     private List<KitDefinition> findKit(String arg) {
@@ -139,8 +139,8 @@ public class KitManagerCommands extends EasyCommandGroup {
         }
 
         @Override
-        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return KitManagerCommands.this.completeKits(arg);
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
+            return KitManagerCommands.this.completeKits();
         }
 
     }
@@ -165,8 +165,8 @@ public class KitManagerCommands extends EasyCommandGroup {
         }
 
         @Override
-        public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-            return KitManagerCommands.this.completeKits(arg);
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
+            return KitManagerCommands.this.completeKits();
         }
 
     }
@@ -209,11 +209,8 @@ public class KitManagerCommands extends EasyCommandGroup {
             }
 
             @Override
-            public List<String> onTabComplete(CommandSender sender, String alias, List<String> args) {
-                if (args.size() == 1) {
-                    return KitManagerCommands.this.completeKits(args.get(0));
-                }
-                return super.onTabComplete(sender, alias, args);
+            public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
+                return KitManagerCommands.this.completeKits();
             }
 
         }
@@ -241,8 +238,8 @@ public class KitManagerCommands extends EasyCommandGroup {
             }
 
             @Override
-            public List<String> onTabComplete(CommandSender sender, String alias, String arg) {
-                return KitManagerCommands.this.completeKits(arg);
+            public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
+                return KitManagerCommands.this.completeKits();
             }
 
         }
