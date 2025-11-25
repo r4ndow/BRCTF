@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.BattlePreferences;
 import com.mcpvp.battle.flag.display.FlagDisplayChannel;
+import com.mcpvp.battle.options.BattleOptionsInput;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.command.EasyCommand;
@@ -28,6 +29,7 @@ public class FlagCommands extends EasyCommandGroup {
         this.addCommand(new UnlockCommand());
         this.addCommand(new ResetCommand());
         this.addCommand(new DisplayCommand());
+        this.addCommand(new TypeCommand());
     }
 
     public List<String> matchTeam() {
@@ -165,7 +167,7 @@ public class FlagCommands extends EasyCommandGroup {
         @Override
         public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
             if (args.size() == 1) {
-                return Arrays.stream(FlagDisplayChannel.values()).map(FlagDisplayChannel::name).toList();
+                return Arrays.stream(FlagDisplayChannel.values()).map(Enum::name).toList();
             } else if (args.size() == 2) {
                 return List.of("on", "off");
             }
@@ -173,6 +175,30 @@ public class FlagCommands extends EasyCommandGroup {
             return super.getTabCompletions(sender, alias, args);
         }
 
+    }
+
+    public class TypeCommand extends EasyCommand {
+
+        public TypeCommand() {
+            super("type");
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, String label, List<String> args) {
+            if (args.isEmpty()) {
+                return false;
+            }
+
+            BattleOptionsInput.FlagType flagType = BattleOptionsInput.FlagType.valueOf(args.get(0).toUpperCase());
+            FlagCommands.this.battle.getGame().setupFlags(flagType);
+            sender.sendMessage(C.cmdPass() + "Changed to flag type " + C.hl(flagType.name().toLowerCase()));
+            return true;
+        }
+
+        @Override
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
+            return Arrays.stream(BattleOptionsInput.FlagType.values()).map(Enum::name).toList();
+        }
     }
 
 }

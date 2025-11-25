@@ -141,6 +141,11 @@ public abstract class BattleFlag implements EasyListener {
     public abstract Location getHome();
 
     /**
+     * Remove this flag, including any visuals.
+     */
+    public abstract void remove();
+
+    /**
      * @return The item put in the player's inventory to represent the flag.
      */
     protected abstract ItemStack getItem();

@@ -12,6 +12,7 @@ import com.mcpvp.battle.game.state.BattleDuringGameStateHandler;
 import com.mcpvp.battle.game.state.BattleGameStateHandler;
 import com.mcpvp.battle.game.state.BattleOutsideGameStateHandler;
 import com.mcpvp.battle.map.BattleMapData;
+import com.mcpvp.battle.options.BattleOptionsInput;
 import com.mcpvp.battle.scoreboard.BattleScoreboardManager;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.battle.team.BattleTeamManager;
@@ -64,25 +65,7 @@ public class BattleGame extends EasyLifecycle {
         this.attach(new FlagStatsListener(this.plugin, this));
         this.attach(this.scoreboardManager);
 
-        switch (this.getBattle().getOptions().getGame().getFlagType()) {
-            case WOOL: {
-                this.teamManager.getTeams().forEach(bt -> {
-                    WoolFlag flag = new WoolFlag(this.plugin, bt);
-                    this.attach(flag);
-                    bt.setFlag(flag);
-                    bt.setFlagManager(new FlagManager(flag));
-                });
-                break;
-            }
-            case BANNER: {
-                this.teamManager.getTeams().forEach(bt -> {
-                    BannerFlag flag = new BannerFlag(this.plugin, bt);
-                    this.attach(flag);
-                    bt.setFlag(flag);
-                    bt.setFlagManager(new FlagManager(flag));
-                });
-            }
-        }
+        this.setupFlags(this.battle.getOptions().getGame().getFlagType());
 
         this.scoreboardManager.init();
 
@@ -98,6 +81,30 @@ public class BattleGame extends EasyLifecycle {
     public void stop() {
         this.setState(null);
         super.shutdown();
+    }
+
+    public void setupFlags(BattleOptionsInput.FlagType flagType) {
+        this.teamManager.getTeams().forEach(bt -> {
+            if (bt.getFlag() != null) {
+                bt.getFlag().remove();
+                bt.getFlag().unregister();
+            }
+
+            switch (flagType) {
+                case WOOL -> {
+                    WoolFlag flag = new WoolFlag(this.plugin, bt);
+                    this.attach(flag);
+                    bt.setFlag(flag);
+                    bt.setFlagManager(new FlagManager(flag));
+                }
+                case BANNER -> {
+                    BannerFlag flag = new BannerFlag(this.plugin, bt);
+                    this.attach(flag);
+                    bt.setFlag(flag);
+                    bt.setFlagManager(new FlagManager(flag));
+                }
+            }
+        });
     }
 
     /**

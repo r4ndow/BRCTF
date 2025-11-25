@@ -107,6 +107,12 @@ public class BannerFlag extends BattleFlag {
     }
 
     @Override
+    public void remove() {
+        this.reset();
+        this.home.remove();
+    }
+
+    @Override
     protected void onCarrierChange(Player previous, Player current) {
         if (previous != null) {
             previous.getInventory().setHelmet(this.carrierHelmet);

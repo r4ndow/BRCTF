@@ -99,13 +99,18 @@ public class WoolFlag extends BattleFlag {
         return this.spawn;
     }
 
-
     @Override
     protected ItemStack getItem() {
         return ItemBuilder.of(BattleUtil.getColoredWool(this.getTeam().getColor().getDye()))
             .name(this.getTeam().getName() + " Flag")
             .tag("flag", String.valueOf(this.getTeam().getId()))
             .build();
+    }
+
+    @Override
+    public void remove() {
+        this.reset();
+        this.home.remove();
     }
 
     @Override
