@@ -3,7 +3,6 @@ package com.mcpvp.battle.command;
 import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.chat.C;
-import com.mcpvp.common.command.CommandUtil;
 import com.mcpvp.common.command.EasyCommand;
 import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;

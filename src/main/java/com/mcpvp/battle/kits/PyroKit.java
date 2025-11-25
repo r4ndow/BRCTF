@@ -12,7 +12,7 @@ import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.item.ItemUtil;
 import com.mcpvp.common.kit.KitItem;
-import com.mcpvp.common.nms.ActionbarUtil;
+import com.mcpvp.common.util.nms.ActionbarUtil;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureBuilder;
 import com.mcpvp.common.structure.StructureManager;

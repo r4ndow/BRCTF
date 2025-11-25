@@ -1,4 +1,4 @@
-package com.mcpvp.common.nms;
+package com.mcpvp.common.util.nms;
 
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;

@@ -1,7 +1,7 @@
 package com.mcpvp.battle.flag.display;
 
-import com.mcpvp.common.nms.ActionbarUtil;
-import com.mcpvp.common.nms.TitleUtil;
+import com.mcpvp.common.util.nms.ActionbarUtil;
+import com.mcpvp.common.util.nms.TitleUtil;
 import com.mcpvp.common.time.Duration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

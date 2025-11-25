@@ -13,7 +13,7 @@ import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
 import com.mcpvp.common.movement.CancelNextFallTask;
-import com.mcpvp.common.nms.ActionbarUtil;
+import com.mcpvp.common.util.nms.ActionbarUtil;
 import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;

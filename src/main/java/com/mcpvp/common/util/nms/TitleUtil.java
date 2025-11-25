@@ -1,4 +1,4 @@
-package com.mcpvp.common.nms;
+package com.mcpvp.common.util.nms;
 
 import com.mcpvp.common.time.Duration;
 import net.minecraft.server.v1_8_R3.ChatComponentText;
