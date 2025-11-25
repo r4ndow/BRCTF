@@ -29,6 +29,8 @@ public class BattleOptionsInput {
     @Builder.Default
     private int version = 1;
     @Builder.Default
+    private final String preferencesFile = "plugins/mcctf/preferences.json";
+    @Builder.Default
     private final MatchOptions match = MatchOptions.builder().build();
     @Builder.Default
     private final GameOptions game = GameOptions.builder().build();

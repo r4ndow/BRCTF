@@ -19,6 +19,7 @@ import com.mcpvp.battle.match.BattleMatch;
 import com.mcpvp.battle.match.BattleMatchManager;
 import com.mcpvp.battle.options.BattleOptions;
 import com.mcpvp.battle.options.BattleOptionsLoader;
+import com.mcpvp.common.preference.PreferenceManager;
 import com.mcpvp.common.structure.StructureManager;
 import com.mcpvp.common.visibility.VanillaVisibilityManager;
 import com.mcpvp.common.visibility.VisibilityManager;
@@ -26,6 +27,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -52,6 +54,7 @@ public class Battle {
     private StructureManager structureManager;
     private BattleInventoryManager inventoryManager;
     private VisibilityManager visibilityManager;
+    private PreferenceManager preferenceManager;
 
     public void load() throws IOException {
         this.options = new BattleOptions(BattleOptionsLoader.getInput(this.plugin, this.objectMapper), this.plugin);
@@ -63,6 +66,7 @@ public class Battle {
         this.inventoryManager = new BattleInventoryManager(this.plugin);
         this.inventoryManager.loadAll();
         this.visibilityManager = new VanillaVisibilityManager();
+        this.preferenceManager = new PreferenceManager(this.plugin, this.objectMapper, new File(this.options.getPreferencesFile()));
 
         BattleWorldManager.cleanUpWorlds();
     }
