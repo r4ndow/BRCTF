@@ -4,7 +4,6 @@ import com.mcpvp.battle.Battle;
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.chat.C;
-import com.mcpvp.common.command.CommandUtil;
 import com.mcpvp.common.command.EasyCommand;
 import com.mcpvp.common.command.EasyCommandGroup;
 import com.mcpvp.common.kit.KitDefinition;
@@ -21,7 +20,7 @@ public class KitManagerCommands extends EasyCommandGroup {
     private final BattleKitManager kitManager;
 
     public KitManagerCommands(Battle battle, BattleKitManager kitManager) {
-        super("kits");
+        super(battle.getPlugin(), "kits");
         this.battle = battle;
         this.kitManager = kitManager;
         this.addCommand(new SummaryCommand(), true);
@@ -174,7 +173,7 @@ public class KitManagerCommands extends EasyCommandGroup {
     public class LimitCommands extends EasyCommandGroup {
 
         public LimitCommands() {
-            super("limit");
+            super(KitManagerCommands.this.battle.getPlugin(), "limit");
             this.addCommand(new SetCommand());
             this.addCommand(new RemoveCommand());
         }

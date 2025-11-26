@@ -22,7 +22,7 @@ public class FlagCommands extends EasyCommandGroup {
     private final Battle battle;
 
     public FlagCommands(Battle battle) {
-        super("flag");
+        super(battle.getPlugin(), "flag");
         this.battle = battle;
         this.addCommand(new JumpCommand());
         this.addCommand(new LockCommand());

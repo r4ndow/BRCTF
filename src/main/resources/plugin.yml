@@ -37,6 +37,10 @@ commands:
   flag display:
     description: Control which channels flag alerts are visible on
     usage: /<command> <chat | subtitle | actionbar> <on | off>
+  flag type:
+    description: Change the flag type
+    usage: /<command> <wool | banner>
+    permission: mcctf.flag.type
   kit:
     description: Select a class
     usage: /<command> <class | random>
@@ -52,16 +56,19 @@ commands:
     usage: /<command> <class>
   kits enable:
     description: Enable a class so that players can use it
-    permission: mcctf.kits.enable
     usage: /<command> <class>
+    permission: mcctf.kits.enable
+  kits limit:
+    description: Manage kit limits
+    usage: /<command> <set | remove>
   kits limit set:
     description: Limit a class so that only a certain number of players can use it
-    permission: mcctf.kits.limit
     usage: /<command> <class | all> <limit>
+    permission: mcctf.kits.limit
   kits limit remove:
     description: Remove a class limit so that anyone can use it
+    usage: /<command> <class | all>
     permission: mcctf.kits.limit
-    usage: /<command> <class | all> <limit>
   map:
     description: View the current map
     usage: /<command>
@@ -70,12 +77,12 @@ commands:
     usage: /<command>
   map override:
     description: Specify maps to be played on reboot
-    permission: mcctf.map.override
     usage: /<command> <map ids>
+    permission: mcctf.map.override
   map next:
     description: Insert a new game with the given map after the current game
-    permission: mcctf.map.next
     usage: /<command> <map ids>
+    permission: mcctf.map.next
   respawn:
     description: Respawn yourself immediately
   switch:
@@ -84,8 +91,8 @@ commands:
     description: Manage the game timer
   timer set:
     description: Set the current time (in seconds) left on the timer
-    permission: mcctf.timer.set
     usage: /<command> <seconds>
+    permission: mcctf.timer.set
   timer lock:
     description: Lock the timer to prevent it from counting down
     permission: mcctf.timer.lock
@@ -98,3 +105,4 @@ commands:
   yell:
     description: Yell!
     aliases: [a, all]
+    permission: mcctf.yell

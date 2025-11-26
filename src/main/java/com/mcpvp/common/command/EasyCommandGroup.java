@@ -1,6 +1,8 @@
 package com.mcpvp.common.command;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +10,13 @@ import java.util.Optional;
 
 public abstract class EasyCommandGroup extends EasyCommand {
 
+    private final JavaPlugin plugin;
     private final List<EasyCommand> commands = new ArrayList<>();
     private EasyCommand defaultCommand;
 
-    public EasyCommandGroup(String name) {
+    public EasyCommandGroup(JavaPlugin plugin, String name) {
         super(name);
+        this.plugin = plugin;
     }
 
     protected void addCommand(EasyCommand command, boolean setDefault) {
@@ -40,9 +44,14 @@ public abstract class EasyCommandGroup extends EasyCommand {
         // Match command based on args[0]
         Optional<EasyCommand> found = this.findCommand(args.get(0));
 
-        return found.map(easyCommand ->
-            easyCommand.onCommand(sender, alias, args.subList(1, args.size()))
-        ).orElse(false);
+        return found.map(easyCommand -> {
+            // Find the registered plugin command, which has its permissions loaded from the plugin.yml
+            // Then do a permissions test to enforce permissions for subcommands
+            PluginCommand command = this.plugin.getCommand(alias + " " + args.get(0));
+            command.testPermission(sender);
+            // Then execute the command
+            return easyCommand.onCommand(sender, alias + " " + args.get(0), args.subList(1, args.size()));
+        }).orElse(false);
     }
 
     @Override

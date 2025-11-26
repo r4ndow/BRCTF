@@ -14,7 +14,7 @@ public class MapCommands extends EasyCommandGroup {
     private final Battle battle;
 
     public MapCommands(Battle battle) {
-        super("map");
+        super(battle.getPlugin(), "map");
         this.battle = battle;
 
         this.addCommand(new InfoCommand(), true);

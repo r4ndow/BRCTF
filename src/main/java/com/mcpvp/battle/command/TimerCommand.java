@@ -13,7 +13,7 @@ public class TimerCommand extends EasyCommandGroup {
     private final Battle battle;
 
     public TimerCommand(Battle battle) {
-        super("timer");
+        super(battle.getPlugin(), "timer");
         this.battle = battle;
 
         this.addCommand(new SetCommand());
