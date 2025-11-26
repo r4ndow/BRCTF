@@ -44,6 +44,16 @@ public abstract class EasyCommand implements CommandExecutor, TabCompleter {
         command.setTabCompleter(this);
     }
 
+    public void register(JavaPlugin plugin, String name) {
+        PluginCommand command = plugin.getCommand(name);
+        if (command == null) {
+            throw new IllegalStateException("No command registered for " + name);
+        }
+
+        command.setExecutor(this);
+        command.setTabCompleter(this);
+    }
+
     protected Player asPlayer(CommandSender sender) {
         if (!(sender instanceof Player)) {
             throw new IllegalStateException("Only players can execute this command.");

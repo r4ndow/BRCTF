@@ -6,6 +6,8 @@ import com.mcpvp.common.chat.C;
 import com.mcpvp.common.command.EasyCommand;
 import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginIdentifiableCommand;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,9 +32,9 @@ public class CapturesCommand extends EasyCommandGroup {
             .findAny();
     }
 
-    public class SetCommand extends EasyCommand {
+    public class SetCommand extends EasyCommand implements PluginIdentifiableCommand {
 
-        protected SetCommand() {
+        public SetCommand() {
             super("set");
         }
 
@@ -48,6 +50,11 @@ public class CapturesCommand extends EasyCommandGroup {
         @Override
         public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
             return CapturesCommand.this.matchTeam();
+        }
+
+        @Override
+        public Plugin getPlugin() {
+            return CapturesCommand.this.battle.getPlugin();
         }
 
     }
