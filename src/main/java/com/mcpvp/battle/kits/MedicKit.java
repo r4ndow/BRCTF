@@ -1,7 +1,6 @@
 package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
-import com.mcpvp.battle.event.FlagPoisonEvent;
 import com.mcpvp.battle.hud.impl.HealthHeadIndicator;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.team.BattleTeam;
@@ -143,13 +142,6 @@ public class MedicKit extends BattleKit {
                         .setShowFar(false)
                         .send(this.getPlayer());
                 });
-        }
-    }
-
-    @EventHandler
-    public void preventFlagPoison(FlagPoisonEvent event) {
-        if (event.getPlayer() == this.getPlayer()) {
-            event.setCancelled(true);
         }
     }
 

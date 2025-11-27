@@ -23,7 +23,6 @@ public class BattlePlugin extends JavaPlugin {
 
         this.battle = new Battle(this);
         this.battle.load();
-
     }
 
     @Override
