@@ -5,7 +5,76 @@ author: NomNuggetNom
 main: com.mcpvp.battle.BattlePlugin
 depend: []
 permissions:
-  # Special case for the /switch command, checked in the command code
+  mcctf.flag.jump:
+    description: Allow access to /flag jump
+    default: op
+  mcctf.flag.lock:
+    description: Allow access to /flag lock
+    default: op
+  mcctf.flag.unlock:
+    description: Allow access to /flag unlock
+    default: op
+  mcctf.flag.reset:
+    description: Allow access to /flag reset
+    default: op
+  mcctf.flag.type:
+    description: Allow access to /flag type
+    default: op
+  mcctf.flag.display:
+    description: Allow access to /flag display
+    default: true
+
+  mcctf.kit:
+    description: Allow access to /kit <class>
+    default: true
+
+  mcctf.kits.disable:
+    description: Allow access to /kits disable
+    default: op
+  mcctf.kits.enable:
+    description: Allow access to /kits enable
+    default: op
+  mcctf.kits.limit:
+    description: Allow access to /kits limit <set|remove>
+    default: op
+  mcctf.kits.summary:
+    description: Allow access to /kits summary
+    default: true
+
+  mcctf.respawn:
+    description: Allows access to /respawn
+    default: true
+  
+  mcctf.map.override:
+    description: Allow access to /map override
+    default: op
+  mcctf.map.next:
+    description: Allow access to /map next
+    default: op
+  mcctf.map.info:
+    description: Allow access to /map info
+    default: true
+
+  mcctf.timer.set:
+    description: Allow access to /timer set
+    default: op
+  mcctf.timer.lock:
+    description: Allow access to /timer lock
+    default: op
+  mcctf.timer.unlock:
+    description: Allow access to /timer unlock
+    default: op
+  mcctf.timer.skip:
+    description: Allow access to /timer skip
+    default: op
+
+  mcctf.yell:
+    description: Allow access to /yell
+    default: true
+
+  mcctf.switch:
+    description: Allow access to SELF /switch
+    default: true
   mcctf.switch.other:
     description: Allow switching the team of other players
     default: op
@@ -37,6 +106,7 @@ commands:
   flag display:
     description: Control which channels flag alerts are visible on
     usage: /<command> <chat | subtitle | actionbar> <on | off>
+    permission: mcctf.flag.display
   flag type:
     description: Change the flag type
     usage: /<command> <wool | banner>
@@ -45,15 +115,18 @@ commands:
     description: Select a class
     usage: /<command> <class | random>
     aliases: [class, archer, assassin, chemist, dwarf, elf, engineer, heavy, mage, medic, necro, ninja, pyro, scout, soldier, random]
+    permission: mcctf.kit
   kits:
     description: Manage the classes, such as disabling and setting limits
     aliases: [classes, classmanager]
   kits summary:
     description: View current class controls
+    usage: /<command>
+    permission: mcctf.kits.summary
   kits disable:
     description: Disable a class so that no players can use it
-    permission: mcctf.kits.disable
     usage: /<command> <class>
+    permission: mcctf.kits.disable
   kits enable:
     description: Enable a class so that players can use it
     usage: /<command> <class>
@@ -70,11 +143,11 @@ commands:
     usage: /<command> <class | all>
     permission: mcctf.kits.limit
   map:
-    description: View the current map
-    usage: /<command>
+    description: Manage maps
   map info:
     description: View the current map
     usage: /<command>
+    permission: mcctf.map.info
   map override:
     description: Specify maps to be played on reboot
     usage: /<command> <map ids>
@@ -85,8 +158,12 @@ commands:
     permission: mcctf.map.next
   respawn:
     description: Respawn yourself immediately
+    usage: /<command>
+    permission: mcctf.respawn
   switch:
     description: Switch to the other team
+    usage: /<command>
+    permission: mcctf.switch
   timer:
     description: Manage the game timer
   timer set:
