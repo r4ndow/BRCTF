@@ -71,12 +71,20 @@ public class ThiefKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-                ItemBuilder.of(Material.LEATHER_BOOTS).color(Color.fromRGB(0x404040)).build(),
-                ItemBuilder.of(Material.LEATHER_LEGGINGS).color(Color.fromRGB(0x404040)).build(),
-                ItemBuilder.of(Material.LEATHER_CHESTPLATE).color(Color.fromRGB(0x3C4155)).build(),
-                ItemBuilder.of(Material.LEATHER_HELMET).color(Color.fromRGB(0x404040)).build()
+                ItemBuilder.of(Material.LEATHER_BOOTS)
+                        .build(),
+                ItemBuilder.of(Material.LEATHER_LEGGINGS)
+                        .color(Color.fromRGB(64, 64, 64)) // #404040
+                        .build(),
+                ItemBuilder.of(Material.LEATHER_CHESTPLATE)
+                        .color(Color.fromRGB(60, 65, 85)) // #3C4155
+                        .build(),
+                ItemBuilder.of(Material.LEATHER_HELMET)
+                        .color(Color.fromRGB(64, 64, 64)) // #404040
+                        .build()
         };
     }
+
 
     @Override
     public Map<Integer, KitItem> createItems() {
