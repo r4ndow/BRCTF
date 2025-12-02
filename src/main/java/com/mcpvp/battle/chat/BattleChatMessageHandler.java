@@ -59,9 +59,9 @@ public class BattleChatMessageHandler implements EasyListener {
         return new StringBuilder()
             .append(author)
             .append(teamColor)
-            .append(">")
+            .append(" »")
             .append(" ")
-            .append(global ? C.GOLD + "/a " : "")
+            .append(global ? C.GOLD + "/g " : "")
             .append(C.R)
             .append(global && message.startsWith("!") ? message.substring(1) : message)
             .toString();
