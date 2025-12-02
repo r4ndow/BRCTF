@@ -38,6 +38,12 @@ public class QuickCommands {
         new QuickCommand(battle, "ily", "I love you").register();
         new QuickCommand(battle, "bn", "Blame Nom!").all().register();
         new QuickCommand(battle, "mb", "My bad!").register();
+
+        new QuickCommand(battle, "boa", "Boa!").register();
+        new QuickCommand(battle, "valeu", "Valeu!").register();
+        new QuickCommand(battle, "dr", "Drope a bandeira, por favor!").loc().register();
+        new QuickCommand(battle, "se", "Segure a bandeira, por favor!").loc().register();
+        new QuickCommand(battle, "re", "Retornem a bandeira, por favor!").loc().register();
     }
 
 }
