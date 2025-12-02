@@ -17,7 +17,8 @@ public class PlayerUtil {
         PlayerUtil.setAbsorptionHearts(player, 0);
         player.setHealth(player.getMaxHealth());
         player.setFireTicks(0);
-        player.setExp(0);
+        player.setLevel(0);
+        player.setExp(1.0f);
         player.getInventory().clear();
         player.getInventory().setArmorContents(new ItemStack[4]);
         player.getActivePotionEffects().stream().map(PotionEffect::getType).forEach(player::removePotionEffect);

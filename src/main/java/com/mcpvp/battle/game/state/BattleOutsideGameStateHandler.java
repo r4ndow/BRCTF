@@ -58,7 +58,8 @@ public class BattleOutsideGameStateHandler extends BattleGameStateHandler {
         event.getPlayer().getInventory().clear();
         event.getPlayer().getInventory().setArmorContents(new ItemStack[4]);
         event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
-        event.getPlayer().setExp(0);
+        event.getPlayer().setLevel(0);
+        event.getPlayer().setExp(1.0f);
     }
 
     @EventHandler
