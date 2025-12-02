@@ -28,7 +28,8 @@ public enum BattleKitType implements KitDefinition {
     SCOUT("Scout", ScoutKit::new),
     SOLDIER("Soldier", SoldierKit::new),
     VAMPIRE("Vampire", VampireKit::new),
-    Thief("Thief", ThiefKit::new),
+    THIEF("Thief", ThiefKit::new),
+    MAGE2("Mage2", Mage2Kit::new),
     ;
 
     @Getter
