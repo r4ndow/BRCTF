@@ -216,6 +216,10 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
             return;
         }
 
+        if (event.getEntity().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.HAY_BLOCK) {
+            return;
+        }
+
         event.setCancelled(true);
     }
 
