@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.Sound;
 
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,13 @@ import java.util.Set;
 public class FlagMessageBroadcaster implements EasyListener {
 
     private final BattlePlugin plugin;
+
+    private void playGlobalSound(Sound sound, float pitch) {
+        Bukkit.getOnlinePlayers().forEach(player ->
+                player.playSound(player.getLocation(), sound, 1.0f, pitch)
+        );
+    }
+
 
     private void broadcast(String message) {
         Bukkit.getOnlinePlayers().forEach(player -> {
@@ -39,6 +47,9 @@ public class FlagMessageBroadcaster implements EasyListener {
         String team = event.getCapturedFlag().getTeam().getColor() + event.getCapturedFlag().getTeam().getName() + C.R;
         String msg = "%s captured the %s flag!".formatted(name, team);
         this.broadcast(msg);
+
+        this.playGlobalSound(Sound.PORTAL_TRAVEL,
+                1.5f);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -48,6 +59,8 @@ public class FlagMessageBroadcaster implements EasyListener {
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
         String msg = "%s dropped the %s flag!".formatted(name, team);
         this.broadcast(msg);
+
+        this.playGlobalSound(Sound.LAVA_POP, 1.2f);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -57,6 +70,8 @@ public class FlagMessageBroadcaster implements EasyListener {
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
         String msg = "%s picked up the %s flag!".formatted(name, team);
         this.broadcast(msg);
+
+        this.playGlobalSound(Sound.FIZZ, 1.3f);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -66,6 +81,8 @@ public class FlagMessageBroadcaster implements EasyListener {
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
         String msg = "%s recovered the %s flag!".formatted(name, team);
         this.broadcast(msg);
+
+        this.playGlobalSound(Sound.ORB_PICKUP, 1.0f);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -73,6 +90,8 @@ public class FlagMessageBroadcaster implements EasyListener {
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
         String msg = "The %s flag has been restored!".formatted(team);
         this.broadcast(msg);
+
+        this.playGlobalSound(Sound.ORB_PICKUP, 1.0f);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -82,6 +101,8 @@ public class FlagMessageBroadcaster implements EasyListener {
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
         String msg = "%s stole the %s flag!".formatted(name, team);
         this.broadcast(msg);
+
+        this.playGlobalSound(Sound.FIZZ, 1.3f);
     }
 
 }
