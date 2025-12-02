@@ -371,7 +371,7 @@ public class NinjaKit extends BattleKit {
         if (event.getPlayer().equals(this.getPlayer()) &&
                 event.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
 
-            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ZOMBIE_UNFECT, 1.0f, 1.3f);
+            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.3f);
         }
     }
 

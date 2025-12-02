@@ -49,7 +49,7 @@ public class FlagMessageBroadcaster implements EasyListener {
         this.broadcast(msg);
 
         this.playGlobalSound(Sound.PORTAL_TRAVEL,
-                1.5f);
+                2.0f);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -71,7 +71,7 @@ public class FlagMessageBroadcaster implements EasyListener {
         String msg = "%s picked up the %s flag!".formatted(name, team);
         this.broadcast(msg);
 
-        this.playGlobalSound(Sound.FIZZ, 1.3f);
+        this.playGlobalSound(Sound.FIZZ, 1.0f);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -102,7 +102,7 @@ public class FlagMessageBroadcaster implements EasyListener {
         String msg = "%s stole the %s flag!".formatted(name, team);
         this.broadcast(msg);
 
-        this.playGlobalSound(Sound.FIZZ, 1.3f);
+        this.playGlobalSound(Sound.FIZZ, 1.0f);
     }
 
 }
