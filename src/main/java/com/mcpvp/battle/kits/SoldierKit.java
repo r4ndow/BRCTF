@@ -125,7 +125,7 @@ public class SoldierKit extends BattleKit {
         } else {
             player.setVelocity(new Vector(0, 1.0f, 0));
             player.playSound(player.getLocation(),
-                    org.bukkit.Sound.PISTON_RETRACT, 0.2f, 0.1f);
+                    Sound.IRONGOLEM_WALK, 1.0f, 1.0f);
         }
 
         player.setExp(player.getExp() - PER_CLIMB);
