@@ -59,7 +59,7 @@ public class BattleOptionsInput {
         @Builder.Default
         private int secondsAfterGame = 15;
         @Builder.Default
-        private final FlagType flagType = FlagType.WOOL;
+        private FlagType flagType = FlagType.WOOL;
 
     }
 

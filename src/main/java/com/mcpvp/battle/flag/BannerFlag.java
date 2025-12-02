@@ -31,7 +31,7 @@ public class BannerFlag extends BattleFlag {
     public BannerFlag(Plugin plugin, BattleTeam team) {
         super(team);
         this.plugin = plugin;
-        this.home = this.spawnBanner(team.getFlag().getHome(), team.getColor().getDye());
+        this.home = this.spawnBanner(team.getConfig().getFlag(), team.getColor().getDye());
     }
 
     @Override

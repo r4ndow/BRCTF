@@ -57,7 +57,7 @@ public class Battle {
     private PreferenceManager preferenceManager;
 
     public void load() throws IOException {
-        this.options = new BattleOptions(BattleOptionsLoader.getInput(this.plugin, this.objectMapper), this.plugin);
+        this.options = new BattleOptions(this.plugin, new BattleOptionsLoader(this.plugin, this.objectMapper));
         this.mapManager = new MergingMapManager(this.plugin, this.options.getMaps(), this.loadMapRepos(this.options));
         this.gameManager = new BattleGameManager(this);
         this.matchManager = new BattleMatchManager(this.plugin, this, this.gameManager, this.mapManager);

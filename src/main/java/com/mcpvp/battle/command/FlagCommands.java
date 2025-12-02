@@ -12,6 +12,7 @@ import com.mcpvp.common.command.EasyCommandGroup;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -192,6 +193,16 @@ public class FlagCommands extends EasyCommandGroup {
             BattleOptionsInput.FlagType flagType = BattleOptionsInput.FlagType.valueOf(args.get(0).toUpperCase());
             FlagCommands.this.battle.getGame().setupFlags(flagType);
             sender.sendMessage(C.cmdPass() + "Changed to flag type " + C.hl(flagType.name().toLowerCase()));
+
+            try {
+                FlagCommands.this.battle.getOptions().edit(opts -> {
+                    opts.getGame().setFlagType(flagType);
+                });
+            } catch (IOException e) {
+                sender.sendMessage(C.cmdFail() + "Failed to save changes");
+                return false;
+            }
+
             return true;
         }
 
