@@ -128,6 +128,10 @@ public class ScoutKit extends BattleKit {
             return;
         }
 
+        if (this.getGame().getTeamManager().getTeam(player).isInSpawn(player)) {
+            return;
+        }
+
         this.swap(player);
         this.swapper.restore();
     }
