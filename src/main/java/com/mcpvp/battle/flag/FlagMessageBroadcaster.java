@@ -93,8 +93,8 @@ public class FlagMessageBroadcaster implements EasyListener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onRestore(FlagRestoreEvent event) {
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
-        String msg = "%sThe %s%s flag has been restored!"
-                .formatted(C.YELLOW, team, C.YELLOW);
+        String msg = "%s%s flag has been restored!"
+                .formatted(team, C.YELLOW);
         this.broadcast(msg);
 
         this.playGlobalSound(Sound.ORB_PICKUP, 1.0f);
