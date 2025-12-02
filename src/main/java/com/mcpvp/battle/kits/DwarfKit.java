@@ -98,8 +98,8 @@ public class DwarfKit extends BattleKit {
 
         return new KitInventoryBuilder()
             .add(this.sword)
-            .add(this.smash = new SmashItem())
             .addFood(3)
+            .add(this.smash = new SmashItem())
             .addCompass(8)
             .build();
     }
