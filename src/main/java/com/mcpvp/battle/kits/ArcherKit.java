@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class ArcherKit extends BattleKit {
 
-    private static final int HEADSHOT_DIST = 35;
+    private static final int HEADSHOT_DIST = 30;
 
     private KitItem arrows1;
     private KitItem arrows2;
