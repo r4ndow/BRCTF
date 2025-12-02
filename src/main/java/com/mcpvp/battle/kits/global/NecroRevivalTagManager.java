@@ -123,6 +123,12 @@ public class NecroRevivalTagManager implements EasyListener {
         ParticlePacket.of(EnumParticle.SMOKE_LARGE).at(player.getLocation()).spread(1.5).count(15).send();
         player.getWorld().playSound(player.getLocation(), Sound.ZOMBIE_REMEDY, 1.0f, 1.0f);
         player.sendMessage(C.info(C.RED) + "You have been saved from death!");
+
+        // Drop the flag if they are holding it
+        this.plugin.getBattle().getGame().getTeamManager().getTeams().stream()
+            .filter(bt -> bt.getFlag().getCarrier() == player)
+            .findFirst()
+            .ifPresent(bt -> bt.getFlagManager().drop(player, null));
     }
 
     private void zombify(Player player) {
