@@ -3,6 +3,7 @@ package com.mcpvp.battle.kit.item;
 import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
+import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 
 public class FoodItem extends KitItem {
@@ -26,6 +27,13 @@ public class FoodItem extends KitItem {
         if (this.kit.getPlayer().getHealth() == this.kit.getPlayer().getMaxHealth()) {
             return;
         }
+
+        this.kit.getPlayer().playSound(
+                this.kit.getPlayer().getLocation(),
+                Sound.EAT,
+                0.6f,
+                1.0f
+        );
 
         this.kit.getPlayer().setHealth(Math.min(this.kit.getPlayer().getHealth() + 8, this.kit.getPlayer().getMaxHealth()));
         this.decrement(true);
