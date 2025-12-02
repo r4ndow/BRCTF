@@ -63,6 +63,8 @@ public class BattleGame extends EasyLifecycle {
         this.attach(new FlagListener(this.plugin, this));
         this.attach(new FlagMessageBroadcaster(this.plugin));
         this.attach(new FlagStatsListener(this.plugin, this));
+        this.attach(new FlagMatchPointNotifier(this.plugin, this));
+
         this.attach(this.scoreboardManager);
 
         this.setupFlags(this.battle.getOptions().getGame().getFlagType());
