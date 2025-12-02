@@ -35,6 +35,7 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.Sound;
 
 import java.util.Optional;
 
@@ -181,6 +182,8 @@ public class BattleGameListener implements EasyListener {
             Block under = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             if (under.getType() == Material.SPONGE) {
                 SpongeUtil.launch(this.plugin, player, under);
+
+                player.playSound(player.getLocation(), Sound.SLIME_ATTACK, 1.0f, 1.0f);
             }
         });
     }
