@@ -32,7 +32,7 @@ public class FlagListener implements EasyListener {
     public void onTick(TickEvent event) {
         this.processRestoration(event);
         this.resetStealTimers();
-        this.dealFlagPoison(event);
+        //this.dealFlagPoison(event); - disabled flag poisoning for now
         this.processSteals();
     }
 
