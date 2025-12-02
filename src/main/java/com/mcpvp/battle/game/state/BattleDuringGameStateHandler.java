@@ -12,6 +12,7 @@ import com.mcpvp.common.kit.KitSelectedEvent;
 import com.mcpvp.common.util.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -203,7 +204,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     }
 
     @EventHandler
-    public void onLandOnSoulSand(EntityDamageEvent event) {
+    public void onLandOnSoulSandOrHay(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
@@ -212,15 +213,20 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
             return;
         }
 
-        if (event.getEntity().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.SOUL_SAND) {
-            return;
-        }
+        Block blockBelow = event.getEntity()
+                .getLocation()
+                .getBlock()
+                .getRelative(BlockFace.DOWN);
 
-        if (event.getEntity().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.HAY_BLOCK) {
+        Material type = blockBelow.getType();
+
+        // If it's neither soul sand nor hay bale, do nothing
+        if (type != Material.SOUL_SAND && type != Material.HAY_BLOCK) {
             return;
         }
 
         event.setCancelled(true);
     }
+
 
 }
