@@ -15,6 +15,7 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EntityUtil;
 import com.mcpvp.common.visibility.VisibilityManager;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.EnderPearl;
@@ -24,6 +25,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -364,5 +366,14 @@ public class NinjaKit extends BattleKit {
         }
 
     }
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        if (event.getPlayer().equals(this.getPlayer()) &&
+                event.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
+
+            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ZOMBIE_UNFECT, 1.0f, 1.3f);
+        }
+    }
+
 
 }
