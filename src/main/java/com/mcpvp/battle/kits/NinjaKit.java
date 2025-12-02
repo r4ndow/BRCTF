@@ -14,6 +14,7 @@ import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EntityUtil;
 import com.mcpvp.common.visibility.VisibilityManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -372,7 +373,10 @@ public class NinjaKit extends BattleKit {
                 event.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
 
             Player player = event.getPlayer();
-            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.3f);
+
+            Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.3f);
+            }, 2L);
         }
     }
 
