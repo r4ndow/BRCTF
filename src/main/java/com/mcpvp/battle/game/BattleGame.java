@@ -189,6 +189,7 @@ public class BattleGame extends EasyLifecycle {
             // Sound effect for death needs to be done after teleporting
             if (died) {
                 player.playSound(player.getEyeLocation(), Sound.HURT_FLESH, 1.0f, 1.0f);
+                player.playSound(player.getEyeLocation(), Sound.VILLAGER_DEATH, 1.0f, 1.0f);
             }
 
             // Kit application needs to be done later due to inventory clearing
