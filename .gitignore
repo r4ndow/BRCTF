@@ -13,3 +13,6 @@ bin
 
 # Server files
 server
+
+# Repomix
+repomix-output.xml
