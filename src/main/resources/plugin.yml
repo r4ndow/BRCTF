@@ -181,5 +181,5 @@ commands:
     permission: mcctf.timer.skip
   yell:
     description: Yell!
-    aliases: [a, all]
+    aliases: [a, all, g]
     permission: mcctf.yell
