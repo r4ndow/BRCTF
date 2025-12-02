@@ -45,7 +45,8 @@ public class FlagMessageBroadcaster implements EasyListener {
     public void onCapture(FlagCaptureEvent event) {
         String name = event.getPlayerTeam().getColor() + event.getPlayer().getName() + C.R;
         String team = event.getCapturedFlag().getTeam().getColor() + event.getCapturedFlag().getTeam().getName() + C.R;
-        String msg = "%s captured the %s flag!".formatted(name, team);
+        String msg = "%s%s captured %s%s flag!"
+                .formatted(name, C.YELLOW, team, C.YELLOW);
         this.broadcast(msg);
 
         this.playGlobalSound(Sound.PORTAL_TRAVEL,
@@ -57,7 +58,9 @@ public class FlagMessageBroadcaster implements EasyListener {
         BattleTeam playerTeam = this.plugin.getBattle().getGame().getTeamManager().getTeam(event.getPlayer());
         String name = playerTeam.getColor() + event.getPlayer().getName() + C.R;
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
-        String msg = "%s dropped the %s flag!".formatted(name, team);
+        String msg = "%s%s dropped %s%s flag!"
+                .formatted(name, C.YELLOW, team, C.YELLOW);
+
         this.broadcast(msg);
 
         this.playGlobalSound(Sound.LAVA_POP, 1.2f);
@@ -68,7 +71,8 @@ public class FlagMessageBroadcaster implements EasyListener {
         BattleTeam playerTeam = this.plugin.getBattle().getGame().getTeamManager().getTeam(event.getPlayer());
         String name = playerTeam.getColor() + event.getPlayer().getName() + C.R;
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
-        String msg = "%s picked up the %s flag!".formatted(name, team);
+        String msg = "%s%s picked up %s%s flag!"
+                .formatted(name, C.YELLOW, team, C.YELLOW);
         this.broadcast(msg);
 
         this.playGlobalSound(Sound.FIZZ, 1.0f);
@@ -79,7 +83,8 @@ public class FlagMessageBroadcaster implements EasyListener {
         BattleTeam playerTeam = this.plugin.getBattle().getGame().getTeamManager().getTeam(event.getPlayer());
         String name = playerTeam.getColor() + event.getPlayer().getName() + C.R;
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
-        String msg = "%s recovered the %s flag!".formatted(name, team);
+        String msg = "%s%s recovered %s%s flag!"
+                .formatted(name, C.YELLOW, team, C.YELLOW);
         this.broadcast(msg);
 
         this.playGlobalSound(Sound.ORB_PICKUP, 1.0f);
@@ -88,7 +93,8 @@ public class FlagMessageBroadcaster implements EasyListener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onRestore(FlagRestoreEvent event) {
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
-        String msg = "The %s flag has been restored!".formatted(team);
+        String msg = "%sThe %s%s flag has been restored!"
+                .formatted(C.YELLOW, team, C.YELLOW);
         this.broadcast(msg);
 
         this.playGlobalSound(Sound.ORB_PICKUP, 1.0f);
@@ -99,7 +105,8 @@ public class FlagMessageBroadcaster implements EasyListener {
         BattleTeam playerTeam = this.plugin.getBattle().getGame().getTeamManager().getTeam(event.getPlayer());
         String name = playerTeam.getColor() + event.getPlayer().getName() + C.R;
         String team = event.getFlag().getTeam().getColor() + event.getFlag().getTeam().getName() + C.R;
-        String msg = "%s stole the %s flag!".formatted(name, team);
+        String msg = "%s%s stole %s%s flag!"
+                .formatted(name, C.YELLOW, team, C.YELLOW);
         this.broadcast(msg);
 
         this.playGlobalSound(Sound.FIZZ, 1.0f);
