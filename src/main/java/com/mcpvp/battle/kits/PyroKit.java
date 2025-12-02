@@ -24,6 +24,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -65,10 +66,10 @@ public class PyroKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-            ItemBuilder.of(Material.LEATHER_BOOTS).color(Color.fromRGB(0x993333)).build(),
-            ItemBuilder.of(Material.LEATHER_LEGGINGS).color(Color.fromRGB(0x592626)).build(),
-            ItemBuilder.of(Material.IRON_CHESTPLATE).build(),
-            ItemBuilder.of(Material.LEATHER_HELMET).color(Color.fromRGB(0x592626)).build()
+                ItemBuilder.of(Material.LEATHER_BOOTS).color(Color.fromRGB(0x993333)).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).build(),
+                ItemBuilder.of(Material.LEATHER_LEGGINGS).color(Color.fromRGB(0x592626)).build(),
+                ItemBuilder.of(Material.LEATHER_CHESTPLATE).color(Color.fromRGB(0xCE4F46)).build(),
+                ItemBuilder.of(Material.LEATHER_HELMET).color(Color.fromRGB(0x592626)).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 3).build()
         };
     }
 

@@ -19,6 +19,7 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.EffectUtil;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_8_R3.EnumParticle;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -67,8 +68,8 @@ public class EngineerKit extends BattleKit {
     public ItemStack[] createArmor() {
         return new ItemStack[]{
             ItemBuilder.of(Material.IRON_BOOTS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).build(),
-            ItemBuilder.of(Material.LEATHER_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).build(),
-            ItemBuilder.of(Material.LEATHER_CHESTPLATE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).build(),
+            ItemBuilder.of(Material.LEATHER_LEGGINGS).color(Color.fromRGB(0xA34E0F)).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).build(),
+            ItemBuilder.of(Material.LEATHER_CHESTPLATE).color(Color.fromRGB(0x683C27)).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).build(),
             ItemBuilder.of(Material.IRON_HELMET).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).build()
         };
     }

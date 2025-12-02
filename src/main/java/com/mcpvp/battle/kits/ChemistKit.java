@@ -11,6 +11,7 @@ import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.util.PlayerUtil;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EntityPotion;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
@@ -49,10 +50,10 @@ public class ChemistKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-            new ItemStack(Material.LEATHER_BOOTS),
-            ItemBuilder.of(Material.GOLD_LEGGINGS).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).build(),
-            ItemBuilder.of(Material.GOLD_CHESTPLATE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2).build(),
-            new ItemStack(Material.LEATHER_HELMET)
+                ItemBuilder.of(Material.LEATHER_BOOTS).color(Color.fromRGB(0x594131)).build(),
+                ItemBuilder.of(Material.LEATHER_LEGGINGS).color(Color.fromRGB(0x664C33)).build(),
+                ItemBuilder.of(Material.IRON_CHESTPLATE).enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4).build(),
+                //new ItemStack(Material.LEATHER_HELMET)
         };
     }
 
