@@ -337,7 +337,7 @@ public class MageKit extends BattleKit {
         @Override
         protected void build(Block center, StructureBuilder builder) {
             builder.ignoreRestrictions(
-                NEAR_SPAWN, NEAR_RESTRICTED, NEAR_PLAYER, NEAR_FLAG
+                NEAR_SPAWN, NEAR_RESTRICTED, NEAR_PLAYER, NEAR_FLAG, IN_FLAG
             );
 
             // Expand the bounding box around the target by one block.

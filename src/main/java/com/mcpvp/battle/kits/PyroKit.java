@@ -176,8 +176,9 @@ public class PyroKit extends BattleKit {
             this.flint.modify(ib -> ib.durabilityPercent(current - segment));
 
             Block block = event.getClickedBlock().getRelative(event.getBlockFace());
-            PyroFire fire = new PyroFire(this.getBattle().getStructureManager());
-            this.placeStructure(fire, block);
+            if (block.isEmpty()) {
+                this.placeStructure(new PyroFire(this.getBattle().getStructureManager()), block);
+            }
         } else {
             // No durability!
             event.setCancelled(true);

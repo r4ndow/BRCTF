@@ -82,6 +82,7 @@ public class NecroKit extends BattleKit {
             .addFood(4)
             .add(this.tag)
             .add(new CrypticSkull())
+            .addCompass(8)
             .build();
     }
 
