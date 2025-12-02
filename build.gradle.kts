@@ -35,7 +35,7 @@ dependencies {
     implementation("com.github.zafarkhaja:java-semver:0.9.0")
 }
 
-val pluginVersion = "3.5.0"
+val pluginVersion = "1.0"
 
 group = "com.mcctf"
 version = pluginVersion
@@ -45,16 +45,16 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 tasks.named<Jar>("jar") {
     manifest {
         archiveVersion.set(pluginVersion)
-        archiveBaseName.set("mcctf")
+        archiveBaseName.set("brctf")
         attributes["CTF-Version"] = pluginVersion
     }
 }
 
 tasks.named<ShadowJar>("shadowJar") {
     archiveClassifier.set("") // remove the -all suffix
-    archiveBaseName.set("mcctf")
+    archiveBaseName.set("brctf")
     archiveVersion.set(pluginVersion)
-    destinationDirectory.set(file("server/plugins"))
+    destinationDirectory.set(file("D:/ctfserver/plugins"))
 }
 
 tasks.withType<JavaCompile> {
