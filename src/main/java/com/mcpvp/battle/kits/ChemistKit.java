@@ -13,6 +13,7 @@ import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EntityPotion;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
@@ -199,6 +200,12 @@ public class ChemistKit extends BattleKit {
                     CraftItemStack.asNMSCopy(this.getItem())
                 );
                 entityPlayer.getWorld().addEntity(thrownPotion);
+                ChemistKit.this.getPlayer().playSound(
+                        ChemistKit.this.getPlayer().getLocation(),
+                        Sound.SHOOT_ARROW,
+                        0.7f,
+                        0.2f
+                );
 
                 ChemistKit.this.attach(thrownPotion.getBukkitEntity());
 

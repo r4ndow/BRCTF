@@ -9,6 +9,7 @@ import com.mcpvp.common.kit.KitItem;
 import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -116,11 +117,15 @@ public class SoldierKit extends BattleKit {
         }
 
         if (delay) {
-            this.attach(Bukkit.getScheduler().runTask(this.plugin, () ->
-                player.setVelocity(new Vector(0, 1.0f, 0)))
-            );
+            this.attach(Bukkit.getScheduler().runTask(this.plugin, () -> {
+                player.setVelocity(new Vector(0, 1.0f, 0));
+                player.playSound(player.getLocation(),
+                        Sound.IRONGOLEM_WALK, 1.0f, 1.0f);
+            }));
         } else {
             player.setVelocity(new Vector(0, 1.0f, 0));
+            player.playSound(player.getLocation(),
+                    org.bukkit.Sound.PISTON_RETRACT, 0.2f, 0.1f);
         }
 
         player.setExp(player.getExp() - PER_CLIMB);

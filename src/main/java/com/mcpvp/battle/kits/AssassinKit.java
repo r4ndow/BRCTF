@@ -15,6 +15,7 @@ import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.time.Expiration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -135,6 +136,13 @@ public class AssassinKit extends BattleKit {
             this.getPlayer().getInventory().setHeldItemSlot(slot);
         }
 
+        this.getPlayer().playSound(
+                this.getPlayer().getLocation(),
+                Sound.BURP,
+                0.8f,
+                1.0f
+        );
+
         // Activate
         this.getPlayer().sendMessage(C.info(C.AQUA) + "You are now in " + C.hl("Assassin mode") + "!");
         this.strong = true;
@@ -172,6 +180,13 @@ public class AssassinKit extends BattleKit {
     }
 
     private void activateSpeed() {
+        this.getPlayer().playSound(
+                this.getPlayer().getLocation(),
+                Sound.BURP,
+                0.8f,
+                1.0f
+        );
+
         this.sugar.decrement(true);
 
         // Add speed effect
