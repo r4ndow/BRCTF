@@ -53,6 +53,7 @@ public class BattleGameListener implements EasyListener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(null);
         // Ensure that every join results in either a participate or resign event
         if (event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
             new PlayerParticipateEvent(event.getPlayer(), this.game).call();
@@ -68,6 +69,7 @@ public class BattleGameListener implements EasyListener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
         new PlayerResignEvent(event.getPlayer(), this.game).call();
     }
 
