@@ -26,13 +26,22 @@ public class KitCommand extends EasyCommand {
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
         Player player = this.asPlayer(sender);
 
+        // Treat "kit", "class", and "classe" the same way (base command).
+        boolean isBaseLabel = label.equals("kit") || label.equals("class") || label.equals("classe");
+
+        // Treat "random" and "aleatorio" the same way when used as the label.
+        boolean isRandomLabel = label.equals("random") || label.equals("aleatorio");
+
+        // Treat "random" and "aleatorio" the same way when used as an argument.
+        boolean argsContainRandom = args.contains("random") || args.contains("aleatorio");
+
         KitDefinition kit;
-        if ((label.equals("kit") && args.contains("random")) || label.equals("random")) {
+        if ((isBaseLabel && argsContainRandom) || isRandomLabel) {
             List<KitDefinition> eligible = this.kitManager.getKitDefinitions().stream()
-                .filter(Predicate.not(this.kitManager::isDisabled))
-                .toList();
+                    .filter(Predicate.not(this.kitManager::isDisabled))
+                    .toList();
             kit = eligible.get(new Random().nextInt(eligible.size()));
-        } else if (label.equals("kit")) {
+        } else if (isBaseLabel) {
             kit = this.kitManager.getKitDefinition(args.get(0));
         } else {
             kit = this.kitManager.getKitDefinition(label);
@@ -40,7 +49,7 @@ public class KitCommand extends EasyCommand {
 
         if (kit != null) {
             KitAttemptSelectEvent kitAttemptSelectEvent = this.kitManager.setSelected(
-                player, kit, false, !(args.contains("-f") && sender.isOp())
+                    player, kit, false, !(args.contains("-f") && sender.isOp())
             );
 
             if (!kitAttemptSelectEvent.isCancelled()) {
@@ -54,6 +63,5 @@ public class KitCommand extends EasyCommand {
 
         return false;
     }
-
 
 }

@@ -114,7 +114,7 @@ commands:
   kit:
     description: Select a class
     usage: /<command> <class | random>
-    aliases: [class, archer, assassin, chemist, dwarf, elf, engineer, heavy, mage, medic, necro, ninja, pyro, scout, soldier, random]
+    aliases: [class, archer, assassin, chemist, dwarf, elf, engineer, heavy, mage, medic, necro, ninja, pyro, scout, soldier, thief, vampire, mage2, random, classe, arqueiro, assassino, quimico, químico, anao, anão, elfo, engenheiro, guerreiro, mago, medico, médico, incendiario, incendiário, batedor, soldado, ladrao, ladrão, vampiro, mago2, aleatorio]
   kits:
     description: Manage the classes, such as disabling and setting limits
     aliases: [classes, classmanager]
