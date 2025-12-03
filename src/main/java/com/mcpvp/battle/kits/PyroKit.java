@@ -56,6 +56,7 @@ public class PyroKit extends BattleKit {
 
     public PyroKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
+        this.getPlayer().setExp(0f);
     }
 
     @Override
