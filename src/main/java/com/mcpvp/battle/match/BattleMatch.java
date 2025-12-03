@@ -108,9 +108,10 @@ public class BattleMatch {
                     String message = (C.YELLOW +"The match will start in " + C.AQUA +seconds + C.YELLOW+ " seconds!");
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.sendMessage(message);
-                        if (seconds <= 5 && seconds >= 1) {
-                            player.playSound(player.getEyeLocation(), Sound.CLICK, 1.0f, 1.0f);
-                        }
+                        player.playSound(player.getEyeLocation(), Sound.CLICK, 1.0f, 2.0f);
+//                        if (seconds <= 5 && seconds >= 1) {
+//                            player.playSound(player.getEyeLocation(), Sound.CLICK, 1.0f, 2.0f);
+//                        }
                     }
                 }
             }
