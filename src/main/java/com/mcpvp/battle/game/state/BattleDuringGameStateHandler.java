@@ -9,7 +9,9 @@ import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitSelectedEvent;
+import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.util.PlayerUtil;
+import com.mcpvp.common.util.nms.TitleUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -41,14 +43,14 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     private String[] getIntroLines() {
         return new String[]{
                 "",
-                C.GOLD + C.B + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
-                "                                      " + C.GOLD + C.B + "CTF",
+                C.AQUA + C.B + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+                "                                      " + C.AQUA + C.B + "CTF",
                 "",
                 "       " + C.YELLOW + "Roube a bandeira inimiga e traga-a até sua própria",
                 "        " + C.YELLOW + "bandeira para capturá-la. Defenda sua " + C.YELLOW + "bandeira",
                 "            " + C.YELLOW + "e recupere-a caso seja roubada. ",
                 "",
-                C.GOLD + C.B + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+                C.AQUA + C.B + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
         };
     }
 
@@ -77,8 +79,8 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         }
         for (Player player : Bukkit.getOnlinePlayers()) {
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-            }, 3L);
+                player.playSound(player.getLocation(), Sound.LEVEL_UP, 0.7f, 1.0f);
+            }, 2L);
         }
         this.game.getParticipants().forEach(player -> this.introSeen.add(player.getUniqueId()));
     }
@@ -113,6 +115,37 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         }
 
         summary.forEach(Bukkit::broadcastMessage);
+
+        BattleTeam winner = this.game.getLeader().orElse(null);
+        if (winner != null) {
+            BattleTeam loser = this.game.getTeamManager().getNext(winner);
+
+            for (Player player : this.game.getParticipants()) {
+                BattleTeam team = this.game.getTeamManager().getTeam(player);
+                if (team == null) {
+                    continue;
+                }
+
+                String title;
+                if (team.equals(winner)) {
+                    title = C.GOLD + C.B + "Victory";
+                } else if (team.equals(loser)) {
+                    title = C.RED + C.B + "Defeat";
+                } else {
+                    continue;
+                }
+
+                TitleUtil.sendTitle(
+                        player,
+                        title,
+                        "",
+                        Duration.seconds(1),
+                        Duration.seconds(3),
+                        Duration.seconds(1)
+                );
+            }
+        }
+
     }
 
     @EventHandler
