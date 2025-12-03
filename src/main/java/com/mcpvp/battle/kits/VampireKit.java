@@ -168,7 +168,7 @@ public class VampireKit extends BattleKit {
     class NightfallVial extends CooldownItem {
         private static final Duration COOLDOWN = Duration.seconds(20);
         private static final int DURATION_SECONDS = 10;
-        private static final int BLINDNESS_DURATION = 40;
+        private static final int BLINDNESS_DURATION = 50;
         private static final int REGENERATION_DURATION = 60;
         private static final double CUBE_SIZE = 2.5;
         private static final double PARTICLE_STEP = 0.5;
