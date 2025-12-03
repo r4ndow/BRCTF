@@ -19,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FlagManager {
 
-    private static final Duration FLAG_STEAL_TIMER = Duration.milliseconds(200);
+    private static final Duration FLAG_STEAL_TIMER = Duration.milliseconds(0);
 
     private final BattleFlag flag;
     private final Map<Player, Expiration> stealTimers = new HashMap<>();
