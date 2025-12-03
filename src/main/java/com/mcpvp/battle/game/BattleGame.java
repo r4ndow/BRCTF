@@ -28,7 +28,6 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -169,20 +168,20 @@ public class BattleGame extends EasyLifecycle {
             });
         }
 
-        // Reset health, potion effects, etc
-        PlayerUtil.reset(player);
-
-        BattleTeam team = this.getTeamManager().getTeam(player);
-        Location spawn = this.getConfig().getTeamConfig(team).getSpawn();
-        player.teleport(spawn);
-
+        // Most player related activities should happen in the next game tick
+        // Doing stuff in the same tick as the player dying causes lots of weird issues
         EasyTask.of(() -> {
             if (!player.isOnline()) {
                 return;
             }
 
-            // A small amount of velocity carries over for some reason
-            player.setVelocity(new Vector());
+            // Teleport to spawn
+            BattleTeam team = this.getTeamManager().getTeam(player);
+            Location spawn = this.getConfig().getTeamConfig(team).getSpawn();
+            player.teleport(spawn);
+
+            // Reset health, potion effects, etc
+            PlayerUtil.reset(player);
 
             // Sound effect for death needs to be done after teleporting
             if (died) {
