@@ -12,6 +12,7 @@ import com.mcpvp.common.chat.C;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -99,6 +100,19 @@ public class BattleMatch {
         return () -> {
             if (this.timer.isPaused()) {
                 return;
+            }
+
+            if (this.getCurrentGame().getState() == BattleGameState.BEFORE) {
+                int seconds = this.timer.getSeconds();
+                if (seconds == 15 || seconds == 10 || (seconds <= 5 && seconds >= 1)) {
+                    String message = (C.YELLOW +"The match will start in " + C.AQUA +seconds + C.YELLOW+ " seconds!");
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendMessage(message);
+                        if (seconds <= 5 && seconds >= 1) {
+                            player.playSound(player.getEyeLocation(), Sound.CLICK, 1.0f, 1.0f);
+                        }
+                    }
+                }
             }
 
             if (this.timer.getSeconds() == 0) {
