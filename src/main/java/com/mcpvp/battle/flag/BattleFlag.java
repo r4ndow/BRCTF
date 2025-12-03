@@ -89,10 +89,11 @@ public abstract class BattleFlag implements EasyListener {
     /**
      * Called when the carrier captures the flag.
      */
-    void capture() {
+    void capture(BattleTeam scored) {
         this.reset();
-        EffectUtil.fakeLightning(this.getLocation());
+        EffectUtil.fakeLightning2(scored);
     }
+
 
     /**
      * Resets the flag to its initial state, e.g. deletes any dropped items,

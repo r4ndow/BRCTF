@@ -102,7 +102,8 @@ public class FlagManager {
      * @param scored  The team that the player is on, which should be rewarded points.
      */
     public void capture(Player carrier, BattleTeam scored) {
-        this.flag.capture();
+        //this.flag.capture();
+        this.flag.capture(scored);
         scored.onCapture();
         new FlagCaptureEvent(carrier, scored, this.flag).call();
     }

@@ -1,5 +1,6 @@
 package com.mcpvp.common.util;
 
+import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.ParticlePacket;
 import com.mcpvp.common.task.EasyTask;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder;
@@ -32,6 +33,17 @@ public class EffectUtil {
             location = location.clone();
             location.setY(Math.min(world.getMaxHeight(), block.getY()));
             world.strikeLightningEffect(location);
+        }
+    }
+
+    public static void fakeLightning2(BattleTeam scored) {
+        if (scored == null || scored.getFlag() == null) {
+            return;
+        }
+
+        Location location = scored.getFlag().getLocation();
+        if (location != null && location.getWorld() != null) {
+            location.getWorld().strikeLightningEffect(location);
         }
     }
 
