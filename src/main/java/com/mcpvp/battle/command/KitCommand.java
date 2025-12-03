@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class KitCommand extends EasyCommand {
 
@@ -26,14 +27,22 @@ public class KitCommand extends EasyCommand {
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
         Player player = this.asPlayer(sender);
 
+        List<KitDefinition> eligible = this.kitManager.getKitDefinitions().stream()
+            .filter(Predicate.not(this.kitManager::isDisabled))
+            .toList();
+        boolean direct = label.equals("kit") || label.equals("class");
+
         KitDefinition kit;
-        if ((label.equals("kit") && args.contains("random")) || label.equals("random")) {
-            List<KitDefinition> eligible = this.kitManager.getKitDefinitions().stream()
-                .filter(Predicate.not(this.kitManager::isDisabled))
-                .toList();
+        if ((direct && args.contains("random")) || label.equals("random")) {
             kit = eligible.get(new Random().nextInt(eligible.size()));
-        } else if (label.equals("kit")) {
-            kit = this.kitManager.getKitDefinition(args.get(0));
+        } else if (direct) {
+            if (args.isEmpty()) {
+                sender.sendMessage(C.B + "Available Classes");
+                sender.sendMessage(C.info(C.PURPLE) + eligible.stream().map(KitDefinition::getName).collect(Collectors.joining(", ")));
+                return true;
+            } else {
+                kit = this.kitManager.getKitDefinition(args.get(0));
+            }
         } else {
             kit = this.kitManager.getKitDefinition(label);
         }
