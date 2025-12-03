@@ -48,6 +48,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.NEAR_PLAYER;
+import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.NEAR_SPAWN;
 
 public class EngineerKit extends BattleKit {
 
@@ -280,7 +281,7 @@ public class EngineerKit extends BattleKit {
 
         @Override
         protected void build(Block center, StructureBuilder builder) {
-            builder.ignoreRestriction(NEAR_PLAYER);
+            builder.ignoreRestrictions(NEAR_PLAYER, NEAR_SPAWN);
             builder.setBlock(center, Material.BEACON);
 
             Stream.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
