@@ -56,6 +56,7 @@ public class NecroRevivalTagManager implements EasyListener {
 
             if (expiration.isExpired()) {
                 player.sendMessage(C.info(C.AQUA) + "Your revival tag has expired!");
+                this.tagged.remove(player);
                 holder.cancel();
             }
         }).runTaskTimer(this.getPlugin(), 0, 1);
