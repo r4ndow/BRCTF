@@ -83,7 +83,7 @@ public class EngineerKit extends BattleKit {
                 .unbreakable())
             .addFood(4)
             .add(new GrenadeLauncher())
-            .add(new HealingAuraPlacer())
+            .add(new HealingAura())
             .add(new SpeedBeaconPlacer())
             .addCompass(8)
             .build();
@@ -384,14 +384,14 @@ public class EngineerKit extends BattleKit {
 
     }
 
-    class HealingAuraPlacer extends CooldownItem {
+    class HealingAura extends CooldownItem {
 
         private static final Duration ITEM_COOLDOWN = Duration.seconds(8);
         private static final Duration HEALING_DURATION = Duration.seconds(5);
         private static final int HEAL_RADIUS = 4;
         private static final int HEALING_REGEN_TIER = 3;
 
-        public HealingAuraPlacer() {
+        public HealingAura() {
             super(
                 EngineerKit.this,
                 ItemBuilder.of(Material.CAKE).name("Healing Aura").build(),
