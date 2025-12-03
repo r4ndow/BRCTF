@@ -273,6 +273,12 @@ public class DwarfKit extends BattleKit {
                 switch (DwarfKit.this.state) {
                     case READY -> {
                         DwarfKit.this.launch(EventUtil.isLeftClick(ev));
+                        DwarfKit.this.getPlayer().getWorld().playSound(
+                                DwarfKit.this.getPlayer().getLocation(),
+                                Sound.IRONGOLEM_THROW,
+                                1.0f,
+                                0.7f
+                        );
                         this.setPlaceholder();
                     }
                     case FALLING -> {

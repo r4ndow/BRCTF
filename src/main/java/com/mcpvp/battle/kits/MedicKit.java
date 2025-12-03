@@ -22,10 +22,7 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.bukkit.Color;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -191,6 +188,13 @@ public class MedicKit extends BattleKit {
             // No healing for a while
             HEAL_COOLDOWNS.put(player, Expiration.after(RESTORE_PLAYER_COOLDOWN));
 
+            player.getWorld().playSound(
+                    player.getLocation(),
+                    org.bukkit.Sound.SLIME_WALK,
+                    1.0f,
+                    1.7f
+            );
+
             new HealEvent(player).call();
         } else {
             // Heal player
@@ -241,6 +245,14 @@ public class MedicKit extends BattleKit {
             }
 
             this.decrement(true);
+
+            Player medic = MedicKit.this.getPlayer();
+            medic.playSound(
+                    medic.getLocation(),
+                    org.bukkit.Sound.SHOOT_ARROW,
+                    1.0f,
+                    0.5f
+            );
 
             Snowball snowball = this.kit.getPlayer().launchProjectile(Snowball.class);
             MedicKit.this.attach(new InteractiveProjectile(this.getPlugin(), snowball)
