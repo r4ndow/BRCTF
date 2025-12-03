@@ -243,7 +243,7 @@ public class EngineerKit extends BattleKit {
                 .singleEventOnly()
                 .onHitEvent(projectileHitEvent -> {
                     Block block = projectileHitEvent.getEntity().getLocation().getBlock().getRelative(BlockFace.DOWN);
-                    SpeedBeacon speedBeacon = new SpeedBeacon(this);
+                    SpeedBeacon speedBeacon = new SpeedBeacon();
                     if (!EngineerKit.this.placeStructure(speedBeacon, block)) {
                         this.restore();
                     }
@@ -269,13 +269,11 @@ public class EngineerKit extends BattleKit {
             PotionEffectType.SPEED, SPEED_TIME.ticks(), SPEED_TIER - 1
         );
 
-        private final KitItem item;
         private ArmorStand armorStand;
         private Item glassPane;
 
-        public SpeedBeacon(KitItem item) {
+        public SpeedBeacon() {
             super(EngineerKit.this.getBattle().getStructureManager(), EngineerKit.this.getPlayer());
-            this.item = item;
             this.removeAfter(DEPLOY_TIME);
         }
 
@@ -377,12 +375,6 @@ public class EngineerKit extends BattleKit {
             if (event.getRightClicked() == this.armorStand) {
                 event.setCancelled(true);
             }
-        }
-
-        @Override
-        public void shutdown() {
-            super.shutdown();
-            this.item.restore();
         }
 
         @Override
