@@ -54,6 +54,9 @@ permissions:
   mcctf.map.info:
     description: Allow access to /map info
     default: true
+  mcctf.map.search:
+    description: Allow access to /map search
+    default: true
 
   mcctf.timer.set:
     description: Allow access to /timer set
@@ -155,6 +158,10 @@ commands:
     description: Insert a new game with the given map after the current game
     usage: /<command> <map ids>
     permission: mcctf.map.next
+  map search:
+    description: Search enabled maps by name
+    usage: /
+    permission: mcctf.map.search
   respawn:
     description: Respawn yourself immediately
     usage: /<command>

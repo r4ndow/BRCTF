@@ -32,6 +32,13 @@ public class MergingMapManager implements BattleMapManager {
     }
 
     @Override
+    public List getFunctional() {
+        return this.repos.stream()
+                .flatMap(repo -> ((BattleMapSource) repo).getFunctional().stream())
+                .toList();
+    }
+
+    @Override
     public boolean isMap(int id) {
         return this.repos.stream().anyMatch(repo ->
             repo.getFunctional().stream().anyMatch(d -> d.getId() == id)

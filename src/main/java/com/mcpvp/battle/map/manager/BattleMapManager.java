@@ -18,6 +18,9 @@ public interface BattleMapManager {
      */
     List<BattleMapData> getEnabled();
 
+
+    List getFunctional();
+
     /**
      * Checks if the given ID is a known map ID.
      *
