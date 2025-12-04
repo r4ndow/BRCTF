@@ -21,11 +21,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.EntityEffect;
+import com.mcpvp.battle.team.BattleTeam;
+import com.mcpvp.common.chat.C;
+import com.mcpvp.common.kit.Kit;
+
 
 import org.bukkit.Location;
 import org.bukkit.Effect;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class VampireKit extends BattleKit {
@@ -130,6 +136,8 @@ public class VampireKit extends BattleKit {
 
             victim.setLastDamageCause(event);
 
+            victim.playEffect(EntityEffect.HURT);
+
             VampireKit.this.getPlayer().playSound(
                     VampireKit.this.getPlayer().getLocation(),
                     Sound.DRINK,
@@ -159,6 +167,44 @@ public class VampireKit extends BattleKit {
                     BUFF_DURATION.ticks(),
                     1
             ));
+
+            BattleTeam attackerTeam = VampireKit.this.getGame()
+                    .getTeamManager()
+                    .getTeam(VampireKit.this.getPlayer());
+            BattleTeam victimTeam = VampireKit.this.getGame()
+                    .getTeamManager()
+                    .getTeam(victim);
+
+            Kit attackerKit = VampireKit.this.getBattle()
+                    .getKitManager()
+                    .get(VampireKit.this.getPlayer());
+            Kit victimKit = VampireKit.this.getBattle()
+                    .getKitManager()
+                    .get(victim);
+
+            if (attackerTeam != null) {
+                String attackerKitSuffix = attackerKit != null
+                        ? C.GRAY + " [" + attackerKit.getName().toLowerCase(Locale.ENGLISH) + "]"
+                        : "";
+
+                victim.sendMessage(
+                        C.RED + "!! " + C.GRAY + "Your life was drained by "
+                                + attackerTeam.getColor() + VampireKit.this.getPlayer().getName()
+                                + attackerKitSuffix
+                );
+            }
+
+            if (victimTeam != null) {
+                String victimKitSuffix = victimKit != null
+                        ? C.GRAY + " [" + victimKit.getName().toLowerCase(Locale.ENGLISH) + "]"
+                        : "";
+
+                VampireKit.this.getPlayer().sendMessage(
+                        C.AQUA + "* " + C.GRAY + "You drained the life of "
+                                + victimTeam.getColor() + victim.getName()
+                                + victimKitSuffix
+                );
+            }
 
             this.decrement(true);
             this.startCooldown();
