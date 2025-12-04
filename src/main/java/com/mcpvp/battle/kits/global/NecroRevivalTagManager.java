@@ -8,6 +8,7 @@ import com.mcpvp.battle.kits.MedicKit;
 import com.mcpvp.common.ParticlePacket;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
@@ -108,6 +109,24 @@ public class NecroRevivalTagManager implements EasyListener {
         ) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onTick(TickEvent event) {
+        this.tagged.forEach(taggedPlayer -> {
+            if (!taggedPlayer.isOnline()) {
+                return;
+            }
+
+            List.of(Material.GOLD_BLOCK, Material.SLIME_BLOCK).forEach(material -> {
+                ParticlePacket.blockDust(material)
+                    .at(taggedPlayer.getLocation())
+                    .count(3)
+                    .setOffY(1)
+                    .send();
+            });
+        });
+
     }
 
     public void revive(GameDeathEvent death) {
