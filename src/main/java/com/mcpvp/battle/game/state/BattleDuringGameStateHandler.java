@@ -40,6 +40,22 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         super(plugin, game);
     }
 
+    private String colorizeIntroLine(Player player, String line) {
+        BattleTeam team = this.game.getTeamManager().getTeam(player);
+        String teamColor;
+
+        if (team != null && team.getColor() != null) {
+            // Colors#getChat is already used elsewhere for team-colored names/messages
+            teamColor = team.getColor().getChatString();
+        } else {
+            // Fallback to the old default color
+            teamColor = C.AQUA;
+        }
+
+        return line.replace(C.AQUA, teamColor);
+    }
+
+
     private String[] getIntroLines() {
         return new String[]{
                 "",
@@ -56,14 +72,14 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
 
 
     private void broadcastIntro() {
-        for (String line : this.getIntroLines()) {
-            Bukkit.broadcastMessage(line);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            this.sendIntro(player);
         }
     }
 
     private void sendIntro(Player player) {
         for (String line : this.getIntroLines()) {
-            player.sendMessage(line);
+            player.sendMessage(this.colorizeIntroLine(player, line));
         }
     }
 
@@ -74,9 +90,9 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         this.game.getTeamManager().getTeams().forEach(bt -> bt.getFlag().setLocked(false));
         this.game.getBattle().getMatch().getTimer().setSeconds(this.game.getConfig().getTime() * 60);
         this.game.getBattle().getMatch().getTimer().setPaused(false);
-        for (String line : this.getIntroLines()) {
-            Bukkit.broadcastMessage(line);
-        }
+
+        this.broadcastIntro();
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 player.playSound(player.getLocation(), Sound.LEVEL_UP, 0.7f, 1.0f);
@@ -175,9 +191,8 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     public void onParticipate(PlayerParticipateEvent event) {
         Player player = event.getPlayer();
         if (this.game.getState() == BattleGameState.DURING && !this.introSeen.contains(player.getUniqueId())) {
-            for (String line : this.getIntroLines()) {
-                player.sendMessage(line);
-            }
+            this.sendIntro(player);
+
             this.introSeen.add(player.getUniqueId());
         }
         this.game.respawn(player, false);
