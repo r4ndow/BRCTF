@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.EntityEffect;
 
 import org.bukkit.Location;
 import org.bukkit.Effect;
@@ -129,6 +130,8 @@ public class VampireKit extends BattleKit {
             }
 
             victim.setLastDamageCause(event);
+
+            victim.playEffect(EntityEffect.HURT);
 
             VampireKit.this.getPlayer().playSound(
                     VampireKit.this.getPlayer().getLocation(),
