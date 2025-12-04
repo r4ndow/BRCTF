@@ -106,6 +106,13 @@ public class ScoutKit extends BattleKit {
         double velocity = snowball.getVelocity().multiply(1.5).length();
         snowball.setVelocity(this.getPlayer().getEyeLocation().getDirection().multiply(velocity));
 
+        this.getPlayer().getWorld().playSound(
+                this.getPlayer().getLocation(),
+                Sound.SLIME_ATTACK,
+                0.1f,
+                2.0f
+        );
+
         this.attach(new InteractiveProjectile(this.getPlugin(), snowball)
             .onDamageEvent(event -> {
                 event.setCancelled(true);

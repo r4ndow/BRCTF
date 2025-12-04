@@ -411,6 +411,14 @@ public class EngineerKit extends BattleKit {
         protected void onUse(PlayerInteractEvent event) {
             event.setCancelled(true);
             this.setPlaceholder();
+
+            EngineerKit.this.getPlayer().playSound(
+                    EngineerKit.this.getPlayer().getLocation(),
+                    org.bukkit.Sound.SLIME_WALK,
+                    1.0f,
+                    1.7f
+            );
+
             this.doHealPulse();
             this.animateRing();
         }

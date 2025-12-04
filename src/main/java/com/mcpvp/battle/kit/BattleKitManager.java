@@ -41,6 +41,79 @@ public class BattleKitManager extends KitManager {
         return Arrays.asList(BattleKitType.values());
     }
 
+    @Override
+    public KitDefinition getKitDefinition(String name) {
+        // First, try the normal lookup (English names, e.g. "archer", "heavy").
+        KitDefinition definition = super.getKitDefinition(name);
+        if (definition != null) {
+            return definition;
+        }
+
+        if (name == null) {
+            return null;
+        }
+
+        String normalized = name.toLowerCase(java.util.Locale.ROOT);
+
+        switch (normalized) {
+            case "arqueiro":
+                return BattleKitType.ARCHER;
+
+            case "assassino":
+                return BattleKitType.ASSASSIN;
+
+            case "quimico":
+            case "químico":
+                return BattleKitType.CHEMIST;
+
+            case "anao":
+            case "anão":
+                return BattleKitType.DWARF;
+
+            case "elfo":
+                return BattleKitType.ELF;
+
+            case "engenheiro":
+                return BattleKitType.ENGINEER;
+
+            case "guerreiro":
+                return BattleKitType.HEAVY;
+
+            case "mago":
+                return BattleKitType.MAGE;
+
+            case "medico":
+            case "médico":
+                return BattleKitType.MEDIC;
+
+            case "incendiario":
+            case "incendiário":
+                return BattleKitType.PYRO;
+
+            case "batedor":
+                return BattleKitType.SCOUT;
+
+            case "soldado":
+                return BattleKitType.SOLDIER;
+
+            // new aliases:
+            case "ladrao":
+            case "ladrão":
+                return BattleKitType.THIEF;
+
+            case "vampiro":
+                return BattleKitType.VAMPIRE;
+
+            case "mage2":
+            case "mago2":
+                return BattleKitType.MAGE2;
+
+            default:
+                return null;
+        }
+    }
+
+
     public void setDisabled(KitDefinition kit) {
         this.disabled.add(kit);
 

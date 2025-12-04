@@ -242,7 +242,27 @@ public class NinjaKit extends BattleKit {
                 this.switchToRedstone();
             }
 
+            boolean wasInvisible = NinjaKit.this.invisible;
             NinjaKit.this.invisible = this.isItem(NinjaKit.this.getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE;
+
+            if (NinjaKit.this.invisible && !wasInvisible) {
+
+                NinjaKit.this.getPlayer().playSound(
+                        NinjaKit.this.getPlayer().getLocation(),
+                        Sound.STEP_SNOW,
+                        1.0f,
+                        0.1f
+                );
+
+                NinjaKit.this.getPlayer().sendMessage(
+                        C.warn(C.AQUA) + "You are invisible"
+                );
+            } else if (!NinjaKit.this.invisible && wasInvisible) {
+                NinjaKit.this.getPlayer().sendMessage(
+                        C.info(C.AQUA) + "You are visible"
+                );
+            }
+
             NinjaKit.this.enforceVisibility();
         }
 
@@ -376,7 +396,7 @@ public class NinjaKit extends BattleKit {
 
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.3f);
-            }, 2L);
+            }, 1L);
         }
     }
 

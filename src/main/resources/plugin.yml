@@ -54,6 +54,9 @@ permissions:
   mcctf.map.info:
     description: Allow access to /map info
     default: true
+  mcctf.map.search:
+    description: Allow access to /map search
+    default: true
 
   mcctf.timer.set:
     description: Allow access to /timer set
@@ -114,7 +117,7 @@ commands:
   kit:
     description: Select a class
     usage: /<command> <class | random>
-    aliases: [class, archer, assassin, chemist, dwarf, elf, engineer, heavy, mage, medic, necro, ninja, pyro, scout, soldier, random]
+    aliases: [class, archer, assassin, chemist, dwarf, elf, engineer, heavy, mage, medic, necro, ninja, pyro, scout, soldier, thief, vampire, mage2, random, classe, arqueiro, assassino, quimico, químico, anao, anão, elfo, engenheiro, guerreiro, mago, medico, médico, incendiario, incendiário, batedor, soldado, ladrao, ladrão, vampiro, mago2, aleatorio]
   kits:
     description: Manage the classes, such as disabling and setting limits
     aliases: [classes, classmanager]
@@ -155,6 +158,10 @@ commands:
     description: Insert a new game with the given map after the current game
     usage: /<command> <map ids>
     permission: mcctf.map.next
+  map search:
+    description: Search enabled maps by name
+    usage: /
+    permission: mcctf.map.search
   respawn:
     description: Respawn yourself immediately
     usage: /<command>

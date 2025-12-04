@@ -19,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FlagManager {
 
-    private static final Duration FLAG_STEAL_TIMER = Duration.milliseconds(200);
+    private static final Duration FLAG_STEAL_TIMER = Duration.milliseconds(0);
 
     private final BattleFlag flag;
     private final Map<Player, Expiration> stealTimers = new HashMap<>();
@@ -102,7 +102,8 @@ public class FlagManager {
      * @param scored  The team that the player is on, which should be rewarded points.
      */
     public void capture(Player carrier, BattleTeam scored) {
-        this.flag.capture();
+        //this.flag.capture();
+        this.flag.capture(scored);
         scored.onCapture();
         new FlagCaptureEvent(carrier, scored, this.flag).call();
     }
