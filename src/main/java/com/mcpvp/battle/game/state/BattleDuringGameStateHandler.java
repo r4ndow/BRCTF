@@ -64,7 +64,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
                 "",
                 "       " + C.YELLOW + "Roube a bandeira inimiga e traga-a até sua própria",
                 "        " + C.YELLOW + "bandeira para capturá-la. Defenda sua " + C.YELLOW + "bandeira",
-                "            " + C.YELLOW + "e recupere-a caso seja roubada. ",
+                "            " + C.YELLOW + "   e recupere-a caso seja roubada. ",
                 "",
                 C.AQUA + C.B + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
         };
