@@ -255,11 +255,11 @@ public class NinjaKit extends BattleKit {
                 );
 
                 NinjaKit.this.getPlayer().sendMessage(
-                        C.warn(C.AQUA) + "You are invisible"
+                        C.warn(C.AQUA) + "You vanish from sight..."
                 );
             } else if (!NinjaKit.this.invisible && wasInvisible) {
                 NinjaKit.this.getPlayer().sendMessage(
-                        C.info(C.AQUA) + "You are visible"
+                        C.warn(C.PURPLE) + "You are visible!"
                 );
             }
 
