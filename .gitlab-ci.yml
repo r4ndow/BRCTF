@@ -1,3 +1,5 @@
+# Extracts the 'version' tag from the plugin.yml and stores it in the build.env file
+# That file is automatically passed to other dependent tasks
 get_version:
   stage: build
   image:
@@ -9,7 +11,12 @@ get_version:
   artifacts:
     reports:
       dotenv: build.env
+  rules:
+    - changes: [src/main/resources/plugin.yml]
 
+# Builds the plugin with gradle
+# Gradle determines the version of the archive from the same source as `get_version`
+# Exports the mcctf-x.y.z.jar file
 build_plugin:
   stage: build
   image: eclipse-temurin:17.0.3_7-jdk
@@ -18,7 +25,10 @@ build_plugin:
   artifacts:
     paths:
       - build/libs/*
+  rules:
+    - changes: [src/main/resources/plugin.yml]
 
+# Creates a new release and attaches the plugin jar from `build_plugin`
 release_plugin:
   stage: deploy
   image: gitlab/glab:latest
