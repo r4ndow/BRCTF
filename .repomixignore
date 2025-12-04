@@ -1,0 +1,16 @@
+README.md
+src/main/java/com/mcpvp/battle/chat
+src/main/java/com/mcpvp/battle/hud
+#src/main/java/com/mcpvp/battle/command/**
+src/main/java/com/mcpvp/battle/event/**
+src/main/java/com/mcpvp/battle/flag/**
+src/main/java/com/mcpvp/battle/game/**
+src/main/java/com/mcpvp/battle/kit/**
+src/main/java/com/mcpvp/battle/kits/**
+#src/main/java/com/mcpvp/battle/map
+#src/main/java/com/mcpvp/battle/match/**
+#src/main/java/com/mcpvp/battle/scoreboard/**
+src/main/java/com/mcpvp/common/item/**
+#src/main/java/com/mcpvp/common/util/**
+src/main/resources/maps.json
+#src/main/resources/plugin.yml

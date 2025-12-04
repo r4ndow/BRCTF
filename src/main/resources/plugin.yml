@@ -74,6 +74,9 @@ permissions:
   mcctf.yell:
     description: Allow access to /yell
     default: true
+  mcctf.role:
+    description: Allow access to change your role
+    default: true
 
   mcctf.switch:
     description: Allow access to SELF /switch
@@ -189,3 +192,8 @@ commands:
     description: Yell!
     aliases: [a, all, g]
     permission: mcctf.yell
+  role:
+    description: Choose your preferred role
+    usage: /<command>
+    aliases: [ funcao, função ]
+    permission: mcctf.role

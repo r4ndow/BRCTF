@@ -44,6 +44,7 @@ public class BattleMatch {
         Bukkit.getScheduler().runTaskTimer(this.plugin, this.getTimerTask(), 0, 20);
 
         this.getCurrentGame().setup(Collections.emptyMap());
+        this.battle.getRolePreferenceGui().openForAllParticipants();
     }
 
     /**
@@ -64,6 +65,7 @@ public class BattleMatch {
         } else {
             BattleGame next = this.games.get(++this.currentGameIndex);
             next.setup(playerMap);
+            this.battle.getRolePreferenceGui().openForAllParticipants();
         }
     }
 
