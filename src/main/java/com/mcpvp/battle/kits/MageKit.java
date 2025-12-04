@@ -64,19 +64,19 @@ public class MageKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-            ItemBuilder.of(Material.LEATHER_BOOTS)
-                .color(DyeColor.BLUE.getColor(), true)
-                .enchant(Enchantment.PROTECTION_FALL, 1)
-                .build(),
-            ItemBuilder.of(Material.LEATHER_LEGGINGS)
-                .color(DyeColor.BLUE.getColor(), true)
-                .enchant(Enchantment.PROTECTION_FIRE, 1)
-                .build(),
-            ItemBuilder.of(Material.LEATHER_CHESTPLATE)
-                .color(DyeColor.BLUE.getColor(), true)
-                .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
-                .build(),
-            null,
+                ItemBuilder.of(Material.LEATHER_BOOTS)
+                        .color(Color.fromRGB(0x800080))
+                        .enchant(Enchantment.PROTECTION_FALL, 1)
+                        .build(),
+                ItemBuilder.of(Material.LEATHER_LEGGINGS)
+                        .color(Color.fromRGB(0x800080))
+                        .enchant(Enchantment.PROTECTION_FIRE, 1)
+                        .build(),
+                ItemBuilder.of(Material.LEATHER_CHESTPLATE)
+                        .color(Color.fromRGB(0x800080))
+                        .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2)
+                        .build(),
+                null,
         };
     }
 
