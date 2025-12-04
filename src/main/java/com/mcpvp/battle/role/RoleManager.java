@@ -138,21 +138,21 @@ public class RoleManager extends EasyLifecycle implements EasyListener {
             var flag = myTeam.getFlag();
 
             if (flag.isHome()) {
-                return "Defenda a bandeira!";
+                return "Defender a bandeira!";
             }
 
             if (flag.getCarrier() != null &&
                     teamManager.getTeam(flag.getCarrier()) == enemy) {
                 // Enemy is carrying our flag
-                return "Recupere a bandeira!";
+                return "Recuperar a bandeira!";
             }
 
             if (flag.isDropped()) {
-                return "Recupere a bandeira!";
+                return "Recuperar a bandeira!";
             }
 
             // Fallback
-            return "Defenda a bandeira!";
+            return "Defender a bandeira!";
         }
 
         if (role == Role.ATTACK) {
@@ -166,16 +166,16 @@ public class RoleManager extends EasyLifecycle implements EasyListener {
             // Teammate carries the enemy flag
             if (flag.getCarrier() != null &&
                     teamManager.getTeam(flag.getCarrier()) == myTeam) {
-                return "Ajude o portador!";
+                return "Ajudar o portador!";
             }
 
             // Enemy flag at base or dropped
             if (flag.isHome() || flag.isDropped()) {
-                return "Roube a bandeira!";
+                return "Roubar a bandeira!";
             }
 
             // Fallback
-            return "Roube a bandeira!";
+            return "Roubar a bandeira!";
         }
 
         return null;
