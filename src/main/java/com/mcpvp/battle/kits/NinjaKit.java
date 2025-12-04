@@ -239,7 +239,17 @@ public class NinjaKit extends BattleKit {
                 this.switchToRedstone();
             }
 
-            NinjaKit.this.invisible = this.isItem(NinjaKit.this.getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE;
+            // Detect a change to visibility
+            boolean shouldBeInvisible = this.isItem(NinjaKit.this.getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE;
+            if (NinjaKit.this.invisible != shouldBeInvisible) {
+                if (shouldBeInvisible) {
+                    NinjaKit.this.getPlayer().sendMessage(C.warn(C.AQUA) + "You vanish from sight...");
+                } else {
+                    NinjaKit.this.getPlayer().sendMessage(C.warn(C.PURPLE) + "You are visible!");
+                }
+            }
+
+            NinjaKit.this.invisible = shouldBeInvisible;
             NinjaKit.this.enforceVisibility();
         }
 
