@@ -1,0 +1,45 @@
+get_version:
+  stage: build
+  image:
+    name: mikefarah/yq:latest
+    entrypoint: [""]
+  script:
+    - export VERSION=$(yq eval '.version' src/main/resources/plugin.yml)
+    - echo "VERSION=$VERSION" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
+
+build_plugin:
+  stage: build
+  image: eclipse-temurin:17.0.3_7-jdk
+  script:
+    - ./gradlew shadowJar --no-daemon
+  artifacts:
+    paths:
+      - build/libs/*
+  dependencies:
+    - get_version
+
+release_plugin:
+  stage: deploy
+  image: gitlab/glab:latest
+  script:
+    - echo $VERSION
+    - tree -d .
+    - glab auth login --job-token $CI_JOB_TOKEN
+    - glab release create $VERSION
+    - glab release upload $VERSION build/libs/mcctf-$VERSION.jar --use-package-registry
+  needs:
+    - job: build_plugin
+      artifacts: true
+    - job: get_version
+      artifacts: true
+
+#  release:
+#    tag_name: '$CI_COMMIT_TAG'
+#    description: '$CI_COMMIT_TAG'
+#    assets:
+#      links:
+#        - name: 'mcctf-$CI_COMMIT_TAG.jar'
+#          url: '$CI_SERVER_URL/$CI_PROJECT_PATH/-/jobs/$JOB_ID/artifacts/download'
