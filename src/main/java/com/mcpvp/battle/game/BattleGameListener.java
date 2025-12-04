@@ -5,6 +5,7 @@ import com.mcpvp.battle.event.*;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.BattleKitManager;
 import com.mcpvp.battle.kit.BattleKitType;
+import com.mcpvp.battle.role.RolePreferenceGui;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EasyListener;
@@ -267,10 +268,23 @@ public class BattleGameListener implements EasyListener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if (event.getPlayer() instanceof Player p && this.game.isParticipant(p)) {
-            event.setCancelled(true);
+        if (!(event.getPlayer() instanceof Player player)) {
+            return;
         }
+
+        // Only care about participants
+        if (!this.game.isParticipant(player)) {
+            return;
+        }
+
+        // Allow our controlled GUI, block everything else
+        if (event.getInventory().getHolder() instanceof RolePreferenceGui) {
+            return;
+        }
+
+        event.setCancelled(true);
     }
+
 
     @EventHandler
     public void onMobSpawn(CreatureSpawnEvent event) {

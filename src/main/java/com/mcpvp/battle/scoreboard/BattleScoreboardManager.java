@@ -5,6 +5,7 @@ import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.game.BattleGamePlayerStats;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.map.BattleMapData;
+import com.mcpvp.battle.role.Role;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.EasyLifecycle;
 import com.mcpvp.common.chat.C;
@@ -140,8 +141,11 @@ public class BattleScoreboardManager extends EasyLifecycle {
         }
 
         switch (state) {
-            case BEFORE -> scores.addAll(this.getMapDetails());
-            case DURING -> {
+            case BEFORE:
+                scores.addAll(this.getMapDetails());
+                break;
+
+            case DURING:
                 // Add scores for the player's team first
                 BattleTeam team = this.battle.getGame().getTeamManager().getTeam(player);
                 if (team != null) {
@@ -155,14 +159,39 @@ public class BattleScoreboardManager extends EasyLifecycle {
                     }
                 });
 
-                // Then add the stats of the player, e.g. kills and deaths
+                // Spacer before objective block
+                scores.add("");
+
+                Role role = this.battle.getRoleManager().getRole(player);
+                String roleColor = C.GREEN; // default if no role
+
+                if (role == Role.ATTACK) {
+                    roleColor = C.YELLOW;
+                } else if (role == Role.DEFENSE) {
+                    roleColor = C.AQUA;
+                }
+
+                // Objective header value lines
+                scores.add(C.WHITE + " Objetivo");
+                String objective = this.battle.getRoleManager().computeObjectiveText(player);
+                if (objective != null) {
+                    scores.add(roleColor + " " + objective);
+                } else {
+                    scores.add(C.GRAY + " Sem função selecionada");
+                }
+
+
+                break;
+
+            case AFTER:
+                // Keep showing stats after the game
                 scores.addAll(this.getPlayerStats(player));
-            }
-            case AFTER -> scores.addAll(this.getPlayerStats(player));
+                break;
         }
 
         return scores;
     }
+
 
     /**
      * @return Map data to be shown in the pre-game

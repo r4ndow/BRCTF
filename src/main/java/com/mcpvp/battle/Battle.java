@@ -19,6 +19,9 @@ import com.mcpvp.battle.match.BattleMatch;
 import com.mcpvp.battle.match.BattleMatchManager;
 import com.mcpvp.battle.options.BattleOptions;
 import com.mcpvp.battle.options.BattleOptionsLoader;
+import com.mcpvp.battle.role.RoleManager;
+import com.mcpvp.battle.role.RoleObjectiveListener;
+import com.mcpvp.battle.role.RolePreferenceGui;
 import com.mcpvp.common.preference.PreferenceManager;
 import com.mcpvp.common.structure.StructureManager;
 import com.mcpvp.common.visibility.VanillaVisibilityManager;
@@ -55,6 +58,9 @@ public class Battle {
     private BattleInventoryManager inventoryManager;
     private VisibilityManager visibilityManager;
     private PreferenceManager preferenceManager;
+    private RoleManager roleManager;
+    private RolePreferenceGui rolePreferenceGui;
+    private RoleObjectiveListener roleObjectiveListener;
 
     public void load() throws IOException {
         this.options = new BattleOptions(this.plugin, new BattleOptionsLoader(this.plugin, this.objectMapper));
@@ -67,6 +73,9 @@ public class Battle {
         this.inventoryManager.loadAll();
         this.visibilityManager = new VanillaVisibilityManager();
         this.preferenceManager = new PreferenceManager(this.plugin, this.objectMapper, new File(this.options.getPreferencesFile()));
+        this.roleManager = new RoleManager(this.plugin, this, this.preferenceManager);
+        this.rolePreferenceGui = new RolePreferenceGui(this.plugin, this, this.roleManager);
+        this.roleObjectiveListener = new RoleObjectiveListener(this.plugin, this, this.roleManager);
 
         BattleWorldManager.cleanUpWorlds();
     }
@@ -82,6 +91,9 @@ public class Battle {
         this.kitManager.getScoutDeathTagManager().register();
         this.kitManager.getNecroRevivalTagManager().register();
         this.visibilityManager.init();
+        this.roleManager.init();
+        this.rolePreferenceGui.init();
+        this.roleObjectiveListener.init();
 
         if (this.getOptions().getMapTester().isEnabled()) {
             new BattleMapTester(this.objectMapper).run(
