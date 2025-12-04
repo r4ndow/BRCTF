@@ -33,8 +33,7 @@ release_plugin:
   stage: deploy
   image: gitlab/glab:latest
   script:
-    - echo $VERSION
-    - tree -d .
+    - echo "Releasing $VERSION"
     - glab auth login --job-token $CI_JOB_TOKEN
     - glab release create $VERSION
     - glab release upload $VERSION build/libs/mcctf-$VERSION.jar --use-package-registry

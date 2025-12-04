@@ -99,7 +99,7 @@ public class DwarfKit extends BattleKit {
         return new KitInventoryBuilder()
             .add(this.sword)
             .addFood(3)
-            .add(this.smash = new SmashItem())            
+            .add(this.smash = new SmashItem())
             .addCompass(8)
             .build();
     }
@@ -144,7 +144,8 @@ public class DwarfKit extends BattleKit {
 
         this.getPlayer().setVelocity(launch);
 
-        DwarfKit.this.getPlayer().getWorld().playSound(DwarfKit.this.getPlayer().getEyeLocation(),
+        DwarfKit.this.getPlayer().getWorld().playSound(
+            DwarfKit.this.getPlayer().getEyeLocation(),
             Sound.IRONGOLEM_THROW,
             1.0f,
             0.7f
