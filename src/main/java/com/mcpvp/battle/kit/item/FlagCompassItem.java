@@ -4,6 +4,7 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
+import com.mcpvp.common.item.ItemUtil;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitItem;
 import org.bukkit.Material;
@@ -42,17 +43,33 @@ public class FlagCompassItem extends KitItem {
 
     private void rename() {
         if (this.getTarget() == this.game.getTeamManager().getTeam(this.player)) {
-            this.modify(ib -> ib.name("Pointing to " + this.getTarget().getColoredName() + " flag").dummyEnchant());
+            this.modify(ib -> ib.name(this.getName()).dummyEnchant());
         } else {
-            this.modify(ib -> ib.name("Pointing to " + this.getTarget().getColoredName() + " flag").removeDummyEnchant());
+            this.modify(ib -> ib.name(this.getName()).removeDummyEnchant());
         }
         this.update(this.kit.getPlayer().getInventory());
     }
 
+    private String getName() {
+        StringBuilder name = new StringBuilder("Pointing to " + this.getTarget().getColoredName() + " flag");
+        if (this.getTarget().getFlag().getCarrier() != null) {
+            name.append(", held by ")
+                .append(this.game.getTeamManager().getTeam(this.getTarget().getFlag().getCarrier()).getColor().getChat())
+                .append(this.getTarget().getFlag().getCarrier().getName());
+        }
+        return name.toString();
+    }
+
     @EventHandler
     public void onTick(TickEvent event) {
-        if (this.getTarget() != null && this.kit.getPlayer().getCompassTarget() != this.getTarget().getFlag().getLocation()) {
-            this.kit.getPlayer().setCompassTarget(this.getTarget().getFlag().getLocation());
+        if (this.getTarget() != null) {
+            if (this.kit.getPlayer().getCompassTarget() != this.getTarget().getFlag().getLocation()) {
+                this.kit.getPlayer().setCompassTarget(this.getTarget().getFlag().getLocation());
+            }
+
+            if (!this.getName().equals(ItemUtil.getName(this.getItem()))) {
+                this.rename();
+            }
         }
     }
 
