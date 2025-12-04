@@ -144,6 +144,12 @@ public class DwarfKit extends BattleKit {
 
         this.getPlayer().setVelocity(launch);
 
+        DwarfKit.this.getPlayer().getWorld().playSound(DwarfKit.this.getPlayer().getEyeLocation(),
+                Sound.IRONGOLEM_THROW,
+                1.0f,
+                0.7f
+        );
+
         // Guesstimate the ticks it will take to reach the apex of the velocity
         // This could be wrong if the player bumps their head, but it's okay
         long ticksUntilApex = (long) Math.abs((long) this.getPlayer().getVelocity().getY() / EntityUtil.GRAVITY) + 1;
@@ -273,12 +279,6 @@ public class DwarfKit extends BattleKit {
                 switch (DwarfKit.this.state) {
                     case READY -> {
                         DwarfKit.this.launch(EventUtil.isLeftClick(ev));
-                        DwarfKit.this.getPlayer().getWorld().playSound(
-                                DwarfKit.this.getPlayer().getLocation(),
-                                Sound.IRONGOLEM_THROW,
-                                1.0f,
-                                0.7f
-                        );
                         this.setPlaceholder();
                     }
                     case FALLING -> {
