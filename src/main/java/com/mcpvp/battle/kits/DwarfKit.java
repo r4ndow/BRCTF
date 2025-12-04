@@ -98,8 +98,8 @@ public class DwarfKit extends BattleKit {
 
         return new KitInventoryBuilder()
             .add(this.sword)
-            .add(this.smash = new SmashItem())
             .addFood(3)
+            .add(this.smash = new SmashItem())            
             .addCompass(8)
             .build();
     }
@@ -143,6 +143,12 @@ public class DwarfKit extends BattleKit {
         }
 
         this.getPlayer().setVelocity(launch);
+
+        DwarfKit.this.getPlayer().getWorld().playSound(DwarfKit.this.getPlayer().getEyeLocation(),
+            Sound.IRONGOLEM_THROW,
+            1.0f,
+            0.7f
+        );
 
         // Guesstimate the ticks it will take to reach the apex of the velocity
         // This could be wrong if the player bumps their head, but it's okay
