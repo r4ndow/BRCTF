@@ -18,8 +18,6 @@ build_plugin:
   artifacts:
     paths:
       - build/libs/*
-  dependencies:
-    - get_version
 
 release_plugin:
   stage: deploy
@@ -35,11 +33,5 @@ release_plugin:
       artifacts: true
     - job: get_version
       artifacts: true
-
-#  release:
-#    tag_name: '$CI_COMMIT_TAG'
-#    description: '$CI_COMMIT_TAG'
-#    assets:
-#      links:
-#        - name: 'mcctf-$CI_COMMIT_TAG.jar'
-#          url: '$CI_SERVER_URL/$CI_PROJECT_PATH/-/jobs/$JOB_ID/artifacts/download'
+  rules:
+    - changes: [src/main/resources/plugin.yml]
