@@ -22,10 +22,7 @@ import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.BlockUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.bukkit.Color;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -180,6 +177,7 @@ public class MedicKit extends BattleKit {
         }
 
         player.playEffect(EntityEffect.HURT);
+        player.getWorld().playSound(player.getLocation(), Sound.SLIME_WALK, 1, 2);
 
         // Players must be full health before restoring items
         if (player.getHealth() == player.getMaxHealth()) {
