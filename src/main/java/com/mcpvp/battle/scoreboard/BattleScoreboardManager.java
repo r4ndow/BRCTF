@@ -172,12 +172,12 @@ public class BattleScoreboardManager extends EasyLifecycle {
                 }
 
                 // Objective header value lines
-                scores.add(C.WHITE + " Objetivo");
+                scores.add(C.WHITE + C.B + "Objetivo");
                 String objective = this.battle.getRoleManager().computeObjectiveText(player);
                 if (objective != null) {
-                    scores.add(roleColor + " " + objective);
+                    scores.add(roleColor + objective);
                 } else {
-                    scores.add(C.GRAY + " Sem função selecionada");
+                    scores.add(C.GRAY + "Sem função selecionada");
                 }
 
 
@@ -223,6 +223,27 @@ public class BattleScoreboardManager extends EasyLifecycle {
         return scores;
     }
 
+    private String getCaptureProgress(BattleTeam team) {
+        int current = team.getCaptures();
+        int target = this.battle.getGame().getConfig().getCaps();
+        String teamColor = team.getColor().getChatString();
+
+        if (target > 10) {
+            return teamColor + current + C.GRAY + "/" + target;
+        }
+
+        StringBuilder progress = new StringBuilder();
+        if (current > 0) {
+            progress.append(teamColor).append("⬤".repeat(current));
+        }
+        if (current < target) {
+            progress.append(C.GRAY).append("⬤".repeat(target - current));
+        }
+        return progress.toString();
+    }
+
+
+
     /**
      * Team specific scores.
      *
@@ -235,25 +256,25 @@ public class BattleScoreboardManager extends EasyLifecycle {
         List<String> scores = new ArrayList<>();
 
         if (sameTeam) {
-            scores.add(" " + C.B + team.getName() + C.DARK_PURPLE + " - Your Team");
+            scores.add(C.B + team.getName() + C.GRAY + C.I + " » Your team");
         } else {
-            scores.add(" " + C.B + team.getName());
+            scores.add(C.B + team.getName());
         }
 
-        scores.add(ScoreboardUtil.autoSize("  " + team.getColor() + "Captures" + C.R, team.getCaptures() + "/" + this.battle.getGame().getConfig().getCaps(), "  Caps"));
+        scores.add(" " + team.getColor() + "Captures " + C.R + this.getCaptureProgress(team));
 
         List<String> location = this.getFlagLoc(team);
 
-        scores.add("  " + team.getColor() + "Flag " + C.R + location.get(0));
-
+        scores.add(" " + team.getColor() + "Flag " + C.R + location.get(0));
         if (location.size() > 1) {
-            scores.add(C.GRAY + "  * " + location.get(1));
-        } else { // Add a unique space
+            scores.add(C.GRAY + "  " + location.get(1));
+        } else {
             scores.add(ChatColor.COLOR_CHAR + "" + team.getName().charAt(0) + ChatColor.RESET);
         }
 
         return scores;
     }
+
 
     /**
      * @param team The team to get the flag scores for.
