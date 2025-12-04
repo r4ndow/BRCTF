@@ -268,9 +268,8 @@ public class BattleScoreboardManager extends EasyLifecycle {
         scores.add(" " + team.getColor() + "Flag " + C.R + location.get(0));
         if (location.size() > 1) {
             scores.add(C.GRAY + "  " + location.get(1));
-        } else {
-            scores.add(ChatColor.COLOR_CHAR + "" + team.getName().charAt(0) + ChatColor.RESET);
         }
+
 
         return scores;
     }
