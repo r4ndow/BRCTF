@@ -5,25 +5,28 @@ import com.mcpvp.battle.event.FlagPoisonEvent;
 import com.mcpvp.battle.event.FlagTakeEvent;
 import com.mcpvp.battle.event.PlayerResignEvent;
 import com.mcpvp.battle.game.BattleGame;
+import com.mcpvp.battle.options.BattleOptionsInput;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
+import com.mcpvp.common.shape.Cuboid;
 import com.mcpvp.common.time.Duration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-/**
- * Listens for flag interactions and calls {@link FlagManager}.
- */
 @Getter
 @RequiredArgsConstructor
 public class FlagListener implements EasyListener {
-
-    private static final Double FLAG_DIST = 1.5;
 
     private final BattlePlugin plugin;
     private final BattleGame game;
@@ -32,42 +35,54 @@ public class FlagListener implements EasyListener {
     public void onTick(TickEvent event) {
         this.processRestoration(event);
         this.resetStealTimers();
-        //this.dealFlagPoison(event); - disabled flag poisoning for now
+
         this.processSteals();
     }
 
     private void processSteals() {
         this.game.getTeamManager().getTeams().forEach(flagTeam -> {
             BattleFlag flag = flagTeam.getFlag();
+            Cuboid homeCaptureArea = this.getCaptureArea(flag.getHome());
 
             this.game.getParticipants()
-                .stream()
-                .filter(player ->
-                    player.getLocation().distance(flag.getLocation()) <= FLAG_DIST
-                ).filter(player ->
-                    !this.game.getTeamManager().getTeam(player).isInSpawn(player)
-                ).forEach(player -> {
-                    BattleTeam playerTeam = this.game.getTeamManager().getTeam(player);
-
-                    if (flagTeam != playerTeam) {
+                    .stream()
+                    .filter(player -> {
                         if (flag.isHome()) {
-                            flagTeam.getFlagManager().attemptSteal(player);
-                        } else if (flag.isDropped() && flag.getPickupExpiration().isExpired()) {
-                            flagTeam.getFlagManager().pickup(player);
+                            return homeCaptureArea.contains(player.getLocation());
+                        } else {
+                            return player.getLocation().distance(flag.getLocation()) <= 1.5;
                         }
-                    } else {
-                        if (!flag.isHome() && flag.isDropped()) {
-                            flagTeam.getFlagManager().recover(player);
-                        } else if (flag.isHome()) {
-                            this.game.getTeamManager().getTeams().stream()
-                                .filter(bt -> bt.getFlag().getCarrier() == player)
-                                .forEach(bt -> {
-                                    bt.getFlagManager().capture(player, playerTeam);
-                                });
+                    })
+                    .filter(player ->
+                            !this.game.getTeamManager().getTeam(player).isInSpawn(player))
+                    .forEach(player -> {
+                        BattleTeam playerTeam = this.game.getTeamManager().getTeam(player);
+
+                        if (flagTeam != playerTeam) {
+                            if (flag.isHome()) {
+                                flagTeam.getFlagManager().attemptSteal(player);
+                            } else if (flag.isDropped() && flag.getPickupExpiration().isExpired()) {
+                                flagTeam.getFlagManager().pickup(player);
+                            }
+                        } else {
+                            if (!flag.isHome() && flag.isDropped()) {
+                                flagTeam.getFlagManager().recover(player);
+                            } else if (flag.isHome()) {
+                                this.game.getTeamManager().getTeams().stream()
+                                        .filter(bt -> bt.getFlag().getCarrier() == player)
+                                        .forEach(bt -> {
+                                            bt.getFlagManager().capture(player, playerTeam);
+                                        });
+                            }
                         }
-                    }
-                });
+                    });
         });
+    }
+
+    private Cuboid getCaptureArea(Location flagHome) {
+        Location corner1 = flagHome.clone().add(-1, -1, -1);
+        Location corner2 = flagHome.clone().add(1, 0, 1);
+        return new Cuboid(corner1, corner2);
     }
 
     private void dealFlagPoison(TickEvent event) {
@@ -76,8 +91,9 @@ public class FlagListener implements EasyListener {
                 if (flag.getCarrier() != null) {
                     if (!new FlagPoisonEvent(flag.getCarrier()).callIsCancelled()) {
                         String message = "%s%s flag poisoned you!".formatted(
-                            C.warn(C.RED), flag.getTeam().getColoredName() + C.GRAY
+                                C.warn(C.RED), flag.getTeam().getColoredName() + C.GRAY
                         );
+
                         flag.getCarrier().sendMessage(message);
                         flag.getCarrier().damage(3);
                     }
@@ -98,8 +114,9 @@ public class FlagListener implements EasyListener {
                     continue;
                 }
 
-                if (player.getLocation().distance(bt.getFlag().getLocation()) > FLAG_DIST) {
-                    // If they've strayed from the flag, make sure they're not considered to be stealing
+                Cuboid captureArea = this.getCaptureArea(bt.getFlag().getHome());
+                if (!captureArea.contains(player.getLocation())) {
+
                     bt.getFlagManager().resetStealTimer(player);
                 }
             }
@@ -145,9 +162,71 @@ public class FlagListener implements EasyListener {
     @EventHandler
     public void onFlagInVoid(TickEvent event) {
         this.game.getTeamManager().getTeams().stream()
-            .map(BattleTeam::getFlag)
-            .filter(flag -> flag.getLocation().getY() <= 0)
-            .forEach(flag -> flag.getTeam().getFlagManager().restore());
+                .map(BattleTeam::getFlag)
+                .filter(flag -> flag.getLocation().getY() < 0)
+                .forEach(flag -> flag.getTeam().getFlagManager().restore());
     }
 
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onWoolPlaceCapture(BlockPlaceEvent event) {
+        if (this.game.getBattle().getOptions().getGame().getFlagType() != BattleOptionsInput.FlagType.WOOL) {
+            return;
+        }
+
+        if (event.getBlock().getType() != Material.WOOL) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        if (!this.game.isParticipant(player)) {
+            return;
+        }
+
+        BattleTeam playerTeam = this.game.getTeamManager().getTeam(player);
+        if (playerTeam == null) {
+            return;
+        }
+
+        BattleFlag playerFlag = playerTeam.getFlag();
+        if (!playerFlag.isHome()) {
+            return;
+        }
+
+        Cuboid captureArea = this.getCaptureArea(playerFlag.getHome());
+        if (!captureArea.contains(event.getBlock().getLocation())) {
+            return;
+        }
+
+        this.game.getTeamManager().getTeams().stream()
+                .filter(bt -> bt != playerTeam)
+                .filter(bt -> bt.getFlag().getCarrier() == player)
+                .filter(bt -> bt.getFlag().isItem(event.getItemInHand()))
+                .findFirst()
+                .ifPresent(enemyTeam -> {
+                    Block block = event.getBlock();
+                    Location flagHome = playerFlag.getHome();
+
+                    boolean isAtFlagLocation = block.getLocation().getBlockX() == flagHome.getBlockX() &&
+                            block.getLocation().getBlockY() == flagHome.getBlockY() &&
+                            block.getLocation().getBlockZ() == flagHome.getBlockZ();
+
+                    if (!isAtFlagLocation) {
+                        Bukkit.getScheduler().runTask(this.plugin, () -> {
+                            Material originalType = block.getType();
+                            byte originalData = block.getData();
+
+                            block.setType(Material.GLOWSTONE, false);
+
+                            Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+                                if (block.getType() == Material.GLOWSTONE) {
+                                    block.setType(originalType, false);
+                                    block.setData(originalData, false);
+                                }
+                            }, 40L);
+                        });
+                    }
+
+                    enemyTeam.getFlagManager().capture(player, playerTeam);
+                });
+    }
 }
