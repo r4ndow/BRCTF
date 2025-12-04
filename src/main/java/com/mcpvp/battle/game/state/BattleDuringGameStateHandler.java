@@ -107,7 +107,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onKitSelected(KitSelectedEvent event) {
         if (event.isRespawn()) {
-            this.game.respawn(event.getPlayer(), false);
+            this.game.respawn(event.getPlayer(), event.getPlayer().getHealth() != event.getPlayer().getMaxHealth());
         }
     }
 
