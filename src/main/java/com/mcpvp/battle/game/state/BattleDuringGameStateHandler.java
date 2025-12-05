@@ -175,6 +175,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
                 event.getCause().setCancelled(true);
             }
 
+            event.getPlayer().sendMessage(C.warn(C.RED) + "Woah! You can't go in the enemy spawn");
             this.game.respawn(event.getPlayer(), true);
         }
     }
