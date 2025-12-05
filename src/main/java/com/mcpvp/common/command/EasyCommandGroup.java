@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class EasyCommandGroup extends EasyCommand {
@@ -47,10 +48,15 @@ public abstract class EasyCommandGroup extends EasyCommand {
         return found.map(easyCommand -> {
             // Find the registered plugin command, which has its permissions loaded from the plugin.yml
             // Then do a permissions test to enforce permissions for subcommands
-            PluginCommand command = this.plugin.getCommand(alias + " " + args.get(0));
+            String match = alias + " " + args.get(0);
+            PluginCommand command = Objects.requireNonNull(
+                this.plugin.getCommand(match),
+                "No command in plugin.yml found for '/" + match + "'"
+            );
+
             if (command.testPermission(sender)) {
                 // Then execute the command
-                return easyCommand.onCommand(sender, alias + " " + args.get(0), args.subList(1, args.size()));
+                return easyCommand.onCommand(sender, match, args.subList(1, args.size()));
             }
             return false;
         }).orElse(false);

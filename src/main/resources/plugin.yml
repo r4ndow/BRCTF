@@ -5,6 +5,13 @@ author: NomNuggetNom
 main: com.mcpvp.battle.BattlePlugin
 depend: []
 permissions:
+  mcctf.captures.set:
+    description: Allow access to /captures set
+    default: op
+  mcctf.captures.require:
+    description: Allow access to /captures require
+    default: op
+
   mcctf.flag.jump:
     description: Allow access to /flag jump
     default: op
@@ -85,6 +92,10 @@ commands:
     description: Set the number of captures for a team
     usage: /<command> <team> <number>
     permission: mcctf.captures.set
+  captures require:
+    description: Set the number of captures required to win
+    usage: /<command> <number>
+    permission: mcctf.captures.require
   flag:
     description: Flag commands
   flag jump:
