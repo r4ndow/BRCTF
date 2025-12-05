@@ -58,6 +58,13 @@ public class Mage3Kit extends BattleKit {
 
     public static final int TELEPORT_DISTANCE = 7;
 
+    //COOLDOWNS
+    public static final int DAMAGESPELL_COOLDOWN = 1000;
+    public static final int FLAMESPELL_COOLDOWN = 7;
+    public static final int LIGHTNINGSPELL_COOLDOWN = 7;
+    public static final int FREEZESPELL_COOLDOWN = 7;
+    public static final int TELEPORTSPELL_COOLDOWN = 12;
+
 
     public Mage3Kit(BattlePlugin plugin, Player player) {
         super(plugin, player);
@@ -113,7 +120,7 @@ public class Mage3Kit extends BattleKit {
             super(
                     Mage3Kit.this,
                     ItemBuilder.of(Material.DIAMOND_HOE).name("Damage Spell").build(),
-                    Duration.milliseconds(1000)
+                    Duration.milliseconds(DAMAGESPELL_COOLDOWN)
             );
         }
 
@@ -179,7 +186,7 @@ public class Mage3Kit extends BattleKit {
             super(
                     Mage3Kit.this,
                     ItemBuilder.of(Material.WOOD_HOE).name("Flame Spell").build(),
-                    Duration.seconds(7)
+                    Duration.seconds(FLAMESPELL_COOLDOWN)
             );
         }
 
@@ -247,7 +254,7 @@ public class Mage3Kit extends BattleKit {
             super(
                     Mage3Kit.this,
                     ItemBuilder.of(Material.STONE_HOE).name("Lightning Spell").build(),
-                    Duration.seconds(7)
+                    Duration.seconds(LIGHTNINGSPELL_COOLDOWN)
             );
         }
 
@@ -329,7 +336,7 @@ public class Mage3Kit extends BattleKit {
             super(
                     Mage3Kit.this,
                     ItemBuilder.of(Material.IRON_HOE).name("Freeze Spell").build(),
-                    Duration.seconds(7)
+                    Duration.seconds(FREEZESPELL_COOLDOWN)
             );
         }
 
@@ -405,7 +412,6 @@ public class Mage3Kit extends BattleKit {
 
     class TeleportSpell extends CooldownItem {
 
-        private static final Duration TELEPORT_COOLDOWN = Duration.milliseconds(0);
         private static final float HORIZONTAL_PITCH_THRESHOLD = 15f;
         private static final double RAY_STEP = 0.25;
         private static final double SLAB_Y_OFFSET = 0.5;
@@ -421,7 +427,7 @@ public class Mage3Kit extends BattleKit {
             super(
                     Mage3Kit.this,
                     ItemBuilder.of(Material.BLAZE_ROD).name("Teleport Spell").build(),
-                    TELEPORT_COOLDOWN
+                    Duration.seconds(TELEPORTSPELL_COOLDOWN)
             );
         }
 
