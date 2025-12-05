@@ -23,6 +23,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -333,6 +334,7 @@ public class ThiefKit extends BattleKit {
                     ThiefKit.this,
                     ItemBuilder.of(Material.STICK)
                             .name("Steal")
+                            .desc("Hit an enemy to steal their held item.", 40)
                             .build(),
                     STEAL_COOLDOWN
             );
@@ -408,6 +410,8 @@ public class ThiefKit extends BattleKit {
                     ThiefKit.this,
                     ItemBuilder.of(Material.FISHING_ROD)
                             .name("Grappling Hook")
+                            .desc("Right-click while your hook is attached to grapple towards it.", 40)
+                            .flag(ItemFlag.HIDE_UNBREAKABLE)
                             .unbreakable()
                             .build(),
                     GRAPPLE_COOLDOWN
