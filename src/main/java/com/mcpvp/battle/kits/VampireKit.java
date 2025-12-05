@@ -68,22 +68,22 @@ public class VampireKit extends BattleKit {
                         .name("Vampire Sword")
                         .unbreakable())
                 .addFood(4)
-                .add(new LifeDrain())
+                .add(new DrainLife())
                 .add(new NightfallVial())
                 .addCompass(8)
                 .build();
     }
 
-    class LifeDrain extends CooldownItem {
+    class DrainLife extends CooldownItem {
         private static final Duration COOLDOWN = Duration.seconds(15);
         private static final int TRUE_DAMAGE = 10;
         private static final Duration BUFF_DURATION = Duration.seconds(10);
 
-        public LifeDrain() {
+        public DrainLife() {
             super(
                     VampireKit.this,
                     ItemBuilder.of(Material.GHAST_TEAR)
-                            .name("Life Drain")
+                            .name("Drain Life")
                             .build(),
                     COOLDOWN
             );
@@ -99,7 +99,7 @@ public class VampireKit extends BattleKit {
             event.setCancelled(true);
         }
 
-        @EventHandler(priority = EventPriority.HIGH)
+        @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
         public void onHit(EntityDamageByEntityEvent event) {
             if (this.isPlaceholder()) {
                 return;
@@ -125,18 +125,10 @@ public class VampireKit extends BattleKit {
                 return;
             }
 
-            double newHealth = victim.getHealth() - TRUE_DAMAGE;
-
-            if (newHealth <= 0) {
-                event.setDamage(1000);
-            } else {
-                event.setCancelled(true);
-                victim.setHealth(newHealth);
-            }
+            double increasedDamage = event.getDamage() + TRUE_DAMAGE;
+            event.setDamage(increasedDamage);
 
             victim.setLastDamageCause(event);
-
-            victim.playEffect(EntityEffect.HURT);
 
             VampireKit.this.getPlayer().playSound(
                     VampireKit.this.getPlayer().getLocation(),
@@ -145,6 +137,7 @@ public class VampireKit extends BattleKit {
                     2.0f
             );
 
+
             victim.playSound(
                     victim.getLocation(),
                     Sound.DRINK,
@@ -152,21 +145,29 @@ public class VampireKit extends BattleKit {
                     2.0f
             );
 
-            VampireKit.this.addTemporaryEffect(new PotionEffect(
-                    PotionEffectType.DAMAGE_RESISTANCE,
-                    BUFF_DURATION.ticks(),
-                    1
-            ));
-            VampireKit.this.addTemporaryEffect(new PotionEffect(
-                    PotionEffectType.REGENERATION,
-                    BUFF_DURATION.ticks(),
-                    2
-            ));
-            VampireKit.this.addTemporaryEffect(new PotionEffect(
-                    PotionEffectType.SPEED,
-                    BUFF_DURATION.ticks(),
-                    1
-            ));
+            VampireKit.this.addTemporaryEffect(
+                    new PotionEffect(
+                            PotionEffectType.DAMAGE_RESISTANCE,
+                            BUFF_DURATION.ticks(),
+                            1
+                    )
+            );
+
+            VampireKit.this.addTemporaryEffect(
+                    new PotionEffect(
+                            PotionEffectType.REGENERATION,
+                            BUFF_DURATION.ticks(),
+                            2
+                    )
+            );
+
+            VampireKit.this.addTemporaryEffect(
+                    new PotionEffect(
+                            PotionEffectType.SPEED,
+                            BUFF_DURATION.ticks(),
+                            1
+                    )
+            );
 
             BattleTeam attackerTeam = VampireKit.this.getGame()
                     .getTeamManager()
@@ -209,6 +210,7 @@ public class VampireKit extends BattleKit {
             this.decrement(true);
             this.startCooldown();
         }
+
     }
 
     class NightfallVial extends CooldownItem {

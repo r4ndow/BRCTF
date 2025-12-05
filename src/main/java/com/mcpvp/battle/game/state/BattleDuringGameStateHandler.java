@@ -129,6 +129,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
                 loser.getColor().toString() + loser.getCaptures() + C.GRAY
             ));
         }
+        summary.add(C.info(C.GOLD) + C.GRAY + "Map: " + C.WHITE + this.game.getMap().getName());
 
         summary.forEach(Bukkit::broadcastMessage);
 

@@ -267,7 +267,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
 
         scores.add(" " + team.getColor() + "Flag " + C.R + location.get(0));
         if (location.size() > 1) {
-            scores.add(C.GRAY + "  " + location.get(1));
+            scores.add(C.GRAY + " " + location.get(1));
         }
 
 
@@ -291,7 +291,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
         if (team.getFlag().getCarrier() != null) {
             BattleTeam heldTeam = this.battle.getGame().getTeamManager().getTeam(team.getFlag().getCarrier());
             loc.add("Taken");
-            loc.add("Held by " + heldTeam.getColor().getChat() + team.getFlag().getCarrier().getName());
+            loc.add("↪ held by " + heldTeam.getColor().getChat() + team.getFlag().getCarrier().getName());
         }
 
         if (team.getFlag().isDropped()) {

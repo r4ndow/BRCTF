@@ -79,7 +79,7 @@ public class ChemistKit extends BattleKit {
                     .splash()
                     .amount(8)
                     .name("Poison II"),
-                0
+                1f / 4 + 0.125
             ))
             .add(new PotionItem(
                 ItemBuilder.potion()
@@ -92,8 +92,8 @@ public class ChemistKit extends BattleKit {
             ))
             .add(new PotionItem(
                 ItemBuilder.potion()
-                    .effect(PotionType.FIRE_RESISTANCE, Duration.mins(3))
                     .effect(PotionType.SPEED, Duration.mins(3))
+                    .effect(PotionType.FIRE_RESISTANCE, Duration.mins(3))
                     .splash()
                     .amount(5)
                     .name("Buff Pot"),
@@ -188,7 +188,18 @@ public class ChemistKit extends BattleKit {
 
                 if (ChemistKit.this.getPlayer().getExp() < this.xp) {
                     ChemistKit.this.getPlayer().sendMessage(C.warn(C.AQUA) + "Your magic has run dry! You must recharge!");
+                    ChemistKit.this.getPlayer().playSound(
+                            ChemistKit.this.getPlayer().getLocation(),
+                            Sound.ENDERMAN_TELEPORT,
+                            1.0f,   // volume
+                            0.6f    // pitch
+                    );
                     return;
+                }
+
+                if (this.xp > 0f) {
+                    float current = ChemistKit.this.getPlayer().getExp();
+                    ChemistKit.this.getPlayer().setExp(Math.max(0f, current - this.xp));
                 }
 
                 // Using Player#launchProjectile uses a water bottle instead of the item

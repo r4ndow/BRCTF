@@ -37,7 +37,7 @@ public class ThiefKit extends BattleKit {
 
     // Configurable variables
     private static final Duration STOLEN_ITEM_DISPLAY_TIME = Duration.seconds(10);
-    private static final Duration STOLEN_ITEM_RETURN_TIME = Duration.seconds(5);
+    private static final Duration STOLEN_ITEM_RETURN_TIME = Duration.seconds(7);
     private static final Duration STEAL_COOLDOWN = Duration.seconds(3);
     private static final Duration GRAPPLE_COOLDOWN = Duration.seconds(15);
     private static final int SPEED_DURATION_TICKS = 60; // 3 seconds
@@ -152,25 +152,26 @@ public class ThiefKit extends BattleKit {
             return false;
         }
 
-        // Global per-victim cooldown (20s window)
+        if (isNonStealableItem(heldItem)) {
+            thief.sendMessage(C.warn(C.RED) + "You cannot steal that item.");
+            return false;
+        }
+
         Expiration protection = VICTIM_STEAL_PROTECTION.get(victim.getUniqueId());
         if (protection != null && !protection.isExpired()) {
             long secondsLeft = Math.max(0, protection.getRemaining().seconds());
             thief.sendMessage(
-                    C.warn(C.RED) + C.hl(victim.getName())
-                            + " was recently stolen from! (" + secondsLeft + "s)"
+                    C.warn(C.RED) + C.hl(victim.getName()) + " was recently stolen from! " + secondsLeft + "s"
             );
             return false;
         }
 
-        // Find first free inventory slot for the thief
         int freeSlot = thief.getInventory().firstEmpty();
         if (freeSlot == -1) {
             thief.sendMessage(C.warn(C.RED) + "Your inventory is full! You cannot steal.");
             return false;
         }
 
-        // Create placeholder for victim
         ItemStack placeholder = ItemBuilder.of(Material.STAINED_GLASS_PANE)
                 .name(C.GRAY + "Stolen!")
                 .data((short) 14)
@@ -178,16 +179,13 @@ public class ThiefKit extends BattleKit {
 
         int victimSlot = victim.getInventory().getHeldItemSlot();
 
-        // Replace victim's item with placeholder
         victim.getInventory().setItem(victimSlot, placeholder);
         victim.updateInventory();
 
-        // Give thief a real copy of the stolen item in first free slot
         ItemStack stolenCopy = heldItem.clone();
         thief.getInventory().setItem(freeSlot, stolenCopy);
         thief.updateInventory();
 
-        // Store all data needed for display & return
         StolenItemData data = new StolenItemData(
                 victim,
                 thief,
@@ -197,22 +195,24 @@ public class ThiefKit extends BattleKit {
         );
         this.stolenItems.put(victim, data);
 
-        // Messages + sounds
         thief.sendMessage(C.info(C.GREEN) + "You stole " + C.hl(victim.getName()) + "'s item!");
         victim.sendMessage(C.warn(C.RED) + C.hl(thief.getName()) + " stole your item!");
 
         thief.playSound(thief.getLocation(), Sound.ITEM_PICKUP, 1.0f, 1.0f);
         victim.playSound(victim.getLocation(), Sound.ITEM_PICKUP, 1.0f, 1.0f);
 
-        // Thief keeps the item for STOLEN_ITEM_DISPLAY_TIME, then it disappears
         this.attach(new BukkitRunnable() {
             @Override
             public void run() {
                 StolenItemData current = stolenItems.get(victim);
-                if (current == null) return;
+                if (current == null) {
+                    return;
+                }
 
                 Player t = current.getThief();
-                if (t == null || !t.isOnline()) return;
+                if (t == null || !t.isOnline()) {
+                    return;
+                }
 
                 ItemStack inSlot = t.getInventory().getItem(current.getThiefSlot());
                 if (inSlot != null && inSlot.isSimilar(current.getOriginalItem())) {
@@ -222,7 +222,6 @@ public class ThiefKit extends BattleKit {
             }
         }.runTaskLater(this.getPlugin(), STOLEN_ITEM_DISPLAY_TIME.ticks()));
 
-        // Schedule item return to victim after STOLEN_ITEM_RETURN_TIME
         this.attach(new BukkitRunnable() {
             @Override
             public void run() {
@@ -230,7 +229,6 @@ public class ThiefKit extends BattleKit {
             }
         }.runTaskLater(this.getPlugin(), STOLEN_ITEM_RETURN_TIME.ticks()));
 
-        // Start victim protection window (applies to all thieves)
         VICTIM_STEAL_PROTECTION.put(
                 victim.getUniqueId(),
                 Expiration.after(VICTIM_STEAL_COOLDOWN)
@@ -238,6 +236,26 @@ public class ThiefKit extends BattleKit {
 
         return true;
     }
+
+    private boolean isNonStealableItem(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
+
+        // is it a placeholder?
+        if (item.getType() == Material.STAINED_GLASS_PANE) {
+            return true;
+        }
+
+        if (item.getType() == Material.COMPASS) {
+            return true;
+        }
+        // Any team flag (wool or banner)
+        return this.getBattle().getGame().getTeamManager().getTeams().stream()
+                .anyMatch(team -> team.getFlag().isItem(item));
+    }
+
+
 
 
     private void returnStolenItem(Player victim) {
@@ -307,7 +325,7 @@ public class ThiefKit extends BattleKit {
 
     class StealAbility extends CooldownItem {
 
-        // Separate cooldown just for hits; do NOT use placeholder for Steal
+        // Separate cooldown just for hits
         private final Expiration hitCooldown = new Expiration();
 
         public StealAbility() {
@@ -322,13 +340,11 @@ public class ThiefKit extends BattleKit {
 
         @Override
         protected boolean autoUse() {
-            return false; // Steal happens on hit, not on right-click
+            return false;
         }
 
         @Override
-        protected void onUse(PlayerInteractEvent event) {
-            // unused
-        }
+        protected void onUse(PlayerInteractEvent event) {}
 
         @Override
         protected void onFailedUse() {
@@ -344,6 +360,10 @@ public class ThiefKit extends BattleKit {
 
         public void startHitCooldown() {
             this.hitCooldown.expireIn(STEAL_COOLDOWN);
+
+
+            this.setPlaceholder();
+            this.startCooldown();
         }
 
         /**
@@ -410,9 +430,7 @@ public class ThiefKit extends BattleKit {
         }
 
         @Override
-        protected void onUse(PlayerInteractEvent event) {
-            // Handled by PlayerFishEvent
-        }
+        protected void onUse(PlayerInteractEvent event) {}
 
         @EventHandler
         public void onFish(PlayerFishEvent event) {
@@ -434,9 +452,6 @@ public class ThiefKit extends BattleKit {
 
             // Apply grappling hook impulse
             applyGrapplingHookImpulse();
-
-            // Start cooldown and set placeholder
-            this.triggerCooldownWithPlaceholder();
 
             // Reset bobber state
             ThiefKit.this.removeBobber(uuid);
@@ -487,6 +502,8 @@ public class ThiefKit extends BattleKit {
             playGrappleSounds();
             cancelFallDamage();
             grantSpeedEffect();
+
+            this.startCooldown();
         }
 
         private Vector calculateImpulse(double horizontalDistance, Vector horizontalDirection) {
@@ -557,12 +574,6 @@ public class ThiefKit extends BattleKit {
                     (south.getType().isSolid()) ||
                     (east.getType().isSolid()) ||
                     (west.getType().isSolid());
-        }
-
-        // Public method to trigger cooldown and set placeholder
-        public void triggerCooldownWithPlaceholder() {
-            super.startCooldown();
-            this.setPlaceholder();
         }
     }
 
