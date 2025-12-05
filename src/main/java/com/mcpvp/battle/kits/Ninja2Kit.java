@@ -35,15 +35,19 @@ import java.util.Map;
 
 public class Ninja2Kit extends BattleKit {
 
-    private static final Duration DUST_CHECK_INTERVAL = Duration.milliseconds(500);
+    private static final Duration DUST_CHECK_INTERVAL = Duration.milliseconds(1000);
     private static final Duration REFILL_TIME = Duration.secs(3);
     private static final Duration HEAL_WITHOUT_FLAG_TIME = Duration.seconds(1);
     private static final Duration HEAL_WITH_FLAG_TIME = Duration.seconds(2);
     private static final int EGG_USES = 2;
     private static final float EGG_MANA_COST = 1.0f / EGG_USES;
 
+    private boolean ignoreNextPearlFallDamage;
+
     private KitItem sword;
     private boolean invisible;
+    private PearlItem pearlItem;
+    private boolean hadFlag;
     //private final Expiration combatCooldown = new Expiration();
 
     public Ninja2Kit(BattlePlugin plugin, Player player) {
@@ -74,10 +78,12 @@ public class Ninja2Kit extends BattleKit {
                 .build()
         );
 
+        this.pearlItem = new PearlItem();
+
         return new KitInventoryBuilder()
             .add(this.sword)
             .addFood(2)
-            .add(new PearlItem())
+            .add(this.pearlItem)
             .add(new EggItem())
             .add(new DustItem())
             .addCompass(8)
@@ -93,7 +99,7 @@ public class Ninja2Kit extends BattleKit {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEnderPearlDamage(EntityDamageEvent event) {
         if (event.getEntity() != this.getPlayer()) {
             return;
@@ -103,7 +109,8 @@ public class Ninja2Kit extends BattleKit {
             return;
         }
 
-        if (this.getPlayer().getFallDistance() == 0.0f) {
+        if (this.ignoreNextPearlFallDamage) {
+            this.ignoreNextPearlFallDamage = false;
             event.setCancelled(true);
         }
     }
@@ -120,6 +127,16 @@ public class Ninja2Kit extends BattleKit {
     public void onTick(TickEvent event) {
         this.increaseEggMana();
         this.attemptHeal(event);
+
+        boolean hasFlagNow = this.hasFlag();
+        if (hasFlagNow != this.hadFlag && this.pearlItem != null) {
+            if (hasFlagNow) {
+                this.pearlItem.setPlaceholder();   // visually block the pearl
+            } else {
+                this.pearlItem.restore();          // re‑enable when flag is dropped/returned
+            }
+        }
+        this.hadFlag = hasFlagNow;
 
 //        if (this.invisible) {
 //            this.getGame().getTeamManager().getTeams().forEach(
@@ -261,21 +278,11 @@ public class Ninja2Kit extends BattleKit {
         }
 
         private void enforceDust() {
-            boolean redstoneAllowed = !Ninja2Kit.this.hasFlag(); //&& Ninja2Kit.this.combatCooldown.isExpired();
-
-            if (!redstoneAllowed && this.getItem().getType() == Material.REDSTONE) {
-                this.switchToGlowstone();
-            }
-
-            if (redstoneAllowed && this.getItem().getType() != Material.REDSTONE && !this.isPlaceholder()) {
-                this.switchToRedstone();
-            }
-
             boolean wasInvisible = Ninja2Kit.this.invisible;
-            Ninja2Kit.this.invisible = this.isItem(Ninja2Kit.this.getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE;
+            Ninja2Kit.this.invisible = this.isItem(Ninja2Kit.this.getPlayer().getItemInHand())
+                    && this.getItem().getType() == Material.REDSTONE;
 
             if (Ninja2Kit.this.invisible && !wasInvisible) {
-
                 Ninja2Kit.this.getPlayer().playSound(
                         Ninja2Kit.this.getPlayer().getLocation(),
                         Sound.STEP_SNOW,
@@ -294,6 +301,7 @@ public class Ninja2Kit extends BattleKit {
 
             Ninja2Kit.this.enforceVisibility();
         }
+
 
         private void adjustRedstoneAmount() {
             if (!this.isItem(Ninja2Kit.this.getPlayer().getItemInHand())
@@ -353,17 +361,31 @@ public class Ninja2Kit extends BattleKit {
                 return;
             }
 
+            if (Ninja2Kit.this.hasFlag()) {
+                Ninja2Kit.this.getPlayer().sendMessage(
+                        C.cmdFail() + "You can’t throw pearls with the flag!"
+                );
+                Ninja2Kit.this.getPlayer().playSound(
+                        Ninja2Kit.this.getPlayer().getLocation(),
+                        Sound.ENDERMAN_TELEPORT,
+                        1.0f,
+                        0.6f
+                );
+                return;
+            }
+
             this.setPlaceholder();
             EnderPearl ep = Ninja2Kit.this.getPlayer().launchProjectile(EnderPearl.class);
 
             Ninja2Kit.this.attach(new InteractiveProjectile(this.getPlugin(), ep)
-                .singleEventOnly()
-                .onHitPlayer(player -> this.restore())
-                .onDeath(this::restore)
+                    .singleEventOnly()
+                    .onHitPlayer(player -> this.restore())
+                    .onDeath(this::restore)
             );
 
             Ninja2Kit.this.attach(ep);
         }
+
 
     }
 
@@ -414,18 +436,37 @@ public class Ninja2Kit extends BattleKit {
         }
 
     }
+
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        if (event.getPlayer().equals(this.getPlayer()) &&
-                event.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
-
-            Player player = event.getPlayer();
-
-            Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.3f);
-            }, 1L);
+        if (!event.getPlayer().equals(this.getPlayer())
+                || event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
+            return;
         }
+
+        if (this.hasFlag()) {
+            event.setCancelled(true);
+            Ninja2Kit.this.getPlayer().sendMessage(
+                    C.cmdFail() + "You can’t throw pearls with the flag!"
+            );
+            Ninja2Kit.this.getPlayer().playSound(
+                    Ninja2Kit.this.getPlayer().getLocation(),
+                    Sound.ENDERMAN_TELEPORT,
+                    1.0f,
+                    0.6f
+            );
+            return;
+        }
+
+        this.ignoreNextPearlFallDamage = true;
+
+        Player player = event.getPlayer();
+
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.3f);
+        }, 1L);
     }
+
 
 
 }
