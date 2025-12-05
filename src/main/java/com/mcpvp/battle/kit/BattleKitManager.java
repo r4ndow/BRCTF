@@ -104,9 +104,11 @@ public class BattleKitManager extends KitManager {
             case "vampiro":
                 return BattleKitType.VAMPIRE;
 
-            case "mage2":
             case "mago2":
                 return BattleKitType.MAGE2;
+
+            case "mago3":
+                return BattleKitType.MAGE3;
 
             default:
                 return null;
