@@ -48,10 +48,14 @@ public class Mage3Kit extends BattleKit {
     public static final int DAMAGE_ARROW_DAMAGE = 6; // 3 hearts
     public static final int FIRE_IMPACT_DAMAGE = 10;
     public static final Duration FIRE_DURATION = Duration.seconds(2);
+    public static final double FIRE_RANGE = 3;
+
     public static final int LIGHTNING_DAMAGE = 2; // 1 heart
-    public static final double LIGHTNING_DIST = 3;
+    public static final double LIGHTNING_RANGE = 3;
+
     public static final Duration FREEZE_DURATION = Duration.seconds(3);
     public static final double FREEZE_RANGE = 3;
+
     public static final int TELEPORT_DISTANCE = 7;
 
 
@@ -191,24 +195,51 @@ public class Mage3Kit extends BattleKit {
             pearl.setFireTicks(Duration.seconds(60).toTicks());
             Mage3Kit.this.attach(pearl);
 
-            event.getPlayer().getWorld().playEffect(event.getPlayer().getEyeLocation(), Effect.BLAZE_SHOOT, 0);
+            event.getPlayer().getWorld().playEffect(
+                    event.getPlayer().getEyeLocation(),
+                    Effect.BLAZE_SHOOT,
+                    0
+            );
 
-            Mage3Kit.this.attach(new InteractiveProjectile(this.getPlugin(), pearl)
-                    .singleEventOnly()
-                    .onDeath(pearl::remove)
-                    .onHitPlayer(player -> {
-                        if (Mage3Kit.this.isTeammate(player)) {
-                            return;
-                        }
+            Mage3Kit.this.attach(
+                    new InteractiveProjectile(this.getPlugin(), pearl)
+                            .singleEventOnly()
+                            .onDeath(() -> {
+                                this.checkNearbyPlayers(pearl.getLocation());
+                                pearl.remove();
+                            })
+                            .onHitPlayer(player -> {
+                                if (Mage3Kit.this.isTeammate(player)) {
+                                    return;
+                                }
 
-                        player.damage(FIRE_IMPACT_DAMAGE, (Entity) pearl.getShooter());
-                        player.setFireTicks(FIRE_DURATION.toTicks());
-                        pearl.remove();
-                    })
+                                player.damage(FIRE_IMPACT_DAMAGE, (Entity) pearl.getShooter());
+                                player.setFireTicks(FIRE_DURATION.toTicks());
+                                pearl.remove();
+                            })
             );
         }
 
+        private void checkNearbyPlayers(Location location) {
+            for (Player enemy : Mage3Kit.this.getEnemies()) {
+                if (enemy.getLocation().distance(location) > FIRE_RANGE) {
+                    continue;
+                }
+
+                if (Mage3Kit.this.getGame()
+                        .getTeamManager()
+                        .getTeam(enemy)
+                        .isInSpawn(enemy)) {
+                    continue;
+                }
+
+                enemy.damage(FIRE_IMPACT_DAMAGE, Mage3Kit.this.getPlayer());
+                enemy.setFireTicks(FIRE_DURATION.toTicks());
+            }
+        }
     }
+
+
 
     class LightningSpell extends CooldownItem {
 
@@ -266,7 +297,7 @@ public class Mage3Kit extends BattleKit {
             for (Player enemy : Mage3Kit.this.getEnemies()) {
                 if (enemy.getLocation().distanceSquared(
                         block.getLocation().add(0.5, 0.5, 0.5)
-                ) > Math.pow(LIGHTNING_DIST, 2)) {
+                ) > Math.pow(LIGHTNING_RANGE, 2)) {
                     continue;
                 }
 
