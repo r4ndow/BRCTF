@@ -1,5 +1,5 @@
 name: mcctf
-version: 3.6.6
+version: 3.6.7
 description: The classic MCPVP plugin reborn
 author: NomNuggetNom
 main: com.mcpvp.battle.BattlePlugin

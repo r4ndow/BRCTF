@@ -48,9 +48,11 @@ public abstract class EasyCommandGroup extends EasyCommand {
             // Find the registered plugin command, which has its permissions loaded from the plugin.yml
             // Then do a permissions test to enforce permissions for subcommands
             PluginCommand command = this.plugin.getCommand(alias + " " + args.get(0));
-            command.testPermission(sender);
-            // Then execute the command
-            return easyCommand.onCommand(sender, alias + " " + args.get(0), args.subList(1, args.size()));
+            if (command.testPermission(sender)) {
+                // Then execute the command
+                return easyCommand.onCommand(sender, alias + " " + args.get(0), args.subList(1, args.size()));
+            }
+            return false;
         }).orElse(false);
     }
 
