@@ -17,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -84,6 +85,7 @@ public class VampireKit extends BattleKit {
                     VampireKit.this,
                     ItemBuilder.of(Material.GHAST_TEAR)
                             .name("Drain Life")
+                            .desc("Hit an enemy to deal true damage and gain buffs.", 40)
                             .build(),
                     COOLDOWN
             );
@@ -230,6 +232,9 @@ public class VampireKit extends BattleKit {
                             .effect(PotionEffectType.WEAKNESS)
                             .splash()
                             .name("Nightfall Vial")
+                            .desc(C.GRAY + "Throw to create a dark area that blinds enemies and heals allies.", 40)
+                            //.flag(ItemFlag.HIDE_ATTRIBUTES)
+                            .flag(ItemFlag.HIDE_POTION_EFFECTS)
                             .build(),
                     COOLDOWN
             );
