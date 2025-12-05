@@ -57,6 +57,7 @@ public class ThiefKit extends BattleKit {
     private final Map<UUID, FishHook> playerBobbers = new HashMap<>();
     private final Map<UUID, Boolean> isBobberOut = new HashMap<>();
 
+
     private StealAbility stealAbility;
     private GrapplingHook grapplingHook;
 
@@ -154,7 +155,7 @@ public class ThiefKit extends BattleKit {
         }
 
         if (isNonStealableItem(heldItem)) {
-            thief.sendMessage(C.warn(C.RED) + "You cannot steal that item.");
+            thief.sendMessage(C.warn(C.RED) + "You cannot steal that item");
             return false;
         }
 
@@ -162,14 +163,14 @@ public class ThiefKit extends BattleKit {
         if (protection != null && !protection.isExpired()) {
             long secondsLeft = Math.max(0, protection.getRemaining().seconds());
             thief.sendMessage(
-                    C.warn(C.RED) + C.hl(victim.getName()) + " was recently stolen from! " + secondsLeft + "s"
+                    C.warn(C.RED) + C.hl(victim.getName()) + " cannot be stolen from for " + secondsLeft + " seconds!"
             );
             return false;
         }
 
         int freeSlot = thief.getInventory().firstEmpty();
         if (freeSlot == -1) {
-            thief.sendMessage(C.warn(C.RED) + "Your inventory is full! You cannot steal.");
+            thief.sendMessage(C.warn(C.RED) + "Your inventory is full! You cannot steal");
             return false;
         }
 
@@ -405,6 +406,8 @@ public class ThiefKit extends BattleKit {
 
 
     class GrapplingHook extends CooldownItem {
+        private final Expiration grappleCooldown = new Expiration();
+
         public GrapplingHook() {
             super(
                     ThiefKit.this,
@@ -412,7 +415,6 @@ public class ThiefKit extends BattleKit {
                             .name("Grappling Hook")
                             .desc("Right-click while your hook is attached to grapple towards it.", 40)
                             .flag(ItemFlag.HIDE_UNBREAKABLE)
-                            .unbreakable()
                             .build(),
                     GRAPPLE_COOLDOWN
             );
@@ -438,8 +440,19 @@ public class ThiefKit extends BattleKit {
 
         @EventHandler
         public void onFish(PlayerFishEvent event) {
-            if (event.getPlayer() != ThiefKit.this.getPlayer()) return;
-            if (!this.isItem(event.getPlayer().getItemInHand())) return;
+            if (event.getPlayer() != ThiefKit.this.getPlayer()) {
+                return;
+            }
+            if (!this.isItem(event.getPlayer().getItemInHand())) {
+                return;
+            }
+            if (!this.grappleCooldown.isExpired()) {
+                ThiefKit.this.getPlayer().sendMessage(
+                        C.warn(C.RED) + "Grappling hook is on cooldown!"
+                );
+                return;
+            }
+
 
             UUID uuid = ThiefKit.this.getPlayer().getUniqueId();
 
@@ -454,13 +467,8 @@ public class ThiefKit extends BattleKit {
                 return;
             }
 
-            // Apply grappling hook impulse
             applyGrapplingHookImpulse();
-
-            // Reset bobber state
             ThiefKit.this.removeBobber(uuid);
-
-            // Message
             ThiefKit.this.getPlayer().sendMessage(
                     C.info(C.GREEN) + "Grappling hook activated!"
             );
@@ -507,6 +515,10 @@ public class ThiefKit extends BattleKit {
             cancelFallDamage();
             grantSpeedEffect();
 
+            // New: logical cooldown for grappling use
+            this.grappleCooldown.expireIn(GRAPPLE_COOLDOWN);
+
+            // Existing: drives CooldownItem visuals (durability bar, etc.)
             this.startCooldown();
         }
 
