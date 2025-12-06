@@ -256,7 +256,8 @@ public class BattleScoreboardManager extends EasyLifecycle {
         List<String> scores = new ArrayList<>();
 
         if (sameTeam) {
-            scores.add(C.B + team.getName() + C.GRAY + C.I + " » Your team");
+            //scores.add(C.B + team.getName() + C.GRAY + C.I + " » Your team");
+            scores.add(C.B + team.getName() + C.WHITE + " » Your team");
         } else {
             scores.add(C.B + team.getName());
         }
