@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class Ninja2Kit extends BattleKit {
 
-    private static final Duration DUST_CHECK_INTERVAL = Duration.milliseconds(1000);
+    private static final Duration DUST_CHECK_INTERVAL = Duration.milliseconds(500);
     private static final Duration REFILL_TIME = Duration.secs(3);
     private static final Duration HEAL_WITHOUT_FLAG_TIME = Duration.seconds(1);
     private static final Duration HEAL_WITH_FLAG_TIME = Duration.seconds(2);
