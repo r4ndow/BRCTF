@@ -141,7 +141,7 @@ public class NecroRevivalTagManager implements EasyListener {
         });
 
         player.getInventory().setHelmet(ItemBuilder.of(Material.SKULL_ITEM).data(2).build());
-        player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 99999, 1));
+        //player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 99999, 1));
         player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 99999, 0));
 
         this.tagged.remove(player);
