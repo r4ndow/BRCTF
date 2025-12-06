@@ -418,7 +418,7 @@ public class ThiefKit extends BattleKit {
 
         @Override
         protected boolean showExpRecharge() {
-            return false;
+            return true;
         }
 
         @Override
