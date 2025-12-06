@@ -123,6 +123,7 @@ public class MedicKit extends BattleKit {
         if (event.isInterval(Duration.seconds(0.5))) {
             this.getTeammates().stream()
                 .filter(teammate -> teammate.getLocation().distance(this.getPlayer().getLocation()) <= 10)
+                .filter(teammate -> teammate != this.getPlayer())
                 .forEach(teammate -> {
                     Color color;
                     if (teammate.hasPotionEffect(PotionEffectType.REGENERATION)) {
@@ -177,7 +178,6 @@ public class MedicKit extends BattleKit {
         }
 
         player.playEffect(EntityEffect.HURT);
-        player.getWorld().playSound(player.getLocation(), Sound.SLIME_WALK, 1, 2);
 
         // Players must be full health before restoring items
         if (player.getHealth() == player.getMaxHealth()) {
@@ -188,6 +188,8 @@ public class MedicKit extends BattleKit {
 
             // No healing for a while
             HEAL_COOLDOWNS.put(player, Expiration.after(RESTORE_PLAYER_COOLDOWN));
+
+            player.getWorld().playSound(player.getLocation(), Sound.SLIME_WALK, 1, 2);
 
             new HealEvent(player).call();
         } else {
@@ -260,18 +262,13 @@ public class MedicKit extends BattleKit {
             if (MedicKit.this.getGame().getTeamManager().isSameTeam(hit, shooter)) {
                 event.setCancelled(true);
             } else {
-                this.placeWeb(hit.getLocation());
+                this.placeWeb(event.getDamager().getLocation());
             }
         }
 
         public void placeWeb(Location location) {
-            // TODO by truncating this to the block's location, it might lose accuracy
+            // By truncating this to the block's location, it might lose accuracy
             Block target = location.getBlock();
-
-            ParticlePacket.colored(Color.RED)
-                .at(location)
-                .count(5)
-                .send();
 
             Optional<Block> nearestAir = BlockUtil.getBlocksInRadius(target, 2).stream()
                 .filter(b -> {
