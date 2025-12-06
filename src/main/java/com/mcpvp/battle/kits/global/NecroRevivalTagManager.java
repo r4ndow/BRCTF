@@ -132,12 +132,20 @@ public class NecroRevivalTagManager implements EasyListener {
     public void revive(GameDeathEvent death) {
         Player player = death.getPlayer();
 
-        // Return the player to the location they died
-        player.setHealth(player.getMaxHealth());
-        player.teleport(death.getLocation());
+        // Because the player has died, we need to wait a moment to execute this logic
+        // Otherwise, strange behavior happens
+        EasyTask.of(() -> {
+            if (!player.isOnline()) {
+                return;
+            }
 
-        // "Zombify" the kit
-        this.zombify(player);
+            // Return the player to the location they died
+            player.setHealth(player.getMaxHealth());
+            player.teleport(death.getLocation());
+
+            // "Zombify" the kit
+            this.zombify(player);
+        }).runTaskLater(this.getPlugin(), 0);
 
         // Effects
         ParticlePacket.of(EnumParticle.SMOKE_LARGE).at(player.getLocation()).spread(1.5).count(15).send();
