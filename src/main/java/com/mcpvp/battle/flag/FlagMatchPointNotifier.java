@@ -42,9 +42,11 @@ public class FlagMatchPointNotifier implements EasyListener {
                 this.plugin,
                 () -> {
                     String yourTeamMessage =
-                            "§5§l» " + teamColor.getChatString() + "Seu time §7precisa de mais 1 captura para vencer!";
+                    //        "§5§l» " + teamColor.getChatString() + "Seu time §7precisa de mais 1 captura para vencer!";
+                    "§5§l» " + teamColor.getChatString() + "Your team §7needs 1 more capture to win!";
                     String enemyTeamMessage =
-                            "§5§l» " + teamColor.getChatString() + "Time inimigo §7precisa de mais 1 captura para vencer!";
+                    //        "§5§l» " + teamColor.getChatString() + "Time inimigo §7precisa de mais 1 captura para vencer!";
+                    "§5§l» " + teamColor.getChatString() + "Enemy team §7needs 1 more capture to win!";
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         BattleTeam playerTeam = this.game.getTeamManager().getTeam(player);

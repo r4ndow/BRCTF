@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class KitCommand extends EasyCommand {
 
@@ -26,23 +27,35 @@ public class KitCommand extends EasyCommand {
     public boolean onCommand(CommandSender sender, String label, List<String> args) {
         Player player = this.asPlayer(sender);
 
-        // Treat "kit", "class", and "classe" the same way (base command).
-        boolean isBaseLabel = label.equals("kit") || label.equals("class") || label.equals("classe");
+        List<KitDefinition> eligible = this.kitManager.getKitDefinitions().stream()
+                .filter(Predicate.not(this.kitManager::isDisabled))
+                .toList();
 
-        // Treat "random" and "aleatorio" the same way when used as the label.
-        boolean isRandomLabel = label.equals("random") || label.equals("aleatorio");
+        // Base commands: /kit, /class, /classe
+        boolean direct = label.equals("kit") || label.equals("class") || label.equals("classe");
 
-        // Treat "random" and "aleatorio" the same way when used as an argument.
-        boolean argsContainRandom = args.contains("random") || args.contains("aleatorio");
+        // Random aliases: "random", "aleatorio", "aleatório" as label or argument.
+        boolean randomLabel = label.equals("random")
+                || label.equals("aleatorio")
+                || label.equals("aleatório");
+        boolean argsContainRandom = args.contains("random")
+                || args.contains("aleatorio")
+                || args.contains("aleatório");
 
         KitDefinition kit;
-        if ((isBaseLabel && argsContainRandom) || isRandomLabel) {
-            List<KitDefinition> eligible = this.kitManager.getKitDefinitions().stream()
-                    .filter(Predicate.not(this.kitManager::isDisabled))
-                    .toList();
+        if ((direct && argsContainRandom) || randomLabel) {
             kit = eligible.get(new Random().nextInt(eligible.size()));
-        } else if (isBaseLabel) {
-            kit = this.kitManager.getKitDefinition(args.get(0));
+        } else if (direct) {
+            if (args.isEmpty()) {
+                sender.sendMessage(C.B + "Available Classes");
+                sender.sendMessage(
+                        C.info(C.PURPLE) +
+                                eligible.stream().map(KitDefinition::getName).collect(Collectors.joining(", "))
+                );
+                return true;
+            } else {
+                kit = this.kitManager.getKitDefinition(args.get(0));
+            }
         } else {
             kit = this.kitManager.getKitDefinition(label);
         }
@@ -63,5 +76,7 @@ public class KitCommand extends EasyCommand {
 
         return false;
     }
+
+
 
 }

@@ -204,7 +204,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onKitSelected(KitSelectedEvent event) {
         if (event.isRespawn()) {
-            this.game.respawn(event.getPlayer(), false);
+            this.game.respawn(event.getPlayer(), event.getPlayer().getHealth() != event.getPlayer().getMaxHealth());
         }
     }
 
@@ -272,6 +272,7 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
                 event.getCause().setCancelled(true);
             }
 
+            event.getPlayer().sendMessage(C.warn(C.RED) + "Woah! You can't go in the enemy spawn");
             this.game.respawn(event.getPlayer(), true);
         }
     }

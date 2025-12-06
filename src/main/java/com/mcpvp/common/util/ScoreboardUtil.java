@@ -1,6 +1,7 @@
 package com.mcpvp.common.util;
 
 import com.mcpvp.common.chat.C;
+import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -114,7 +115,9 @@ public class ScoreboardUtil {
      */
     public static void resetChanged(Scoreboard scoreboard, List<String> scores) {
         for (String entry : scoreboard.getEntries()) {
-            if (!scores.contains(entry)) {
+            // The scoreboard entries also contain player names for under-name displays
+            // So if it resolves to a player, avoid resetting it
+            if (Bukkit.getPlayer(entry) == null && !scores.contains(entry)) {
                 scoreboard.resetScores(entry);
             }
         }

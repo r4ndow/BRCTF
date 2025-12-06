@@ -16,5 +16,5 @@ server
 
 # Repomix
 repomix-output.xml
-.repomixignore
-custom-repomix.xml
+/.repomixignore
+/custom-repomix.xml

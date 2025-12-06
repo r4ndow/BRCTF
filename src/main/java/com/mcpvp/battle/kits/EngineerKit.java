@@ -49,6 +49,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.NEAR_PLAYER;
+import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.NEAR_SPAWN;
 
 public class EngineerKit extends BattleKit {
 
@@ -83,7 +84,7 @@ public class EngineerKit extends BattleKit {
                 .unbreakable())
             .addFood(4)
             .add(new GrenadeLauncher())
-            .add(new HealingAuraPlacer())
+            .add(new HealingAura())
             .add(new SpeedBeaconPlacer())
             .addCompass(8)
             .build();
@@ -122,6 +123,11 @@ public class EngineerKit extends BattleKit {
             if (this.lastGrenade != null && !this.lastGrenade.isDead()) {
                 this.lastGrenade.setFuseTicks(0);
             }
+        }
+
+        @Override
+        protected boolean shouldTrigger(PlayerInteractEvent event) {
+            return this.lastGrenade == null || this.lastGrenade.isDead();
         }
 
         public void launchGrenade(PlayerInteractEvent event) {
@@ -243,7 +249,7 @@ public class EngineerKit extends BattleKit {
                 .singleEventOnly()
                 .onHitEvent(projectileHitEvent -> {
                     Block block = projectileHitEvent.getEntity().getLocation().getBlock().getRelative(BlockFace.DOWN);
-                    SpeedBeacon speedBeacon = new SpeedBeacon(this);
+                    SpeedBeacon speedBeacon = new SpeedBeacon();
                     if (!EngineerKit.this.placeStructure(speedBeacon, block)) {
                         this.restore();
                     }
@@ -269,19 +275,17 @@ public class EngineerKit extends BattleKit {
             PotionEffectType.SPEED, SPEED_TIME.ticks(), SPEED_TIER - 1
         );
 
-        private final KitItem item;
         private ArmorStand armorStand;
         private Item glassPane;
 
-        public SpeedBeacon(KitItem item) {
+        public SpeedBeacon() {
             super(EngineerKit.this.getBattle().getStructureManager(), EngineerKit.this.getPlayer());
-            this.item = item;
             this.removeAfter(DEPLOY_TIME);
         }
 
         @Override
         protected void build(Block center, StructureBuilder builder) {
-            builder.ignoreRestriction(NEAR_PLAYER);
+            builder.ignoreRestrictions(NEAR_PLAYER, NEAR_SPAWN);
             builder.setBlock(center, Material.BEACON);
 
             Stream.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
@@ -380,26 +384,20 @@ public class EngineerKit extends BattleKit {
         }
 
         @Override
-        public void shutdown() {
-            super.shutdown();
-            this.item.restore();
-        }
-
-        @Override
         public Plugin getPlugin() {
             return EngineerKit.this.getPlugin();
         }
 
     }
 
-    class HealingAuraPlacer extends CooldownItem {
+    class HealingAura extends CooldownItem {
 
         private static final Duration ITEM_COOLDOWN = Duration.seconds(8);
         private static final Duration HEALING_DURATION = Duration.seconds(5);
         private static final int HEAL_RADIUS = 4;
         private static final int HEALING_REGEN_TIER = 3;
 
-        public HealingAuraPlacer() {
+        public HealingAura() {
             super(
                 EngineerKit.this,
                 ItemBuilder.of(Material.CAKE).name("Healing Aura").build(),
