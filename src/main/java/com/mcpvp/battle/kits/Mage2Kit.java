@@ -283,7 +283,7 @@ public class Mage2Kit extends BattleKit {
 
     class TeleportSpell extends CooldownItem {
 
-        private static final Duration TELEPORT_COOLDOWN = Duration.milliseconds(0);
+        private static final Duration TELEPORT_COOLDOWN = Duration.milliseconds(10);
         private static final float HORIZONTAL_PITCH_THRESHOLD = 15f;
         private static final double RAY_STEP = 0.25;
         private static final double SLAB_Y_OFFSET = 0.5;
