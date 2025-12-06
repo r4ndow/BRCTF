@@ -85,7 +85,7 @@ public class VampireKit extends BattleKit {
                     VampireKit.this,
                     ItemBuilder.of(Material.GHAST_TEAR)
                             .name("Drain Life")
-                            .desc("Hit an enemy to deal true damage and gain buffs.", 40)
+                            .desc(C.GRAY +"Hit an enemy to deal true damage and gain buffs.", 40)
                             .build(),
                     COOLDOWN
             );

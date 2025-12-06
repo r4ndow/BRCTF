@@ -335,7 +335,7 @@ public class ThiefKit extends BattleKit {
                     ThiefKit.this,
                     ItemBuilder.of(Material.STICK)
                             .name("Steal")
-                            .desc("Hit an enemy to steal their held item.", 40)
+                            .desc(C.GRAY + "Hit an enemy to steal their held item.", 40)
                             .build(),
                     STEAL_COOLDOWN
             );
@@ -413,7 +413,7 @@ public class ThiefKit extends BattleKit {
                     ThiefKit.this,
                     ItemBuilder.of(Material.FISHING_ROD)
                             .name("Grappling Hook")
-                            .desc("Right-click while your hook is attached to grapple towards it.", 40)
+                            .desc(C.GRAY + "Right-click while your hook is attached to grapple towards it.", 40)
                             .flag(ItemFlag.HIDE_UNBREAKABLE)
                             .build(),
                     GRAPPLE_COOLDOWN
