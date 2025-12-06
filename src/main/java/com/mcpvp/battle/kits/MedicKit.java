@@ -123,6 +123,7 @@ public class MedicKit extends BattleKit {
         if (event.isInterval(Duration.seconds(0.5))) {
             this.getTeammates().stream()
                 .filter(teammate -> teammate.getLocation().distance(this.getPlayer().getLocation()) <= 10)
+                .filter(teammate -> teammate != this.getPlayer())
                 .forEach(teammate -> {
                     Color color;
                     if (teammate.hasPotionEffect(PotionEffectType.REGENERATION)) {
@@ -274,18 +275,13 @@ public class MedicKit extends BattleKit {
             if (MedicKit.this.getGame().getTeamManager().isSameTeam(hit, shooter)) {
                 event.setCancelled(true);
             } else {
-                this.placeWeb(hit.getLocation());
+                this.placeWeb(event.getDamager().getLocation());
             }
         }
 
         public void placeWeb(Location location) {
-            // TODO by truncating this to the block's location, it might lose accuracy
+            // By truncating this to the block's location, it might lose accuracy
             Block target = location.getBlock();
-
-            ParticlePacket.colored(Color.RED)
-                .at(location)
-                .count(5)
-                .send();
 
             Optional<Block> nearestAir = BlockUtil.getBlocksInRadius(target, 2).stream()
                 .filter(b -> {

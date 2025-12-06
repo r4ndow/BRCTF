@@ -144,10 +144,11 @@ public class DwarfKit extends BattleKit {
 
         this.getPlayer().setVelocity(launch);
 
-        DwarfKit.this.getPlayer().getWorld().playSound(DwarfKit.this.getPlayer().getEyeLocation(),
-                Sound.IRONGOLEM_THROW,
-                1.0f,
-                0.7f
+        DwarfKit.this.getPlayer().getWorld().playSound(
+            DwarfKit.this.getPlayer().getEyeLocation(),
+            Sound.IRONGOLEM_THROW,
+            1.0f,
+            0.7f
         );
 
         // Guesstimate the ticks it will take to reach the apex of the velocity

@@ -1,5 +1,15 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.jvm.tasks.Jar
+import org.yaml.snakeyaml.Yaml
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.yaml:snakeyaml:2.5")
+    }
+}
 
 plugins {
     `java-library`
@@ -35,7 +45,10 @@ dependencies {
     implementation("com.github.zafarkhaja:java-semver:0.9.0")
 }
 
-val pluginVersion = "1.0"
+// Read the version straight from the plugin.yml
+val yaml: Map<String, Any> = Yaml().load(file("src/main/resources/plugin.yml").inputStream())
+val pluginVersion = yaml["version"] as String
+println("Detected plugin version $pluginVersion from plugin.yml")
 
 group = "com.mcctf"
 version = pluginVersion
@@ -54,7 +67,14 @@ tasks.named<ShadowJar>("shadowJar") {
     archiveClassifier.set("") // remove the -all suffix
     archiveBaseName.set("brctf")
     archiveVersion.set(pluginVersion)
-    destinationDirectory.set(file("D:/ctfserver/plugins"))
+    //destinationDirectory.set(file("D:/ctfserver/plugins"))
+
+    doLast {
+        copy {
+            from(archiveFile)
+            into("D:/ctfserver/plugins")
+        }
+    }
 }
 
 tasks.withType<JavaCompile> {

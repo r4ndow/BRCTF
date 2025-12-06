@@ -18,6 +18,7 @@ public class CapturesCommand extends EasyCommandGroup {
         super(battle.getPlugin(), "captures");
         this.battle = battle;
         this.addCommand(new SetCommand());
+        this.addCommand(new RequireCommand());
     }
 
     public List<String> matchTeam() {
@@ -42,6 +43,31 @@ public class CapturesCommand extends EasyCommandGroup {
                 bt.setCaptures(Integer.parseInt(args.get(1)));
                 sender.sendMessage(C.cmdPass() + "Set captures for " + bt.getColoredName() + C.GRAY + " to " + C.hl(args.get(1)));
             });
+            return true;
+        }
+
+        @Override
+        public List<String> getTabCompletions(CommandSender sender, String alias, List<String> args) {
+            return CapturesCommand.this.matchTeam();
+        }
+
+    }
+
+    public class RequireCommand extends EasyCommand {
+
+        public RequireCommand() {
+            super("require");
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, String label, List<String> args) {
+            if (args.isEmpty()) {
+                return false;
+            }
+
+            CapturesCommand.this.battle.getGame().getConfig().setCaps(Integer.parseInt(args.get(0)));
+            sender.sendMessage(C.cmdPass() + "Set captures required to " + C.hl(args.get(0)));
+
             return true;
         }
 

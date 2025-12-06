@@ -13,6 +13,7 @@ import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.KitAttemptSelectEvent;
 import com.mcpvp.common.kit.KitDefinition;
 import com.mcpvp.common.movement.SpongeUtil;
+import com.mcpvp.common.util.PlayerUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -152,6 +153,11 @@ public class BattleGameListener implements EasyListener {
         if (selected == null) {
             this.game.getBattle().getKitManager().setSelected(event.getPlayer(), BattleKitType.HEAVY, true);
         }
+    }
+
+    @EventHandler
+    public void resetEffects(PlayerParticipateEvent event) {
+        PlayerUtil.reset(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -8,6 +8,7 @@ import com.mcpvp.battle.kits.MedicKit;
 import com.mcpvp.common.ParticlePacket;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.event.EasyListener;
+import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.task.EasyTask;
 import com.mcpvp.common.time.Duration;
@@ -56,6 +57,7 @@ public class NecroRevivalTagManager implements EasyListener {
 
             if (expiration.isExpired()) {
                 player.sendMessage(C.info(C.AQUA) + "Your revival tag has expired!");
+                this.tagged.remove(player);
                 holder.cancel();
             }
         }).runTaskTimer(this.getPlugin(), 0, 1);
@@ -109,15 +111,41 @@ public class NecroRevivalTagManager implements EasyListener {
         }
     }
 
+    @EventHandler
+    public void onTick(TickEvent event) {
+        this.tagged.forEach(taggedPlayer -> {
+            if (!taggedPlayer.isOnline()) {
+                return;
+            }
+
+            List.of(Material.GOLD_BLOCK, Material.SLIME_BLOCK).forEach(material -> {
+                ParticlePacket.blockDust(material)
+                    .at(taggedPlayer.getLocation())
+                    .count(3)
+                    .setOffY(1)
+                    .send();
+            });
+        });
+
+    }
+
     public void revive(GameDeathEvent death) {
         Player player = death.getPlayer();
 
-        // Return the player to the location they died
-        player.setHealth(player.getMaxHealth());
-        player.teleport(death.getLocation());
+        // Because the player has died, we need to wait a moment to execute this logic
+        // Otherwise, strange behavior happens
+        EasyTask.of(() -> {
+            if (!player.isOnline()) {
+                return;
+            }
 
-        // "Zombify" the kit
-        this.zombify(player);
+            // Return the player to the location they died
+            player.setHealth(player.getMaxHealth());
+            player.teleport(death.getLocation());
+
+            // "Zombify" the kit
+            this.zombify(player);
+        }).runTaskLater(this.getPlugin(), 0);
 
         // Effects
         ParticlePacket.of(EnumParticle.SMOKE_LARGE).at(player.getLocation()).spread(1.5).count(15).send();
