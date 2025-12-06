@@ -124,6 +124,11 @@ public class EngineerKit extends BattleKit {
             }
         }
 
+        @Override
+        protected boolean shouldTrigger(PlayerInteractEvent event) {
+            return this.lastGrenade == null || this.lastGrenade.isDead();
+        }
+
         public void launchGrenade(PlayerInteractEvent event) {
             event.setCancelled(true);
 
