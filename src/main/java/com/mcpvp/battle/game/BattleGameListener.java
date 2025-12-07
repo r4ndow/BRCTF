@@ -12,6 +12,7 @@ import com.mcpvp.common.event.EasyListener;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.KitAttemptSelectEvent;
 import com.mcpvp.common.kit.KitDefinition;
+import com.mcpvp.common.kit.KitSelectedEvent;
 import com.mcpvp.common.movement.SpongeUtil;
 import com.mcpvp.common.util.PlayerUtil;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import lombok.extern.log4j.Log4j2;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
@@ -183,6 +185,11 @@ public class BattleGameListener implements EasyListener {
                 event.deny("Only %s players can use %s".formatted(limit.get(), event.getKitDefinition().getName()));
             }
         }
+    }
+
+    @EventHandler
+    public void onKitSelected(KitSelectedEvent event) {
+        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.CLICK, 1f, 1f);
     }
 
     @EventHandler
