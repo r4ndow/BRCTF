@@ -73,6 +73,16 @@ public abstract class Structure extends EasyLifecycle implements EasyListener {
     }
 
     /**
+     * A rarely used case for adding a block that should be restored without using the StructureBuilder.
+     * No violations will be checked.
+     *
+     * @param block The block to add.
+     */
+    protected void addBlockManually(StructureBlock block) {
+        this.blocks.add(block);
+    }
+
+    /**
      * Remove the structure, restoring any changed blocks back to their original form.
      */
     public void remove() {

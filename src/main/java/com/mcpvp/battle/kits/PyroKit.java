@@ -12,10 +12,11 @@ import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.item.ItemUtil;
 import com.mcpvp.common.kit.KitItem;
+import com.mcpvp.common.structure.StructureBlock;
+import com.mcpvp.common.time.Expiration;
 import com.mcpvp.common.util.nms.ActionbarUtil;
 import com.mcpvp.common.structure.Structure;
 import com.mcpvp.common.structure.StructureBuilder;
-import com.mcpvp.common.structure.StructureManager;
 import com.mcpvp.common.time.Duration;
 import com.mcpvp.common.util.EntityUtil;
 import net.minecraft.server.v1_8_R3.EnumParticle;
@@ -24,11 +25,14 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -50,6 +54,7 @@ public class PyroKit extends BattleKit {
     private static final Duration FS_RESTORE = Duration.seconds(4);
     private static final int FS_USAGE = 3;
 
+    private final Expiration FIRE_PLACE_EXPIRATION = new Expiration();
     private KitItem axe;
     private KitItem flint;
     private boolean frenzy;
@@ -91,7 +96,6 @@ public class PyroKit extends BattleKit {
                 .name("Pyro Flint and Steel")
                 .build()
         );
-        this.flint.onInteract(this::onFlint);
 
         return new KitInventoryBuilder()
             .add(this.axe)
@@ -146,6 +150,45 @@ public class PyroKit extends BattleKit {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlaceFire(BlockPlaceEvent event) {
+        if (event.getPlayer() != this.getPlayer()) {
+            return;
+        }
+
+        if (event.getBlockPlaced().getType() != Material.FIRE) {
+            return;
+        }
+
+        if (!this.flint.isItem(event.getItemInHand())) {
+            return;
+        }
+
+        // Placing fire causes two BlockPlaceEvents to be triggered, not exactly sure why
+        // But it's important to allow both while only placing one structure
+        if (!this.FIRE_PLACE_EXPIRATION.isExpired()) {
+            event.setCancelled(false);
+            return;
+        }
+
+        event.setCancelled(false);
+
+        final float segment = 1f / FS_USAGE;
+        float current;
+        if ((current = ItemUtil.getItemDurability(this.flint.getItem())) >= segment) {
+            if (this.placeStructure(new PyroFire(event.getBlockReplacedState()), event.getBlockPlaced())) {
+                // Enough durability to use it, decrement
+                this.flint.modify(ib -> ib.durabilityPercent(current - segment));
+                event.setCancelled(false);
+                this.FIRE_PLACE_EXPIRATION.expireIn(Duration.ticks(5));
+            }
+        } else {
+            // No durability!
+            event.setCancelled(true);
+            ActionbarUtil.send(this.getPlayer(), C.warn(C.RED) + "Your flint and steel is on cooldown!");
+        }
+    }
+
     @EventHandler
     public void onTick(TickEvent event) {
         float durability = ItemUtil.getItemDurability(this.flint.getItem());
@@ -163,28 +206,6 @@ public class PyroKit extends BattleKit {
         }
 
         this.enterFrenzy();
-    }
-
-    private void onFlint(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null || event.getBlockFace() == null || !EventUtil.isRightClick(event)) {
-            return;
-        }
-
-        final float segment = 1f / FS_USAGE;
-        float current;
-        if ((current = ItemUtil.getItemDurability(this.flint.getItem())) >= segment) {
-            // Enough durability to use it, decrement
-            this.flint.modify(ib -> ib.durabilityPercent(current - segment));
-
-            Block block = event.getClickedBlock().getRelative(event.getBlockFace());
-            if (block.isEmpty()) {
-                this.placeStructure(new PyroFire(this.getBattle().getStructureManager()), block);
-            }
-        } else {
-            // No durability!
-            event.setCancelled(true);
-            ActionbarUtil.send(this.getPlayer(), C.warn(C.RED) + "Your flint and steel is on cooldown!");
-        }
     }
 
     private void explode(Arrow arrow) {
@@ -245,10 +266,12 @@ public class PyroKit extends BattleKit {
 
     public class PyroFire extends Structure {
 
+        private final BlockState replaced;
         private Block center;
 
-        public PyroFire(StructureManager manager) {
-            super(manager, PyroKit.this.getPlayer());
+        public PyroFire(BlockState replaced) {
+            super(PyroKit.this.getBattle().getStructureManager(), PyroKit.this.getPlayer());
+            this.replaced = replaced;
             this.removeAfter(FIRE_DELAY);
         }
 
@@ -260,7 +283,8 @@ public class PyroKit extends BattleKit {
                 BattleMatchStructureRestrictions.NEAR_PLAYER,
                 BattleMatchStructureRestrictions.NEAR_RESTRICTED
             );
-            builder.setBlock(center, Material.FIRE);
+            builder.checkBlock(center);
+            this.addBlockManually(new StructureBlock(center, this.replaced));
             this.center = center;
         }
 

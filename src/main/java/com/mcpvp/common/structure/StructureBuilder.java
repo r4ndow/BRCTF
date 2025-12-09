@@ -48,10 +48,7 @@ public class StructureBuilder {
         }
 
         // Register any violations
-        List<StructureViolation> violations = this.manager.check(block).stream().filter(violation -> {
-            return !this.ignoredRestrictions.contains(violation.getKey());
-        }).toList();
-        this.violations.addAll(violations);
+        this.checkBlock(block);
 
         // Queue the action anyway
         // The violations might be ignored
@@ -69,12 +66,15 @@ public class StructureBuilder {
     }
 
     /**
-     * Sets a restriction to be ignored when setting blocks.
+     * Check a block, considering all ignored restrictions.
      *
-     * @param key The key of the restriction, e.g. "IN_SPAWN"
+     * @param block The block to check.
      */
-    public void ignoreRestriction(String key) {
-        this.ignoredRestrictions.add(key);
+    public void checkBlock(Block block) {
+        List<StructureViolation> violations = this.manager.check(block).stream().filter(violation -> {
+            return !this.ignoredRestrictions.contains(violation.getKey());
+        }).toList();
+        this.violations.addAll(violations);
     }
 
     /**
