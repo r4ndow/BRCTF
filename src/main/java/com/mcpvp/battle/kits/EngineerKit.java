@@ -1,6 +1,7 @@
 package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.hud.impl.FoodIndicator;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.item.CooldownItem;
 import com.mcpvp.common.InteractiveProjectile;
@@ -58,6 +59,8 @@ public class EngineerKit extends BattleKit {
 
     public EngineerKit(BattlePlugin plugin, Player player) {
         super(plugin, player);
+
+        this.attach(new FoodIndicator(plugin, player, plugin.getBattle().getGame()));
     }
 
     @Override
