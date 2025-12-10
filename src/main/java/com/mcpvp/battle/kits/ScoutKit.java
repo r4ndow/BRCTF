@@ -2,6 +2,7 @@ package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
 import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
+import com.mcpvp.battle.hud.impl.ScoutSwapIndicator;
 import com.mcpvp.battle.kit.BattleKit;
 import com.mcpvp.battle.kit.item.CooldownItem;
 import com.mcpvp.battle.kits.global.NecroRevivalTagManager;
@@ -52,6 +53,8 @@ public class ScoutKit extends BattleKit {
         super(plugin, player);
         this.deathTagManager = this.getBattle().getKitManager().getScoutDeathTagManager();
         this.revivalTagManager = this.getBattle().getKitManager().getNecroRevivalTagManager();
+
+        this.attach(new ScoutSwapIndicator(plugin, player, plugin.getBattle().getGame(), COOLDOWN_MAP));
 
         this.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 0));
     }
@@ -171,7 +174,13 @@ public class ScoutKit extends BattleKit {
 
     private void sendSwapNotification(Player swapped) {
         int distance = (int) swapped.getLocation().distance(this.getPlayer().getLocation());
-        this.getPlayer().sendMessage("You swapped with " + C.hl(swapped.getName()) + " from " + distance + " blocks");
+        this.getPlayer().sendMessage(
+            "%sYou swapped with %s from %s blocks".formatted(
+                C.warn(C.AQUA) + C.GRAY,
+                this.getGame().getTeamManager().getTeam(swapped).getColor().getChat() + swapped.getName() + C.GRAY,
+                C.hl(distance)
+            )
+        );
         swapped.sendMessage(C.hl(this.getPlayer().getName()) + " swapped with you from " + distance + " blocks");
 
         String nearby = this.getGame().findClosestCallout(swapped.getLocation()).map(callout ->
@@ -233,10 +242,9 @@ public class ScoutKit extends BattleKit {
         if (tagged) {
             this.getPlayer().sendMessage(C.info(C.GOLD) + "You have death tagged " + C.hl(player.getName()));
 
-            this.getGame().getTeamManager().getTeams().stream()
-                .filter(bt -> bt.getFlag().getCarrier() == player)
-                .findAny()
-                .ifPresent(this::sendCarrierDeathTagMessages);
+            if (this.getGame().getTeamManager().getTeams().stream().anyMatch(bt -> bt.getFlag().getCarrier() == player)) {
+                this.sendCarrierDeathTagMessages(this.getGame().getTeamManager().getTeam(player));
+            }
         } else {
             this.getPlayer().sendMessage(C.warn(C.GOLD) + C.hl(player.getName()) + " is already death tagged!");
         }
@@ -244,17 +252,17 @@ public class ScoutKit extends BattleKit {
         return tagged;
     }
 
-    private void sendCarrierDeathTagMessages(BattleTeam team) {
-        team.getPlayers().forEach(enemy ->
-            enemy.sendMessage(C.warn(C.GOLD) + "You flag carrier was death tagged!")
-        );
-
-        this.getTeammates().forEach(teammate ->
-            teammate.sendMessage(C.warn(C.GOLD) + "The enemy flag carrier was death tagged!")
-        );
+    private void sendCarrierDeathTagMessages(BattleTeam flagCarrierTeam) {
+        this.getGame().getTeamManager().getTeams().forEach(bt -> {
+            if (bt == flagCarrierTeam) {
+                bt.getPlayers().forEach(player -> player.sendMessage(C.warn(C.GOLD) + "Your flag carrier was death tagged!"));
+            } else if (bt != null) {
+                bt.getPlayers().forEach(player -> player.sendMessage(C.warn(C.GOLD) + "The enemy flag carrier was death tagged!"));
+            }
+        });
 
         this.getGame().getSpectators().forEach(spectator ->
-            spectator.sendMessage(C.warn(C.GOLD) + "The " + team.getColoredName() + " flag carrier was death tagged!")
+            spectator.sendMessage(C.warn(C.GOLD) + "The " + flagCarrierTeam.getColoredName() + " flag carrier was death tagged!")
         );
     }
 
