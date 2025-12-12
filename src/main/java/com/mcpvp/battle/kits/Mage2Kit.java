@@ -39,19 +39,13 @@ import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.*;
 
 public class Mage2Kit extends BattleKit {
 
-    public static final int DAMAGE_ARROW_DIST = 15;
-    public static final int DAMAGE_ARROW_DIST_SQUARED = (int) Math.pow(DAMAGE_ARROW_DIST, 2);
-    // public static final int MAX_SPELL_PROJECTILE_DIST = 15;
-    // public static final int MAX_SPELL_PROJECTILE_DIST_SQUARED = (int) Math.pow(MAX_SPELL_PROJECTILE_DIST, 2);
-    public static final int DAMAGE_ARROW_DAMAGE = 6; // 3 hearts
-    public static final int FIRE_IMPACT_DAMAGE = 10;
-    public static final Duration FIRE_DURATION = Duration.seconds(2);
     public static final int LIGHTNING_DAMAGE = 2;
     public static final double LIGHTNING_DIST = 3;
-    public static final Duration FREEZE_DURATION = Duration.seconds(3);
-    public static final double FIRE_RANGE = 3;
+    public static final Duration FREEZE_DURATION = Duration.seconds(2);
     public static final double FREEZE_RANGE = 3;
     public static final int TELEPORT_DISTANCE = 7;
+
+    private KitItem sword;
 
     public Mage2Kit(BattlePlugin plugin, Player player) {
         super(plugin, player);
@@ -84,6 +78,13 @@ public class Mage2Kit extends BattleKit {
 
     @Override
     public Map<Integer, KitItem> createItems() {
+        this.sword = new KitItem(
+                this,
+                ItemBuilder.of(Material.IRON_SWORD)
+                        .name("Mage Sword")
+                        .unbreakable()
+                        .build()
+        );
         // Hotbar order:
         // 1) Iron Sword
         // 2) Food
@@ -92,8 +93,8 @@ public class Mage2Kit extends BattleKit {
         // 5) Heal Spell
         // 6) Teleport Spell
         return new KitInventoryBuilder()
-                .add(ItemBuilder.of(Material.IRON_SWORD).enchant(Enchantment.DAMAGE_ALL, 1))
-                .addFood(3)
+                .add(this.sword)
+                .addFood(2)
                 .add(new LightningSpell())
                 .add(new FreezeSpell())
                 .add(new HealSpell())
@@ -283,7 +284,7 @@ public class Mage2Kit extends BattleKit {
 
     class TeleportSpell extends CooldownItem {
 
-        private static final Duration TELEPORT_COOLDOWN = Duration.milliseconds(10);
+        private static final Duration TELEPORT_COOLDOWN = Duration.seconds(10);
         private static final float HORIZONTAL_PITCH_THRESHOLD = 15f;
         private static final double RAY_STEP = 0.25;
         private static final double SLAB_Y_OFFSET = 0.5;
