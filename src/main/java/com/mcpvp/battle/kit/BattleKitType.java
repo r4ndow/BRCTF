@@ -32,6 +32,8 @@ public enum BattleKitType implements KitDefinition {
     MAGE2("Mage2", Mage2Kit::new),
     NINJA2("Ninja2", Ninja2Kit::new),
     MAGE3("Mage3", Mage3Kit::new),
+    BATTLEMAGE("Battlemage", BattlemageKit::new),
+    TRICKSTER("Trickster", TricksterKit::new),
     ;
 
     @Getter
