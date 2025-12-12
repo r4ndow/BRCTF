@@ -1,12 +1,15 @@
 package com.mcpvp.battle.kits;
 
 import com.mcpvp.battle.BattlePlugin;
+import com.mcpvp.battle.event.PlayerKilledByPlayerEvent;
 import com.mcpvp.battle.kit.BattleKit;
+import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.InteractiveProjectile;
 import com.mcpvp.common.chat.C;
 import com.mcpvp.common.item.ItemBuilder;
 import com.mcpvp.common.kit.KitItem;
-import org.bukkit.Location;
+import com.mcpvp.common.util.nms.ActionbarUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -37,38 +40,38 @@ public class ArcherKit extends BattleKit {
     @Override
     public ItemStack[] createArmor() {
         return new ItemStack[]{
-            new ItemStack(Material.CHAINMAIL_BOOTS),
-            new ItemStack(Material.CHAINMAIL_LEGGINGS),
-            new ItemStack(Material.CHAINMAIL_CHESTPLATE),
-            new ItemStack(Material.CHAINMAIL_HELMET)
+                new ItemStack(Material.CHAINMAIL_BOOTS),
+                new ItemStack(Material.CHAINMAIL_LEGGINGS),
+                new ItemStack(Material.CHAINMAIL_CHESTPLATE),
+                new ItemStack(Material.CHAINMAIL_HELMET)
         };
     }
 
     @Override
     public Map<Integer, KitItem> createItems() {
         return new KitInventoryBuilder()
-            .add(ItemBuilder.of(Material.STONE_SWORD)
-                .name("Archer Sword")
-                .unbreakable())
-            .addFood(4)
-            .add(ItemBuilder.of(Material.BOW)
-                .name("Archer Bow")
-                .enchant(Enchantment.ARROW_KNOCKBACK, 1)
-                .unbreakable())
-            .add(this.arrows1 = new KitItem(
-                this,
-                ItemBuilder.of(Material.ARROW)
-                    .name("Archer Arrows #1")
-                    .amount(64)
-                    .build()))
-            .add(this.arrows2 = new KitItem(
-                this,
-                ItemBuilder.of(Material.ARROW)
-                    .name("Archer Arrows #2")
-                    .amount(64)
-                    .build()))
-            .addCompass(8)
-            .build();
+                .add(ItemBuilder.of(Material.STONE_SWORD)
+                        .name("Archer Sword")
+                        .unbreakable())
+                .addFood(4)
+                .add(ItemBuilder.of(Material.BOW)
+                        .name("Archer Bow")
+                        .enchant(Enchantment.ARROW_KNOCKBACK, 1)
+                        .unbreakable())
+                .add(this.arrows1 = new KitItem(
+                        this,
+                        ItemBuilder.of(Material.ARROW)
+                                .name("Archer Arrows #1")
+                                .amount(64)
+                                .build()))
+                .add(this.arrows2 = new KitItem(
+                        this,
+                        ItemBuilder.of(Material.ARROW)
+                                .name("Archer Arrows #2")
+                                .amount(64)
+                                .build()))
+                .addCompass(8)
+                .build();
     }
 
     @EventHandler
@@ -78,12 +81,11 @@ public class ArcherKit extends BattleKit {
         }
 
         this.attach(new InteractiveProjectile(this.getPlugin(), (Projectile) event.getProjectile())
-            .singleEventOnly()
-            .onDamageEvent(this::onHit)
+                .singleEventOnly()
+                .onDamageEvent(this::onHit)
         );
         this.attach(event.getProjectile());
 
-        // Keep the arrow stacks in sync
         List.of(this.arrows1, this.arrows2).forEach(kitItem -> {
             kitItem.refresh(this.getPlayer().getInventory());
         });
@@ -96,28 +98,43 @@ public class ArcherKit extends BattleKit {
         }
     }
 
+    @EventHandler
+    public void onKillFlagCarrier(PlayerKilledByPlayerEvent event) {
+        if (event.getKiller() != this.getPlayer()) {
+            return;
+        }
+
+        BattleTeam team = this.getBattle().getGame().getTeamManager().getTeam(this.getPlayer());
+        if (team == null || team.getFlag() == null) {
+            return;
+        }
+
+        Player carrier = team.getFlag().getCarrier();
+        if (carrier != event.getKilled()) {
+            return;
+        }
+
+        ActionbarUtil.send(this.getPlayer(), C.DARK_PURPLE + "FLAG CARRIER KILL!" + C.R);
+        Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> ActionbarUtil.send(this.getPlayer(), ""), 40L);
+    }
+
     private void onHit(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) {
             return;
         }
 
-        if (!(event.getDamager() instanceof Arrow)) {
+        if (!(event.getDamager() instanceof Arrow arrow)) {
             return;
         }
 
-        Arrow arrow = (Arrow) event.getDamager();
-
-        if (!(arrow.getShooter() instanceof Player)) {
+        if (!(arrow.getShooter() instanceof Player shooter)) {
             return;
         }
 
-        Player shooter = (Player) arrow.getShooter();
-
-        if (!(event.getEntity() instanceof LivingEntity)) {
+        if (!(event.getEntity() instanceof LivingEntity hit)) {
             return;
         }
 
-        LivingEntity hit = (LivingEntity) event.getEntity();
         int distance = (int) hit.getLocation().distance(shooter.getLocation());
 
         if (hit instanceof ArmorStand) {
@@ -128,40 +145,10 @@ public class ArcherKit extends BattleKit {
             return;
         }
 
-        if (hit instanceof Player) {
-            Player hitPlayer = (Player) hit;
-
-            if (!this.isEnemy(hitPlayer)) {
-                return;
-            }
-
-            boolean instaKill = false;
-
-            BattleKit targetKit = this.getBattle().getKitManager().get(hitPlayer);
-            if (targetKit instanceof ArcherKit || targetKit instanceof SoldierKit) {
-                instaKill = true;
-            }
-
-            if (!instaKill && this.getTeam() != null && this.getTeam().getFlag() != null) {
-                Location flagLocation = this.getTeam().getFlag().getLocation();
-                if (flagLocation != null && hitPlayer.getLocation().distance(flagLocation) <= 10) {
-                    instaKill = true;
-                }
-            }
-
-            if (!instaKill) {
-                return;
-            }
-        }
-
         event.setDamage(1000);
 
-        if (hit instanceof Player) {
-            Player hitPlayer = (Player) hit;
-            hitPlayer.sendMessage(C.info(C.GOLD) + "You were sniped by " + C.hl(shooter.getName()) + " from " + distance + " blocks!");
-            shooter.sendMessage(C.info(C.GOLD) + "You sniped " + C.hl(hitPlayer.getName()) + " from " + distance + " blocks!");
-        }
+        hit.sendMessage(C.info(C.GOLD) + "You were sniped by " + C.highlight(shooter.getName()) + " from " + distance + " blocks!");
+        shooter.sendMessage(C.info(C.GOLD) + "You sniped " + C.highlight(hit.getName()) + " from " + distance + " blocks!");
     }
-
 
 }
