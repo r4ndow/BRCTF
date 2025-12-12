@@ -40,8 +40,8 @@ public class ThiefKit extends BattleKit {
     private static final Duration STOLEN_ITEM_DISPLAY_TIME = Duration.seconds(10);
     private static final Duration STOLEN_ITEM_RETURN_TIME = Duration.seconds(7);
     private static final Duration STEAL_COOLDOWN = Duration.seconds(3);
-    private static final Duration GRAPPLE_COOLDOWN = Duration.seconds(15);
-    private static final int SPEED_DURATION_TICKS = 60; // 3 seconds
+    private static final Duration GRAPPLE_COOLDOWN = Duration.seconds(8);
+    private static final int SPEED_DURATION_TICKS = 80; // 4 seconds
 
     private static final Duration VICTIM_STEAL_COOLDOWN = Duration.seconds(15);
     private static final Map<UUID, Expiration> VICTIM_STEAL_PROTECTION = new HashMap<>();
@@ -74,6 +74,7 @@ public class ThiefKit extends BattleKit {
     public ItemStack[] createArmor() {
         return new ItemStack[]{
                 ItemBuilder.of(Material.LEATHER_BOOTS)
+                        .enchant(Enchantment.PROTECTION_FALL, 3)
                         .build(),
                 ItemBuilder.of(Material.LEATHER_LEGGINGS)
                         .color(Color.fromRGB(64, 64, 64)) // #404040
@@ -289,7 +290,7 @@ public class ThiefKit extends BattleKit {
             victim.getInventory().setItem(data.getVictimSlot(), data.getOriginalItem());
             victim.updateInventory();
 
-            victim.playSound(victim.getLocation(), Sound.ITEM_PICKUP, 2.0f, 0.6f);
+            victim.playSound(victim.getLocation(), Sound.ITEM_PICKUP, 1.0f, 0.1f);
             victim.sendMessage(C.info(C.GREEN) + "Your stolen item has been returned!");
         }
 
