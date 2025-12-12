@@ -146,24 +146,27 @@ public class BattleScoreboardManager extends EasyLifecycle {
                 break;
 
             case DURING:
-                // Add scores for the player's team first
                 BattleTeam team = this.battle.getGame().getTeamManager().getTeam(player);
                 if (team != null) {
                     scores.addAll(this.getScoresForTeam(player, team));
                 }
 
-                // Add scores for all other teams
                 this.battle.getGame().getTeamManager().getTeams().forEach(bt -> {
                     if (bt != team) {
                         scores.addAll(this.getScoresForTeam(player, bt));
                     }
                 });
 
-                // Spacer before objective block
-                scores.add("");
+                // Exactly one visually empty line before "Objetivo":
+                // - If the last line is already blank (bottom flag is Home), use that.
+                // - Otherwise (Taken/Dropped), insert a dedicated invisible blank.
+                if (!scores.isEmpty() && !isBlankLine(scores.get(scores.size() - 1))) {
+                    // Use a color-only string different from team blanks
+                    scores.add(ChatColor.WHITE.toString());
+                }
 
                 Role role = this.battle.getRoleManager().getRole(player);
-                String roleColor = C.GREEN; // default if no role
+                String roleColor = C.GREEN;
 
                 if (role == Role.ATTACK) {
                     roleColor = C.YELLOW;
@@ -171,7 +174,6 @@ public class BattleScoreboardManager extends EasyLifecycle {
                     roleColor = C.AQUA;
                 }
 
-                // Objective header value lines
                 scores.add(C.WHITE + C.B + "Objetivo");
                 String objective = this.battle.getRoleManager().computeObjectiveText(player);
                 if (objective != null) {
@@ -179,9 +181,9 @@ public class BattleScoreboardManager extends EasyLifecycle {
                 } else {
                     scores.add(C.GRAY + "Sem função selecionada");
                 }
-
-
                 break;
+
+
 
             case AFTER:
                 // Keep showing stats after the game
@@ -256,7 +258,6 @@ public class BattleScoreboardManager extends EasyLifecycle {
         List<String> scores = new ArrayList<>();
 
         if (sameTeam) {
-            //scores.add(C.B + team.getName() + C.GRAY + C.I + " » Your team");
             scores.add(C.B + team.getName() + C.WHITE + " » Your team");
         } else {
             scores.add(C.B + team.getName());
@@ -265,15 +266,45 @@ public class BattleScoreboardManager extends EasyLifecycle {
         scores.add(" " + team.getColor() + "Captures " + C.R + this.getCaptureProgress(team));
 
         List<String> location = this.getFlagLoc(team);
+        String flagStatus = location.get(0);
 
-        scores.add(" " + team.getColor() + "Flag " + C.R + location.get(0));
-        if (location.size() > 1) {
+        // "Flag <status>" line
+        scores.add(" " + team.getColor() + "Flag " + C.R + flagStatus);
+
+        // Line directly under "Flag ..."
+        if ("Home".equals(flagStatus)) {
+            // One visually empty line under Flag when home (unique per team)
+            scores.add(getHomeBlankLineForTeam(team));
+        } else if (location.size() > 1) {
+            // When stolen/dropped, replace that empty slot with the detail instead
             scores.add(C.GRAY + " " + location.get(1));
         }
 
-
         return scores;
     }
+
+    private String getHomeBlankLineForTeam(BattleTeam team) {
+        ChatColor[] colors = {
+                ChatColor.BLACK, ChatColor.DARK_BLUE, ChatColor.DARK_GREEN,
+                ChatColor.DARK_AQUA, ChatColor.DARK_RED, ChatColor.DARK_PURPLE,
+                ChatColor.GOLD, ChatColor.GRAY, ChatColor.DARK_GRAY,
+                ChatColor.BLUE, ChatColor.GREEN, ChatColor.AQUA,
+                ChatColor.RED, ChatColor.LIGHT_PURPLE
+        };
+
+        int index = Math.abs(team.getId()) % colors.length;
+        return colors[index].toString(); // Color code only → visually empty line
+    }
+
+    private boolean isBlankLine(String line) {
+        if (line == null) return true;
+        String stripped = ChatColor.stripColor(line);
+        return stripped == null || stripped.isEmpty();
+    }
+
+
+
+
 
 
     /**
@@ -293,6 +324,7 @@ public class BattleScoreboardManager extends EasyLifecycle {
             BattleTeam heldTeam = this.battle.getGame().getTeamManager().getTeam(team.getFlag().getCarrier());
             loc.add("Taken");
             loc.add("↪ held by " + heldTeam.getColor().getChat() + team.getFlag().getCarrier().getName());
+            return loc;
         }
 
         if (team.getFlag().isDropped()) {
@@ -300,11 +332,15 @@ public class BattleScoreboardManager extends EasyLifecycle {
             String timer = Math.max(0, timeLeft) + "s";
 
             loc.add("Dropped");
-            loc.add("Resets in " + timer);
+            loc.add("↪ resets in " + timer);
+            return loc;
         }
 
+        // Fallback if no known state (should not normally happen)
+        loc.add("Unknown");
         return loc;
     }
+
 
     /**
      * @return The title of the scoreboard.
