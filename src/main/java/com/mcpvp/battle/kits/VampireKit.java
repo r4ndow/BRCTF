@@ -216,14 +216,30 @@ public class VampireKit extends BattleKit {
     }
 
     class NightfallVial extends CooldownItem {
+
         private static final Duration COOLDOWN = Duration.seconds(20);
         private static final int DURATION_SECONDS = 10;
-        private static final int BLINDNESS_DURATION = 50;
+
+        private static final int BLINDNESS_DURATION = 80;
         private static final int REGENERATION_DURATION = 60;
+
         private static final double CUBE_SIZE = 2.5;
-        private static final double PARTICLE_STEP = 0.5;
-        private static final int PARTICLE_INTERVAL_TICKS = 3;
+
+        private static final int TASK_INTERVAL_TICKS = 3;
         private static final int EFFECT_INTERVAL_TICKS = 20;
+
+        private static final double[] PARTICLE_HEIGHTS = new double[]{-1.0, 0.0, 1.0};
+
+        private static final double[][] PARTICLE_OFFSETS = new double[][]{
+                { CUBE_SIZE, 0.0 },
+                { -CUBE_SIZE, 0.0 },
+                { 0.0, CUBE_SIZE },
+                { 0.0, -CUBE_SIZE },
+                { CUBE_SIZE, CUBE_SIZE },
+                { CUBE_SIZE, -CUBE_SIZE },
+                { -CUBE_SIZE, CUBE_SIZE },
+                { -CUBE_SIZE, -CUBE_SIZE }
+        };
 
         public NightfallVial() {
             super(
@@ -258,72 +274,70 @@ public class VampireKit extends BattleKit {
                     .build();
 
             potion.setItem(potionItem);
-            VampireKit.this.attach(potion);
 
+            VampireKit.this.attach(potion);
             this.decrement(true);
             this.startCooldown();
 
             VampireKit.this.attach(new InteractiveProjectile(this.getPlugin(), potion)
                     .singleEventOnly()
                     .onHitEvent(splashEvent -> {
-                        // Cancel weakness effect from the potion
-                        if (splashEvent instanceof org.bukkit.event.entity.PotionSplashEvent) {
-                            org.bukkit.event.entity.PotionSplashEvent potionEvent =
-                                    (org.bukkit.event.entity.PotionSplashEvent) splashEvent;
+
+                        if (splashEvent instanceof org.bukkit.event.entity.PotionSplashEvent potionEvent) {
                             for (org.bukkit.entity.LivingEntity entity : potionEvent.getAffectedEntities()) {
                                 potionEvent.setIntensity(entity, 0);
                             }
                         }
 
-                        final Location center = potion.getLocation();
+                        final Location center = potion.getLocation().clone();
 
                         new BukkitRunnable() {
-                            int ticks = 0;
+
+                            int elapsedTicks = 0;
+                            int effectTicks = 0;
+
+                            final Location particleLoc = center.clone();
 
                             @Override
                             public void run() {
-                                if (ticks >= DURATION_SECONDS * 20) {
+                                if (elapsedTicks >= DURATION_SECONDS * 20) {
                                     this.cancel();
                                     return;
                                 }
 
-                                if (ticks % PARTICLE_INTERVAL_TICKS == 0) {
-                                    renderCubeWalls(center);
-                                }
+                                renderParticles(center, particleLoc);
 
-                                if (ticks % EFFECT_INTERVAL_TICKS == 0) {
+                                effectTicks += TASK_INTERVAL_TICKS;
+                                while (effectTicks >= EFFECT_INTERVAL_TICKS) {
                                     applyEffectsToNearbyPlayers(center);
+                                    effectTicks -= EFFECT_INTERVAL_TICKS;
                                 }
 
-                                ticks++;
+                                elapsedTicks += TASK_INTERVAL_TICKS;
                             }
-                        }.runTaskTimer(VampireKit.this.getPlugin(), 0L, 1L);
+
+                        }.runTaskTimer(VampireKit.this.getPlugin(), 0L, TASK_INTERVAL_TICKS);
+
                     })
             );
         }
 
-        private void renderCubeWalls(Location center) {
-            for (double y = -CUBE_SIZE; y <= CUBE_SIZE; y += PARTICLE_STEP) {
-                for (double i = -CUBE_SIZE; i <= CUBE_SIZE; i += PARTICLE_STEP) {
-                    // North wall (Z = -size)
-                    center.getWorld().playEffect(center.clone().add(i, y, -CUBE_SIZE), Effect.VOID_FOG, 0);
-                    // South wall (Z = +size)
-                    center.getWorld().playEffect(center.clone().add(i, y, CUBE_SIZE), Effect.VOID_FOG, 0);
-                    // West wall (X = -size)
-                    center.getWorld().playEffect(center.clone().add(-CUBE_SIZE, y, i), Effect.VOID_FOG, 0);
-                    // East wall (X = +size)
-                    center.getWorld().playEffect(center.clone().add(CUBE_SIZE, y, i), Effect.VOID_FOG, 0);
+        private void renderParticles(Location center, Location loc) {
+            for (double y : PARTICLE_HEIGHTS) {
+                for (double[] offset : PARTICLE_OFFSETS) {
+                    loc.setX(center.getX() + offset[0]);
+                    loc.setY(center.getY() + y);
+                    loc.setZ(center.getZ() + offset[1]);
+                    center.getWorld().playEffect(loc, Effect.VOID_FOG, 0);
                 }
             }
+
+            center.getWorld().playEffect(center, Effect.VOID_FOG, 0);
         }
 
         private void applyEffectsToNearbyPlayers(Location center) {
             for (org.bukkit.entity.Entity entity : center.getWorld().getNearbyEntities(center, CUBE_SIZE, CUBE_SIZE, CUBE_SIZE)) {
                 if (!(entity instanceof Player player)) {
-                    continue;
-                }
-
-                if (!isInsideCube(player.getLocation(), center)) {
                     continue;
                 }
 
@@ -346,11 +360,6 @@ public class VampireKit extends BattleKit {
                 }
             }
         }
-
-        private boolean isInsideCube(Location playerLoc, Location center) {
-            return Math.abs(playerLoc.getX() - center.getX()) <= CUBE_SIZE
-                    && Math.abs(playerLoc.getY() - center.getY()) <= CUBE_SIZE
-                    && Math.abs(playerLoc.getZ() - center.getZ()) <= CUBE_SIZE;
-        }
     }
+
 }
