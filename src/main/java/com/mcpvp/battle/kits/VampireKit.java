@@ -127,8 +127,18 @@ public class VampireKit extends BattleKit {
                 return;
             }
 
-            double increasedDamage = event.getDamage() + TRUE_DAMAGE;
-            event.setDamage(increasedDamage);
+            // Remove normal (armor-based) hit damage, but keep the hit event from being cancelled.
+            event.setDamage(0);
+
+            final Player attacker = (Player) event.getDamager();
+            final double drain = TRUE_DAMAGE;
+
+            double victimNewHealth = Math.max(0.0, victim.getHealth() - drain);
+            victim.setHealth(victimNewHealth);
+
+            // Heal the vampire by the same amount (clamped to max health)
+            double attackerNewHealth = Math.min(attacker.getMaxHealth(), attacker.getHealth() + drain);
+            attacker.setHealth(attackerNewHealth);
 
             victim.setLastDamageCause(event);
 
