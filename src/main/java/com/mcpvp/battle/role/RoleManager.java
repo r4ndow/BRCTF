@@ -36,6 +36,8 @@ public class RoleManager extends EasyLifecycle implements EasyListener {
     // Current role during this session
     private final Map<UUID, Role> roles = new ConcurrentHashMap<>();
 
+    private static final boolean AUTO_OPEN_ROLE_GUI = false;
+
     // Last objective text announced in chat for each player
     private final Map<UUID, String> lastObjectiveAnnouncement = new ConcurrentHashMap<>();
 
@@ -208,11 +210,14 @@ public class RoleManager extends EasyLifecycle implements EasyListener {
         this.loadRole(event.getPlayer());
         this.updateTabName(event.getPlayer());
 
+        if (!AUTO_OPEN_ROLE_GUI)
+            return;
+
         BattleGameState state = this.battle.getGame().getState();
-        if (state == BattleGameState.BEFORE || state == BattleGameState.DURING) {
+        if (state == BattleGameState.BEFORE || state == BattleGameState.DURING)
             this.battle.getRolePreferenceGui().open(event.getPlayer());
-        }
     }
+
 
 
     @EventHandler
