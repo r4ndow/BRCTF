@@ -40,9 +40,9 @@ import static com.mcpvp.battle.match.BattleMatchStructureRestrictions.*;
 public class BattlemageKit extends BattleKit {
 
     public static final int LIGHTNING_DAMAGE = 2;
-    public static final double LIGHTNING_DIST = 3;
+    public static final double LIGHTNING_DIST = 2;
     public static final Duration FREEZE_DURATION = Duration.seconds(2);
-    public static final double FREEZE_RANGE = 3;
+    public static final double FREEZE_RANGE = 2;
     public static final int TELEPORT_DISTANCE = 7;
 
     private KitItem axe;
