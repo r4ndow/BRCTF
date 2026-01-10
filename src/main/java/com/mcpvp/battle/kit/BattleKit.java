@@ -186,7 +186,7 @@ public abstract class BattleKit extends Kit {
         public KitInventoryBuilder addFood(int count) {
             FoodItem food = new FoodItem(
                 BattleKit.this,
-                ItemBuilder.of(Material.COOKED_BEEF).name("Food").amount(count).build()
+                ItemBuilder.of(Material.COOKED_BEEF).name(C.GREEN + "✚ " + C.R + "Quick-Heal").amount(count).build()
             );
             BattleKit.this.foodItem = food;
             this.items[this.currentSlot++] = food;
