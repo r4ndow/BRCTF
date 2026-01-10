@@ -54,9 +54,6 @@ public class ThiefKit extends BattleKit {
     private static final double VERTICAL_REDUCTION_FACTOR = 0.4;
 
     private final Map<Player, StolenItemData> stolenItems = new HashMap<>();
-    private final Map<UUID, FishHook> playerBobbers = new HashMap<>();
-    private final Map<UUID, Boolean> isBobberOut = new HashMap<>();
-
 
     private StealAbility stealAbility;
     private GrapplingHook grapplingHook;
@@ -128,22 +125,6 @@ public class ThiefKit extends BattleKit {
         if (this.attemptSteal(victim)) {
             this.stealAbility.startHitCooldown();
         }
-    }
-
-
-
-    @EventHandler
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {
-        Entity projectile = event.getEntity();
-        if (!(projectile instanceof FishHook)) return;
-        FishHook hook = (FishHook) projectile;
-        if (!(hook.getShooter() instanceof Player)) return;
-        Player player = (Player) hook.getShooter();
-        if (player != this.getPlayer()) return;
-
-        UUID uuid = player.getUniqueId();
-        this.playerBobbers.put(uuid, hook);
-        this.setBobberOut(uuid, true);
     }
 
     private boolean attemptSteal(Player victim) {
@@ -312,20 +293,6 @@ public class ThiefKit extends BattleKit {
         super.shutdown();
     }
 
-    // Bobber state management methods
-    private void setBobberOut(UUID playerUuid, boolean out) {
-        this.isBobberOut.put(playerUuid, out);
-    }
-
-    private boolean isBobberOut(UUID playerUuid) {
-        return this.isBobberOut.getOrDefault(playerUuid, false);
-    }
-
-    private void removeBobber(UUID playerUuid) {
-        this.isBobberOut.remove(playerUuid);
-        this.playerBobbers.remove(playerUuid);
-    }
-
     class StealAbility extends CooldownItem {
 
         // Separate cooldown just for hits
@@ -407,7 +374,10 @@ public class ThiefKit extends BattleKit {
 
 
     class GrapplingHook extends CooldownItem {
+
         private final Expiration grappleCooldown = new Expiration();
+
+        private FishHook activeHook;
 
         public GrapplingHook() {
             super(
@@ -415,182 +385,130 @@ public class ThiefKit extends BattleKit {
                     ItemBuilder.of(Material.FISHING_ROD)
                             .name("Grappling Hook")
                             .desc(C.GRAY + "Right-click while your hook is attached to grapple towards it.", 40)
-                            .flag(ItemFlag.HIDE_UNBREAKABLE)
                             .build(),
                     GRAPPLE_COOLDOWN
             );
         }
 
-        @Override
-        protected boolean showExpRecharge() {
-            return true;
-        }
+        // --- Configuration & Base Behavior ---
 
         @Override
-        protected boolean showDurabilityRecharge() {
-            return true;
-        }
+        protected boolean showExpRecharge() { return true; }
 
         @Override
-        protected boolean autoUse() {
-            return false; // Use PlayerFishEvent instead
-        }
+        protected boolean showDurabilityRecharge() { return true; }
+
+        @Override
+        protected boolean autoUse() { return false; }
 
         @Override
         protected void onUse(PlayerInteractEvent event) {}
 
+        // --- Event Handling ---
+
+        /**
+         * Captures the hook entity when the player launches it.
+         */
+        @EventHandler
+        public void onLaunch(ProjectileLaunchEvent event) {
+            if (!(event.getEntity() instanceof FishHook hook)) return;
+            if (hook.getShooter() != ThiefKit.this.getPlayer()) return;
+
+            this.activeHook = hook;
+        }
+
         @EventHandler
         public void onFish(PlayerFishEvent event) {
-            if (event.getPlayer() != ThiefKit.this.getPlayer()) {
+            Player player = ThiefKit.this.getPlayer();
+
+            if (event.getPlayer() != player) return;
+            if (!this.isItem(player.getItemInHand())) return;
+
+            // If the event is effectively "reeling in" or clicking while out
+            // We check if we have a valid active hook.
+            if (this.activeHook == null || !this.activeHook.isValid()) {
                 return;
             }
-            if (!this.isItem(event.getPlayer().getItemInHand())) {
-                return;
-            }
+
+            // Standard Cooldown Check
             if (!this.grappleCooldown.isExpired()) {
-                ThiefKit.this.getPlayer().sendMessage(
-                        C.warn(C.RED) + "Grappling hook is on cooldown!"
-                );
+                player.sendMessage(C.warn(C.RED) + "Grappling hook is on cooldown!");
                 return;
             }
 
-
-            UUID uuid = ThiefKit.this.getPlayer().getUniqueId();
-
-            // Only trigger when bobber is out and player right-clicks
-            if (!ThiefKit.this.isBobberOut(uuid)) return;
-
-            // Check if bobber is ready for grapple
-            if (!isBobberReadyForGrapple(uuid)) {
-                ThiefKit.this.getPlayer().sendMessage(
-                        C.warn(C.RED) + "Grappling hook must be attached to a block!"
-                );
+            // Physics Check: Is the hook actually attached to something?
+            if (!isAnchored(this.activeHook)) {
+                player.sendMessage(C.warn(C.RED) + "Grappling hook must be attached to a block!");
                 return;
             }
 
-            applyGrapplingHookImpulse();
-            ThiefKit.this.removeBobber(uuid);
-            ThiefKit.this.getPlayer().sendMessage(
-                    C.info(C.GREEN) + "Grappling hook activated!"
-            );
+            // Execute Ability
+            performGrapple(player, this.activeHook);
+
+            // Cleanup
+            this.activeHook = null;
         }
 
-        private boolean isBobberReadyForGrapple(UUID playerUuid) {
-            Entity bobber = ThiefKit.this.playerBobbers.get(playerUuid);
-            if (bobber == null || !bobber.isValid()) return false;
-            return isBobberNearWall(bobber) || isBobberAttachedToBlock(playerUuid);
-        }
+        // --- Logic & Physics ---
 
-        private boolean isBobberAttachedToBlock(UUID playerUuid) {
-            Entity bobber = ThiefKit.this.playerBobbers.get(playerUuid);
-            if (bobber == null || !bobber.isValid()) return false;
+        private void performGrapple(Player player, FishHook hook) {
+            Vector impulse = calculateImpulse(player.getLocation().toVector(), hook.getLocation().toVector());
 
-            // Check the block at bobber location
-            org.bukkit.block.Block bobberBlock = bobber.getLocation().getBlock();
-            if (bobberBlock.getType().isSolid()) {
-                return true;
-            }
+            player.setVelocity(impulse);
+            playGrappleEffects(player);
 
-            // Check block below bobber
-            org.bukkit.block.Block blockBelow = bobberBlock.getRelative(0, -1, 0);
-            return blockBelow.getType().isSolid();
-        }
-
-        private void applyGrapplingHookImpulse() {
-            UUID playerUuid = ThiefKit.this.getPlayer().getUniqueId();
-            Entity bobber = ThiefKit.this.playerBobbers.get(playerUuid);
-            if (bobber == null || !bobber.isValid()) {
-                return;
-            }
-
-            Vector playerPos = ThiefKit.this.getPlayer().getLocation().toVector();
-            Vector bobberPos = bobber.getLocation().toVector();
-
-            double horizontalDistance = calculateHorizontalDistance(playerPos, bobberPos);
-            Vector horizontalDirection = calculateHorizontalDirection(playerPos, bobberPos);
-
-            Vector impulse = calculateImpulse(horizontalDistance, horizontalDirection);
-
-            ThiefKit.this.getPlayer().setVelocity(impulse);
-            playGrappleSounds();
-            cancelFallDamage();
-            grantSpeedEffect();
-
-            // New: logical cooldown for grappling use
+            // Logic cooldown
             this.grappleCooldown.expireIn(GRAPPLE_COOLDOWN);
-
-            // Existing: drives CooldownItem visuals (durability bar, etc.)
+            // Visual cooldown (Item bar)
             this.startCooldown();
         }
 
-        private Vector calculateImpulse(double horizontalDistance, Vector horizontalDirection) {
-            // Calculate adaptive impulse multipliers
-            double horizontalMultiplier = Math.min(1.0, horizontalDistance / HORIZONTAL_DISTANCE_SCALE);
-            double verticalMultiplier = 1.0 - (horizontalMultiplier * VERTICAL_REDUCTION_FACTOR);
-            double finalHorizontalImpulse = HORIZONTAL_IMPULSE_MULTIPLIER * horizontalMultiplier;
-            double finalVerticalImpulse = VERTICAL_IMPULSE_BASE * verticalMultiplier;
+        /**
+         * Consolidated check for wall or ground attachment.
+         */
+        private boolean isAnchored(FishHook hook) {
+            org.bukkit.block.Block block = hook.getLocation().getBlock();
 
-            // Create impulse vector
+            // Check immediate block, block below, and surrounding blocks (NSEW)
+            return isSolid(block) ||
+                    isSolid(block.getRelative(0, -1, 0)) ||
+                    isSolid(block.getRelative(0, 0, -1)) || // North
+                    isSolid(block.getRelative(0, 0, 1)) ||  // South
+                    isSolid(block.getRelative(1, 0, 0)) ||  // East
+                    isSolid(block.getRelative(-1, 0, 0));   // West
+        }
+
+        private boolean isSolid(org.bukkit.block.Block block) {
+            return block.getType().isSolid();
+        }
+
+        private Vector calculateImpulse(Vector origin, Vector target) {
+            double deltaX = target.getX() - origin.getX();
+            double deltaZ = target.getZ() - origin.getZ();
+            double horizontalDist = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+
+            // Normalize direction
+            Vector direction = new Vector(deltaX, 0, deltaZ).normalize();
+
+            // Scale mechanics
+            double horizontalMult = Math.min(1.0, horizontalDist / HORIZONTAL_DISTANCE_SCALE);
+            double verticalMult = 1.0 - (horizontalMult * VERTICAL_REDUCTION_FACTOR);
+
             return new Vector(
-                    horizontalDirection.getX() * finalHorizontalImpulse,
-                    finalVerticalImpulse,
-                    horizontalDirection.getZ() * finalHorizontalImpulse
+                    direction.getX() * (HORIZONTAL_IMPULSE_MULTIPLIER * horizontalMult),
+                    VERTICAL_IMPULSE_BASE * verticalMult,
+                    direction.getZ() * (HORIZONTAL_IMPULSE_MULTIPLIER * horizontalMult)
             );
         }
 
-        private void playGrappleSounds() {
-            ThiefKit.this.getPlayer().playSound(
-                    ThiefKit.this.getPlayer().getLocation(),
-                    Sound.ENDERDRAGON_WINGS,
-                    1.0f,
-                    1.2f
+        private void playGrappleEffects(Player player) {
+            player.playSound(player.getLocation(), Sound.ENDERDRAGON_WINGS, 1.0f, 1.2f);
+
+            new CancelNextFallTask(ThiefKit.this.getPlugin(), player).register();
+
+            ThiefKit.this.getBattle().getKitManager().find(player).ifPresent(kit ->
+                    kit.addTemporaryEffect(new PotionEffect(PotionEffectType.SPEED, SPEED_DURATION_TICKS, 0))
             );
-        }
-
-        private void cancelFallDamage() {
-            new CancelNextFallTask(ThiefKit.this.getPlugin(), ThiefKit.this.getPlayer())
-                    .register();
-        }
-
-        private void grantSpeedEffect() {
-            ThiefKit.this.getBattle().getKitManager().find(ThiefKit.this.getPlayer())
-                    .ifPresent(kit -> kit.addTemporaryEffect(
-                            new PotionEffect(
-                                    PotionEffectType.SPEED,
-                                    SPEED_DURATION_TICKS,
-                                    0 // Speed I (0 = level 1)
-                            )
-                    ));
-        }
-
-        private double calculateHorizontalDistance(Vector playerPos, Vector bobberPos) {
-            double deltaX = bobberPos.getX() - playerPos.getX();
-            double deltaZ = bobberPos.getZ() - playerPos.getZ();
-            return Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
-        }
-
-        private Vector calculateHorizontalDirection(Vector playerPos, Vector bobberPos) {
-            return new Vector(
-                    bobberPos.getX() - playerPos.getX(),
-                    0,
-                    bobberPos.getZ() - playerPos.getZ()
-            ).normalize();
-        }
-
-        private boolean isBobberNearWall(Entity bobber) {
-            Location loc = bobber.getLocation();
-            org.bukkit.block.Block currentBlock = loc.getBlock();
-            if (currentBlock.getType() != Material.AIR) return false;
-
-            org.bukkit.block.Block north = currentBlock.getRelative(0, 0, -1);
-            org.bukkit.block.Block south = currentBlock.getRelative(0, 0, 1);
-            org.bukkit.block.Block east = currentBlock.getRelative(1, 0, 0);
-            org.bukkit.block.Block west = currentBlock.getRelative(-1, 0, 0);
-
-            return (north.getType().isSolid()) ||
-                    (south.getType().isSolid()) ||
-                    (east.getType().isSolid()) ||
-                    (west.getType().isSolid());
         }
     }
 
