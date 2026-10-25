@@ -6,6 +6,7 @@ import com.mcpvp.battle.game.BattleGame;
 import com.mcpvp.battle.game.BattleGameState;
 import com.mcpvp.battle.team.BattleTeam;
 import com.mcpvp.common.chat.C;
+import com.mcpvp.common.event.EventUtil;
 import com.mcpvp.common.event.TickEvent;
 import com.mcpvp.common.kit.Kit;
 import com.mcpvp.common.kit.KitSelectedEvent;
@@ -325,5 +326,18 @@ public class BattleDuringGameStateHandler extends BattleGameStateHandler {
         event.setCancelled(true);
     }
 
+/*    @EventHandler(priority = EventPriority.LOW)
+    public void dieInVoid(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player))
+            return;
+
+        if (!this.game.isParticipant(player))
+            return;
+
+        if (event.getCause() != EntityDamageEvent.DamageCause.VOID)
+            return;
+
+        EventUtil.setDamage(event, player.getHealth() + 100.0);
+    }*/
 
 }

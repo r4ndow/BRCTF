@@ -108,6 +108,7 @@ public class BattlemageKit extends BattleKit {
                 .add(new LightningSpell())
                 .add(new FreezeSpell())
                 .add(new HealSpell())
+                .addCompass(8)
                 //.add(new TeleportSpell())
                 .build();
     }
