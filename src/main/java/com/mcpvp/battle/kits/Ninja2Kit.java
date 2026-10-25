@@ -206,11 +206,16 @@ public class Ninja2Kit extends BattleKit {
         }
     }
 
+    private void playEggSounds(org.bukkit.Location loc) {
+        loc.getWorld().playSound(loc, Sound.FIREWORK_BLAST2, 2.0f, 0.1f);
+        loc.getWorld().playSound(loc, Sound.EXPLODE, 0.3f, 1.5f);
+    }
+
     private void applyEggEffectNearby(Egg egg) {
         EntityUtil.getNearbyEntities(egg.getLocation(), Player.class, 3).forEach(player -> {
             this.applyEggEffect(player, false);
         });
-        egg.getLocation().getWorld().createExplosion(egg.getLocation(), 0F, false);
+        this.playEggSounds(egg.getLocation());
     }
 
     private void applyEggEffect(Player player, boolean direct) {
@@ -248,19 +253,19 @@ public class Ninja2Kit extends BattleKit {
 
         public DustItem() {
             super(
-                Ninja2Kit.this,
-                ItemBuilder.of(Material.REDSTONE)
-                    .name("Invisibility Dust")
-                    .amount(32)
-                    .build(),
-                true
+                    Ninja2Kit.this,
+                    ItemBuilder.of(Material.SULPHUR)
+                            .name("Invisibility Dust")
+                            .amount(32)
+                            .build(),
+                    true
             );
         }
 
         @EventHandler
         public void onTick(TickEvent event) {
             if (event.isInterval(DUST_CHECK_INTERVAL)) {
-                this.adjustRedstoneAmount();
+                this.adjustGunpowderAmount();
             }
 
             this.enforceDust();
@@ -272,7 +277,7 @@ public class Ninja2Kit extends BattleKit {
                 return;
             }
 
-            if (this.isItem(Ninja2Kit.this.getPlayer().getItemInHand()) && this.getItem().getType() == Material.REDSTONE) {
+            if (this.isItem(Ninja2Kit.this.getPlayer().getItemInHand()) && this.getItem().getType() == Material.SULPHUR) {
                 event.setCancelled(true);
             }
         }
@@ -280,7 +285,7 @@ public class Ninja2Kit extends BattleKit {
         private void enforceDust() {
             boolean wasInvisible = Ninja2Kit.this.invisible;
             Ninja2Kit.this.invisible = this.isItem(Ninja2Kit.this.getPlayer().getItemInHand())
-                    && this.getItem().getType() == Material.REDSTONE;
+                    && this.getItem().getType() == Material.SULPHUR;
 
             if (Ninja2Kit.this.invisible && !wasInvisible) {
                 Ninja2Kit.this.getPlayer().playSound(
@@ -303,9 +308,9 @@ public class Ninja2Kit extends BattleKit {
         }
 
 
-        private void adjustRedstoneAmount() {
+        private void adjustGunpowderAmount() {
             if (!this.isItem(Ninja2Kit.this.getPlayer().getItemInHand())
-                    || this.getItem().getType() != Material.REDSTONE) {
+                    || this.getItem().getType() != Material.SULPHUR) {
                 return;
             }
 
@@ -425,7 +430,7 @@ public class Ninja2Kit extends BattleKit {
                 .singleEventOnly()
                 .onDamageEvent(damageEvent -> {
                     if (damageEvent.getEntity() instanceof Player hit) {
-                        e.getLocation().getWorld().createExplosion(e.getLocation(), 0F, false);
+                        Ninja2Kit.this.playEggSounds(e.getLocation());
                         Ninja2Kit.this.applyEggEffect(hit, true);
                     }
                 })

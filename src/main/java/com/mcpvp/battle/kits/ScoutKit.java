@@ -112,7 +112,7 @@ public class ScoutKit extends BattleKit {
         this.getPlayer().getWorld().playSound(
                 this.getPlayer().getLocation(),
                 Sound.SLIME_ATTACK,
-                0.1f,
+                0.3f,
                 2.0f
         );
 

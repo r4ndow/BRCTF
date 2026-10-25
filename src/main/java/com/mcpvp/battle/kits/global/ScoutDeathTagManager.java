@@ -14,6 +14,7 @@ import com.mcpvp.common.util.EffectUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -46,6 +47,7 @@ public class ScoutDeathTagManager implements EasyListener {
         this.deathTagged.computeIfAbsent(player, p -> new Expiration()).expireIn(TAG_COOLDOWN);
 
         EffectUtil.sendBorderEffect(player);
+        player.getWorld().playSound(player.getLocation(), Sound.WITHER_SHOOT, 0.5f, 2.0f);
         player.sendMessage(C.warn(C.GOLD) + "You are now death tagged for " + C.hl("" + TAG_DURATION.seconds()) + " seconds!");
 
         EasyTask.of(() -> this.removeDeathTag(player)).runTaskLater(this.getPlugin(), TAG_DURATION.ticks());
